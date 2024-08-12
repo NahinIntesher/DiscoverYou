@@ -74,7 +74,7 @@ export default function HomePage() {
           {/* Footer */}
           <footer className="bg-gray-700 p-6 text-white">
             <div className="container mx-auto text-center">
-              <p>&copy; 2024 MyApp. All rights reserved.</p>
+              <p>&copy; 2023 MyApp. All rights reserved.</p>
               <div className="space-x-4 mt-2">
                 <Link
                   to="/privacy"
