@@ -52,7 +52,7 @@ app.post("/registrationPage", (req, res) => {
     phone,
     category,
     adminKey,
-    interests = [], 
+    interests = [],
     email,
     password,
   } = req.body;
@@ -163,7 +163,13 @@ app.post("/loginPage", (req, res) => {
 });
 
 app.get("/", verifyToken, (req, res) => {
-  res.json({ status: "Success", name: "Nahin" });
+  id = req.user.id;
+  connection.query("SELECT * FROM user WHERE id = ?", [id], (err, results) => {
+    if (err) {
+      return res.json({ Error: "Error fetching user" });
+    }
+    return res.json({ status: "Success", user: results[0] });
+  });
 });
 
 app.get("/logout", (req, res) => {
