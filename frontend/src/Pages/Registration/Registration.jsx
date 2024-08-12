@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import "../../assets/auth.css";
 
 export default function AdminRegistrationPage() {
-  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
@@ -18,7 +16,7 @@ export default function AdminRegistrationPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    // profilePicture: null,
+    profilePicture: null,
   });
 
   const handleChange = (e) => {
@@ -28,10 +26,10 @@ export default function AdminRegistrationPage() {
 
   // Validation Functions
   const validateName = (name) => /^[a-zA-Z\s]{1,30}$/.test(name);
-  const validateAdminKey = (adminKey) => adminKey.length === 4;
+  const validateAdminKey = (adminKey) => adminKey.length === 8;
   const validateMobileNumber = (phone) => /^\d{11}$/.test(phone);
   const validatePassword = (password) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,36}$/.test(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,36}$/.test(
       password
     );
   const validateEmail = (email) =>
@@ -41,29 +39,35 @@ export default function AdminRegistrationPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
+
     // Name validation
     if (!validateName(formData.name)) {
       newErrors.name =
         "Name must contain only letters and be between 1 and 30 characters long.";
     }
+
     // Mobile number validation
     if (!validateMobileNumber(formData.phone)) {
       newErrors.phone =
         "Please enter a valid mobile number with exactly 11 digits.";
     }
+
     // Admin Key validation
     if (formData.category === "admin" && !validateAdminKey(formData.adminKey)) {
-      newErrors.adminKey = "Admin Key must be exactly 4 characters long.";
+      newErrors.adminKey = "Admin Key must be exactly 8 characters long.";
     }
+
     // Password validation
     if (!validatePassword(formData.password)) {
       newErrors.password =
-        "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
+        "Password must be between 10 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
     }
+
     // Confirm password validation
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
+
     // Email validation
     if (!validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address.";
@@ -71,21 +75,10 @@ export default function AdminRegistrationPage() {
 
     setErrors(newErrors);
 
-    axios.defaults.withCredentials = true;
     // If no errors, proceed to submit the form
-
     if (Object.keys(newErrors).length === 0) {
-      console.log(formData);
-      axios
-        .post("http://localhost:3000/registrationPage", formData)
-        .then((res) => {
-          if (res.data.status === "Success") {
-            navigate("/login"); // Redirect to Home page
-          } else {
-            alert(res.data.Error);
-          }
-        })
-        .then((err) => console.log(err));
+      console.log("Successfully submitted");
+      console.log("Submitted Data:", formData);
     }
   };
 
@@ -109,7 +102,7 @@ export default function AdminRegistrationPage() {
             id="name"
             name="name"
             placeholder="Full Name"
-            maxLength={50}
+            maxLength={30}
             value={formData.name}
             onChange={handleChange}
             className={`w-full p-3 border border-gray-300 rounded-lg mb-1 bg-gray-100 placeholder-gray-500 ${
@@ -174,7 +167,7 @@ export default function AdminRegistrationPage() {
         {/* Address */}
         <div className="mb-5">
           <label className="block text-gray-700 text-lg font-semibold">
-            Address
+            Address <span className="text-red-500">*</span>
           </label>
           <textarea
             id="address"
@@ -184,6 +177,7 @@ export default function AdminRegistrationPage() {
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
             rows="4"
+            required
           />
         </div>
 
@@ -226,8 +220,8 @@ export default function AdminRegistrationPage() {
               className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
                 errors.adminKey ? "border-red-500" : ""
               }`}
-              minLength="4"
-              maxLength="4"
+              minLength="8"
+              maxLength="8"
               required
               title="Enter a valid Admin key (8 characters)."
             />
@@ -243,17 +237,7 @@ export default function AdminRegistrationPage() {
             Interests <span className="text-red-500">*</span>
           </label>
           <div className="flex flex-wrap gap-4 mt-2">
-            {[
-              "Coding Problem Solving",
-              "Web/App Designing",
-              "Gaming",
-              "Photography",
-              "Debating",
-              "Singing",
-              "Writing",
-              "Art & Craft",
-              "Graphics Designing",
-            ].map((interest) => (
+            {["Reading", "Writing", "Traveling"].map((interest) => (
               <label
                 key={interest}
                 htmlFor={interest.toLowerCase()}
@@ -270,17 +254,10 @@ export default function AdminRegistrationPage() {
                       e.target.value
                     )
                       ? formData.interests.filter((i) => i !== e.target.value)
-                      : formData.interests.length < 3
-                      ? [...formData.interests, e.target.value]
-                      : formData.interests;
-
+                      : [...formData.interests, e.target.value];
                     setFormData({ ...formData, interests: updatedInterests });
                   }}
                   className="form-checkbox"
-                  disabled={
-                    !formData.interests.includes(interest) &&
-                    formData.interests.length >= 3
-                  }
                 />
                 <span className="ml-2">{interest}</span>
               </label>
@@ -297,7 +274,7 @@ export default function AdminRegistrationPage() {
             type="tel"
             id="phone"
             name="phone"
-            placeholder="01XXXXXXXXX"
+            placeholder="+8801XXXXXXXXX"
             value={formData.phone}
             onChange={handleChange}
             className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
@@ -309,10 +286,10 @@ export default function AdminRegistrationPage() {
         </div>
 
         {/* Profile Picture */}
-        {/* <div className="mb-5">
+        <div className="mb-5">
           <label className="block text-gray-700 text-lg font-semibold">
             Profile Picture
-            
+            {/* <span className="text-red-500">*</span> */}
           </label>
           <input
             type="file"
@@ -323,7 +300,7 @@ export default function AdminRegistrationPage() {
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
             // required
           />
-        </div> */}
+        </div>
 
         {/* Email */}
         <div className="mb-5">

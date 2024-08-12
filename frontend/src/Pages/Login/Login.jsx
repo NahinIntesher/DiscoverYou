@@ -39,7 +39,6 @@ export default function LoginPage() {
     setErrors(newErrors);
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
-      console.log(formData);
       axios
         .post("http://localhost:3000/loginPage", formData)
         .then((res) => {

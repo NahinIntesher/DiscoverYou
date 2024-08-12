@@ -10,8 +10,6 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const verifyToken = require("./middleware");
 
-// Ador
-
 // Middleware
 app.use(cookies());
 app.use(express.json());

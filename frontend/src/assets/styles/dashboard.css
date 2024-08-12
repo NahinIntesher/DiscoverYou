@@ -1,0 +1,12 @@
+.mainContent {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 320px);
+    padding: 16px;
+    height: 100%;
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
