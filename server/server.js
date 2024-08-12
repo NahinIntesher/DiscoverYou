@@ -121,7 +121,7 @@ app.post("/registrationPage", (req, res) => {
 app.post("/loginPage", (req, res) => {
   const token = req.cookies.userRegistered;
   if (token) {
-    return res.json({ status: "Already logged in" });
+    return res.json({ status: "Success" });
   }
   const { email, password } = req.body;
 
@@ -140,7 +140,7 @@ app.post("/loginPage", (req, res) => {
           (err, response) => {
             if (err) return res.json({ Error: "Error comparing password" });
             if (response) {
-              const uid = results[0].id;
+              const uid = results[0].user_id;
 
               const token = jwt.sign({ id: uid }, "1234", { expiresIn: "1d" });
               const cookieOptions = {
@@ -163,7 +163,7 @@ app.post("/loginPage", (req, res) => {
 });
 
 app.get("/", verifyToken, (req, res) => {
-  id = req.user.id;
+  const id = req.userId;
   connection.query("SELECT * FROM user WHERE id = ?", [id], (err, results) => {
     if (err) {
       return res.json({ Error: "Error fetching user" });
