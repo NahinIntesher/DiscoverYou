@@ -38,6 +38,86 @@ connection.connect((error) => {
   console.log("Connected to database.");
 });
 
+app.post("/registrationPage", (req, res) => {
+  const token = req.cookies.userRegistered;
+  if (token) {
+    return res.json({ status: "Success" });
+  }
+
+  const {
+    name,
+    dateOfBirth,
+    gender,
+    address,
+    phone,
+    category,
+    adminKey,
+    interests = [], 
+    email,
+    password,
+  } = req.body;
+
+  // Validate adminKey
+  if (adminKey !== "" && adminKey !== "1234") {
+    return res.json({ Error: "Invalid admin key" });
+  }
+
+  bcrypt
+    .hash(password, 10)
+    .then((hashedPassword) => {
+      // Insert the user into the user table
+      connection.query(
+        "INSERT INTO user (name, dateOfBirth, gender, address, phone, category, adminKey, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          name,
+          dateOfBirth,
+          gender,
+          address,
+          phone,
+          category,
+          adminKey,
+          email,
+          hashedPassword,
+        ],
+        (err, results) => {
+          if (err) {
+            return res.status(500).json({ Error: "Error registering user" });
+          }
+          // Retrieve the user_id of the newly inserted user
+          const userId = results.insertId;
+
+          // Create an array of queries for inserting interests
+          const interestQueries = interests.map((interest) => {
+            return new Promise((resolve, reject) => {
+              connection.query(
+                "INSERT INTO user_interest (interest_name, user_id) VALUES (?, ?)",
+                [interest, userId],
+                (err) => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve();
+                }
+              );
+            });
+          });
+
+          // Execute all interest insertion queries
+          Promise.all(interestQueries)
+            .then(() => {
+              return res.json({ status: "Success" });
+            })
+            .catch((error) => {
+              return res.json({ Error: "Error inserting interests" });
+            });
+        }
+      );
+    })
+    .catch((error) => {
+      return res.json({ Error: "Error hashing password" });
+    });
+});
+
 app.post("/loginPage", (req, res) => {
   const token = req.cookies.userRegistered;
   if (token) {
@@ -46,7 +126,7 @@ app.post("/loginPage", (req, res) => {
   const { email, password } = req.body;
 
   connection.query(
-    "SELECT * FROM admins WHERE email = ?",
+    "SELECT * FROM user WHERE email = ?",
     [email],
     (err, results) => {
       if (err) {
@@ -87,7 +167,7 @@ app.get("/", verifyToken, (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("userRegistered") ;
+  res.clearCookie("userRegistered");
   res.json({ status: "Success" });
 });
 
