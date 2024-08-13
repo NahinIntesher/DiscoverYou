@@ -165,16 +165,37 @@ app.post("/loginPage", (req, res) => {
 app.get("/", verifyToken, (req, res) => {
   const id = req.userId;
   console.log(id);
-  connection.query(
-    "SELECT * FROM user WHERE user_id = ?",
-    [id],
-    (err, results) => {
-      if (err) {
-        return res.json({ Error: "Error fetching user" });
-      }
-      return res.json({ status: "Success", user: results[0] });
+
+  // Query to get user data and interests using LEFT JOIN
+  const query = `
+    SELECT u.*, GROUP_CONCAT(ui.interest_name) AS interests
+    FROM user u
+    LEFT JOIN user_interest ui ON u.user_id = ui.user_id
+    WHERE u.user_id = ?
+    GROUP BY u.user_id
+  `;
+
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error fetching user data:", err);
+      return res.status(500).json({ Error: "Error fetching user data" });
     }
-  );
+    // Ensure results is not empty
+    if (results.length === 0) {
+      return res.status(404).json({ Error: "User not found" });
+    }
+    // Process results
+    const user = results[0];
+    const interests = user.interests ? user.interests.split(",") : [];
+
+    return res.json({
+      status: "Success",
+      user: {
+        ...user,
+        interests,
+      },
+    });
+  });
 });
 
 app.get("/logout", (req, res) => {
