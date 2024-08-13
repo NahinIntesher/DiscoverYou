@@ -9,7 +9,6 @@
     font-family: sans-serif;
     text-decoration: none;
     font-family: "Poppins", sans-serif;
-    font-size: 14px;
 }
 
 .center {
@@ -33,7 +32,7 @@ body {
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    width: 340px;
     height: 100%;
     background-image: 
         radial-gradient(240px 180px at right bottom, #ffe79acc, #ffe79a99, transparent),
@@ -51,7 +50,10 @@ body {
 }
 .sideMenu .optionContainer {
     width: 80%;
-    margin: 20px 0px;
+    margin: 20px auto;
+}
+.sideMenu .dynamicGap {
+    display: none;
 }
 .sideMenu .option {
     display: block;
@@ -90,27 +92,24 @@ body {
     vertical-align: middle;
 }
 .sideMenu .profile {
-    position: absolute;
-    left: 0;
-    bottom: 0;
     background-color: rgba(105,0,0,0.2);
-    margin: 20px 20px;
+    margin: 30px 30px;
     border-radius: 40px;
     padding: 6px;
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
     text-align: left;
 }
 .sideMenu .profile .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    width: 46px;
-    height: 46px;
+    width: 56px;
+    height: 56px;
     border-radius: 46px;
-    border: 2px #ffffff solid;
+    border: 3px #ffffff solid;
     overflow: hidden;
 }
 .sideMenu .profile .details {
-    width: calc(100% - 52px);
+    width: calc(100% - 60px);
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
@@ -144,7 +143,7 @@ body {
 .sideMenu .profile .details .logout .text {
     display: inline-block;
     vertical-align: middle;
-    font-size: 12px;
+    font-size: 14px;
     margin: 2px 4px;
 }
 
@@ -153,11 +152,8 @@ body {
 }
 
 .sideMenu .logo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: calc(100% - 80px);
-    margin: 30px 40px;
+    width: calc(100% - 100px);
+    margin: 30px 50px;
 }
 
 .mobileHeader {
@@ -166,6 +162,13 @@ body {
 
 #sideMenuBackground {
     display: none;
+}
+
+@media screen and (min-width: 1600px) {
+    .sideMenu .dynamicGap {
+        display: block;
+        height: 10px;
+    }
 }
 
 @media screen and (max-width: 820px) {

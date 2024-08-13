@@ -1,7 +1,7 @@
 .mainContent {
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 300px);
+    width: calc(100% - 340px);
     padding: 16px;
     height: 100%;
     overflow: scroll;
