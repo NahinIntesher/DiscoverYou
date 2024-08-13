@@ -12,19 +12,17 @@ export default function HomePage() {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/")
+    axios.get("http://localhost:3000/")
       .then((res) => {
         if (res.data.status === "Success") {
-          console.log("Logged in");
           setAuthorized(true);
-          setName(res.data.name);
+          setName(res.data.user);
         } else {
           setAuthorized(false);
           setMessage(res.data.Error);
         }
       })
-      .catch((err) => {
+      .then((err) => {
         console.error(err);
       });
   }, [navigate]);

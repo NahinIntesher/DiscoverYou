@@ -74,7 +74,7 @@ export default function AdminRegistrationPage() {
     axios.defaults.withCredentials = true;
     // If no errors, proceed to submit the form
 
-    if (Object.keys(newErrors).length === 0) {
+    // if (Object.keys(newErrors).length === 0) {
       console.log(formData);
       axios
         .post("http://localhost:3000/registrationPage", formData)
@@ -86,7 +86,7 @@ export default function AdminRegistrationPage() {
           }
         })
         .then((err) => console.log(err));
-    }
+    // }
   };
 
   return (
