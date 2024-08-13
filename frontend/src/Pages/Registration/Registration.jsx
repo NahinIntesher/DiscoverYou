@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function AdminRegistrationPage() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -20,6 +20,19 @@ export default function AdminRegistrationPage() {
     confirmPassword: "",
     // profilePicture: null,
   });
+  const [showAdminKey, setShowAdminKey] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setshowConfirmPassword] = useState(false);
+
+  const toggleAdminKeyVisibility = () => {
+    setShowAdminKey(!showAdminKey);
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  const toggleConfirmPasswordVisibility = () => {
+    setshowConfirmPassword(!showConfirmPassword);
+  };
 
   const handleChange = (e) => {
     const { name, type, value, files } = e.target;
@@ -75,25 +88,25 @@ export default function AdminRegistrationPage() {
     // If no errors, proceed to submit the form
 
     // if (Object.keys(newErrors).length === 0) {
-      console.log(formData);
-      axios
-        .post("http://localhost:3000/registrationPage", formData)
-        .then((res) => {
-          if (res.data.status === "Success") {
-            navigate("/login"); // Redirect to Home page
-          } else {
-            alert(res.data.Error);
-          }
-        })
-        .then((err) => console.log(err));
+    console.log(formData);
+    axios
+      .post("http://localhost:3000/registrationPage", formData)
+      .then((res) => {
+        if (res.data.status === "Success") {
+          navigate("/login"); // Redirect to Home page
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .then((err) => console.log(err));
     // }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full bg-yellow-100 p-5 text-white font-popins">
+    <div className="flex justify-center items-center min-h-screen w-full bg-[#ffe79a] p-5 text-white font-popins">
       <form
         onSubmit={handleSubmit}
-        className="bg-green-50 p-8 rounded-lg shadow-2xl w-full max-w-full sm:max-w-xl lg:max-w-3xl text-black"
+        className="bg-[#feffdf] p-8 rounded-lg shadow-2xl w-full max-w-full sm:max-w-xl lg:max-w-3xl text-black"
       >
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 lg:mb-8 text-center">
           Registration Form
@@ -112,7 +125,7 @@ export default function AdminRegistrationPage() {
             maxLength={50}
             value={formData.name}
             onChange={handleChange}
-            className={`w-full p-3 border border-gray-300 rounded-lg mb-1 bg-gray-100 placeholder-gray-500 ${
+            className={`w-full p-3 border border-gray-400 rounded-lg mb-1 bg-[#feffdf] placeholder-gray-500 ${
               errors.name ? "border-red-500" : ""
             }`}
             required
@@ -131,7 +144,7 @@ export default function AdminRegistrationPage() {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf]"
             required
           />
         </div>
@@ -182,7 +195,7 @@ export default function AdminRegistrationPage() {
             placeholder="e.g., Mirpur-10, Mirpur, Dhaka-1216"
             value={formData.address}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf]"
             rows="4"
           />
         </div>
@@ -197,7 +210,7 @@ export default function AdminRegistrationPage() {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded bg-gray-100"
+            className="w-full p-2 border border-gray-400 rounded bg-[#feffdf]"
             required
           >
             <option value="">Select your category</option>
@@ -209,7 +222,7 @@ export default function AdminRegistrationPage() {
 
         {/* Admin Key */}
         {formData.category === "admin" && (
-          <div className="mb-5">
+          <div className="mb-5 relative">
             <label
               htmlFor="adminKey"
               className="block text-gray-700 text-lg font-semibold"
@@ -217,13 +230,13 @@ export default function AdminRegistrationPage() {
               Admin Key <span className="text-red-500">*</span>
             </label>
             <input
-              type="password"
+              type= {showAdminKey ? 'text' : "password"}
               id="adminKey"
               name="adminKey"
               placeholder="••••••••"
               value={formData.adminKey}
               onChange={handleChange}
-              className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
+              className={`w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf] ${
                 errors.adminKey ? "border-red-500" : ""
               }`}
               minLength="4"
@@ -234,6 +247,12 @@ export default function AdminRegistrationPage() {
             {errors.adminKey && (
               <p className="text-red-500 mt-1">{errors.adminKey}</p>
             )}
+            <div
+              className="absolute right-3 top-11 cursor-pointer"
+              onClick={toggleAdminKeyVisibility}
+            >
+              {showAdminKey ? <FaEyeSlash /> : <FaEye />}
+            </div>
           </div>
         )}
 
@@ -300,7 +319,7 @@ export default function AdminRegistrationPage() {
             placeholder="01XXXXXXXXX"
             value={formData.phone}
             onChange={handleChange}
-            className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
+            className={`w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf] ${
               errors.phone ? "border-red-500" : ""
             }`}
             required
@@ -320,7 +339,7 @@ export default function AdminRegistrationPage() {
             name="profilePicture"
             accept="image/*"
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf]"
             // required
           />
         </div> */}
@@ -337,7 +356,7 @@ export default function AdminRegistrationPage() {
             placeholder="e.g., youremail@example.com"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
+            className={`w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf] ${
               errors.email ? "border-red-500" : ""
             }`}
             required
@@ -346,45 +365,51 @@ export default function AdminRegistrationPage() {
         </div>
 
         {/* Password */}
-        <div className="mb-5">
-          <label className="block text-gray-700 text-lg font-semibold">
-            Password <span className="text-red-500">*</span>
+        <div className="mb-4 relative">
+          <label htmlFor="password" className="block text-black">
+            Password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
-            placeholder="••••••••••••••••"
+            placeholder="•••••••••••••"
             value={formData.password}
             onChange={handleChange}
-            className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
-              errors.password ? "border-red-500" : ""
-            }`}
+            className="w-full p-3 border text-black border-gray-400 rounded-lg bg-[#feffdf] mt-1"
             required
           />
-          {errors.password && <p className="text-red-500">{errors.password}</p>}
+          <div
+            className="absolute right-3 top-11 cursor-pointer"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </div>
         </div>
 
         {/* Confirm Password */}
-        <div className="mb-5">
+        <div className="mb-4 relative">
           <label className="block text-gray-700 text-lg font-semibold">
             Confirm Password <span className="text-red-500">*</span>
           </label>
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
             name="confirmPassword"
             placeholder="••••••••••••••••"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className={`w-full p-3 border border-gray-300 rounded-lg bg-gray-100 ${
+            className={`w-full p-3 border border-gray-400 rounded-lg bg-[#feffdf] ${
               errors.confirmPassword ? "border-red-500" : ""
             }`}
             required
           />
-          {errors.confirmPassword && (
-            <p className="text-red-500">{errors.confirmPassword}</p>
-          )}
+          <div
+            className="absolute right-3 top-11 cursor-pointer"
+            onClick={toggleConfirmPasswordVisibility}
+          >
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </div>
         </div>
 
         <div className="flex justify-center">

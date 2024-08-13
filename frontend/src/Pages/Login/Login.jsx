@@ -3,7 +3,7 @@ import DiscoverYouImage from "../../assets/images/DiscoverYou.png"; // Import th
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
@@ -11,10 +11,15 @@ export default function LoginPage() {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
+  
   const validateEmail = (email) => {
     const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     return emailPattern.test(email);
+  };
+  
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleChange = (e) => {
@@ -54,8 +59,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#ffe79a]">
-      <div className="flex flex-col md:flex-row h-auto md:h-3/4 bg-[#feffdf] rounded-md shadow-2xl overflow-hidden w-full max-w-3xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#ffe79a] p-5">
+      <div className="flex flex-col md:flex-row  bg-[#feffdf] rounded-md shadow-2xl overflow-hidden w-full max-w-3xl">
         {/* Picture Section */}
         <div className="w-full md:w-1/2 h-full md:h-auto relative">
           <img
@@ -68,7 +73,7 @@ export default function LoginPage() {
         <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
           {/* Header */}
           <div className="mb-6 text-center">
-            <h2 className="text-3xl font-bold text-black mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">
               DiscoverYou Login
             </h2>
             <p className="text-gray-600">Sign in to your account</p>
@@ -96,12 +101,12 @@ export default function LoginPage() {
               )}
             </div>
             {/* Password */}
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label htmlFor="password" className="block text-black">
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 placeholder="•••••••••••••"
@@ -110,10 +115,14 @@ export default function LoginPage() {
                 className="w-full p-3 border text-black border-gray-400 rounded-lg bg-[#feffdf] mt-1"
                 required
               />
-              {errors.password && (
-                <p className="text-red-500 mt-1 text-xs">{errors.password}</p>
-              )}
+              <div
+                className="absolute right-3 top-11 cursor-pointer"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
             </div>
+
             {/* Remember Me */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-start">
@@ -140,6 +149,7 @@ export default function LoginPage() {
                 Forgot password?
               </a>
             </div>
+
             {/* Submit Button */}
             <div className="mb-4 mt-5">
               <button
