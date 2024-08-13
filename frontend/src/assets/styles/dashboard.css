@@ -5,8 +5,19 @@
     padding: 16px;
     height: 100%;
     overflow: scroll;
-}
 
+}
+.mainContent .optionContainer {
+    font-size: 32px; 
+    padding: 6px 16px; 
+    font-weight: 600;  
+}
 ::-webkit-scrollbar {
     display: none;
+}
+
+@media screen and (max-width: 820px) {
+    .mainContent {
+        width: 100%;
+    }
 }

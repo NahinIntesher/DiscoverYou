@@ -3,6 +3,8 @@ import "../assets/styles/sidebar.css"
 import SidebarOption from "./SidebarOption";
 import dp from "../assets/images/desert.jpg";
 import logo from "../assets/images/logo.svg";
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
 
 export default function Sidebar({logoutAction, user}) {
     return (
@@ -28,7 +30,10 @@ export default function Sidebar({logoutAction, user}) {
             </div>
             <div className="details">
                 <div className="name">{user.name}</div>
-                <div onClick={logoutAction} className="email">Logout</div>
+                <div onClick={logoutAction} className="logout">
+                    <MaterialSymbol className="icon" size={20} icon="logout"/>
+                    <div className="text">Logout Account</div>
+                </div>
             </div>
         </div>
     </div>

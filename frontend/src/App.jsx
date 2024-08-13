@@ -14,6 +14,7 @@ import Course from "./Components/Course";
 import Webinar from "./Components/Webinar";
 import Marketplace from "./Components/Marketplace";
 import Hiring from "./Components/Hiring";
+import Notification from "./Components/Notification";
 import Profile from "./Components/Profile";
 
 function App() {
@@ -28,7 +29,6 @@ function App() {
       .then((res) => {
         if (res.data.status === "Success") {
           setAuthorized(true);
-          console.log(res.data.user)
           setUser(res.data.user);
         } else {
           setAuthorized(false);
@@ -70,7 +70,7 @@ function App() {
                   <Route path="/webinar" element={<Webinar/>} />
                   <Route path="/marketplace" element={<Marketplace/>} />
                   <Route path="/hiring" element={<Hiring/>} />
-                  <Route path="/notifiction" element={<Notification/>} />
+                  <Route path="/notification" element={<Notification/>} />
                   <Route path="/profile" element={<Profile/>} />
               </Routes>
             </div>

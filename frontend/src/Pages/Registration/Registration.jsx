@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
+
 export default function AdminRegistrationPage() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -251,7 +253,7 @@ export default function AdminRegistrationPage() {
               className="absolute right-3 top-11 cursor-pointer"
               onClick={toggleAdminKeyVisibility}
             >
-              {showAdminKey ? <FaEyeSlash /> : <FaEye />}
+              {showAdminKey ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
             </div>
           </div>
         )}
@@ -383,7 +385,7 @@ export default function AdminRegistrationPage() {
             className="absolute right-3 top-11 cursor-pointer"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
           </div>
         </div>
 
@@ -408,7 +410,7 @@ export default function AdminRegistrationPage() {
             className="absolute right-3 top-11 cursor-pointer"
             onClick={toggleConfirmPasswordVisibility}
           >
-            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            {showConfirmPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
           </div>
         </div>
 

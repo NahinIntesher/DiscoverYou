@@ -3,8 +3,10 @@ import DiscoverYouImage from "../../assets/images/DiscoverYou.png"; // Import th
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-export default function LoginPage() {
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
+
+export default function LoginPage({setAuthorized, setUser}) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -49,7 +51,9 @@ export default function LoginPage() {
         .post("http://localhost:3000/loginPage", formData)
         .then((res) => {
           if (res.data.status === "Success") {
-            navigate("/"); // Redirect to Home page
+            setAuthorized(true);          
+            setUser(res.data.user);
+            navigate("/");
           } else {
             alert(res.data.Error);
           }
@@ -119,7 +123,7 @@ export default function LoginPage() {
                 className="absolute right-3 top-11 cursor-pointer"
                 onClick={togglePasswordVisibility}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/> }
               </div>
             </div>
 

@@ -1,11 +1,11 @@
 import React from "react";
 import "../assets/styles/dashboard.css";
 
-export default function Notifcation() {
+export default function Notification() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Notifcation
+            Notification
             </div>
         </div>
     );
