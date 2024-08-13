@@ -100,7 +100,9 @@ export default function AdminRegistrationPage() {
           alert(res.data.Error);
         }
       })
-      .then((err) => console.log(err));
+      .then((err) => {
+        if (err) console.log(err);
+      });
     // }
   };
 
@@ -232,7 +234,7 @@ export default function AdminRegistrationPage() {
               Admin Key <span className="text-red-500">*</span>
             </label>
             <input
-              type= {showAdminKey ? 'text' : "password"}
+              type={showAdminKey ? "text" : "password"}
               id="adminKey"
               name="adminKey"
               placeholder="••••••••"
