@@ -149,7 +149,7 @@ app.post("/loginPage", (req, res) => {
               };
 
               res.cookie("userRegistered", token, cookieOptions);
-              return res.json({ status: "Success" });
+              return res.json({ status: "Success", user: results[0] });
             } else {
               return res.json({ Error: "Password incorrect" });
             }

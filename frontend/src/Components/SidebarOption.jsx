@@ -1,12 +1,14 @@
 import React from "react";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
+import { NavLink } from "react-router-dom";
 
 export default function SidebarOption(props) {
     return (
-        <div className={props.status=="active" ? "activeOption" : "option"}>
-            <MaterialSymbol className="icon" size={20} icon={props.icon}/>
+        <NavLink to={props.href} 
+        className={({ isActive }) => isActive ? "activeOption" : "option"}>
+            <MaterialSymbol className="icon" size={22} icon={props.icon}/>
             <div className="text">{props.name}</div>
-        </div>
+        </NavLink>
     )
 }

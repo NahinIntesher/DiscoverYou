@@ -2,29 +2,33 @@ import React, {Image} from "react";
 import "../assets/styles/sidebar.css"
 import SidebarOption from "./SidebarOption";
 import dp from "../assets/images/desert.jpg";
+import logo from "../assets/images/logo.svg";
 
-export default function Sidebar(props) {
+export default function Sidebar({logoutAction, user}) {
     return (
     <div className="sideMenu">
-        <div class="optionContainer">
-            <SidebarOption name="Dashboard" icon="dashboard"/>
-            <SidebarOption name="Showcase" icon="gallery_thumbnail"/>
-            <SidebarOption name="Contest" icon="rewarded_ads" status="active"/>
-            <SidebarOption name="Community" icon="groups"/>
-            <SidebarOption name="Course" icon="auto_stories"/>
-            <SidebarOption name="Webinar" icon="patient_list"/>
-            <SidebarOption name="Marketplace" icon="shopping_cart"/>
-            <SidebarOption name="Hiring" icon="person_search"/>
-            <SidebarOption name="Notifcation" icon="notifications_active"/>
-            <SidebarOption name="Profile" icon="person"/>
+        <div className="logo">
+            <img src={logo} />
         </div>
-        <div class="profile">
+        <div className="optionContainer">
+            <SidebarOption name="Dashboard" href="/" icon="dashboard"/>
+            <SidebarOption name="Showcase" href="/showcase" icon="gallery_thumbnail"/>
+            <SidebarOption name="Contest" href="/contest" icon="rewarded_ads"/>
+            <SidebarOption name="Community" href="/community" icon="groups"/>
+            <SidebarOption name="Course" href="/course" icon="auto_stories"/>
+            <SidebarOption name="Webinar" href="/webinar" icon="patient_list"/>
+            <SidebarOption name="Marketplace" href="/marketplace" icon="shopping_cart"/>
+            <SidebarOption name="Hiring" href="/hiring" icon="person_search"/>
+            <SidebarOption name="Notifcation" href="/notification" icon="notifications_active"/>
+            <SidebarOption name="Profile" href="/profile" icon="person"/>
+        </div>
+        <div className="profile">
             <div className="profilePicture">
                 <img src={dp}/>
             </div>
-            <div class="details">
-                <div class="name">{props.user.name}</div>
-                <div class="email">nahina@gmail.com</div>
+            <div className="details">
+                <div className="name">{user.name}</div>
+                <div onClick={logoutAction} className="email">Logout</div>
             </div>
         </div>
     </div>
