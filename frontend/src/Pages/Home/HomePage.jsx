@@ -7,7 +7,7 @@ import Navbar from "../../Components/Header/Navbar";
 export default function HomePage() {
   const [authorized, setAuthorized] = useState(false);
   const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
@@ -16,14 +16,14 @@ export default function HomePage() {
       .then((res) => {
         if (res.data.status === "Success") {
           setAuthorized(true);
-          setName(res.data.user);
+          console.log(res.data.user)
+          setUser(res.data.user);
         } else {
           setAuthorized(false);
-          setMessage(res.data.Error);
         }
       })
       .then((err) => {
-        console.error(err);
+        if(err) throw err;
       });
   }, [navigate]);
 
@@ -36,7 +36,7 @@ export default function HomePage() {
         navigate("/login"); // Redirect to login page
       })
       .catch((err) => {
-        console.error(err);
+        if(err) throw err;
 
         alert("An error occurred during logout. Please try again.");
       });
@@ -52,7 +52,7 @@ export default function HomePage() {
           {/* Hero Section */}
           <section className="flex-1 flex flex-col justify-center items-center bg-custom-gradient2 py-10 sm:py-20 px-4 sm:px-8">
             <h1 className="text-3xl sm:text-5xl font-bold mb-4">
-              Welcome {name}
+              Welcome {user.name}
             </h1>
             <p className="text-base sm:text-lg mb-8">
               This is where your journey begins.
