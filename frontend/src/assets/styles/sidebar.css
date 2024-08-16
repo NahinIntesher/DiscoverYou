@@ -17,9 +17,9 @@
 }
 
 body {
-    background-color: #dddddd;
+    background-color: #eeeeee;
     font-weight: 400;
-    color: #333333;
+    color: rgba(0,0,0,0.5);
 }    
 
 .container {
@@ -32,7 +32,7 @@ body {
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    width: 340px;
+    width: 330px;
     height: 100%;
     background-image: 
         radial-gradient(240px 180px at right bottom, #ffe79acc, #ffe79a99, transparent),
@@ -42,7 +42,7 @@ body {
     color: #ffffff;
     padding: 20px 0;
     position: relative;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     z-index: 999;
 }
 .sideMenu .content {
@@ -183,7 +183,7 @@ body {
 
     .sideMenu {
         position: absolute;
-        left: -300px;
+        left: -330px;
         top: 0;
         display: flex;
         height: 100%;

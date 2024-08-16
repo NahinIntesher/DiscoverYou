@@ -1,12 +1,20 @@
 .mainContent {
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 340px);
-    padding: 16px;
+    width: calc(100% - 330px);
     height: 100%;
     overflow: scroll;
 
 }
+.mainContent .content {
+    max-width: 1100px;
+    padding: 16px;
+    margin: auto;
+}
+.mainContent .miniBreak {
+    height: 12px;
+}
+
 .mainContent .optionContainer {
     font-size: 32px; 
     padding: 6px 16px; 
