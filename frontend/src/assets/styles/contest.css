@@ -1,167 +1,208 @@
+/* Content Title Styling */
 .contentTitle {
-    background-image: 
-        radial-gradient(400px 80px at right top, #ffe79acc, #ffe79a99, transparent),
-        radial-gradient(400px 80px at left top, #ffe79acc, #ffe79a99, transparent),
-        radial-gradient(400px 80px at left bottom, #ffa952, #ffa952cc, #ffa95299, transparent),
-        linear-gradient(#ffa952,#ffe79a);
+  background-image: 
+    radial-gradient(400px 80px at right top, #ffe79acc, #ffe79a99, transparent),
+    radial-gradient(400px 80px at left top, #ffe79acc, #ffe79a99, transparent),
+    radial-gradient(400px 80px at left bottom, #ffa952, #ffa952cc, #ffa95299, transparent),
+    linear-gradient(#ffa952, #ffe79a);
+  padding: 16px;
+  margin-bottom: 24px;
 }
 .contentTitle .title {
-    font-size: 32px;
-    padding: 8px 16px;
-    font-weight: 600;
-    color: #ffffff;
-    text-shadow: 
-        -4px -4px 12px #ff161680,
-        -4px -4px 42px #f0595999,
-        4px 4px 12px #ef5a5a80,
-        4px 4px 42px #ef5a5a99;
+  font-size: 32px;
+  padding: 8px 16px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 
+    -4px -4px 12px #ff161680,
+    -4px -4px 42px #f0595999,
+    4px 4px 12px #ef5a5a80,
+    4px 4px 42px #ef5a5a99;
 }
 
-
+/* Semi Title Styling */
 .contentSemiTitle {
-    font-size: 18px;
-    font-weight: 500;
-    margin: 4px 16px;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 4px 16px;
 }
 
-
-.contentSemiTitle::before {
-    display: block;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
-    width: 10px;
-    height: 10px;
+/* Scroll Container for horizontal scrolling */
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  width: 100%; /* Ensure it takes the full width available */
+}
+.scrollContainer::-webkit-scrollbar {
+  height: 8px;
+}
+.scrollContainer::-webkit-scrollbar-thumb {
+  background-color: #ffa952;
+  border-radius: 10px;
+}
+.scrollContainer::-webkit-scrollbar-track {
+  background-color: #ffe79a;
 }
 
+/* Contest Box Styling */
 .contestBox {
-    display: inline-block;
-    vertical-align: middle;
-    background-color: #ffffff;
-    width: calc(50% - 20px);
-    border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
-    margin: 10px;
-    padding: 8px;
+  flex: 0 0 calc(50% - 20px);
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #ffffff;
+  width: calc(50% - 20px);
+  border-radius: 18px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 8px;
+  transition: transform 0.3s ease-in-out;
 }
+
+.contestBox:hover {
+  transform: translateY(-2px);
+}
+
 .contestBox .title {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 4px;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 4px;
 }
+
 .contestBox .category {
-    background-color: rgba(255, 169, 82, 0.4);
-    padding: 2px 12px;
-    border-radius: 20px;
-    display: inline-block;
-    color: #ef5a5acc;
-    margin-top: 8px;
+  background-color: rgba(255, 169, 82, 0.4);
+  padding: 2px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  color: #ef5a5acc;
+  margin-top: 8px;
 }
+
 .contestBox .category .icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
 }
+
 .contestBox .category .text {
-    display: inline-block;
-    vertical-align: middle;
-    font-weight: 500;
-    font-size: 14px;
-    margin: 2px 4px;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 2px 4px;
 }
+
 .contestBox .detailsContainer {
-    background-color: rgba(0, 0, 0, 0.08);
-    padding: 8px 18px;
-    margin: 8px;
-    border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.08);
+  padding: 8px 18px;
+  margin: 8px;
+  border-radius: 5px;
 }
+
 .contestBox .details {
-    display: flex;
-    margin: 10px 4px;
+  display: flex;
+  margin: 10px 4px;
 }
+
 .contestBox .detail {
-    flex: 1;
- }
+  flex: 1;
+}
+
 .contestBox .detail .icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 4px 6px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 4px 6px;
 }
+
 .contestBox .detail .text {
-    display: inline-block;
-    vertical-align: middle;
-    width: calc(100% - 45px);
-    margin: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 45px);
+  margin: 2px;
 }
-.contestBox .detail .detailTitle {   
-    font-size: 13px;
-    line-height: 120%;
+
+.contestBox .detail .detailTitle {
+  font-size: 13px;
+  line-height: 120%;
 }
-.contestBox .detail .detailInfo { 
-    font-weight: 600;
-    font-size: 15px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+.contestBox .detail .detailInfo {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .contestBox .timeRemaining {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 4px;
-    border-radius: 20px;
-    display: inline-block;
-    margin: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 4px;
 }
+
 .contestBox .timeRemaining .icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 2px;
-    margin-right: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+  margin-right: 0;
 }
+
 .contestBox .timeRemaining .text {
-    display: inline-block;
-    vertical-align: middle;
-    font-weight: 500;
-    font-size: 14px;
-    margin: 2px 14px;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 2px 14px;
 }
+
 .contestBox .informationContainer {
-    padding: 8px 10px;
+  padding: 8px 10px;
 }
+
 .contestBox .information {
-    display: inline-block;
-    vertical-align: middle;
-    width: calc(100% - 100px);
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 100px);
 }
+
 .contestBox .joinButtonContainer {
-    width: 100px;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
+  width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
 }
+
 .contestBox .joinButtonContainer .joinButton {
-    display: inline-block;
-    background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
-    color: #ffffff;
-    padding: 10px 28px;
-    border-radius: 60px;
-    font-weight: 600;
-    margin: 2px;
-    cursor: pointer;
+  display: inline-block;
+  background-image: 
+    radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
+    linear-gradient(#ef5a5a, #ffa952);
+  color: #ffffff;
+  padding: 10px 28px;
+  border-radius: 60px;
+  font-weight: 600;
+  margin: 2px;
+  cursor: pointer;
 }
+
 .contestBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(100,0,0,0.2);
-    text-shadow: 2px 2px 8px rgba(100,0,0,0.6);
+  box-shadow: 4px 4px 12px rgba(100, 0, 0, 0.2);
+  text-shadow: 2px 2px 8px rgba(100, 0, 0, 0.6);
 }
+
 .contestBox .joinButtonContainer .joinDetails {
-    font-size: 12px;
-    margin: 6px 0;
+  font-size: 12px;
+  margin: 6px 0;
 }
 
-
-
+/* Responsive adjustments */
 @media screen and (max-width: 820px) {
-    .contestBox {  
-        width: calc(100% - 20px);
-    } 
+  .contestBox {
+      flex: 0 0 calc(100% - 20px);
+      width: calc(100% - 20px);
+  }
 }

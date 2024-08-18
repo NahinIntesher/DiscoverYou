@@ -198,22 +198,22 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 
-app.get("/contest", verifyToken, (req, res) => {
+app.get("/studentContest", verifyToken, (req, res) => {
   const query = `SELECT 
-  contest.*, 
-  user.name AS organizer, 
-  COUNT(contest_participants.contest_id) AS participant_count
-  FROM 
-    contest 
-  JOIN 
-    user ON contest.organizer_id = user.user_id 
-  JOIN 
-    contest_participants ON contest.contest_id = contest_participants.contest_id 
-  WHERE 
-    contest.approval_status = 1
-  GROUP BY 
-    contest.contest_id, 
-    user.name`;
+    contest.*, 
+    user.name AS organizer, 
+    COUNT(contest_participants.contest_id) AS participant_count
+    FROM 
+      contest 
+    JOIN 
+      user ON contest.organizer_id = user.user_id 
+    JOIN 
+      contest_participants ON contest.contest_id = contest_participants.contest_id 
+    WHERE 
+      contest.approval_status = 1
+    GROUP BY 
+      contest.contest_id, 
+      user.name`;
 
   connection.query(query, (err, results) => {
     if (err) {
