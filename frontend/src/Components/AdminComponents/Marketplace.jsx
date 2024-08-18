@@ -1,11 +1,11 @@
 import React from "react";
-import "../assets/styles/dashboard.css";
+import "../../assets/styles/dashboard.css";
 
-export default function Showcase() {
+export default function Marketplace() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Showcase
+            Marketplace
             </div>
         </div>
     );

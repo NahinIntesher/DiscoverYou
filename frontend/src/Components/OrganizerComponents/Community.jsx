@@ -1,11 +1,11 @@
 import React from "react";
-import "../assets/styles/dashboard.css";
+import "../../assets/styles/dashboard.css";
 
-export default function Course() {
+export default function Community() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Course
+            Community
             </div>
         </div>
     );

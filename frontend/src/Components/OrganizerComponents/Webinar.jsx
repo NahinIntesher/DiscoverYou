@@ -1,11 +1,11 @@
 import React from "react";
-import "../assets/styles/dashboard.css";
+import "../../assets/styles/dashboard.css";
 
-export default function Notification() {
+export default function Webinar() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Notification
+            Webinar
             </div>
         </div>
     );

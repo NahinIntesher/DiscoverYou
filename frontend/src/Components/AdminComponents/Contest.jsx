@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../assets/styles/contest.css";
+import "../../assets/styles/contest.css";
 import ContestBox from "./ContestBox";
 import axios from "axios";
 

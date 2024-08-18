@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/styles/dashboard.css";
+import "../../assets/styles/dashboard.css";
 
 export default function Profile({ user }) {
   return (

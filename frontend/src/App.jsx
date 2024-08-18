@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home/HomePage";
 import Login from "./Pages/Login/Login";
 import Registration from "./Pages/Registration/Registration";
 import "./App.css";
 import Sidebar from "./Components/Sidebar";
-import Dashboard from "./Components/Dashboard";
-import Contest from "./Components/Contest";
-import Showcase from "./Components/Showcase";
-import Community from "./Components/Community";
-import Course from "./Components/Course";
-import Webinar from "./Components/Webinar";
-import Marketplace from "./Components/Marketplace";
-import Hiring from "./Components/Hiring";
-import Notification from "./Components/Notification";
-import Profile from "./Components/Profile";
+import Dashboard from "./Components/StudentComponents/Dashboard";
+import Contest from "./Components/StudentComponents/Contest";
+import Showcase from "./Components/StudentComponents/Showcase";
+import Community from "./Components/StudentComponents/Community";
+import Course from "./Components/StudentComponents/Course";
+import Webinar from "./Components/StudentComponents/Webinar";
+import Marketplace from "./Components/StudentComponents/Marketplace";
+import Hiring from "./Components/StudentComponents/Hiring";
+import Notification from "./Components/StudentComponents/Notification";
+import Profile from "./Components/StudentComponents/Profile";
 
 function App() {
   const [authorized, setAuthorized] = useState(false);
