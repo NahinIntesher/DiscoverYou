@@ -8,9 +8,12 @@ export default function Contest() {
   const [ongoingContests, setOngoingContests] = useState([]);
   const [upcomingContests, setUpcomingContests] = useState([]);
 
+  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Programming Solving";
+  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Problem Solving";
+
   useEffect(() => {
     axios
-      .get("http://localhost:3000/studentContest")
+      .get("http://localhost:3000/contest/student")
       .then((res) => {
         console.log("Full API Response:", res); // Check response structure
         const contests = res.data?.contests || [];
@@ -57,6 +60,8 @@ export default function Contest() {
               startTime={new Date(contest.start_time).toLocaleTimeString()}
               endTime={new Date(contest.end_time).toLocaleTimeString()}
               participants={contest.participant_count}
+              calculatedTime={contest.calculated_time}
+              type="ongoing"
             />
           ))}
         </div>
@@ -71,10 +76,12 @@ export default function Contest() {
               details={contest.contest_details}
               category={contest.contest_category}
               organizer={contest.organizer}
-              date={new Date(contest.start_time).toLocaleDateString()}
-              startTime={new Date(contest.start_time).toLocaleTimeString()}
-              endTime={new Date(contest.end_time).toLocaleTimeString()}
+              date={contest.start_time}
+              startTime={contest.start_time}
+              endTime={contest.end_time}
               participants={contest.participant_count}
+              calculatedTime={contest.calculated_time}
+              type="upcoming"
             />
           ))}
         </div>
@@ -89,10 +96,12 @@ export default function Contest() {
               details={contest.contest_details}
               category={contest.contest_category}
               organizer={contest.organizer}
-              date={new Date(contest.start_time).toLocaleDateString()}
-              startTime={new Date(contest.start_time).toLocaleTimeString()}
-              endTime={new Date(contest.end_time).toLocaleTimeString()}
+              date={contest.start_time}
+              startTime={contest.start_time}
+              endTime={contest.end_time}
               participants={contest.participant_count}
+              calculatedTime={contest.calculated_time}
+              type="previous"
             />
           ))}
         </div>

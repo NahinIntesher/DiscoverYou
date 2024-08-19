@@ -198,9 +198,10 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 
-app.get("/studentContest", verifyToken, (req, res) => {
+app.get("/contest/student", verifyToken, (req, res) => {
   const query = `SELECT 
     contest.*, 
+    TIMESTAMPDIFF(SECOND, NOW(), contest.start_time) AS calculated_time, 
     user.name AS organizer, 
     COUNT(contest_participants.contest_id) AS participant_count
     FROM 
