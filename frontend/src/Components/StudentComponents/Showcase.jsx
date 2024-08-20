@@ -16,7 +16,6 @@ export default function Showcase({user}) {
           .get("http://localhost:3000/showcase/post")
           .then((res) => {
             const postsData = res.data?.posts || [];
-            console.log(postsData);
             setPosts(postsData);
           })
           .catch((error) => {
@@ -26,7 +25,7 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
-            <GivePostBox setUpdatePost={setUpdatePost}/>       
+            <GivePostBox setUpdatePost={setUpdatePost} user={user}/>       
             {
                 posts.map(function(post){
                     return (

@@ -72,7 +72,7 @@ function App() {
             />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/showcase" element={<Showcase />} />
+              <Route path="/showcase" element={<Showcase user={user}/>} />
               <Route path="/contest" element={<Contest />} />
               <Route path="/community" element={<Community />} />
               <Route path="/course" element={<Course />} />
@@ -82,7 +82,7 @@ function App() {
               <Route path="/notification" element={<Notification />} />
               <Route
                 path="/profile"
-                element={<Profile user={user} interests={interests} />}
+                element={<Profile user={user} />}
               />
             </Routes>
           </div>

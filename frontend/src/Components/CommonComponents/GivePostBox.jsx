@@ -11,17 +11,10 @@ export default function GivePostBox({user,setUpdatePost}) {
         media: []
     });
 
-    const categories = [
-        "Competitive Programming",
-        "Web/App Designing",
-        "Gaming",
-        "Photography",
-        "Debating",
-        "Singing",
-        "Writing",
-        "Art & Craft",
-        "Graphics Designing",
-    ];
+    console.log();
+
+    const categories = user.interests;
+    
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [postCategory, setPostCategory] = useState(categories[0]);
  
