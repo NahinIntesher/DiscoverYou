@@ -7,7 +7,7 @@ export default function Profile({ user }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Profile Section */}
         <div className="p-6 bg-[radial-gradient(#ffe79acc,#ffe79a99)] text-black rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold mb-2 cursor-pointer">Profile</h1>
+          <h1 className="text-2xl font-bold mb-2 cursor-pointer">Admin Profile</h1>
           <p className="text-lg">View and edit your profile</p>
           <div className="mt-4">
             <p className="text-lg">

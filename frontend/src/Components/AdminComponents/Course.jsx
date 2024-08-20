@@ -5,7 +5,7 @@ export default function Course() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Course
+            Admin Course
             </div>
         </div>
     );

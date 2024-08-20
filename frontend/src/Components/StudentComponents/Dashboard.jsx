@@ -5,7 +5,7 @@ export default function Dashboard() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-                Dashboard
+            Student Dashboard
             </div>
         </div>
     );

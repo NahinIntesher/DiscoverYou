@@ -5,7 +5,7 @@ export default function Hiring() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Hiring
+            Admin Hiring
             </div>
         </div>
     );

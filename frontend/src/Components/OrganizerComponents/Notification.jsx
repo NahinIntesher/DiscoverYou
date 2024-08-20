@@ -5,7 +5,7 @@ export default function Notification() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Notification
+            Organizer Notification
             </div>
         </div>
     );

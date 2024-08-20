@@ -45,7 +45,7 @@ export default function Contest() {
     <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
-          <div className="title">Contest</div>
+          <div className="title">Student Contest</div>
         </div>
       </div>
       <div className="content">

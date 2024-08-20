@@ -5,7 +5,7 @@ export default function Marketplace() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Marketplace
+            Admin Marketplace
             </div>
         </div>
     );

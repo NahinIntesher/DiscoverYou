@@ -4,7 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Registration from "./Pages/Registration/Registration";
 import "./App.css";
-import Student from "./Routes/Student";
+import StudentRoutes from "./Routes/StudentRoutes";
+import AdminRoutes from "./Routes/AdminRoutes";
+import OrganizerRoutes from "./Routes/OrganizerRoutes";
 
 function App() {
   const [authorized, setAuthorized] = useState(false);
@@ -52,29 +54,12 @@ function App() {
 
   if (loaded) {
     if (authorized) {
-      if(user.category == "student") {
-        return(
-          <Student
-            handleLogout={handleLogout}
-            user={user}
-          />
-        );
-      }
-      else if(user.category == "organizer") {
-        return(
-          <Student
-            handleLogout={handleLogout}
-            user={user}
-          />
-        );
-      }
-      else if(user.category == "admin") {
-        return(
-          <Student
-            handleLogout={handleLogout}
-            user={user}
-          />
-        );
+      if (user.category == "student") {
+        return <StudentRoutes handleLogout={handleLogout} user={user} />;
+      } else if (user.category == "organizer") {
+        return <OrganizerRoutes handleLogout={handleLogout} user={user} />;
+      } else if (user.category == "admin") {
+        return <AdminRoutes handleLogout={handleLogout} user={user} />;
       }
     } else {
       return (

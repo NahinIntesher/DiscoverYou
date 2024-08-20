@@ -5,7 +5,7 @@ export default function Community() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Community
+            Student Community
             </div>
         </div>
     );

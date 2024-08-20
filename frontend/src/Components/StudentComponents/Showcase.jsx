@@ -25,6 +25,7 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
+            <h1>Student Shocase</h1>
             <GivePostBox setUpdatePost={setUpdatePost} user={user}/>       
             {
                 posts.map(function(post){

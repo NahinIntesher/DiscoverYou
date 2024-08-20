@@ -5,7 +5,7 @@ export default function Showcase() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Showcase
+            Organizer Showcase
             </div>
         </div>
     );

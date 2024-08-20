@@ -5,7 +5,7 @@ export default function Webinar() {
     return (
         <div className="mainContent">
             <div className="optionContainer">
-            Webinar
+            Student Webinar
             </div>
         </div>
     );
