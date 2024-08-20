@@ -38,6 +38,30 @@
     white-space: nowrap;
     display: flex;
     position: relative;
+    scrollbar-width: none;
+}
+.scrollContainer:hover {
+    padding-bottom: 6px;  
+    scrollbar-width: auto;
+}
+.scrollContainer:hover::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+    height: 8px;
+}
+.scrollContainer:hover::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+   
+
+.scrollContainer:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2); 
+    border-radius: 8px;
+}
+
+.scrollContainer:hover::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4); 
 }
 
 

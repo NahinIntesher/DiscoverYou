@@ -4,10 +4,9 @@
     width: calc(100% - 330px);
     height: 100%;
     overflow: scroll;
-
+    scrollbar-width: none;
 }
 .mainContent .content {
-    max-width: 1300px;
     padding: 16px;
     margin: auto;
 }
@@ -20,6 +19,7 @@
     padding: 6px 16px; 
     font-weight: 600;  
 }
+
 ::-webkit-scrollbar {
     display: none;
 }

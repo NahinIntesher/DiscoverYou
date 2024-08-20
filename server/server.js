@@ -9,6 +9,9 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const verifyToken = require("./middleware");
+const multer = require('multer');
+const { error } = require("console");
+
 
 // Middleware
 app.use(cookies());
@@ -164,7 +167,6 @@ app.post("/loginPage", (req, res) => {
 
 app.get("/", verifyToken, (req, res) => {
   const id = req.userId;
-  console.log(id);
 
   // Query to get user data and interests using LEFT JOIN
   const query = `
@@ -229,6 +231,103 @@ app.get("/logout", (req, res) => {
   res.clearCookie("userRegistered");
   res.json({ status: "Success" });
 });
+
+
+
+
+
+
+// Showcase
+const storage = multer.memoryStorage();
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 10000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png|gif|pdf/;
+        const extname = filetypes.test(file.originalname.toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb('Error: Images or PDF files only!');
+        }
+    }
+});
+
+app.post("/showcase/post", upload.array("media"), verifyToken, (req, res) => {
+  const token = req.cookies.userRegistered;
+  if (token) {
+    const id = req.userId;
+    const { content, category } = req.body;
+    const files = req.files;
+
+    connection.query(
+      `INSERT INTO showcase_posts (post_content, poster_id, post_category)
+      VALUES (?, ?, ?)`,
+      [content, id, category],
+      (err, results) => {
+        if (err) throw err;
+        let postId = results.insertId;
+
+        if (files.length != 0) {
+          for (const file of files) {
+            const { mimetype, buffer } = file;
+            connection.query(
+              `INSERT INTO showcase_post_media (post_id, post_media, media_type)
+              VALUES (?, ?, ?)`,
+              [postId, buffer, mimetype],
+              (err, result) => {
+                if (err) throw err;
+              }
+            );
+          }
+        }
+
+        return res.json({ status: "Success" });
+      }
+    );
+  }
+  else {
+    res.json({ Error: "No user logged" }); 
+  }
+});
+
+//showcase_post_media.post_media,
+
+app.get("/showcase/post", verifyToken, (req, res) => {
+  const query = `SELECT 
+    showcase_posts.*, 
+    user.name AS poster_name,
+    TIMESTAMPDIFF(SECOND, showcase_posts.post_date_time, NOW()) AS post_time_ago,
+    showcase_post_media.media_type,
+    GROUP_CONCAT(
+        CONCAT(
+            '{"post_media": "', showcase_post_media.post_media, 
+            '", "media_type": "', showcase_post_media.media_type, '"}'
+        ) 
+        SEPARATOR ', '
+    ) AS media_array
+    FROM 
+      showcase_posts 
+    JOIN 
+      user ON showcase_posts.poster_id = user.user_id
+    LEFT JOIN 
+      showcase_post_media ON showcase_post_media.post_id = showcase_posts.post_id
+    GROUP BY
+      showcase_posts.post_id
+    ORDER BY
+      showcase_posts.post_date_time DESC;
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    return res.json({ posts: results });
+  });
+});
+
+
 
 // Start the server
 const port = 3000;

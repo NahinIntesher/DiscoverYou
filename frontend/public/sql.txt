@@ -1,0 +1,17 @@
+ALTER TABLE showcase_posts
+MODIFY COLUMN post_date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+ALTER TABLE `showcase_posts` ADD `post_category` VARCHAR(50) NOT NULL AFTER `poster_id`;
+
+DROP TABLE `discoveryou`.`showcase_posts_images`;
+
+
+CREATE TABLE showcase_post_media ( 
+    post_id INT, 
+    post_media LONGBLOB, 
+    media_type VARCHAR(10),
+    FOREIGN KEY (post_id) REFERENCES showcase_posts(post_id) 
+);
+
+UPDATE user_interest SET interest_name = "Competitive Programming" WHERE interest_name = "Coding Problem Solving";

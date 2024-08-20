@@ -267,7 +267,7 @@ export default function AdminRegistrationPage() {
           </label>
           <div className="flex flex-wrap gap-4 mt-2">
             {[
-              "Coding Problem Solving",
+              "Competitive Programming",
               "Web/App Designing",
               "Gaming",
               "Photography",

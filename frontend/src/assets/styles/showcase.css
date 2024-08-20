@@ -1,0 +1,211 @@
+.givePostBox {
+    margin: 20px auto;
+    max-width: 1000px;
+    text-align: center;
+    padding: 10px;
+}
+.givePostBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 4px;
+    border-radius: 80px;
+    margin: 8px;
+}
+.givePostBox .profilePicture img {
+    border-radius: 60px;
+    border: 4px solid #ffffff;
+    display: block;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+.givePostBox .textBox {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 240px);
+    margin: 8px;
+    background-color: #ffffff;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    border-radius: 16px;
+}
+.givePostBox .textBox textarea {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: transparent;
+    padding: 18px 24px;
+    width: calc(100% - 120px);
+    resize: none;
+    outline: 0;
+    padding-bottom: 0;
+}
+.givePostBox .addMediaContainer {
+    background-color: rgba(255, 169, 82, 0.4);
+    display: flex;
+    border-radius: 40px;
+    margin: 12px;
+}
+.givePostBox .addMedia {
+    flex: 1;
+    color: #ef5a5acc;
+    display: inline-block;
+    padding: 6px;
+    position: relative;
+    border-left: 2px #ef5d5d66 solid;
+}
+.givePostBox .changeCategory {
+    flex: 2;
+    color: #ef5a5acc;
+    display: inline-block;
+    padding: 6px;
+    position: relative;
+    text-align: left;
+}
+.givePostBox .changeCategory .dropdownIcon {
+    position: absolute;
+    right: 8px;
+    top: 12px;
+}
+.givePostBox .changeCategory .categoryContainer {
+    background-color: #ffffff;
+    position: absolute;
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+}
+.givePostBox .changeCategory .categoryContainer .category {
+    color: rgba(0,0,0,0.6);
+    padding: 10px 14px;
+    font-size: 14px;
+}
+.givePostBox .changeCategory .categoryContainer .category:hover {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+.givePostBox .addMedia .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+.givePostBox .addMedia .text {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 4px;
+}
+
+.givePostBox .changeCategory .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px 6px;
+}
+.givePostBox .changeCategory .text {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 4px;
+}
+.givePostBox .addMedia input[type="file"] {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+.givePostBox .mediaContainer {
+    text-align: left;
+    padding: 0 12px;
+}
+.givePostBox .mediaContainer .media {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin: 4px;
+    background-color: rgba(0,0,0,0.1);
+}
+.givePostBox .mediaContainer .media img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+.givePostBox .mediaContainer .media .remove {
+    position: absolute;
+    right: 6px; 
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgba(0,0,0,0.4);
+    color: #ffffff;
+}
+.givePostBox .postButton {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: 
+        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    color: #ffffff;
+    padding: 10px 28px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 8px 12px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+.postBox {
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 10px auto;
+    padding: 12px 16px;
+    max-width: 900px;
+}
+
+.postBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 6px;
+}
+.postBox .profilePicture img {
+    border-radius: 50px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.postBox .profileDetail {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}
+
+.postBox .profileDetail .name {
+    font-weight: 600;
+}
+.postBox .profileDetail .detail {
+    font-size: 14px;
+}
+.postBox .postContent {
+    padding: 10px;
+}
+
+@media screen and (max-width: 820px) {
+   
+}

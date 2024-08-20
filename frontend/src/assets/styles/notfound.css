@@ -1,0 +1,15 @@
+.notFound {
+    margin: 12px 10px;
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 16px;
+}
+.notFound .icon {
+    padding: 10px;
+}
+
+.notFound .text {
+    padding: 10px;
+    font-weight: 500;
+}
