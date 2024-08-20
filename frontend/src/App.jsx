@@ -4,17 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Registration from "./Pages/Registration/Registration";
 import "./App.css";
-import Sidebar from "./Components/Sidebar";
-import Dashboard from "./Components/StudentComponents/Dashboard";
-import Contest from "./Components/StudentComponents/Contest";
-import Showcase from "./Components/StudentComponents/Showcase";
-import Community from "./Components/StudentComponents/Community";
-import Course from "./Components/StudentComponents/Course";
-import Webinar from "./Components/StudentComponents/Webinar";
-import Marketplace from "./Components/StudentComponents/Marketplace";
-import Hiring from "./Components/StudentComponents/Hiring";
-import Notification from "./Components/StudentComponents/Notification";
-import Profile from "./Components/StudentComponents/Profile";
+import Student from "./Routes/Student";
 
 function App() {
   const [authorized, setAuthorized] = useState(false);
@@ -62,32 +52,30 @@ function App() {
 
   if (loaded) {
     if (authorized) {
-      return (
-        <BrowserRouter>
-          <div className="container">
-            <Sidebar
-              logoutAction={handleLogout}
-              user={user}
-              interests={interests}
-            />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/showcase" element={<Showcase user={user}/>} />
-              <Route path="/contest" element={<Contest />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/course" element={<Course />} />
-              <Route path="/webinar" element={<Webinar />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/hiring" element={<Hiring />} />
-              <Route path="/notification" element={<Notification />} />
-              <Route
-                path="/profile"
-                element={<Profile user={user} />}
-              />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      );
+      if(user.category == "student") {
+        return(
+          <Student
+            handleLogout={handleLogout}
+            user={user}
+          />
+        );
+      }
+      else if(user.category == "organizer") {
+        return(
+          <Student
+            handleLogout={handleLogout}
+            user={user}
+          />
+        );
+      }
+      else if(user.category == "admin") {
+        return(
+          <Student
+            handleLogout={handleLogout}
+            user={user}
+          />
+        );
+      }
     } else {
       return (
         <BrowserRouter>

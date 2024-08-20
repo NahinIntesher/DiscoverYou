@@ -44,6 +44,7 @@
     display: flex;
     border-radius: 40px;
     margin: 12px;
+    cursor: default;
 }
 .givePostBox .addMedia {
     flex: 1;
@@ -52,6 +53,7 @@
     padding: 6px;
     position: relative;
     border-left: 2px #ef5d5d66 solid;
+    cursor: pointer;
 }
 .givePostBox .changeCategory {
     flex: 2;
@@ -114,6 +116,7 @@
     top: 0;
     left: 0;
     opacity: 0;
+    cursor: pointer;
 }
 .givePostBox .mediaContainer {
     text-align: left;
@@ -206,6 +209,93 @@
     padding: 10px;
 }
 
-@media screen and (max-width: 820px) {
-   
+
+@media (max-width: 480px) {
+    .showcase {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
+    .givePostBox .profilePicture, .postBox .profilePicture {
+        margin-bottom: 10px;
+    }
+    
+    .givePostBox .textBox, .postBox .postContent {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .givePostBox .addMedia, .givePostBox .changeCategory {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .givePostBox .textBox textarea {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .givePostBox .postButton {
+        /* width: 80%; */
+        margin-top: 10px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .showcase {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
+    .givePostBox, .postBox {
+        max-width: 90%;
+        padding: 12px;
+    }
+
+    .givePostBox .textBox, .postBox .postContent {
+        width: 100%;
+    }
+
+    .givePostBox .profilePicture img, .postBox .profilePicture img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .givePostBox .textBox textarea {
+        padding: 14px 20px;
+        width: calc(100% - 40px);
+    }
+
+    .givePostBox .addMedia, .givePostBox .changeCategory {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .givePostBox .addMedia .text, .givePostBox .changeCategory .text {
+        font-size: 12px;
+    }
+
+    .givePostBox .mediaContainer .media {
+        width: 60px;
+        height: 60px;
+    }
+
+    .givePostBox .postButton {
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .showcase {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
 }
