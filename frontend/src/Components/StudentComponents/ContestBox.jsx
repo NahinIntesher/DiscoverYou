@@ -103,7 +103,7 @@ export default function ContestBox({
             </div>
           </div>
           {
-            type == "ongoing" || type == "upcoming" && <ContestTimeRemaining calculatedTime={calculatedTime}/>
+            (type == "ongoing" || type == "upcoming") && <ContestTimeRemaining type={type} calculatedTime={calculatedTime}/>
           }
         </div>
       </div>

@@ -152,7 +152,7 @@ app.post("/loginPage", (req, res) => {
               };
 
               res.cookie("userRegistered", token, cookieOptions);
-              return res.json({ status: "Success", user: results[0] });
+              return res.redirect("/");
             } else {
               return res.json({ Error: "Password incorrect" });
             }
@@ -203,7 +203,10 @@ app.get("/", verifyToken, (req, res) => {
 app.get("/contest/student", verifyToken, (req, res) => {
   const query = `SELECT 
     contest.*, 
-    TIMESTAMPDIFF(SECOND, NOW(), contest.start_time) AS calculated_time, 
+    CASE 
+        WHEN NOW() < contest.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), contest.start_time)
+        ELSE TIMESTAMPDIFF(SECOND,NOW(), contest.end_time)    
+    END AS calculated_time,
     user.name AS organizer, 
     COUNT(contest_participants.contest_id) AS participant_count
     FROM 
@@ -242,17 +245,16 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 10000000 }, // 10 MB
+    limits: { fileSize: 50000000 }, // 10 MB
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|gif|pdf/;
-        const extname = filetypes.test(file.originalname.toLowerCase());
-        const mimetype = filetypes.test(file.mimetype);
+      const filetypes = /image\/|audio\/|video\//;  // Accept all image, audio, and video types
+      const mimetype = filetypes.test(file.mimetype);
 
-        if (mimetype && extname) {
-            return cb(null, true);
-        } else {
-            cb('Error: Images or PDF files only!');
-        }
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb('Error: Images or PDF files only!');
+      }
     }
 });
 
@@ -279,7 +281,10 @@ app.post("/showcase/post", upload.array("media"), verifyToken, (req, res) => {
               VALUES (?, ?, ?)`,
               [postId, buffer, mimetype],
               (err, result) => {
-                if (err) throw err;
+                if (err){ 
+                  console.error('Database insertion error:', err);
+                  throw err;
+                }
               }
             );
           }
@@ -297,36 +302,121 @@ app.post("/showcase/post", upload.array("media"), verifyToken, (req, res) => {
 //showcase_post_media.post_media,
 
 app.get("/showcase/post", verifyToken, (req, res) => {
-  const query = `SELECT 
-    showcase_posts.*, 
-    user.name AS poster_name,
-    TIMESTAMPDIFF(SECOND, showcase_posts.post_date_time, NOW()) AS post_time_ago,
-    showcase_post_media.media_type,
-    GROUP_CONCAT(
-        CONCAT(
-            '{"post_media": "', showcase_post_media.post_media, 
-            '", "media_type": "', showcase_post_media.media_type, '"}'
-        ) 
-        SEPARATOR ', '
-    ) AS media_array
-    FROM 
-      showcase_posts 
-    JOIN 
-      user ON showcase_posts.poster_id = user.user_id
-    LEFT JOIN 
-      showcase_post_media ON showcase_post_media.post_id = showcase_posts.post_id
-    GROUP BY
-      showcase_posts.post_id
-    ORDER BY
-      showcase_posts.post_date_time DESC;
-  `;
+  const token = req.cookies.userRegistered;
+  if (token) {
+    const userId = req.userId;
 
-  connection.query(query, (err, results) => {
+    const query = `SELECT 
+      showcase_posts.*, 
+      user.name AS poster_name,
+      TIMESTAMPDIFF(SECOND, showcase_posts.post_date_time, NOW()) AS post_time_ago,
+      showcase_post_media.media_type,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM showcase_post_reactions
+          WHERE showcase_post_reactions.post_id = showcase_posts.post_id 
+          AND showcase_post_reactions.reactor_id = ${userId}
+        ) THEN 1
+        ELSE 0
+      END AS is_reacted,
+      COUNT(DISTINCT p_r.reactor_id) AS reaction_count,
+      COUNT(DISTINCT p_c.comment_id) AS comment_count,
+      GROUP_CONCAT(
+          CONCAT(
+              '{"media_url": "http://localhost:3000/showcase/media/cdn/', showcase_post_media.media_id, 
+              '", "media_type": "', showcase_post_media.media_type, '"}'
+          ) 
+          SEPARATOR ', '
+      ) AS media_array
+      FROM 
+        showcase_posts 
+      JOIN 
+        user ON showcase_posts.poster_id = user.user_id
+      LEFT JOIN 
+        showcase_post_media ON showcase_post_media.post_id = showcase_posts.post_id
+      LEFT JOIN 
+        showcase_post_reactions p_r ON p_r.post_id = showcase_posts.post_id
+      LEFT JOIN 
+        showcase_post_comments p_c ON p_c.post_id = showcase_posts.post_id
+      GROUP BY
+        showcase_posts.post_id
+      ORDER BY
+        showcase_posts.post_date_time DESC;
+    `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      return res.json({ posts: results });
+    });
+  }
+});
+
+
+app.get('/showcase/media/cdn/:id', (req, res) => {
+  const mediaId = req.params.id;
+
+  connection.query(`
+    SELECT media_type, post_media 
+    FROM showcase_post_media 
+    WHERE media_id = ?
+  `, 
+  [mediaId], 
+  (err, results) => {
     if (err) throw err;
-    return res.json({ posts: results });
+
+    if (results.length === 0) {
+      return res.status(404).send('Media not found.');
+    }
+
+    const media = results[0];
+    const mediaType = media.media_type;
+    const mediaData = media.post_media;
+
+    res.setHeader('Content-Type', mediaType);
+
+    res.send(mediaData);
   });
 });
 
+app.post("/showcase/react", verifyToken, function(req,res){ 
+  const token = req.cookies.userRegistered;
+  if (token) {
+    const userId = req.userId;
+    let { postId } = req.body;
+
+    console.log(postId);
+    console.log(userId);
+
+    connection.query(`
+      SELECT * 
+      FROM showcase_post_reactions 
+      WHERE post_id = ? AND reactor_id = ?`,
+    [postId, userId], 
+    function(error, result){
+      if(error) throw error;
+      if(result.length <= 0) {
+        connection.query(
+          `INSERT INTO showcase_post_reactions(post_id, reactor_id) 
+          VALUES(?, ?)`,
+        [postId, userId], 
+        function(error, result){
+            if(error) throw error;
+            return res.json({ status: "Success", message: "Liked" }); 
+        }); 
+      } else {
+          connection.query(
+            `DELETE FROM showcase_post_reactions 
+            WHERE post_id = ? AND reactor_id = ?`, 
+          [postId, userId],
+          function(error, result){
+              if(error) throw error;
+              return res.json({ status: "Success", message: "Unliked" }); 
+          }); 
+      }
+    });
+  }
+});
 
 
 // Start the server

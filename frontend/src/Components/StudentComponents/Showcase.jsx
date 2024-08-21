@@ -25,17 +25,21 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
-            <h1>Student Shocase</h1>
             <GivePostBox setUpdatePost={setUpdatePost} user={user}/>       
             {
                 posts.map(function(post){
                     return (
                         <PostBox 
                             key={post.post_id}
+                            postId={post.post_id}
                             posterName={post.poster_name} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}
-                            //postMediaArray={JSON.parse("["+post.media_array+"]")}
+                            postMediaArray={JSON.parse("["+post.media_array+"]")}
+                            isPostReacted={post.is_reacted}
+                            postReactionCount={post.reaction_count}
+                            postCommentCount={post.comment_count}
+                            postTime={post.post_date_time}
                         />
                     );
                 })

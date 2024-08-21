@@ -45,7 +45,7 @@ export default function Contest() {
     <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
-          <div className="title">Student Contest</div>
+          <div className="title">Contest</div>
         </div>
       </div>
       <div className="content">
@@ -61,8 +61,9 @@ export default function Contest() {
                 details={contest.contest_details}
                 category={contest.contest_category}
                 organizer={contest.organizer}
-                startTime={new Date(contest.start_time).toLocaleTimeString()}
-                endTime={new Date(contest.end_time).toLocaleTimeString()}
+                date={contest.start_time}
+                startTime={contest.start_time}
+                endTime={contest.end_time}
                 participants={contest.participant_count}
                 calculatedTime={contest.calculated_time}
                 type="ongoing"

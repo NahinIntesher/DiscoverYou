@@ -8,13 +8,13 @@
     display: inline-block;
     vertical-align: middle;
     background-image: linear-gradient(#ef5a5a, #ffa952);
-    padding: 4px;
+    padding: 5px;
     border-radius: 80px;
     margin: 8px;
 }
 .givePostBox .profilePicture img {
     border-radius: 60px;
-    border: 4px solid #ffffff;
+    border: 5px solid #ffffff;
     display: block;
     width: 80px;
     height: 80px;
@@ -29,15 +29,20 @@
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     border-radius: 16px;
 }
+.givePostBox .textBox .textareaContainer {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 120px);
+}
 .givePostBox .textBox textarea {
     display: inline-block;
     vertical-align: middle;
     background-color: transparent;
     padding: 18px 24px;
-    width: calc(100% - 120px);
+    padding-bottom: 10px;
     resize: none;
     outline: 0;
-    padding-bottom: 0;
+    width: 100%;
 }
 .givePostBox .addMediaContainer {
     background-color: rgba(255, 169, 82, 0.4);
@@ -45,12 +50,13 @@
     border-radius: 40px;
     margin: 12px;
     cursor: default;
+    margin-top: 0;
 }
 .givePostBox .addMedia {
     flex: 1;
     color: #ef5a5acc;
     display: inline-block;
-    padding: 6px;
+    padding: 8px;
     position: relative;
     border-left: 2px #ef5d5d66 solid;
     cursor: pointer;
@@ -59,7 +65,7 @@
     flex: 2;
     color: #ef5a5acc;
     display: inline-block;
-    padding: 6px;
+    padding: 8px;
     position: relative;
     text-align: left;
 }
@@ -120,7 +126,8 @@
 }
 .givePostBox .mediaContainer {
     text-align: left;
-    padding: 0 12px;
+    padding: 10px 12px;
+    padding-top: 0;
 }
 .givePostBox .mediaContainer .media {
     display: inline-block;
@@ -132,6 +139,19 @@
     overflow: hidden;
     margin: 4px;
     background-color: rgba(0,0,0,0.1);
+    text-align: center;
+}
+.givePostBox .mediaContainer .media .audio {
+    display: block;
+    margin-top: 8px;
+}
+.givePostBox .mediaContainer .duration {
+    display: inline-block;
+    font-size: 12px;
+    background-color: rgba(0,0,0,0.4);
+    color: #ffffff;
+    padding: 1px 10px;
+    border-radius: 20px;
 }
 .givePostBox .mediaContainer .media img {
     width: 80px;
@@ -172,17 +192,20 @@
     border-radius: 18px;
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     margin: 10px auto;
-    padding: 12px 16px;
     max-width: 900px;
 }
 
+.postBox .profile {
+    padding: 14px;
+    padding-bottom: 0;
+}
 .postBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
     background-image: linear-gradient(#ef5a5a, #ffa952);
     padding: 3px;
     border-radius: 80px;
-    margin: 6px;
+    margin: 4px 6px;
 }
 .postBox .profilePicture img {
     border-radius: 50px;
@@ -206,7 +229,85 @@
     font-size: 14px;
 }
 .postBox .postContent {
-    padding: 10px;
+    padding: 12px 20px;
+    color: rgba(0,0,0,0.6);
+}
+
+.postBox .mediaContainer {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 6px;
+    text-align: center;
+    text-wrap: nowrap;
+    overflow-y: none;
+    overflow-x: scroll;
+    margin: 12px;
+    margin-top: 4px;
+}
+.postBox .mediaContainer img {
+    display: inline-block;
+    max-height: 500px;
+    border-radius: 8px;
+    margin: 6px;
+}
+.postBox .postActionBoxContainer {
+    display: flex;
+    border-radius: 0 0 18px 18px;
+    padding: 8px;
+    padding-top: 0;
+}
+.postBox .postActionBox {
+    flex: 1;
+    text-align: center;
+    padding: 6px;
+    background-color: rgba(0,0,0,0.09);
+    margin: 4px;
+    border-radius: 50px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.8);
+}
+.postBox .postActionBox:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+.postBox .postActionBox .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}
+.postBox .postActionBox .text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+    font-size: 15px;
+}
+.postBox .active {
+    background-color: rgba(255, 169, 82, 0.4);
+    color: #ef5a5a;
+}
+.postBox .active .text {
+    font-weight: 600;
+}
+.postBox .active:hover {
+    background-color: rgba(255, 169, 82, 0.5);
+}
+.postBox .postDetails {
+    font-size: 14px;
+    margin: 2px 16px;
+}
+.postBox .postDetails .detail {
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}
+.postBox .postDetails .divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+    background-color: rgba(0,0,0,0.4);
 }
 
 

@@ -1,2 +1,4 @@
+ALTER TABLE `showcase_post_reactions` CHANGE `ractor_id` `reactor_id` INT(11) NOT NULL;
+
 ALTER TABLE showcase_post_media
 ADD COLUMN media_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;

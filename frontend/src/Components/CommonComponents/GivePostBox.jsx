@@ -10,13 +10,24 @@ export default function GivePostBox({user,setUpdatePost}) {
         content: "",
         media: []
     });
-
-    console.log();
-
     const categories = user.interests;
     
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [postCategory, setPostCategory] = useState(categories[0]);
+
+    const [durations, setDurations] = useState({});
+    
+    function formatedDuration(duration) {
+        return `${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`;
+    }
+
+    const handleLoadedMetadata = (file, index, event) => {
+        const duration = event.target.duration;
+        setDurations((prevDurations) => ({
+            ...prevDurations,
+            [index]: duration,
+        }));
+    };
  
     function removeMedia(index) {
         setFormData((prevFormData) => {
@@ -90,38 +101,50 @@ export default function GivePostBox({user,setUpdatePost}) {
                     <img src={dp}/>
                 </div>
                 <div className="textBox">
-                    <textarea
-                        id="content"
-                        name="content"
-                        placeholder="Write something..."
-                        onChange={handleChange}
-                    />
-                    <button className="postButton" type="submit">Post</button>
-                    <div className="mediaContainer">
-                        {
-                            formData.media.map(function(file, index) {
-                                if(file.type.split('/')[0] == "image") {
-                                    return (
-                                        <div className="media" key={index}>
-                                            <img
-                                                key={index}
-                                                src={URL.createObjectURL(file)}
-                                                alt={`preview ${index}`}
-                                            />
-                                            <div className="remove" onClick={function(){removeMedia(index)}}>
-                                                <MaterialSymbol className="icon" size={20} icon="close"/>
+                    <div className="textareaContainer">
+                        <textarea
+                            id="content"
+                            name="content"
+                            placeholder="Write something..."
+                            onChange={handleChange}
+                        />                        
+                        <div className="mediaContainer">
+                            {
+                                formData.media.map(function(file, index) {
+                                    if(file.type.split('/')[0] == "image") {
+                                        return (
+                                            <div className="media" key={index}>
+                                                <img
+                                                    key={index}
+                                                    src={URL.createObjectURL(file)}
+                                                    alt={`preview ${index}`}
+                                                />
+                                                <div className="remove" onClick={function(){removeMedia(index)}}>
+                                                    <MaterialSymbol className="icon" size={20} icon="close"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                }
-                                else {
-                                    return(
-                                        <div></div>
-                                    );
-                                }
-                            })
-                        }
+                                        );
+                                    }
+                                    if(file.type.split('/')[0] == "audio") {
+                                        return (
+                                            <div className="media" key={index}>
+                                                <audio
+                                                    src={URL.createObjectURL(file)}
+                                                    onLoadedMetadata={(event) => handleLoadedMetadata(file, index, event)}
+                                                />
+                                                <MaterialSymbol className="audio" size={42} icon="mic"/>
+                                                <div className="duration">{durations[index] ? formatedDuration(durations[index]) : '00.00'}</div>
+                                                <div className="remove" onClick={function(){removeMedia(index)}}>
+                                                    <MaterialSymbol className="icon" size={20} icon="close"/>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                })
+                            }
+                        </div>
                     </div>
+                    <button className="postButton" type="submit">Post</button>
                     <div className="addMediaContainer">
                         <div className="changeCategory" onClick={function(){setIsCategoryOpen((prevStatus) => prevStatus ? false : true)}}>
                             {postCategory === "Competitive Programming" && (
@@ -166,17 +189,17 @@ export default function GivePostBox({user,setUpdatePost}) {
                         <div className="addMedia">
                             <MaterialSymbol className="icon" size={22} icon="photo"/>
                             <div className="text">Add Image</div>
-                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} />
+                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} accept="image/*"/>
                         </div>
                         <div className="addMedia">
                             <MaterialSymbol className="icon" size={22} icon="movie"/>
                             <div className="text">Add Video</div>
-                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} />
+                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} accept="video/*"/>
                         </div>
                         <div className="addMedia">
                             <MaterialSymbol className="icon" size={22} icon="mic"/>
                             <div className="text">Add Audio</div>
-                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} />
+                            <input type="file" id="media" name="media" multiple onChange={handleFileChange} accept="audio/*"/>
                         </div>
                     </div>
                 </div>
