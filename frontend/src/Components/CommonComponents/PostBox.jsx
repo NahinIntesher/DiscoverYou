@@ -68,7 +68,28 @@ export default function PostBox({postId, posterName, postContent, postTime, post
                 <div className="mediaContainer">
                     {
                     postMediaArray.map(function(postMedia, index){
-                        return <img key={index} src={postMedia.media_url}/>
+                        if(postMedia.media_type.split('/')[0] == "image") {
+                            return <img key={index} src={postMedia.media_url}/>
+                        } 
+                        else if(postMedia.media_type.split('/')[0] == "audio") {
+                            return (
+                                <div key={index} className="audioContainer">
+                                    <MaterialSymbol className="icon" size={120} icon="music_cast"/>
+                                    <audio controls>
+                                        <source src={postMedia.media_url} type={postMedia.media_type} />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            )
+                        } 
+                        else if(postMedia.media_type.split('/')[0] == "video") {
+                            return (
+                                <video controls key={index}>
+                                    <source src={postMedia.media_url} type={postMedia.media_type} />
+                                    Your browser does not support the video element.
+                                </video>
+                            )
+                        }
                     })
                     }
                 </div>

@@ -125,7 +125,7 @@ export default function GivePostBox({user,setUpdatePost}) {
                                             </div>
                                         );
                                     }
-                                    if(file.type.split('/')[0] == "audio") {
+                                    else if(file.type.split('/')[0] == "audio") {
                                         return (
                                             <div className="media" key={index}>
                                                 <audio
@@ -133,6 +133,21 @@ export default function GivePostBox({user,setUpdatePost}) {
                                                     onLoadedMetadata={(event) => handleLoadedMetadata(file, index, event)}
                                                 />
                                                 <MaterialSymbol className="audio" size={42} icon="mic"/>
+                                                <div className="duration">{durations[index] ? formatedDuration(durations[index]) : '00.00'}</div>
+                                                <div className="remove" onClick={function(){removeMedia(index)}}>
+                                                    <MaterialSymbol className="icon" size={20} icon="close"/>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                    else if(file.type.split('/')[0] == "video") {
+                                        return (
+                                            <div className="media" key={index}>
+                                                <video
+                                                    src={URL.createObjectURL(file)}
+                                                    onLoadedMetadata={(event) => handleLoadedMetadata(file, index, event)}
+                                                />
+                                                <MaterialSymbol className="audio" size={42} icon="movie"/>
                                                 <div className="duration">{durations[index] ? formatedDuration(durations[index]) : '00.00'}</div>
                                                 <div className="remove" onClick={function(){removeMedia(index)}}>
                                                     <MaterialSymbol className="icon" size={20} icon="close"/>

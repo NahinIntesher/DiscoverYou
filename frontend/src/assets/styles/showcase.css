@@ -145,6 +145,12 @@
     display: block;
     margin-top: 8px;
 }
+.givePostBox .mediaContainer .media audio {
+    display: none;
+}
+.givePostBox .mediaContainer .media video {
+    display: none;
+}
 .givePostBox .mediaContainer .duration {
     display: inline-block;
     font-size: 12px;
@@ -239,16 +245,45 @@
     padding: 6px;
     text-align: center;
     text-wrap: nowrap;
-    overflow-y: none;
+    overflow-y: hidden;
     overflow-x: scroll;
     margin: 12px;
     margin-top: 4px;
+    /*scrollbar-width: none;*/
 }
 .postBox .mediaContainer img {
     display: inline-block;
+    vertical-align: middle;
     max-height: 500px;
     border-radius: 8px;
     margin: 6px;
+}
+
+.postBox .mediaContainer video {
+    display: inline-block;
+    vertical-align: middle;
+    max-height: 500px;
+    border-radius: 8px;
+    margin: 6px;
+}
+
+.postBox .mediaContainer .audioContainer {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70%;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.1);
+    padding: 6px;
+    margin: 6px;
+}
+.postBox .mediaContainer .audioContainer .icon {
+    color: rgba(0,0,0,0.5);
+    margin: 12px;
+}
+.postBox .mediaContainer audio {
+    width: calc(100% - 12px);
+    margin: 6px;
+    border-radius: 50px;
 }
 .postBox .postActionBoxContainer {
     display: flex;
