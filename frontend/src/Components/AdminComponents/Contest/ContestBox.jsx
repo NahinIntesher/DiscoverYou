@@ -1,8 +1,8 @@
 import React from "react";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../assets/images/desert4.jpg";
-import ContestTimeRemaining from "../CommonComponents/contestTimeRemaining";
+import dp from "../../../assets/images/desert4.jpg";
+import ContestTimeRemaining from "../../CommonComponents/contestTimeRemaining";
 
 export default function ContestBox({
   name,
@@ -14,16 +14,19 @@ export default function ContestBox({
   endTime,
   participants,
   calculatedTime,
-  type
+  type,
 }) {
-
-  function getPMTime(datetime){
+  function getPMTime(datetime) {
     let time = new Date(datetime);
-    return time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    return time.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
   }
-  function getDate(datetime){
+  function getDate(datetime) {
     let time = new Date(datetime);
-    return time.toLocaleString('en-US', { dateStyle: 'medium'});
+    return time.toLocaleString("en-US", { dateStyle: "medium" });
   }
 
   return (
@@ -57,27 +60,33 @@ export default function ContestBox({
               <MaterialSymbol className="icon" size={24} icon="communication" />
             )}
             {category === "Gaming" && (
-              <MaterialSymbol className="icon" size={24} icon="sports_esports" />
+              <MaterialSymbol
+                className="icon"
+                size={24}
+                icon="sports_esports"
+              />
             )}
             <div className="text">{category}</div>
           </div>
         </div>
         <div className="joinButtonContainer">
-          { type == "ongoing" ? 
-          <div className="joinButton">Enter</div>
-          : type == "upcoming" ?
-          <div className="joinButton">Register</div>
-          :
-          <div className="joinButton">Details</div>
-          } 
-          <div className="joinDetails">Registered: <b>{participants}</b></div>
+          {type == "ongoing" ? (
+            <div className="joinButton">Enter</div>
+          ) : type == "upcoming" ? (
+            <div className="joinButton">Register</div>
+          ) : (
+            <div className="joinButton">Details</div>
+          )}
+          <div className="joinDetails">
+            Registered: <b>{participants}</b>
+          </div>
         </div>
       </div>
-      <div className="detailsContainer">  
+      <div className="detailsContainer">
         <div className="detailsContent">
           <div className="organizer">
             <div className="organizerPicture">
-              <img src={dp}/>
+              <img src={dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Organized By</div>
@@ -86,7 +95,11 @@ export default function ContestBox({
           </div>
           <div className="details">
             <div className="detail">
-              <MaterialSymbol className="icon" size={28} icon="calendar_month" />
+              <MaterialSymbol
+                className="icon"
+                size={28}
+                icon="calendar_month"
+              />
               <div className="text">
                 <div className="detailTitle">Date</div>
                 <div className="detailInfo">{getDate(date)}</div>
@@ -102,9 +115,9 @@ export default function ContestBox({
               </div>
             </div>
           </div>
-          {
-            (type == "ongoing" || type == "upcoming") && <ContestTimeRemaining type={type} calculatedTime={calculatedTime}/>
-          }
+          {(type == "ongoing" || type == "upcoming") && (
+            <ContestTimeRemaining type={type} calculatedTime={calculatedTime} />
+          )}
         </div>
       </div>
     </div>

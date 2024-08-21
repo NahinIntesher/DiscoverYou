@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "../../assets/styles/contest.css";
+import "../../../assets/styles/contest.css";
 import ContestBox from "./ContestBox";
 import axios from "axios";
-import NotFound from "../CommonComponents/NotFound";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function Contest() {
   const [previousContests, setPreviousContests] = useState([]);
@@ -50,11 +50,9 @@ export default function Contest() {
       </div>
       <div className="content">
         <div className="contentSemiTitle">Ongoing Contests</div>
-          {
-          ongoingContests.length ?
+        {ongoingContests.length ? (
           <div className="scrollContainer">
-            {
-            ongoingContests.map((contest) => (
+            {ongoingContests.map((contest) => (
               <ContestBox
                 key={contest.contest_id}
                 name={contest.contest_name}
@@ -68,12 +66,12 @@ export default function Contest() {
                 calculatedTime={contest.calculated_time}
                 type="ongoing"
               />
-            ))
-            }
+            ))}
           </div>
-          : <NotFound message="There are currently no Ongoing Contest!"/>
-        }
-      
+        ) : (
+          <NotFound message="There are currently no Ongoing Contest!" />
+        )}
+
         <div className="miniBreak"></div>
         <div className="contentSemiTitle">Upcoming Contests</div>
         <div className="scrollContainer">

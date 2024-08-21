@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import "../../assets/styles/contest.css";
+import "../../../assets/styles/contest.css";
 import ContestBox from "./ContestBox";
 import axios from "axios";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function Contest() {
   const [previousContests, setPreviousContests] = useState([]);
   const [ongoingContests, setOngoingContests] = useState([]);
   const [upcomingContests, setUpcomingContests] = useState([]);
+
+  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Programming Solving";
+  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Problem Solving";
 
   useEffect(() => {
     axios
@@ -41,25 +45,32 @@ export default function Contest() {
     <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
-          <div className="title">Organizer Contest</div>
+          <div className="title">Contest</div>
         </div>
       </div>
       <div className="content">
         <div className="contentSemiTitle">Ongoing Contests</div>
-        <div className="scrollContainer">
-          {ongoingContests.map((contest) => (
-            <ContestBox
-              key={contest.contest_id}
-              name={contest.contest_name}
-              details={contest.contest_details}
-              category={contest.contest_category}
-              organizer={contest.organizer}
-              startTime={new Date(contest.start_time).toLocaleTimeString()}
-              endTime={new Date(contest.end_time).toLocaleTimeString()}
-              participants={contest.participant_count}
-            />
-          ))}
-        </div>
+        {ongoingContests.length ? (
+          <div className="scrollContainer">
+            {ongoingContests.map((contest) => (
+              <ContestBox
+                key={contest.contest_id}
+                name={contest.contest_name}
+                details={contest.contest_details}
+                category={contest.contest_category}
+                organizer={contest.organizer}
+                date={contest.start_time}
+                startTime={contest.start_time}
+                endTime={contest.end_time}
+                participants={contest.participant_count}
+                calculatedTime={contest.calculated_time}
+                type="ongoing"
+              />
+            ))}
+          </div>
+        ) : (
+          <NotFound message="There are currently no Ongoing Contest!" />
+        )}
 
         <div className="miniBreak"></div>
         <div className="contentSemiTitle">Upcoming Contests</div>
@@ -71,10 +82,12 @@ export default function Contest() {
               details={contest.contest_details}
               category={contest.contest_category}
               organizer={contest.organizer}
-              date={new Date(contest.start_time).toLocaleDateString()}
-              startTime={new Date(contest.start_time).toLocaleTimeString()}
-              endTime={new Date(contest.end_time).toLocaleTimeString()}
+              date={contest.start_time}
+              startTime={contest.start_time}
+              endTime={contest.end_time}
               participants={contest.participant_count}
+              calculatedTime={contest.calculated_time}
+              type="upcoming"
             />
           ))}
         </div>
@@ -89,10 +102,12 @@ export default function Contest() {
               details={contest.contest_details}
               category={contest.contest_category}
               organizer={contest.organizer}
-              date={new Date(contest.start_time).toLocaleDateString()}
-              startTime={new Date(contest.start_time).toLocaleTimeString()}
-              endTime={new Date(contest.end_time).toLocaleTimeString()}
+              date={contest.start_time}
+              startTime={contest.start_time}
+              endTime={contest.end_time}
               participants={contest.participant_count}
+              calculatedTime={contest.calculated_time}
+              type="previous"
             />
           ))}
         </div>

@@ -34,5 +34,59 @@ module.exports = (router) => {
     });
   });
 
-  
+  router.get("/contest/:contestId", verifyToken, (req, res) => {
+    const { contestId } = req.params;
+
+    // Fetch contest details
+    const contestQuery = `
+        SELECT * FROM contest
+        WHERE contest_id = ?`;
+
+    connection.query(contestQuery, [contestId], (err, contestResults) => {
+      if (err) {
+        console.error("Error fetching contest:", err);
+        return res.json({ Error: "Error fetching contest" });
+      }
+      if (contestResults.length === 0) {
+        return res.json({ Error: "Contest not found" });
+      }
+
+      // Fetch contest problems
+      const problemsQuery = `
+            SELECT * FROM contest_problems
+            WHERE contest_id = ?`;
+
+      connection.query(problemsQuery, [contestId], (err, problemsResults) => {
+        if (err) {
+          console.error("Error fetching contest problems:", err);
+          return res.json({ Error: "Error fetching contest problems" });
+        }
+
+        // Fetch contest participants
+        const participantsQuery = `
+            SELECT cp.participant_id,cp.result_position, u.name AS participant_name
+            FROM contest_participants cp
+            JOIN user u ON cp.participant_id = u.user_id
+            WHERE cp.contest_id = ?`;
+
+        connection.query(
+          participantsQuery,
+          [contestId],
+          (err, participantsResults) => {
+            if (err) {
+              console.error("Error fetching contest participants:", err);
+              return res.json({ Error: "Error fetching contest participants" });
+            }
+
+            // Combine the results
+            return res.json({
+              contest: contestResults[0],
+              problems: problemsResults,
+              participants: participantsResults,
+            });
+          }
+        );
+      });
+    });
+  });
 };
