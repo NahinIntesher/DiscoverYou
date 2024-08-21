@@ -78,7 +78,7 @@ export default function GivePostBox({user,setUpdatePost}) {
         
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/showcase/post", finalData, {
+        .post("http://localhost:3000/student/showcase/post", finalData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

@@ -14,7 +14,7 @@ export default function Contest() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/contest/student")
+      .get("http://localhost:3000/student/contest")
       .then((res) => {
         console.log("Full API Response:", res); // Check response structure
         const contests = res.data?.contests || [];

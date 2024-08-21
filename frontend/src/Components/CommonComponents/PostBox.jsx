@@ -32,7 +32,7 @@ export default function PostBox({postId, posterName, postContent, postTime, post
     function reactPost() {
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/showcase/react", {
+        .post("http://localhost:3000/student/showcase/react", {
             postId: postId
         })
         .then((res) => {

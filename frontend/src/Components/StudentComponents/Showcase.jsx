@@ -13,7 +13,7 @@ export default function Showcase({user}) {
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/showcase/post")
+          .get("http://localhost:3000/student/showcase/post")
           .then((res) => {
             const postsData = res.data?.posts || [];
             setPosts(postsData);
