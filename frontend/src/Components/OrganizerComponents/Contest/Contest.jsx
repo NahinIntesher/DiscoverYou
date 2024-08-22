@@ -9,15 +9,12 @@ export default function Contest() {
   const [ongoingContests, setOngoingContests] = useState([]);
   const [upcomingContests, setUpcomingContests] = useState([]);
 
-  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Programming Solving";
-  //UPDATE `contest` SET contest_category = "Competitive Programming" WHERE contest_category = "Coding Problem Solving";
-
   useEffect(() => {
     axios
       .get("http://localhost:3000/student/contest")
       .then((res) => {
         console.log("Full API Response:", res); // Check response structure
-        const contests = res.data?.contests || [];
+        const contests = res.data.contests;
         const now = new Date();
 
         const previous = contests.filter(
@@ -55,6 +52,7 @@ export default function Contest() {
             {ongoingContests.map((contest) => (
               <ContestBox
                 key={contest.contest_id}
+                id={contest.contest_id}
                 name={contest.contest_name}
                 details={contest.contest_details}
                 category={contest.contest_category}
@@ -78,6 +76,7 @@ export default function Contest() {
           {upcomingContests.map((contest) => (
             <ContestBox
               key={contest.contest_id}
+              id={contest.contest_id}
               name={contest.contest_name}
               details={contest.contest_details}
               category={contest.contest_category}
@@ -98,6 +97,7 @@ export default function Contest() {
           {previousContests.map((contest) => (
             <ContestBox
               key={contest.contest_id}
+              id={contest.contest_id}
               name={contest.contest_name}
               details={contest.contest_details}
               category={contest.contest_category}
