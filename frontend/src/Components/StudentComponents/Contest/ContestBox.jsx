@@ -3,8 +3,9 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../../assets/images/desert4.jpg";
 import ContestTimeRemaining from "../../CommonComponents/contestTimeRemaining";
-
+import { useNavigate } from 'react-router-dom';
 export default function ContestBox({
+  id,
   name,
   details,
   category,
@@ -28,6 +29,12 @@ export default function ContestBox({
     let time = new Date(datetime);
     return time.toLocaleString("en-US", { dateStyle: "medium" });
   }
+  const navigate = useNavigate();
+  const handleClick = () => {
+    console.log(id);
+    console.log(name);
+    navigate(`/contest/${id}`);
+  };
 
   return (
     <div className="contestBox">
@@ -71,11 +78,11 @@ export default function ContestBox({
         </div>
         <div className="joinButtonContainer">
           {type == "ongoing" ? (
-            <div className="joinButton">Enter</div>
+            <div className="joinButton" onClick={handleClick}>Enter</div>
           ) : type == "upcoming" ? (
-            <div className="joinButton">Register</div>
+            <div className="joinButton" onClick={handleClick}>Register</div>
           ) : (
-            <div className="joinButton">Details</div>
+            <div className="joinButton" onClick={handleClick}>Details</div>
           )}
           <div className="joinDetails">
             Registered: <b>{participants}</b>

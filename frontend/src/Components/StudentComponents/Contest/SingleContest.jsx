@@ -1,79 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import ContestProblems from "./ContestProblems";
-import ContestSubmissions from "./ContestSubmissions";
 import ContestParticipants from "./ContestParticipants";
+import ContestSubmissions from "./ContestSubmissions";
+import './SingleContest.css'; // Adjust the path as necessary
 
-export default function SingleContest() {
-  
+const SingleContest = () => {
+  const { contestId } = useParams();
+  const [data, setData] = useState({
+    contest: null,
+    problems: [],
+    participants: [],
+    submissions: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("problems");
 
-  return (
-    <div className="mainContent">
-      <div className="container mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900">Single Contest</h2>
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/student/contest/${contestId}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  }, [contestId]);
 
-        <div className="tabs mb-6">
-          <div className="flex border-b border-gray-300">
-            <button
-              className={`${
-                activeTab === "problems"
-                  ? "bg-white text-blue-600 border-blue-500"
-                  : "bg-gray-100 text-gray-600 border-transparent"
-              } px-6 py-3 rounded-t-lg border-b-4 transition-colors duration-300 ease-in-out mr-4`}
-              onClick={() => setActiveTab("problems")}
-            >
-              Contest Problems
-            </button>
-            <button
-              className={`${
-                activeTab === "participants"
-                  ? "bg-white text-green-600 border-green-500"
-                  : "bg-gray-100 text-gray-600 border-transparent"
-              } px-6 py-3 rounded-t-lg border-b-4 transition-colors duration-300 ease-in-out mr-4`}
-              onClick={() => setActiveTab("participants")}
-            >
-              Contest Participants
-            </button>
-            <button
-              className={`${
-                activeTab === "submissions"
-                  ? "bg-white text-yellow-600 border-yellow-500"
-                  : "bg-gray-100 text-gray-600 border-transparent"
-              } px-6 py-3 rounded-t-lg border-b-4 transition-colors duration-300 ease-in-out`}
-              onClick={() => setActiveTab("submissions")}
-            >
-              Contest Submissions
-            </button>
-          </div>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!data.contest) return <p>No contest data available</p>;
+
+  return (
+    <div className="mainContestContent">
+      <div className="container">
+        <h2 className="titleSingleContest mb-5 text-2xl rounded-lg ">Contest name: {data.contest.contest_name}</h2>
+
+        <div className="tabs">
+          <button
+            className={`tab-button ${activeTab === "problems" ? "active" : ""}`}
+            onClick={() => setActiveTab("problems")}
+          >
+            Contest Problems
+          </button>
+          <button
+            className={`tab-button ${activeTab === "participants" ? "active" : ""}`}
+            onClick={() => setActiveTab("participants")}
+          >
+            Contest Participants
+          </button>
+          <button
+            className={`tab-button ${activeTab === "submissions" ? "active" : ""}`}
+            onClick={() => setActiveTab("submissions")}
+          >
+            Contest Submissions
+          </button>
         </div>
 
         <div className="tab-content">
           {activeTab === "problems" && (
-            <div className="bg-blue-50 rounded-lg p-6 shadow-md">
-              <h3 className="text-2xl font-semibold text-blue-600 mb-4">
-                Contest Problems
-              </h3>
-              <ContestProblems />
+            <div className="content-section blue">
+              <h3 className="section-title">Contest Problems</h3>
+              <ContestProblems problems={data.problems} />
             </div>
           )}
           {activeTab === "participants" && (
-            <div className="bg-green-50 rounded-lg p-6 shadow-md">
-              <h3 className="text-2xl font-semibold text-green-600 mb-4">
-                Contest Participants
-              </h3>
-              <ContestParticipants />
+            <div className="content-section green">
+              <h3 className="section-title">Contest Participants</h3>
+              <ContestParticipants participants={data.participants} />
             </div>
           )}
           {activeTab === "submissions" && (
-            <div className="bg-yellow-50 rounded-lg p-6 shadow-md">
-              <h3 className="text-2xl font-semibold text-yellow-600 mb-4">
-                Contest Submissions
-              </h3>
-              <ContestSubmissions />
+            <div className="content-section yellow">
+              <h3 className="section-title">Contest Submissions</h3>
+              <ContestSubmissions submissions={data.submissions} />
             </div>
           )}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SingleContest;

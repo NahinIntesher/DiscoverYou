@@ -41,6 +41,24 @@ module.exports = (router) => {
     const contestQuery = `
         SELECT * FROM contest
         WHERE contest_id = ?`;
+    // Fetch contest problems
+    const problemsQuery = `
+        SELECT * FROM contest_problems
+        WHERE contest_id = ?`;
+    // Fetch contest participants
+    const participantsQuery = `
+        SELECT cp.participant_id, cp.result_position, u.name AS participant_name
+        FROM contest_participants cp
+        JOIN user u ON cp.participant_id = u.user_id
+        WHERE cp.contest_id = ?`;
+    // Fetch all submissions for the contest
+    const submissionsQuery = `
+    SELECT cs.participant_id, cs.problem_id, cs.submission_time, cs.solution, p.problem_name, u.name AS participant_name
+    FROM contest_submissions cs
+    JOIN contest_problems p ON cs.problem_id = p.problem_id
+    JOIN user u ON cs.participant_id = u.user_id
+    WHERE cs.contest_id = ?`;
+
 
     connection.query(contestQuery, [contestId], (err, contestResults) => {
       if (err) {
@@ -50,25 +68,11 @@ module.exports = (router) => {
       if (contestResults.length === 0) {
         return res.json({ Error: "Contest not found" });
       }
-
-      // Fetch contest problems
-      const problemsQuery = `
-            SELECT * FROM contest_problems
-            WHERE contest_id = ?`;
-
       connection.query(problemsQuery, [contestId], (err, problemsResults) => {
         if (err) {
           console.error("Error fetching contest problems:", err);
           return res.json({ Error: "Error fetching contest problems" });
         }
-
-        // Fetch contest participants
-        const participantsQuery = `
-            SELECT cp.participant_id,cp.result_position, u.name AS participant_name
-            FROM contest_participants cp
-            JOIN user u ON cp.participant_id = u.user_id
-            WHERE cp.contest_id = ?`;
-
         connection.query(
           participantsQuery,
           [contestId],
@@ -77,13 +81,25 @@ module.exports = (router) => {
               console.error("Error fetching contest participants:", err);
               return res.json({ Error: "Error fetching contest participants" });
             }
-
-            // Combine the results
-            return res.json({
-              contest: contestResults[0],
-              problems: problemsResults,
-              participants: participantsResults,
-            });
+            connection.query(
+              submissionsQuery,
+              [contestId],
+              (err, submissionsResults) => {
+                if (err) {
+                  console.error("Error fetching contest submissions:", err);
+                  return res.json({
+                    Error: "Error fetching contest submissions",
+                  });
+                }
+                // Combine the results
+                return res.json({
+                  contest: contestResults[0],
+                  problems: problemsResults,
+                  participants: participantsResults,
+                  submissions: submissionsResults,
+                });
+              }
+            );
           }
         );
       });

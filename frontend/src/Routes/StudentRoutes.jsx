@@ -25,7 +25,7 @@ export default function Student({ handleLogout, user }) {
           <Route path="/showcase" element={<Showcase user={user} />} />
 
           <Route path="/contest" element={<Contest />} />
-          <Route path="/contest/single-contest" element={<SingleContest />} />
+          <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community />} />
           <Route path="/course" element={<Course />} />

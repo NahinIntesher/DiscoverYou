@@ -4,7 +4,7 @@ module.exports = {
     "./src/**/Registration.{js,jsx,ts,tsx}",
     "./src/**/Login.{js,jsx,ts,tsx}",
     "./src/**/Profile.{js,jsx,ts,tsx}",
-    "./src/**/SingleContest.{js,jsx,ts,tsx}",
+    // "./src/**/SingleContest.{js,jsx,ts,tsx}",
     
   ],
   theme: {
