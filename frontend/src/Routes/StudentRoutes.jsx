@@ -6,7 +6,9 @@ import Dashboard from "../Components/StudentComponents/Dashboard";
 import Contest from "../Components/StudentComponents/Contest/Contest";
 import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
 
-import Showcase from "../Components/StudentComponents/Showcase";
+import Showcase from "../Components/StudentComponents/Showcase/Showcase";
+import Post from "../Components/StudentComponents/Showcase/Post";
+
 import Community from "../Components/StudentComponents/Community";
 import Course from "../Components/StudentComponents/Course";
 import Webinar from "../Components/StudentComponents/Webinar";
@@ -22,7 +24,9 @@ export default function Student({ handleLogout, user }) {
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+
           <Route path="/showcase" element={<Showcase user={user} />} />
+          <Route path="/showcase/post/:postId" element={<Post />} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />

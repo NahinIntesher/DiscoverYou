@@ -69,6 +69,11 @@ export default function GivePostBox({user,setUpdatePost}) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if(formData.content == "") {
+            alert("Write something to post!");
+            return;
+        }
+
         const finalData = new FormData();
         finalData.append('content', formData.content);
         finalData.append('category', postCategory);
@@ -86,6 +91,10 @@ export default function GivePostBox({user,setUpdatePost}) {
         .then((res) => {
           if (res.data.status === "Success") {
             console.log("Post Success!");
+            setFormData({
+                content: "",
+                media: []
+            });
             setUpdatePost((prevData) => prevData+1);
           } else {
             alert(res.data.Error);
@@ -107,6 +116,7 @@ export default function GivePostBox({user,setUpdatePost}) {
                             name="content"
                             placeholder="Write something..."
                             onChange={handleChange}
+                            value={formData.content}
                         />                        
                         <div className="mediaContainer">
                             {

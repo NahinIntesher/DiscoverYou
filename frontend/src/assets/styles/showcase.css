@@ -1,6 +1,5 @@
 .givePostBox {
-    margin: 20px auto;
-    max-width: 1000px;
+    margin: 10px;
     text-align: center;
     padding: 10px;
 }
@@ -23,7 +22,8 @@
 .givePostBox .textBox {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - 240px);
+    width: calc(100% - 180px);
+    max-width: 860px;
     margin: 8px;
     background-color: #ffffff;
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
@@ -192,13 +192,20 @@
 
 
 
+.postBoxContainer {
+    margin: 10px;
+    text-align: center;
+}
 
 .postBox {
+    display: inline-block;
     background-color: #ffffff;
     border-radius: 18px;
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
-    margin: 10px auto;
+    margin: 10px;
+    width: calc(100% - 20px);
     max-width: 900px;
+    text-align: left;
 }
 
 .postBox .profile {
@@ -344,6 +351,119 @@
     margin: 4px;
     background-color: rgba(0,0,0,0.4);
 }
+
+.giveCommentBox {
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 10px;
+    width: calc(100% - 20px);
+    max-width: 900px;
+    text-align: center;  
+    padding: 8px;  
+}
+.giveCommentBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 8px;
+}
+.giveCommentBox .profilePicture img {
+    border-radius: 60px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.giveCommentBox textarea {
+    display: inline-block;
+    vertical-align: middle;
+    resize: none;
+    border-radius: 16px;
+    padding: 14px 18px;
+    background-color: rgba(0,0,0,0.1);
+    margin: 8px;
+    outline: 0;
+    width: calc(100% - 250px);
+}
+
+.giveCommentBox .postButton {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: 
+        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    color: #ffffff;
+    padding: 10px 28px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.commentBoxContainer {
+    display: inline-block;
+    border-radius: 18px;
+    margin: 10px;
+    width: calc(100% - 20px);
+    max-width: 900px;
+    text-align: center;  
+    background-color: rgba(0,0,0,0.1);
+    padding: 12px;  
+}
+
+.commentBox {
+    text-align: left;
+    margin: 2px;
+}
+
+.commentBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 6px;
+}
+.commentBox .profilePicture img {
+    border-radius: 60px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.commentBox .commentContentBox {
+    margin: 6px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #ffffff;
+    padding: 10px 16px;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+}
+
+.commentBox .commentContentBox .name {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 2px;
+}
+.commentBox .commentContentBox .text {
+    margin: 2px;
+}
+.commentBox .commentContentBox .details {
+    margin: 2px;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.4);
+}
+
+
 
 
 @media (max-width: 480px) {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../assets/styles/showcase.css";
-import dp from "../../assets/images/desert.jpg";
+import "../../../assets/styles/showcase.css";
+import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
-import GivePostBox from "../CommonComponents/GivePostBox";
-import PostBox from "../CommonComponents/PostBox";
+import GivePostBox from "../../CommonComponents/GivePostBox";
+import PostBox from "../../CommonComponents/PostBox";
 
 export default function Showcase({user}) {    
     const [posts, setPosts] = useState([]);
@@ -25,7 +25,8 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
-            <GivePostBox setUpdatePost={setUpdatePost} user={user}/>       
+            <GivePostBox setUpdatePost={setUpdatePost} user={user}/>   
+            <div className="postBoxContainer">
             {
                 posts.map(function(post){
                     return (
@@ -43,7 +44,8 @@ export default function Showcase({user}) {
                         />
                     );
                 })
-            }     
+            }
+            </div>        
         </div>
     );
 }

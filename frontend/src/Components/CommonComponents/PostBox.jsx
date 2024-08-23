@@ -3,6 +3,7 @@ import axios from "axios";
 import dp from "../../assets/images/desert.jpg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
+import { Link } from "react-router-dom";
 
 export default function PostBox({postId, posterName, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
     const [isReacted, setIsReacted] = useState(isPostReacted);
@@ -115,10 +116,10 @@ export default function PostBox({postId, posterName, postContent, postTime, post
                         <div className="text">Like</div>
                     </div> 
                 }
-                <div className="postActionBox">
+                <Link to={"/showcase/post/"+postId} className="postActionBox">
                     <MaterialSymbol className="icon" size={22} icon="chat_bubble"/>
                     <div className="text">Comment</div>
-                </div>
+                </Link>
             </div>
         </div>
     );
