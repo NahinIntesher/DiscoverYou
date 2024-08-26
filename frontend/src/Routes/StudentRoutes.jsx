@@ -9,13 +9,16 @@ import SingleContest from "../Components/StudentComponents/Contest/SingleContest
 import Showcase from "../Components/StudentComponents/Showcase/Showcase";
 import Post from "../Components/StudentComponents/Showcase/Post";
 
-import Community from "../Components/StudentComponents/Community";
+
 import Course from "../Components/StudentComponents/Course";
 import Webinar from "../Components/StudentComponents/Webinar";
 import Marketplace from "../Components/StudentComponents/Marketplace";
 import Hiring from "../Components/StudentComponents/Hiring";
 import Notification from "../Components/StudentComponents/Notification";
 import Profile from "../Components/StudentComponents/Profile";
+import Community from "../Components/StudentComponents/Community/Community";
+import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";
+import SingleCommunity from "../Components/StudentComponents/Community/SingleCommunity";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -31,7 +34,10 @@ export default function Student({ handleLogout, user }) {
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
-          <Route path="/community" element={<Community />} />
+          <Route path="/community" element={<Community/>} />
+          <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
+          <Route path="/community/:communityId" element={<SingleCommunity />} />
+
           <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />

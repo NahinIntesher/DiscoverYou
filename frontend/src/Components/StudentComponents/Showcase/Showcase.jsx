@@ -25,6 +25,11 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
+            <div className="contentTitle">
+                <div className="content">
+                    <div className="title">Showcase</div>
+                </div>
+            </div>
             <GivePostBox setUpdatePost={setUpdatePost} user={user}/>   
             <div className="postBoxContainer">
             {

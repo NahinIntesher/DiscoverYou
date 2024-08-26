@@ -1,1 +1,5 @@
-ALTER TABLE `showcase_post_comments` CHANGE `comment_time` `comment_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `communities` ADD `community_description` VARCHAR(200) NOT NULL AFTER `community_admin_id`;
+
+ALTER TABLE `community_messages` DROP PRIMARY KEY;
+
+ALTER TABLE `community_messages` ADD `message_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `message_content`;

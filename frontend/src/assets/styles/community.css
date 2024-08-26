@@ -1,0 +1,247 @@
+.communityBox {
+    display: inline-block;
+    width: calc(100% - 20px);
+    max-width: 980px;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 10px;
+    padding: 8px;
+    flex-direction: column;
+    text-align: left;
+}
+
+.communityBox .title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 4px 4px;
+    text-wrap: wrap;
+    line-height: 120%;
+    margin-right: 10px;
+}
+.communityBox .category {
+    background-color: rgba(255, 169, 82, 0.4);
+    padding: 2px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    color: #ef5a5acc;
+    margin-top: 8px;
+}
+.communityBox .category .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+.communityBox .category .text {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 2px 4px;
+}
+.communityBox .detailsContainer {
+    background-color: rgba(0, 0, 0, 0.08);
+    padding: 8px 18px;
+    margin: 8px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.communityBox .informationContainer {
+    padding: 8px 10px;
+    display: flex;
+}
+.communityBox .information {
+    flex: auto;
+    display: inline-block;
+    vertical-align: middle;
+    flex-grow: 1;
+    overflow: hidden;
+}
+.communityBox .joinButtonContainer {
+    flex-shrink: 0; 
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    justify-content: center;
+    text-align: center;
+}
+.communityBox .joinButtonContainer .joinButton {
+    display: inline-block;
+    background-image: 
+        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 2px;
+    cursor: pointer;
+}
+.communityBox .joinButtonContainer .joinButton:hover {
+    box-shadow: 4px 4px 12px rgba(100,0,0,0.2);
+    text-shadow: 2px 2px 8px rgba(100,0,0,0.6);
+}
+.communityBox .joinButtonContainer .joinDetails {
+    font-size: 13px;
+    font-weight: 450;
+    margin-top: 4px;
+}
+
+
+
+
+.communityBox .description {
+    flex: 1;
+    padding: 8px;
+}
+.communityBox .description .titles {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.communityBox .description .text {
+    font-size: 15px;
+    line-height: 140%;
+}
+.communityBox .organizer {
+    flex-shrink: 0;
+    background-color: rgba(0,0,0,0.12);
+    margin: 6px auto;
+    border-radius: 40px;
+    padding: 6px;
+    width: fit-content;
+    text-align: left;
+}
+.communityBox .organizer .organizerPicture {
+    display: inline-block;
+    vertical-align: middle;
+    width: 48px;
+    height: 48px;
+    border-radius: 46px;
+    border: 3px #ffffff solid;
+    overflow: hidden;
+}
+.communityBox .organizer .organizerDetails {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    padding: 4px;
+    margin-left: 4px;
+    margin-right: 16px;
+}
+
+.communityBox .organizer .organizerDetails .detailTitle {   
+    font-size: 13px;
+    line-height: 120%;
+}
+.communityBox .organizer .organizerDetails .detailInfo { 
+    font-weight: 600;
+    font-size: 15px;
+}
+
+
+.giveMessageBox {
+    background-color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2px 8px;
+    text-align: center;
+    box-shadow: -4px -4px 12px rgba(0,0,0,0.05);
+}
+
+.giveMessageBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 8px;
+}
+.giveMessageBox .profilePicture img {
+    border-radius: 60px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.giveMessageBox input {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: rgba(0,0,0,0.1);
+    padding: 12px 24px;
+    border-radius: 40px;
+    margin: 8px;
+    width: calc(100% - 140px);
+    color: rgba(0,0,0,0.6);
+    font-size: 15px;
+}
+
+.giveMessageBox input:focus {
+    outline: 2px solid #ffa952;
+}
+.giveMessageBox .sendButton {
+    display: inline-block;
+    vertical-align: middle;
+    color: #ffa952;
+    margin: 4px;
+}
+.giveMessageBox .sendButton .icon{
+    display: block;
+}
+
+
+.messagesBoxContainer {
+    height: calc(100% - 150px);
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    padding: 10px;
+    width: 90%;
+    margin: auto;
+}
+
+
+.messageBox .profilePicture {
+    display: inline-block;
+    vertical-align: top;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 8px;
+    margin-top: 28px;
+}
+.messageBox .profilePicture img {
+    border-radius: 60px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+.messageBox .messageContent {
+    display: inline-block;
+    vertical-align: top;
+}
+.messageBox .messageContent .name{
+    font-size: 14px;
+    margin: 2px 10px;
+}
+.messageBox .messageContent .message {
+    background-color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 22px;
+    display: inline-block;
+    margin: 2px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.05);
+}
+.ownMessage {
+    text-align: right;
+}

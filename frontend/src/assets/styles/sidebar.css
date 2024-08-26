@@ -167,6 +167,9 @@ body {
 }
 
 @media screen and (min-width: 1600px) {
+    .sideMenu {
+        width: 380px;
+    }
     .sideMenu .dynamicGap {
         display: block;
         height: 10px;

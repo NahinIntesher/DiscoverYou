@@ -4,10 +4,13 @@
         radial-gradient(400px 80px at left top, #ffe79acc, #ffe79a99, transparent),
         radial-gradient(400px 80px at left bottom, #ffa952, #ffa952cc, #ffa95299, transparent),
         linear-gradient(#ffa952,#ffe79a);
+    position: relative;
 }
 .contentTitle .title {
-    font-size: 32px;
-    padding: 8px 16px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 30px;
+    padding: 10px 16px;
     font-weight: 600;
     color: #ffffff;
     text-shadow: 
@@ -16,7 +19,41 @@
         4px 4px 12px #ef5a5a80,
         4px 4px 42px #ef5a5a99;
 }
+.contentTitle .button {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: 
+    radial-gradient(120px 40px at left top, #ffa952, #ffa952cc, #ffa85299, transparent),
+    linear-gradient(#ef5a5a, #ffa952);
+    padding: 10px 16px;
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 14px;
+    box-shadow:
+        -8px -8px 16px #ffe79acc,
+        8px 8px 16px #ffe79acc;
+    cursor: pointer;
+}
 
+.contentTitle .button:hover{
+    box-shadow:
+        4px 4px 12px rgba(0,0,0,0.2),
+        -8px -8px 16px #ffe79acc,
+        8px 8px 16px #ffe79acc;
+}
+
+.contentTitle .button .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}
+.contentTitle .button .text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 6px;
+}
 
 .contentSemiTitle {
     font-size: 18px;
@@ -90,10 +127,10 @@
 }
 .contestBox .category {
     background-color: rgba(255, 169, 82, 0.4);
+    color: #ef5a5acc;
     padding: 2px 12px;
     border-radius: 20px;
     display: inline-block;
-    color: #ef5a5acc;
     margin-top: 8px;
 }
 .contestBox .category .icon {

@@ -361,7 +361,7 @@
     width: calc(100% - 20px);
     max-width: 900px;
     text-align: center;  
-    padding: 8px;  
+    padding: 6px;  
 }
 .giveCommentBox .profilePicture {
     display: inline-block;
@@ -414,6 +414,14 @@
     text-align: center;  
     background-color: rgba(0,0,0,0.1);
     padding: 12px;  
+}
+
+
+.commentBoxContainer .title {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: left;
+    margin: 8px 16px;
 }
 
 .commentBox {

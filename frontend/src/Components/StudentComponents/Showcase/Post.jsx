@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostBox from "../../CommonComponents/PostBox";
 import dp from "../../../assets/images/desert.jpg";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import CommentBox from "../../CommonComponents/CommentBox";
 import NotFound from "../../CommonComponents/NotFound";
+import Header from "../../CommonComponents/Header";
 
 export default function Post() {
+    const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState([]);
     const [comments, setComments] = useState([]);
@@ -64,8 +66,10 @@ export default function Post() {
 
     return (
         <div className="mainContent">
+            <Header title={"Post"}/>
             <div className="postBoxContainer">
                 { 
+                    post.length != 0 &&
                     <PostBox 
                         key={post.post_id}
                         postId={post.post_id}
@@ -95,6 +99,7 @@ export default function Post() {
                     </form>
                 </div>
                 <div className="commentBoxContainer">
+                    <div className="title">Comments</div>
                     {   comments.length > 0 ?
                         comments.map(function(comment){
                             return (

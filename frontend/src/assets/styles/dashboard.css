@@ -5,13 +5,46 @@
     height: 100%;
     overflow: scroll;
     scrollbar-width: none;
+    position: relative;
 }
 .mainContent .content {
     padding: 16px;
     margin: auto;
+    position: relative;
 }
 .mainContent .miniBreak {
     height: 12px;
+}
+
+
+.header {
+    background-image: 
+        radial-gradient(420px 60px at right bottom, #ffe79a99, transparent),
+        radial-gradient(420px 60px at left top, #ffa952, #ffa952cc, #ffa85299, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    position: relative;
+    padding: 8px 10px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+}
+.header .backIcon {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 14px 16px;
+    color: #ffffff;
+}
+.header .text {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 6px;
+}
+.header .title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+}
+.header .semiTitle {
+    font-size: 14px;
+    color: #ffffff;
 }
 
 .mainContent .optionContainer {
@@ -22,6 +55,103 @@
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+
+.formBoxContainer {
+    text-align: center;
+    padding: 10px;
+    height: calc(100dvh - 73px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formBox {
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 10px;
+    width: calc(100% - 20px);
+    max-width: 900px;
+    text-align: left;
+    padding: 10px;
+}
+.formBox .title {
+    font-weight: 600;
+    font-size: 26px;
+    margin: 12px 16px;
+}
+.formBox label {
+    font-weight: 450;
+    margin: 4px 8px;
+    font-size: 15px;
+}
+.formBox .input{
+    margin: 6px 12px;
+}
+.formBox input , .formBox textarea, .formBox select {
+    border-radius: 12px;
+    border: 10px;
+    border: 2px solid rgba(0,0,0,0.15);
+    padding: 12px 16px;
+    margin: 4px;
+    width: calc(100% - 8px);
+    resize: none;
+    -moz-appearance: none; /* Firefox */
+    appearance: none; /* Standard */
+}
+
+.formBox input:focus , .formBox textarea:focus, .formBox select:focus {
+    border: 2px solid #ffa952;
+    outline: #ffa952 1px solid;
+}
+.formBox button {
+    display: inline-block;
+    background-image: 
+        radial-gradient(420px 40px at left top, #ffe79acc, #ffe79a99, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    color: #ffffff;
+    padding: 14px 24px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 10px;
+    cursor: pointer;
+    width: calc(100% - 20px);
+}
+
+.tabContainer {
+    display: flex;
+    padding: 20px 10px;
+    padding-bottom: 0;
+    max-width: 1040px;
+    margin: auto;
+}
+.tab, .activeTab {
+    flex: 1;
+    background-color: rgba(0,0,0,0.1);
+    margin: 8px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+}
+.activeTab {
+    background-color: rgba(255, 169, 82, 0.4);
+    color: #ef5a5a;
+    font-weight: 600;
+    border: 1px #ef5a5a solid;
+}
+.tabContent {
+    padding: 10px;
+    text-align: center;
+}
+
+
+@media screen and (min-width: 1600px) {
+    .mainContent {
+        width: calc(100% - 380px);
+    }
 }
 
 @media screen and (max-width: 820px) {
