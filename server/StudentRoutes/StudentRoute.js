@@ -6,5 +6,6 @@ const multer = require("multer");
 require("./ContestRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./CommunityRoutes")(router);
+require("./WebinarRoutes")(router);
 
 module.exports = router;
