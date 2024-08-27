@@ -11,7 +11,7 @@ import Post from "../Components/StudentComponents/Showcase/Post";
 
 
 import Course from "../Components/StudentComponents/Course";
-import Webinar from "../Components/StudentComponents/Webinar";
+import Webinar from "../Components/StudentComponents/Webiner/Webiner";
 import Marketplace from "../Components/StudentComponents/Marketplace";
 import Hiring from "../Components/StudentComponents/Hiring";
 import Notification from "../Components/StudentComponents/Notification";
