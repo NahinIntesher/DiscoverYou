@@ -54,7 +54,7 @@ export default function SingleCommunity({interests}) {
     useEffect(() => {
         console.log("useEffect Cholled")
         axios
-            .get("http://localhost:3000/student/community/"+communityId)
+            .get("http://localhost:3000/student/community/single/"+communityId)
             .then((res) => {
                 console.log("Success");
                 let communityData = res.data?.community || [];

@@ -9,25 +9,18 @@ import MyCommunities from "./MyCommunities";
 import BrowseCommunities from "./BrowseCommunities";
 
 export default function Community() {
-    const [communities, setCommunities] = useState([]);
-    const [myCommunities, setMyCommunities] = useState([]);
     const [activeTab, setActiveTab] = useState(["browseCommunities"]);
+    
+    const [pendingMemberNo, setPendingMemberNo] = useState(0);
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/community")
+            .get("http://localhost:3000/student/community/pendingMembers")
             .then((res) => {
                 console.log("Success");
-                const communitiesData = res.data?.communities || [];
-
-                const myCommunitiesData = communitiesData.filter(
-                    function (community) {
-                        return community.is_joined == "yes";
-                    }
-                );
-
-                setCommunities(communitiesData);
-                setMyCommunities(myCommunitiesData);
+                const pendingMembers = res.data?.pendingMembers || [];
+                console.log(pendingMembers);
+                setPendingMemberNo(pendingMembers.length);
             })
             .catch((error) => {
                 console.error("Error fetching contests:", error);
@@ -38,24 +31,35 @@ export default function Community() {
         <div className="mainContent">
             <div className="contentTitle">
                 <div className="content">
-                    <div className="title">Community</div>
+                    <div className="title">Commuanity</div>
                     <Link to="/community/new" className="button">
                         <MaterialSymbol className="icon" size={24} icon="add" />
                         <div className="text">Create New Community</div>
                     </Link>
                 </div>
             </div>
+            {pendingMemberNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        {pendingMemberNo} members approval pending in your communities.
+                    </div>
+                    <Link to={"/community/members/pending"} className="button">
+                        Pending Members
+                    </Link>
+                </div>
+            }
             <div className="tabContainer">
                 <div className={activeTab == "myCommunities" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myCommunities")}}>My Communities</div>
                 <div className={activeTab == "browseCommunities" ? "activeTab" : "tab"} onClick={function(){setActiveTab("browseCommunities")}}>Browse Communities</div>
             </div>
             {
                 activeTab == "myCommunities" &&
-                <MyCommunities communities={myCommunities} />
+                <MyCommunities />
             }
             {
                 activeTab == "browseCommunities" &&
-                <BrowseCommunities communities={communities} />
+                <BrowseCommunities />
             }
         </div>
     );

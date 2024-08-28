@@ -245,3 +245,141 @@
 .ownMessage {
     text-align: right;
 }
+
+.pendingBox {
+    background-color: rgba(0,0,0,0.1);
+    margin: 20px;
+    margin-bottom: 0;
+    padding: 8px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+}
+
+
+.pendingBox .icon {
+    flex-shrink: 1;
+    margin: 6px 8px;
+}
+.pendingBox .text {
+    flex-grow: 1;
+    margin: 6px;
+}
+.pendingBox .button {
+    flex-shrink: 1;
+    background: rgba(255,255,255,0.8);
+    padding: 10px 24px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 4px 6px;
+    cursor: pointer;
+}
+.pendingBox .button:hover {
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.pendingMembersList {
+    text-align: center;
+    padding: 12px;
+}
+.pendingMemberBox {
+    text-align: left;
+    width: calc(100% - 20px);
+    max-width: 980px;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 8px;
+    padding: 8px;
+    display: inline-flex;
+    align-items: center;
+
+}
+
+.pendingMemberBox .profilePicture {
+    flex-shrink: 1;
+    background-image: linear-gradient(#ef5a5a, #ffa952);
+    padding: 3px;
+    border-radius: 80px;
+    margin: 10px;
+}
+.pendingMemberBox .profilePicture img {
+    border-radius: 60px;
+    border: 3px solid #ffffff;
+    display: block;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+.pendingMemberBox .memberDetails {
+    flex-grow: 1;
+    margin: 8px;
+}
+.pendingMemberBox .memberDetails .name {
+    font-weight: 600;
+}
+.pendingMemberBox .memberDetails .detail {
+    font-size: 14px;
+}
+
+.pendingMemberBox .memberDetails .detail .community {
+    font-weight: 600;
+}
+.pendingMemberBox .memberDetails .viewProfile {
+    background-color: rgba(255, 169, 82, 0.4);
+    color: #ef5a5a;
+    padding: 4px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 4px;
+    cursor: pointer;
+}
+.pendingMemberBox .memberDetails .viewProfile:hover {
+    background-color: rgba(255, 169, 82, 0.6);
+}
+.pendingMemberBox .buttonContainer {
+    flex-shrink: 1;
+}
+.pendingMemberBox .acceptButton, 
+.pendingMemberBox .rejectButton {
+    color: #02590fcc;
+    background-color: #B2DEB9;
+    padding: 4px 16px;
+    border-radius: 30px;
+    margin: 8px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.pendingMemberBox .acceptButton:hover {
+    color: #02590f;
+    background-color: #73BD7E;
+}
+.pendingMemberBox .rejectButton {
+    color: #c62d42cc;
+    background-color: #F4CED3;
+}
+
+.pendingMemberBox .rejectButton:hover {
+    color: #c62d42;
+    background-color: #E9A1AA;
+}
+
+.pendingMemberBox .acceptButton .icon, 
+.pendingMemberBox .rejectButton .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+
+.pendingMemberBox .acceptButton .text, 
+.pendingMemberBox .rejectButton .text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}

@@ -19,6 +19,7 @@ import Profile from "../Components/StudentComponents/Profile";
 import Community from "../Components/StudentComponents/Community/Community";
 import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";
 import SingleCommunity from "../Components/StudentComponents/Community/SingleCommunity";
+import PendingMembers from "../Components/StudentComponents/Community/PendingMembers";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -36,6 +37,7 @@ export default function Student({ handleLogout, user }) {
 
           <Route path="/community" element={<Community/>} />
           <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
+          <Route path="/community/members/pending" element={<PendingMembers />} />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
           <Route path="/course" element={<Course />} />

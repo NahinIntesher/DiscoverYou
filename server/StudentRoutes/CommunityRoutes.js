@@ -38,7 +38,7 @@ module.exports = (router) => {
       JOIN 
         community_member AS c_m
       ON 
-        c.community_id = c_m.community_id
+        c.community_id = c_m.community_id AND c_m.req_for_join_status = 1
       WHERE 
         c.approval_status = 1
       GROUP BY
@@ -57,7 +57,7 @@ module.exports = (router) => {
   });
 
 
-  router.get("/community/:communityId", verifyToken, (req, res) => {
+  router.get("/community/single/:communityId", verifyToken, (req, res) => {
     const communityId = req.params.communityId;
     const userId = req.userId;
     
@@ -166,7 +166,70 @@ module.exports = (router) => {
       connection.query(
         `INSERT INTO community_member (community_id, member_id, req_for_join_status)
         VALUES (?, ?, ?)`,
-        [communityId, userId, 1],
+        [communityId, userId, 0],
+        (err, results) => {
+          if (err) throw err;
+          return res.json({ status: "Success" });
+        }
+      );
+    }
+  );
+
+
+  router.get("/community/pendingMembers", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const query = `SELECT 
+      c_m.*,
+      u.name as member_name,
+      c.community_name,
+      c.community_admin_id
+      FROM 
+        community_member AS c_m
+      JOIN 
+        communities AS c
+      ON
+        c_m.community_id = c.community_id
+      JOIN 
+        user AS u
+      ON
+        c_m.member_id = u.user_id
+      WHERE
+        c.community_admin_id = ${userId} AND c_m.req_for_join_status = 0
+      `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      return res.json({ pendingMembers: results });
+    });
+  });
+
+  router.post(
+    "/community/member/approve",
+    verifyToken,
+    (req, res) => {
+      const { memberId, communityId } = req.body;
+      connection.query(
+        `UPDATE community_member SET req_for_join_status = '1' 
+        WHERE member_id = ? AND community_id = ?;`,
+        [memberId, communityId],
+        (err, results) => {
+          if (err) throw err;
+          return res.json({ status: "Success" });
+        }
+      );
+    }
+  );
+
+  router.post(
+    "/community/member/reject",
+    verifyToken,
+    (req, res) => {
+      const { memberId, communityId } = req.body;
+      connection.query(
+        `DELETE FROM community_member 
+        WHERE member_id = ? AND community_id = ?;`,
+        [memberId, communityId],
         (err, results) => {
           if (err) throw err;
           return res.json({ status: "Success" });

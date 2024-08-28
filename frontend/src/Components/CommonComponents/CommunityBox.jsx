@@ -17,7 +17,7 @@ export default function CommunityBox({ id, name, category, description, adminNam
         .then((res) => {
           if (res.data.status === "Success") {
             console.log("Message Send Success!");
-            setJoinStatus("yes")
+            setJoinStatus("pending")
           } else {
             alert(res.data.Error);
           }
