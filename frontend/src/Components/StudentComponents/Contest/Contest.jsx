@@ -46,7 +46,7 @@ export default function Contest() {
         </div>
       </div>
       <div className="content">
-        <div className="contentSemiTitle">Ongoing Contests</div>
+      <h3 className="text-xl font-semibold">Ongoing Contests</h3>
         {ongoingContests.length ? (
           <div className="scrollContainer">
             {ongoingContests.map((contest) => (
@@ -71,7 +71,7 @@ export default function Contest() {
         )}
 
         <div className="miniBreak"></div>
-        <div className="contentSemiTitle">Upcoming Contests</div>
+        <h3 className="text-xl font-semibold">Upcoming Contests</h3>
         <div className="scrollContainer">
           {upcomingContests.map((contest) => (
             <ContestBox
@@ -92,7 +92,7 @@ export default function Contest() {
         </div>
 
         <div className="miniBreak"></div>
-        <div className="contentSemiTitle">Previous Contests</div>
+        <h3 className="text-xl font-semibold">Previous Contests</h3>
         <div className="scrollContainer">
           {previousContests.map((contest) => (
             <ContestBox
