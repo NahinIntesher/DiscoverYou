@@ -46,7 +46,7 @@ export default function Contest() {
         </div>
       </div>
       <div className="content">
-      <h3 className="text-xl font-semibold">Ongoing Contests</h3>
+      <h3 className="contentSemiTitle">Ongoing Contests</h3>
         {ongoingContests.length ? (
           <div className="scrollContainer">
             {ongoingContests.map((contest) => (
@@ -71,46 +71,54 @@ export default function Contest() {
         )}
 
         <div className="miniBreak"></div>
-        <h3 className="text-xl font-semibold">Upcoming Contests</h3>
-        <div className="scrollContainer">
-          {upcomingContests.map((contest) => (
-            <ContestBox
-              key={contest.contest_id}
-              id={contest.contest_id}
-              name={contest.contest_name}
-              details={contest.contest_details}
-              category={contest.contest_category}
-              organizer={contest.organizer}
-              date={contest.start_time}
-              startTime={contest.start_time}
-              endTime={contest.end_time}
-              participants={contest.participant_count}
-              calculatedTime={contest.calculated_time}
-              type="upcoming"
-            />
-          ))}
-        </div>
+        <h3 className="contentSemiTitle">Upcoming Contests</h3>
+          {upcomingContests.length ? (
+            <div className="scrollContainer">
+              {upcomingContests.map((contest) => (
+                <ContestBox
+                  key={contest.contest_id}
+                  id={contest.contest_id}
+                  name={contest.contest_name}
+                  details={contest.contest_details}
+                  category={contest.contest_category}
+                  organizer={contest.organizer}
+                  date={contest.start_time}
+                  startTime={contest.start_time}
+                  endTime={contest.end_time}
+                  participants={contest.participant_count}
+                  calculatedTime={contest.calculated_time}
+                  type="upcoming"
+                />
+              ))}
+            </div>
+          ) : (
+            <NotFound message="There are currently no Upcoming Contest!" />
+          )}
 
         <div className="miniBreak"></div>
-        <h3 className="text-xl font-semibold">Previous Contests</h3>
-        <div className="scrollContainer">
-          {previousContests.map((contest) => (
-            <ContestBox
-              key={contest.contest_id}
-              id={contest.contest_id}
-              name={contest.contest_name}
-              details={contest.contest_details}
-              category={contest.contest_category}
-              organizer={contest.organizer}
-              date={contest.start_time}
-              startTime={contest.start_time}
-              endTime={contest.end_time}
-              participants={contest.participant_count}
-              calculatedTime={contest.calculated_time}
-              type="previous"
-            />
-          ))}
-        </div>
+        <h3 className="contentSemiTitle">Previous Contests</h3>
+        {previousContests.length ? (
+            <div className="scrollContainer">
+              {previousContests.map((contest) => (
+                <ContestBox
+                  key={contest.contest_id}
+                  id={contest.contest_id}
+                  name={contest.contest_name}
+                  details={contest.contest_details}
+                  category={contest.contest_category}
+                  organizer={contest.organizer}
+                  date={contest.start_time}
+                  startTime={contest.start_time}
+                  endTime={contest.end_time}
+                  participants={contest.participant_count}
+                  calculatedTime={contest.calculated_time}
+                  type="previous"
+                />
+              ))}
+            </div>
+          ) : (
+            <NotFound message="There are currently no Previous Contest!" />
+          )}
       </div>
     </div>
   );

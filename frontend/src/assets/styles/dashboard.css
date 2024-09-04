@@ -62,9 +62,9 @@
     text-align: center;
     padding: 10px;
     height: calc(100dvh - 73px);
-    display: flex;
     align-items: center;
     justify-content: center;
+    overflow: scroll;
 }
 
 .formBox {
@@ -145,6 +145,41 @@
 .tabContent {
     padding: 10px;
     text-align: center;
+}
+
+
+
+.formBoxContainer .mediaContainer {
+    text-align: left;
+    padding: 10px 12px;
+    padding-top: 0;
+}
+.formBoxContainer .mediaContainer .media {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin: 4px;
+    background-color: rgba(0,0,0,0.1);
+    text-align: center;
+}
+.formBoxContainer .mediaContainer .media img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+.formBoxContainer .mediaContainer .media .remove {
+    position: absolute;
+    right: 6px; 
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgba(0,0,0,0.4);
+    color: #ffffff;
 }
 
 

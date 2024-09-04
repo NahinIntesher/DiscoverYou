@@ -12,7 +12,8 @@ import Post from "../Components/StudentComponents/Showcase/Post";
 
 import Course from "../Components/StudentComponents/Course";
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
-import Marketplace from "../Components/StudentComponents/Marketplace";
+import Marketplace from "../Components/StudentComponents/Marketplace/Marketplace";
+
 import Hiring from "../Components/StudentComponents/Hiring";
 import Notification from "../Components/StudentComponents/Notification";
 import Profile from "../Components/StudentComponents/Profile";
@@ -20,6 +21,7 @@ import Community from "../Components/StudentComponents/Community/Community";
 import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";
 import SingleCommunity from "../Components/StudentComponents/Community/SingleCommunity";
 import PendingMembers from "../Components/StudentComponents/Community/PendingMembers";
+import AddProduct from "../Components/StudentComponents/Marketplace/AddProduct";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -43,6 +45,8 @@ export default function Student({ handleLogout, user }) {
           <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace/add-product" element={<AddProduct interests={user.interests}/>} />
+          <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/profile" element={<Profile user={user} />} />

@@ -9,13 +9,31 @@ module.exports = (router) => {
 
     const query = `SELECT 
     w.*,
-    COALESCE(COUNT(p.participant_id), 0) AS participants_count
+    COUNT(w_p.webinar_id) AS participant_count,
+    CASE 
+        WHEN NOW() < w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
+        ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
+    END AS calculated_time,
+    u.name AS host_name,
+    CASE
+      WHEN EXISTS (
+        SELECT *
+        FROM webinar_participants
+        WHERE webinar_participants.webinar_id = w.webinar_id
+      )
+      THEN true
+      ELSE false
+    END AS is_joined
     FROM 
         webinars w
     LEFT JOIN 
-        webinar_participants p
+        webinar_participants w_p
     ON 
-        w.webinar_id = p.webinar_id
+        w.webinar_id = w_p.webinar_id
+    LEFT JOIN 
+        user u
+    ON 
+        w.host_id = u.user_id
     GROUP BY 
         w.webinar_id;
 `;
@@ -29,63 +47,35 @@ module.exports = (router) => {
     });
   });
 
-  router.get("/webinars/:webinarId/register", verifyToken, (req, res) => {
+  router.post("/webinars/register", verifyToken, (req, res) => {
     const userId = req.userId;
-    const { webinarId } = req.params;
+    const { webinarId } = req.body;
 
-    if (!userId) {
-      return res.json({ message: "User ID is required" });
-    }
-
-    // Check if user is already registered
     connection.query(
       "SELECT * FROM webinar_participants WHERE webinar_id = ? AND participant_id = ?",
       [webinarId, userId],
       (err, results) => {
-        if (err) {
-          return res.json({ message: "Database query failed" });
-        }
+        if (err) throw err;
 
         if (results.length > 0) { 
-          // User is already registered
-          return res.json({
-            isRegistered: true,
-            results: results[0],
-            message: "You are already registered for this webinar",
-          });
+          connection.query(
+            "DELETE FROM webinar_participants WHERE webinar_id = ? AND participant_id = ?;",
+            [webinarId, userId],
+            function(err, results) {
+              if (err) throw err;
+              return res.json({status: "Unregistered"});
+            }
+          );
         } else {
-          res.json({
-            isRegistered: false,
-            results: results,
-            message: "You are not registered for this webinar",
-          });
+          connection.query(
+            "INSERT INTO webinar_participants(webinar_id, participant_id) VALUES (?, ?);",
+            [webinarId, userId],
+            function(err, results) {
+              if (err) throw err;
+              return res.json({status: "Registered"});
+            }
+          );
         }
-      }
-    );
-  });
-  router.post("/webinars/:webinarId/register", verifyToken, (req, res) => {
-    const userId = req.userId;
-    const { webinarId } = req.params;
-    // const registration_status = 1;
-
-    if (!userId) {
-      return res.json({ message: "User ID is required" });
-    }
-    // Register user
-    connection.query(
-      "INSERT INTO webinar_participants (webinar_id, participant_id) VALUES (?, ?)",
-      [webinarId, userId],
-      (err) => {
-        if (err) {
-          return res.json({
-            message: "Failed to register for the webinar",
-          });
-        }
-
-        return res.json({
-          isRegistered: true,
-          message: "Successfully registered for the webinar",
-        });
       }
     );
   });
