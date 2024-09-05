@@ -10,7 +10,7 @@ export default function AddProduct({ interests }) {
 
   const [formData, setFormData] = useState({
     productName: "",
-    communityCategory: interests[0],
+    productCategory: interests[0],
     productDetails: "",
     productPrice: "",
     images: [],
@@ -53,9 +53,22 @@ export default function AddProduct({ interests }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const finalData = new FormData();
+    finalData.append('productName', formData.productName);
+    finalData.append('productCategory', formData.productCategory);
+    finalData.append('productDetails', formData.productDetails);
+    finalData.append('productPrice', formData.productPrice);
+    formData.images.forEach((file, index) => {
+        finalData.append(`images`, file); 
+    });
+    
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/student/marketplace/add-product", formData)
+      .post("http://localhost:3000/student/marketplace/add-product", finalData, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+      })
       .then((res) => {
         if (res.data.status === "Success") {
           console.log("Product adding  Success!");

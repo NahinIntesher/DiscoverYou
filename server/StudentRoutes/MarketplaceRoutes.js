@@ -20,7 +20,8 @@ module.exports = (router, multer) => {
       }
     },
   });
-  router.post("/marketplace/add-product", upload.array("media"), verifyToken, (req, res) => {
+
+  router.post("/marketplace/add-product", upload.array("images"), verifyToken, (req, res) => {
       const id = req.userId;
       const { productName, productPrice, productCategory, productDetails } = req.body;
       const files = req.files;
