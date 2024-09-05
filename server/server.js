@@ -12,6 +12,7 @@ const verifyToken = require("./Middlewares/middleware");
 const multer = require('multer');
 const { error } = require("console");
 const StudentRoute = require('./StudentRoutes/StudentRoute');
+const AdminRoute = require('./AdminRoutes/AdminRoute');
 
 // Middleware
 app.use(cookies());
@@ -42,6 +43,7 @@ connection.connect((error) => {
 });
 
 app.use('/student', StudentRoute);
+app.use('/admin', AdminRoute);
 
 app.post("/registrationPage", (req, res) => {
   const token = req.cookies.userRegistered;

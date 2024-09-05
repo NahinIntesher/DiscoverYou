@@ -5,66 +5,16 @@ import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
-export default function AddProduct({ interests }) {
+export default function AddProduct() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    productName: "",
-    productCategory: interests[0],
-    productDetails: "",
-    productPrice: "",
-    images: [],
-  });
+  
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(function (oldFormData) {
-      return {
-        ...oldFormData,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleFileChange = (event) => {
-    let mimetype = event.target.files[0].type;
-    console.log(mimetype);
-    if (mimetype.startsWith("image")) {
-      setFormData(function (oldFormData) {
-        return {
-          ...oldFormData,
-          images: [...oldFormData.images, ...Array.from(event.target.files)],
-        };
-      });
-    } else {
-      alert("File should be image!");
-    }
-  };
-
-  function removeMedia(index) {
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        images: prevFormData.images.filter((_, i) => i !== index),
-      };
-    });
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const finalData = new FormData();
-    finalData.append('productName', formData.productName);
-    finalData.append('productCategory', formData.productCategory);
-    finalData.append('productDetails', formData.productDetails);
-    finalData.append('productPrice', formData.productPrice);
-    formData.images.forEach((file, index) => {
-        finalData.append(`images`, file); 
-    });
+  
     
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/student/marketplace/add-product", finalData, {
+      .post("http://localhost:3000/admin/marketplace/product-requests", finalData, {
           headers: {
               'Content-Type': 'multipart/form-data',
           },
@@ -79,7 +29,7 @@ export default function AddProduct({ interests }) {
       })
       .catch((err) => console.log(err));
     console.log(formData);
-  };
+  
 
   return (
     <div className="mainContent">
