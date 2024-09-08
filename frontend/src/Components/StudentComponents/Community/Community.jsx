@@ -32,10 +32,12 @@ export default function Community() {
             <div className="contentTitle">
                 <div className="content">
                     <div className="title">Commuanity</div>
-                    <Link to="/community/new" className="button">
-                        <MaterialSymbol className="icon" size={24} icon="add" />
-                        <div className="text">Create New Community</div>
-                    </Link>
+                    <div className="buttonContainer">
+                        <Link to="/community/new" className="button">
+                            <MaterialSymbol className="icon" size={24} icon="add" />
+                            <div className="text">Create New Community</div>
+                        </Link>
+                    </div>
                 </div>
             </div>
             {pendingMemberNo != 0 &&

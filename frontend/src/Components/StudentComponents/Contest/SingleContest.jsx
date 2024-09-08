@@ -5,6 +5,7 @@ import ContestProblems from "./ContestProblems";
 import ContestParticipants from "./ContestParticipants";
 import ContestSubmissions from "./ContestSubmissions";
 import './SingleContest.css'; // Adjust the path as necessary
+import Header from "../../CommonComponents/Header";
 
 const SingleContest = () => {
   const { contestId } = useParams();
@@ -36,7 +37,8 @@ const SingleContest = () => {
   if (!data.contest) return <p>No contest data available</p>;
 
   return (
-    <div className="mainContestContent">
+    <div className="mainContent">
+      <Header title={data.contest.contest_name} semiTitle={data.contest.contest_category+" Contest"}/>
       <div className="container">
         <h2 className="titleSingleContest mb-5 text-2xl rounded-lg ">Contest name: {data.contest.contest_name}</h2>
 

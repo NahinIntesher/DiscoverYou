@@ -11,7 +11,7 @@ import Community from "../Components/AdminComponents/Community";
 import Course from "../Components/AdminComponents/Course";
 import Webinar from "../Components/AdminComponents/Webinar";
 import Marketplace from "../Components/AdminComponents/Marketplace/Marketplace";
-import AddProduct from "../Components/StudentComponents/Marketplace/AddProduct";
+import PendingProducts from "../Components/AdminComponents/Marketplace/PendingProducts";
 
 import Hiring from "../Components/AdminComponents/Hiring";
 import Notification from "../Components/AdminComponents/Notification";
@@ -33,7 +33,7 @@ export default function Student({ handleLogout, user }) {
           <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/marketplace/add-product" element={<AddProduct interests={user.interests}/>} />
+          <Route path="/marketplace/product-req" element={<PendingProducts interests={user.interests}/>} />
           <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

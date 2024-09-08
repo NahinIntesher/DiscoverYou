@@ -40,11 +40,12 @@ module.exports = (router, multer) => {
       res.json({ products: results });
     });
   });
-  router.post("/marketplace/products", verifyToken, (req, res) => {
+
+  router.get("/marketplace/products", verifyToken, (req, res) => {
     const id = req.userID;
     const query = `SELECT
      p.*, 
-    (SELECT product_image FROM product_images WHERE product_id = p.product_id LIMIT 1) as product_image
+    CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
      FROM 
         products as p
      JOIN
@@ -58,6 +59,29 @@ module.exports = (router, multer) => {
       if (err) throw err;
       res.json({ products: results });
     });
+  });
+
+  router.get("/marketplace/products/image/:id", (req, res) => {
+    const mediaId = req.params.id;
+
+    connection.query(
+      `
+    SELECT product_image 
+    FROM product_images 
+    WHERE media_id = ?
+  `,
+      [mediaId],
+      (err, results) => {
+        if (err) throw err;
+        if (results.length === 0) {
+          return res.status(404).send("Media not found.");
+        }
+
+        const imageData = results[0].product_image;
+        res.setHeader("Content-Type", "image/");
+        res.send(imageData);
+      }
+    );
   });
 
   router.post("/marketplace/add-product", upload.array("images"), verifyToken, (req, res) => {

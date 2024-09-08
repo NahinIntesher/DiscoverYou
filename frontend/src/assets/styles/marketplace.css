@@ -1,0 +1,87 @@
+.productBoxContainer {
+    padding: 10px;
+    text-align: center;
+}
+
+.productBox {
+    display: inline-flex;
+    vertical-align: middle;
+    background-color: #ffffff;
+    width: calc(50% - 40px);
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 8px;
+    padding: 8px;
+    text-align: left;
+}
+
+.productBox img {
+    display: inline-flex;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 6px;
+    border-radius: 10px;
+}
+.productBox .textContainer {
+    display: inline-flex;
+    flex: auto;
+    flex-direction: column;
+}
+.productBox .textContainer .text { 
+    flex-grow: 1;
+}
+.productBox .textContainer .buttonContainer { 
+    flex-shrink: 1;
+    display: flex;
+    padding: 4px;
+}
+.productBox .textContainer .text .title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 4px 4px;
+    text-wrap: wrap;
+    line-height: 120%;
+    margin-right: 10px;
+}
+.productBox .textContainer .buttonContainer .button { 
+    flex: auto;
+    background-image: 
+        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
+        linear-gradient(#ef5a5a, #ffa952);
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.productBox .textContainer .buttonContainer .buttonAlt { 
+    flex: auto;
+    background-color: rgba(0,0,0,0.15);
+    padding: 10px 18px;
+    border-radius: 60px;
+    font-weight: 550;
+    font-size: 15px;
+    margin: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.productBox .textContainer .buttonContainer .button:hover {
+    box-shadow: 4px 4px 12px rgba(100,0,0,0.2);
+    text-shadow: 2px 2px 8px rgba(100,0,0,0.6);
+}
+
+.productBox .textContainer .buttonContainer .buttonAlt:hover {
+    background-color: rgba(0,0,0,0.3);
+    color: rgba(0,0,0,0.8);
+}
+
+@media screen and (min-width: 1600px) {
+    .productBox {
+        width: calc(33% - 12px);
+    }
+}
