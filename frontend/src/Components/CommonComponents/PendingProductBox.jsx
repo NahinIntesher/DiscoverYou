@@ -3,18 +3,21 @@ import dp from "../../assets/images/desert.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function PendingProductBox({productId, productName, productImage, productPrice, productSeller, setUpdate}) {
+    const navigate = useNavigate();
     function approveMember() {
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/admin/marketplace/product/reject", {
+        .post("http://localhost:3000/admin/marketplace/product/approve", {
             productId
         })
         .then((res) => {
           if (res.data.status === "Success") {
             console.log("Aprroved Success!");
             setUpdate((prevData) => prevData+1);
+            navigate(-1);
           } else {
             alert(res.data.Error);
           }
@@ -30,8 +33,8 @@ export default function PendingProductBox({productId, productName, productImage,
         })
         .then((res) => {
           if (res.data.status === "Success") {
-            console.log("Aprroved Success!");
             setUpdate((prevData) => prevData+1);
+            navigate(-1); 
           } else {
             alert(res.data.Error);
           }

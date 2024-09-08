@@ -35,7 +35,7 @@ module.exports = (router, multer) => {
       WHERE
         p.approval_status = ?
       GROUP BY p.product_id`;
-    connection.query(query, [0], (err, results) => {
+    connection.query(query, [1], (err, results) => {
       if (err) throw err;
       res.json({ products: results });
     });
@@ -61,7 +61,7 @@ module.exports = (router, multer) => {
     GROUP BY 
         p.product_id;
     `;
-    connection.query(query, [1], (err, results) => {
+    connection.query(query, [0], (err, results) => {
       if (err) throw err;
       res.json({ products: results });
     });
@@ -90,80 +90,51 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.post("/marketplace/add-product", upload.array("images"), verifyToken, (req, res) => {
-      const id = req.userId;
-      const { productName, productPrice, productCategory, productDetails } = req.body;
-      const files = req.files;
+  router.post("/marketplace/product/approve", verifyToken, (req, res) => {
+    const { productId } = req.body;
+    console.log(productId);
+    connection.query(
+      `UPDATE products SET approval_status = ? 
+        WHERE product_id = ?;`,
+      [1, productId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });
 
-      connection.query(
-        `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id)
-          VALUES (?, ?, ?, ?, ?)`,
-        [productName, productPrice, productCategory, productDetails, id],
-        (err, results) => {
-          if (err) throw err;
-          let productId = results.insertId;
-
-          if (files.length != 0) {
-            for (const file of files) {
-              const { buffer } = file;
-              connection.query(
-                `INSERT INTO product_images (product_id, product_image)
-                  VALUES (?, ?)`,
-                [productId, buffer],
-                (err, result) => {
-                  if (err) {
-                    console.error("Database insertion error:", err);
-                    throw err;
-                  }
-                }
-              );
+  router.post("/marketplace/product/reject", verifyToken, (req, res) => {
+    const { productId } = req.body;
+    connection.query(
+      `DELETE FROM product_images WHERE product_id = ?;`,
+      [productId],
+      (err, results) => {
+        if (err) {
+          console.error("Error deleting product images:", err);
+          return res.json({
+            status: "Error",
+            message: "Failed to delete product images",
+          });
+        }
+        connection.query(
+          `DELETE FROM products WHERE product_id = ?;`,
+          [productId],
+          (err, results) => {
+            if (err) {
+              console.error("Error deleting product:", err);
+              return res.json({
+                status: "Error",
+                message: "Failed to delete product",
+              });
             }
-          }
-          res.json({ status: "Success" });
-        }
-      );
-    }
-  );
-
-  router.post(
-    "/marketplace/product/approve",
-    verifyToken,
-    (req, res) => {
-      const { product_id} = req.body;
-      const { media_id } = req.params;
-      connection.query(
-        `UPDATE products SET approval_status = '1' 
-        WHERE product_id = ?;`,
-        [product_id],
-        (err, results) => {
-          if (err) throw err;
-          return res.json({ status: "Success" });
-        }
-      );
-    }
-  );
-
-  router.post(
-    "/marketplace/product/reject",
-    verifyToken,
-    (req, res) => {
-      const { product_id} = req.body;
-      const { media_id } = req.params;
-      connection.query(
-        `DELETE FROM products 
-        WHERE product_id = ?;`,
-        [product_id],
-        (err, results) => {
-          if (err) throw err;
-          connection.query(
-            `DELETE FROM product_images
-            WHERE product_id = ? AND media_id = ?;`,
-            [product_id, media_id]);
             return res.json({ status: "Success" });
-        }
-      );
-    }
-  );
+          }
+        );
+      }
+    );
+  });
+
   router.get("/marketplace", verifyToken, (req, res) => {
     res.json({ messege: "Market Place" });
   });
