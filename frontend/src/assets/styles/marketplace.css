@@ -7,7 +7,7 @@
     display: inline-flex;
     vertical-align: middle;
     background-color: #ffffff;
-    width: calc(50% - 40px);
+    width: calc(50% - 24px);
     border-radius: 18px;
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     margin: 8px;
@@ -17,8 +17,8 @@
 
 .productBox img {
     display: inline-flex;
-    width: 150px;
-    height: 150px;
+    width: 152px;
+    height: 152px;
     object-fit: cover;
     margin: 6px;
     border-radius: 10px;
@@ -30,6 +30,8 @@
 }
 .productBox .textContainer .text { 
     flex-grow: 1;
+    padding: 8px;
+    padding-bottom: 2px;
 }
 .productBox .textContainer .buttonContainer { 
     flex-shrink: 1;
@@ -39,11 +41,33 @@
 .productBox .textContainer .text .title {
     font-size: 20px;
     font-weight: 600;
-    margin: 4px 4px;
+    margin: 4px;
     text-wrap: wrap;
     line-height: 120%;
     margin-right: 10px;
 }
+.productBox .textContainer .details {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.productBox .textContainer .type {
+    flex-shrink: 1;
+    background-color: rgba(0,0,0,0.1);
+    padding: 4px 14px;
+    font-size: 14px;
+    border-radius: 20px;
+}
+.productBox .textContainer .price {
+    flex-grow: 1;
+    color: #F78256;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 4px;
+    text-align: right;
+}
+
 .productBox .textContainer .buttonContainer .button { 
     flex: auto;
     background-image: 
@@ -82,6 +106,6 @@
 
 @media screen and (min-width: 1600px) {
     .productBox {
-        width: calc(33% - 12px);
+        width: 40%;
     }
 }

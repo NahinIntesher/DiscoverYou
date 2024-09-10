@@ -11,8 +11,9 @@ export default function ProductBox({productName, productImage, productPrice}) {
                         {productName}
                     </div>
                 </div>
-                <div className="price">
-                    {productPrice}৳
+                <div className="details">
+                    <div className="type">Physical Product</div>
+                    <div className="price">{productPrice}৳</div>
                 </div>
                 <div className="buttonContainer">
                     <div className="button">Details</div>
