@@ -86,13 +86,13 @@ module.exports = (router, multer) => {
 
   router.post("/marketplace/add-product", upload.array("images"), verifyToken, (req, res) => {
       const id = req.userId;
-      const { productName, productPrice, productCategory, productDetails } = req.body;
+      const { productName, productPrice, productCategory, productDetails, productType, productOnStock } = req.body;
       const files = req.files;
 
       connection.query(
-        `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id)
-          VALUES (?, ?, ?, ?, ?)`,
-        [productName, productPrice, productCategory, productDetails, id],
+        `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id, product_type, product_on_stock)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [productName, productPrice, productCategory, productDetails, id, productType, productOnStock],
         (err, results) => {
           if (err) throw err;
           let productId = results.insertId;

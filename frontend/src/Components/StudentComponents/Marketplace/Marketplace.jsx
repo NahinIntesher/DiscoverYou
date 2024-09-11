@@ -50,6 +50,8 @@ export default function Marketplace() {
                                 productName={product.product_name}
                                 productImage={product.image_url}
                                 productPrice={product.product_price}
+                                productType={product.product_type}
+                                productOnStock={product.product_on_stock}
                             />
                         )
                     })

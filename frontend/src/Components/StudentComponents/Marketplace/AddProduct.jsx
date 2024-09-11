@@ -7,12 +7,14 @@ import "react-material-symbols/rounded";
 
 export default function AddProduct({ interests }) {
   const navigate = useNavigate();
-
+  
   const [formData, setFormData] = useState({
     productName: "",
     productCategory: interests[0],
+    productType: "digital",
     productDetails: "",
     productPrice: "",
+    productOnStock: 0,
     images: [],
   });
 
@@ -56,11 +58,18 @@ export default function AddProduct({ interests }) {
     const finalData = new FormData();
     finalData.append('productName', formData.productName);
     finalData.append('productCategory', formData.productCategory);
+    finalData.append('productType', formData.productType);
+    finalData.append('productOnStock', formData.productOnStock);
     finalData.append('productDetails', formData.productDetails);
     finalData.append('productPrice', formData.productPrice);
     formData.images.forEach((file, index) => {
         finalData.append(`images`, file); 
     });
+
+    if(formData.images.length < 2) {
+      alert("Add atleast 2 images!");
+      return;
+    }
     
     axios.defaults.withCredentials = true;
     axios
@@ -89,28 +98,36 @@ export default function AddProduct({ interests }) {
           <form onSubmit={handleSubmit}>
             <div className="title">Add New Product</div>
             <div className="input">
-              <label name="productName">Product Name</label>
+              <label name="productName">
+                Product Name <span className="required">*</span>
+              </label>
               <input
                 name="productName"
                 onChange={handleChange}
                 type="text"
                 placeholder="Enter product name"
+                required
               />
             </div>
 
             <div className="input">
-              <label name="productPrice">Product Price</label>
+              <label name="productPrice">
+                Product Price <span className="required">*</span>
+              </label>
               <input
                 name="productPrice"
                 onChange={handleChange}
-                type="text"
+                type="number"
                 placeholder="Enter product price $"
+                required
               />
             </div>
 
             <div className="input">
-              <label htmlFor="productCategory">Product Category</label>
-              <select name="productCategory" onChange={handleChange}>
+              <label htmlFor="productCategory">
+                Product Category <span className="required">*</span>
+              </label>
+              <select name="productCategory" onChange={handleChange} required>
                 {interests.map(function (interest) {
                   return (
                     <option value={interest} key={interest}>
@@ -121,24 +138,59 @@ export default function AddProduct({ interests }) {
               </select>
             </div>
 
+
             <div className="input">
-              <label htmlFor="productDetails">Add Product Details</label>
+              <label htmlFor="productType">
+                Product Type <span className="required">*</span>
+              </label>
+              <select name="productType" onChange={handleChange} required>
+                <option value="digital">Digital</option>
+                <option value="physical">Physical</option>
+              </select>
+            </div>
+
+            {
+              formData.productType == "physical" && (
+              <div className="input">
+                <label name="productOnStock">
+                  Product On Stock <span className="required">*</span>
+                </label>
+                <input
+                  name="productOnStock"
+                  onChange={handleChange}
+                  type="number"
+                  placeholder="Enter number of product on stock"
+                  required
+                />
+              </div>)
+            }
+
+          
+            <div className="input">
+              <label htmlFor="productDetails">
+                Add Product Details <span className="required">*</span>
+              </label>
               <textarea
                 name="productDetails"
                 onChange={handleChange}
                 placeholder="Enter product details"
+                required
               />
             </div>
 
             <div className="input">
-              <label htmlFor="productDetails">Add Product Images</label>
+              <label htmlFor="productDetails">
+                Add Product Images <span className="required">*</span>
+              </label>
               <input
                 type="file"
                 name="images"
                 multiple
                 onChange={handleFileChange}
                 accept="image/*"
+                required
               />
+              {formData.images.length < 2 && <p className="bottomRequired">Add at least 2 image of you product</p>}
             </div>
 
             <div className="mediaContainer">
@@ -169,7 +221,7 @@ export default function AddProduct({ interests }) {
               })}
             </div>
 
-            <button>Request for add the Product</button>
+            <button>Request For Add Product</button>
           </form>
         </div>
       </div>

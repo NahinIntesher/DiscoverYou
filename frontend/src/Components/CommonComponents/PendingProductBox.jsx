@@ -51,7 +51,7 @@ export default function PendingProductBox({productId, productName, productImage,
                 <div className="name">{productName}</div>
                 <div className="detail">Product price <span className="community">{productPrice}৳</span></div>
                 <div className="detail">Requested for add the product <span className="community">{productSeller}</span></div>
-                <div className="viewProfile">View Profile</div>
+                <div className="viewProfile">View Details</div>
             </div>
             <div className="buttonContainer">
                 <div className="acceptButton" onClick={approveMember}>
