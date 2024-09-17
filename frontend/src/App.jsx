@@ -54,11 +54,11 @@ function App() {
 
   if (loaded) {
     if (authorized) {
-      if (user.category == "student") {
+      if (user.type == "student") {
         return <StudentRoutes handleLogout={handleLogout} user={user} />;
-      } else if (user.category == "organizer") {
+      } else if (user.type == "organizer") {
         return <OrganizerRoutes handleLogout={handleLogout} user={user} />;
-      } else if (user.category == "admin") {
+      } else if (user.type == "admin") {
         return <AdminRoutes handleLogout={handleLogout} user={user} />;
       }
     } else {

@@ -97,7 +97,7 @@ app.post("/registrationPage", (req, res) => {
           const interestQueries = interests.map((interest) => {
             return new Promise((resolve, reject) => {
               connection.query(
-                "INSERT INTO user_interest (interest_name, user_id) VALUES (?, ?)",
+                "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
                 [interest, userId],
                 (err) => {
                   if (err) {
@@ -125,7 +125,7 @@ app.post("/registrationPage", (req, res) => {
     });
 });
 
-app.post("/loginPage", (req, res) => {
+app.post("/login", (req, res) => {
   const token = req.cookies.userRegistered;
   if (token) {
     return res.json({ status: "Success" });
@@ -133,7 +133,7 @@ app.post("/loginPage", (req, res) => {
   const { email, password } = req.body;
 
   connection.query(
-    "SELECT * FROM user WHERE email = ?",
+    "SELECT * FROM students WHERE email = ?",
     [email],
     (err, results) => {
       if (err) {
@@ -147,9 +147,9 @@ app.post("/loginPage", (req, res) => {
           (err, response) => {
             if (err) return res.json({ Error: "Error comparing password" });
             if (response) {
-              const uid = results[0].user_id;
+              const uid = results[0].student_id;
 
-              const token = jwt.sign({ id: uid }, "1234", { expiresIn: "1d" });
+              const token = jwt.sign({ id: uid, type: "student" }, "1234", { expiresIn: "1d" });
               const cookieOptions = {
                 expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
@@ -170,35 +170,41 @@ app.post("/loginPage", (req, res) => {
 });
 
 app.get("/", verifyToken, (req, res) => {
-  const id = req.userId;
+  const userId = req.userId;
+  const userType = req.userType;
 
-  // Query to get user data and interests using LEFT JOIN
-  const query = `
-    SELECT u.*, GROUP_CONCAT(ui.interest_name) AS interests
-    FROM user u
-    LEFT JOIN user_interest ui ON u.user_id = ui.user_id
-    WHERE u.user_id = ?
-    GROUP BY u.user_id
-  `;
+  let query;
 
-  connection.query(query, [id], (err, results) => {
+  if(userType == "student") {
+    query = `
+      SELECT s.*, GROUP_CONCAT(si.interest_name) AS interests
+      FROM students s
+      LEFT JOIN student_interests si 
+      ON s.student_id = si.student_id
+      WHERE s.student_id = ?
+      GROUP BY s.student_id
+    `;
+  }
+
+  connection.query(query, [userId], (err, results) => {
     if (err) {
       console.error("Error fetching user data:", err);
       return res.status(500).json({ Error: "Error fetching user data" });
     }
-    // Ensure results is not empty
+
     if (results.length === 0) {
       return res.status(404).json({ Error: "User not found" });
     }
-    // Process results
+
     const user = results[0];
     const interests = user.interests ? user.interests.split(",") : [];
-
+    
     return res.json({
       status: "Success",
       user: {
         ...user,
         interests,
+        type: userType
       },
     });
   });

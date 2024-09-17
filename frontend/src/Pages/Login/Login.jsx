@@ -48,7 +48,7 @@ export default function LoginPage({setAuthorized, setUser}) {
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
       axios
-        .post("http://localhost:3000/loginPage", formData)
+        .post("http://localhost:3000/login", formData)
         .then((res) => {
           if (res.data.status === "Success") {
             setAuthorized(true);          
