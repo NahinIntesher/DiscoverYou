@@ -11,13 +11,13 @@ export default function Profile({ user }) {
           <p className="text-lg">View and edit your profile</p>
           <div className="mt-4">
             <p className="text-lg">
-              <strong>Name:</strong> {user.name}
+              <strong>Name:</strong> {user.student_name}
             </p>
             <p className="text-lg">
-              <strong>Date of Birth:</strong> {user.dateOfBirth}
+              <strong>Date of Birth:</strong> {user.student_date_of_birth}
             </p>
             <p className="text-lg">
-              <strong>Gender:</strong> {user.gender}
+              <strong>Gender:</strong> {user.student_gender}
             </p>
             <p className="text-lg">
               <strong>Bio:</strong>{" "}
@@ -72,13 +72,13 @@ export default function Profile({ user }) {
             Contact Information
           </h1>
           <p className="text-lg">
-            <strong>Address:</strong> {user.address}
+            <strong>Address:</strong> {user.student_address}
           </p>
           <p className="text-lg">
-            <strong>Phone:</strong> {user.phone}
+            <strong>Phone:</strong> {user.student_phone}
           </p>
           <p className="text-lg">
-            <strong>Email:</strong> {user.email}
+            <strong>Email:</strong> {user.student_email}
           </p>
         </div>
 
@@ -86,11 +86,7 @@ export default function Profile({ user }) {
         <div className="p-6 bg-[radial-gradient(#ffe79acc,#ffe79a99)] text-black rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold mb-2 cursor-pointer">Settings</h1>
           <p className="text-lg">Change your account settings</p>
-          {user.category === "admin" && (
-            <p className="text-lg">
-              <strong>Admin Key:</strong> {user.adminKey}
-            </p>
-          )}
+            hola
         </div>
       </div>
     </div>

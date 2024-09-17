@@ -3,22 +3,23 @@ import DiscoverYouImage from "../../assets/images/DiscoverYou.png"; // Import th
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { MaterialSymbol } from 'react-material-symbols';
-import 'react-material-symbols/rounded';
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
 
-export default function LoginPage({setAuthorized, setUser}) {
+export default function LoginPage({ setAuthorized, setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    category: "",
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  
+
   const validateEmail = (email) => {
     const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     return emailPattern.test(email);
   };
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -51,7 +52,7 @@ export default function LoginPage({setAuthorized, setUser}) {
         .post("http://localhost:3000/login", formData)
         .then((res) => {
           if (res.data.status === "Success") {
-            setAuthorized(true);          
+            setAuthorized(true);
             setUser(res.data.user);
             navigate("/");
           } else {
@@ -123,8 +124,32 @@ export default function LoginPage({setAuthorized, setUser}) {
                 className="absolute right-3 top-11 cursor-pointer"
                 onClick={togglePasswordVisibility}
               >
-                {showPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/> }
+                {showPassword ? (
+                  <MaterialSymbol icon="visibility" size={18} />
+                ) : (
+                  <MaterialSymbol icon="visibility_off" size={18} />
+                )}
               </div>
+            </div>
+
+            {/* Category */}
+            <div className="mb-5">
+              <label className="block text-gray-700 text-md">
+                Your Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-400 rounded bg-[#feffdf]"
+                required
+              >
+                <option value="">Select your category</option>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+                <option value="organizer">Organizer</option>
+              </select>
             </div>
 
             {/* Remember Me */}

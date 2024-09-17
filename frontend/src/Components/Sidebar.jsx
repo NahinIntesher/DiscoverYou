@@ -32,7 +32,7 @@ export default function Sidebar({logoutAction, user}) {
                     <img src={dp}/>
                 </div>
                 <div className="details">
-                    <div className="name">{user.name}</div>
+                    <div className="name">{user.student_name}</div>
                     <div onClick={logoutAction} className="logout">
                         <MaterialSymbol className="icon" size={20} icon="logout"/>
                         <div className="text">Logout</div>
