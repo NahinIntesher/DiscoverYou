@@ -6,6 +6,7 @@ import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import GivePostBox from "../../CommonComponents/GivePostBox";
 import PostBox from "../../CommonComponents/PostBox";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function Showcase({user}) {    
     const [posts, setPosts] = useState([]);
@@ -33,12 +34,13 @@ export default function Showcase({user}) {
             <GivePostBox setUpdatePost={setUpdatePost} user={user}/>   
             <div className="postBoxContainer">
             {
+                posts.length > 0 ?
                 posts.map(function(post){
                     return (
                         <PostBox 
                             key={post.post_id}
                             postId={post.post_id}
-                            posterName={post.poster_name} 
+                            posterName={post.user_name} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}
                             postMediaArray={JSON.parse("["+post.media_array+"]")}
@@ -49,7 +51,10 @@ export default function Showcase({user}) {
                         />
                     );
                 })
+                :
+                <NotFound message="No Post Found"/>
             }
+            
             </div>        
         </div>
     );

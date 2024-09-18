@@ -14,7 +14,7 @@ export default function AdminRegistrationPage() {
     gender: "",
     address: "",
     phone: "",
-    category: "",
+    category: "student",
     adminKey: "",
     interests: [],
     email: "",
@@ -217,9 +217,8 @@ export default function AdminRegistrationPage() {
             className="w-full p-2 border border-gray-400 rounded bg-[#feffdf]"
             required
           >
-            <option value="">Select your category</option>
+            <option value="student" selected>Student</option>
             <option value="admin">Admin</option>
-            <option value="student">Student</option>
             <option value="organizer">Organizer</option>
           </select>
         </div>
@@ -261,56 +260,57 @@ export default function AdminRegistrationPage() {
         )}
 
         {/* Interests */}
-        <div className="mb-5">
-          <label className="block text-gray-700 text-lg font-semibold">
-            Interests <span className="text-red-500">*</span>
-          </label>
-          <div className="flex flex-wrap gap-4 mt-2">
-            {[
-              "Competitive Programming",
-              "Web/App Designing",
-              "Gaming",
-              "Photography",
-              "Debating",
-              "Singing",
-              "Writing",
-              "Art & Craft",
-              "Graphics Designing",
-            ].map((interest) => (
-              <label
-                key={interest}
-                htmlFor={interest.toLowerCase()}
-                className="flex items-center"
-              >
-                <input
-                  type="checkbox"
-                  id={interest.toLowerCase()}
-                  name="interests"
-                  value={interest}
-                  checked={formData.interests.includes(interest)}
-                  onChange={(e) => {
-                    const updatedInterests = formData.interests.includes(
-                      e.target.value
-                    )
-                      ? formData.interests.filter((i) => i !== e.target.value)
-                      : formData.interests.length < 3
-                      ? [...formData.interests, e.target.value]
-                      : formData.interests;
+        {formData.category === "student" && (
+          <div className="mb-5">
+            <label className="block text-gray-700 text-lg font-semibold">
+              Interests <span className="text-red-500">*</span>
+            </label>
+            <div className="flex flex-wrap gap-4 mt-2">
+              {[
+                "Competitive Programming",
+                "Web/App Designing",
+                "Gaming",
+                "Photography",
+                "Debating",
+                "Singing",
+                "Writing",
+                "Art & Craft",
+                "Graphics Designing",
+              ].map((interest) => (
+                <label
+                  key={interest}
+                  htmlFor={interest.toLowerCase()}
+                  className="flex items-center"
+                >
+                  <input
+                    type="checkbox"
+                    id={interest.toLowerCase()}
+                    name="interests"
+                    value={interest}
+                    checked={formData.interests.includes(interest)}
+                    onChange={(e) => {
+                      const updatedInterests = formData.interests.includes(
+                        e.target.value
+                      )
+                        ? formData.interests.filter((i) => i !== e.target.value)
+                        : formData.interests.length < 3
+                        ? [...formData.interests, e.target.value]
+                        : formData.interests;
 
-                    setFormData({ ...formData, interests: updatedInterests });
-                  }}
-                  className="form-checkbox"
-                  disabled={
-                    !formData.interests.includes(interest) &&
-                    formData.interests.length >= 3
-                  }
-                />
-                <span className="ml-2">{interest}</span>
-              </label>
-            ))}
+                      setFormData({ ...formData, interests: updatedInterests });
+                    }}
+                    className="form-checkbox"
+                    disabled={
+                      !formData.interests.includes(interest) &&
+                      formData.interests.length >= 3
+                    }
+                  />
+                  <span className="ml-2">{interest}</span>
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
-
+        )}
         {/* Mobile Number */}
         <div className="mb-5">
           <label className="block text-gray-700 text-lg font-semibold">

@@ -65,25 +65,22 @@ app.post("/registrationPage", (req, res) => {
   } = req.body;
 
   if (category == "student") {
+    console.log("student Registration Start");
     bcrypt
       .hash(password, 10)
       .then((hashedPassword) => {
         // Insert the user into the user table
         connection.query(
-          "INSERT INTO student (student_name, student_date_of_birth, student_gender, student_address, student_phone, student_email, student_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO student (student_name, student_date_of_birth, student_gender, student_address, student_mobile_no, student_email, student_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
           [name, dateOfBirth, gender, address, phone, email, hashedPassword],
           (err, results) => {
-            if (err) {
-              return res
-                .status(500)
-                .json({ Error: "Error registering student" });
-            }
+            if (err) throw err;
             // Retrieve the user_id of the newly inserted user
             const userId = results.insertId;
 
             // Create an array of queries for inserting interests
             const interestQueries = interests.map((interest) => {
-              return new Promise((resolve, reject) => {
+//              return new Promise((resolve, reject) => {
                 connection.query(
                   "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
                   [interest, userId],
@@ -94,17 +91,19 @@ app.post("/registrationPage", (req, res) => {
                     resolve();
                   }
                 );
-              });
+   //           });
             });
 
+            return res.json({ status: "Success" });
+
             // Execute all interest insertion queries
-            Promise.all(interestQueries)
-              .then(() => {
-                return res.json({ status: "Success" });
-              })
-              .catch((error) => {
-                return res.json({ Error: "Error inserting interests" });
-              });
+            // Promise.all(interestQueries)
+            //   .then(() => {
+            //     return res.json({ status: "Success" });
+            //   })
+            //   .catch((error) => {
+            //     return res.json({ Error: "Error inserting interests" });
+            //   });
           }
         );
       })
@@ -117,7 +116,7 @@ app.post("/registrationPage", (req, res) => {
       .then((hashedPassword) => {
         // Insert the user into the user table
         connection.query(
-          "INSERT INTO organizer (organizer_name, organizer_date_of_birth, organizer_gender, organizer_address, organizer_phone, organizer_email, organizer_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO organizer (organizer_name, organizer_date_of_birth, organizer_gender, organizer_address, organizer_mobile_no, organizer_email, organizer_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
           [name, dateOfBirth, gender, address, phone, email, hashedPassword],
           (err, results) => {
             if (err) {
@@ -142,7 +141,7 @@ app.post("/registrationPage", (req, res) => {
       .then((hashedPassword) => {
         // Insert the user into the user table
         connection.query(
-          "INSERT INTO admin (admin_name, admin_date_of_birth, admin_gender, admin_address, admin_phone, admin_email, admin_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO admin (admin_name, admin_date_of_birth, admin_gender, admin_address, admin_mobile_no, admin_email, admin_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
           [name, dateOfBirth, gender, address, phone, email, hashedPassword],
           (err, results) => {
             if (err) {

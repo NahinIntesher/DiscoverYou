@@ -73,7 +73,7 @@ export default function Post() {
                     <PostBox 
                         key={post.post_id}
                         postId={post.post_id}
-                        posterName={post.poster_name} 
+                        posterName={post.user_name} 
                         postContent={post.post_content}
                         postTimeAgo={post.post_time_ago}
                         postMediaArray={post.media_array ? JSON.parse("["+post.media_array+"]") : []}
