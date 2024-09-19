@@ -1,8 +1,8 @@
 import React, {Image} from "react";
-import "../assets/styles/sidebar.css"
-import SidebarOption from "./SidebarOption";
-import dp from "../assets/images/desert.jpg";
-import logo from "../assets/images/logo.svg";
+import "../../assets/styles/sidebar.css"
+import SidebarOption from "../SidebarOption";
+import dp from "../../assets/images/desert.jpg";
+import logo from "../../assets/images/logo.svg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 
@@ -32,7 +32,7 @@ export default function Sidebar({logoutAction, user}) {
                     <img src={dp}/>
                 </div>
                 <div className="details">
-                    <div className="name">{user.student_name}</div>
+                    <div className="name">{user.organizer_name}</div>
                     <div onClick={logoutAction} className="logout">
                         <MaterialSymbol className="icon" size={20} icon="logout"/>
                         <div className="text">Logout</div>

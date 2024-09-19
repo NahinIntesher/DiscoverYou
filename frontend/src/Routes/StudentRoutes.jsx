@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sidebar from "../Components/Sidebar";
+
+import Sidebar from "../../src/Components/StudentComponents/Sidebar";
 import Dashboard from "../Components/StudentComponents/Dashboard";
 
 import Contest from "../Components/StudentComponents/Contest/Contest";
@@ -9,18 +10,21 @@ import SingleContest from "../Components/StudentComponents/Contest/SingleContest
 import Showcase from "../Components/StudentComponents/Showcase/Showcase";
 import Post from "../Components/StudentComponents/Showcase/Post";
 
-
 import Course from "../Components/StudentComponents/Course";
+
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
-import Marketplace from "../Components/StudentComponents/Marketplace/Marketplace";
+import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
 
 import Hiring from "../Components/StudentComponents/Hiring";
 import Notification from "../Components/StudentComponents/Notification";
 import Profile from "../Components/StudentComponents/Profile";
+
 import Community from "../Components/StudentComponents/Community/Community";
 import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";
 import SingleCommunity from "../Components/StudentComponents/Community/SingleCommunity";
 import PendingMembers from "../Components/StudentComponents/Community/PendingMembers";
+
+import Marketplace from "../Components/StudentComponents/Marketplace/Marketplace";
 import AddProduct from "../Components/StudentComponents/Marketplace/AddProduct";
 
 export default function Student({ handleLogout, user }) {
@@ -37,15 +41,25 @@ export default function Student({ handleLogout, user }) {
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
-          <Route path="/community" element={<Community/>} />
-          <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
-          <Route path="/community/members/pending" element={<PendingMembers />} />
+          <Route path="/community" element={<Community />} />
+          <Route
+            path="/community/new"
+            element={<CreateNewCommunity interests={user.interests} />}
+          />
+          <Route
+            path="/community/members/pending"
+            element={<PendingMembers />}
+          />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
           <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
+          <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/marketplace/add-product" element={<AddProduct interests={user.interests}/>} />
+          <Route
+            path="/marketplace/add-product"
+            element={<AddProduct interests={user.interests} />}
+          />
           <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../../src/Components/OrganizerComponents/Sidebar";
 import Dashboard from "../Components/OrganizerComponents/Dashboard";
 
 import Contest from "../Components/OrganizerComponents/Contest/Contest";
@@ -9,7 +9,7 @@ import SingleContest from "../Components/StudentComponents/Contest/SingleContest
 import Showcase from "../Components/OrganizerComponents/Showcase";
 import Community from "../Components/OrganizerComponents/Community";
 import Course from "../Components/OrganizerComponents/Course";
-import Webinar from "../Components/OrganizerComponents/Webinar";
+import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
 import Marketplace from "../Components/OrganizerComponents/Marketplace";
 import Hiring from "../Components/OrganizerComponents/Hiring";
 import Notification from "../Components/OrganizerComponents/Notification";

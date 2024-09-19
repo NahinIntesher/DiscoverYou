@@ -31,8 +31,6 @@ export default function ContestBox({
   }
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log(id);
-    console.log(name);
     navigate(`/contest/${id}`);
   };
 

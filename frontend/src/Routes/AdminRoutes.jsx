@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../../src/Components/AdminComponents/Sidebar";
 import Dashboard from "../Components/AdminComponents/Dashboard";
 
 import Contest from "../Components/AdminComponents/Contest/Contest";
@@ -9,7 +9,7 @@ import SingleContest from "../Components/StudentComponents/Contest/SingleContest
 import Showcase from "../Components/AdminComponents/Showcase";
 import Community from "../Components/AdminComponents/Community";
 import Course from "../Components/AdminComponents/Course";
-import Webinar from "../Components/AdminComponents/Webinar";
+import Webinar from "../Components/AdminComponents/Webinar/Webinar";
 import Marketplace from "../Components/AdminComponents/Marketplace/Marketplace";
 import PendingProducts from "../Components/AdminComponents/Marketplace/PendingProducts";
 
@@ -33,7 +33,10 @@ export default function Student({ handleLogout, user }) {
           <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/marketplace/product-req" element={<PendingProducts interests={user.interests}/>} />
+          <Route
+            path="/marketplace/product-req"
+            element={<PendingProducts interests={user.interests} />}
+          />
           <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

@@ -4,6 +4,7 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../assets/images/desert4.jpg";
 import ContestTimeRemaining from "./contestTimeRemaining";
+import { useNavigate } from "react-router-dom";
 
 export default function WebinarBox({
   id,
@@ -19,10 +20,11 @@ export default function WebinarBox({
   participants,
   calculatedTime,
   type,
-  isJoined
+  isJoined,
 }) {
   const [isRegistered, setIsRegistered] = useState(isJoined);
   const [participantNo, setParticipantNo] = useState(participants);
+  const navigate = useNavigate();
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -37,32 +39,32 @@ export default function WebinarBox({
     return time.toLocaleString("en-US", { dateStyle: "medium" });
   }
 
-
-  function registerWebinar () {
+  function registerWebinar() {
     axios.defaults.withCredentials = true;
     axios
-    .post("http://localhost:3000/student/webinars/register", {
-        webinarId: id
-    })
-    .then((res) => {
-      console.log(res.data.status);
-      if (res.data.status === "Registered") {
-        setIsRegistered(true);
-        setParticipantNo((prevValue) => prevValue+1);
-      } 
-      else if (res.data.status === "Unregistered") {
-        setIsRegistered(false);
-        setParticipantNo((prevValue) => prevValue-1);
-      } else {
-        alert(res.data.Error);
-      }
-    })
-    .catch((err) => console.log(err));
-  };
+      .post("http://localhost:3000/student/webinars/register", {
+        webinarId: id,
+      })
+      .then((res) => {
+        console.log(res.data.status);
+        if (res.data.status === "Registered") {
+          setIsRegistered(true);
+          setParticipantNo((prevValue) => prevValue + 1);
+        } else if (res.data.status === "Unregistered") {
+          setIsRegistered(false);
+          setParticipantNo((prevValue) => prevValue - 1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  function notRegisteredError() {
+    alert("Sorry, you didn't registered for this webinar!");
+  }
 
-  
-  function notRegisteredError () {
-    alert("Sorry, you didn't registered for this webinar!")
+  function handleSeeDetails() {
+    navigate(`/webinar/${id}`);
   }
 
   return (
@@ -95,21 +97,15 @@ export default function WebinarBox({
             <MaterialSymbol className="icon" size={24} icon="communication" />
           )}
           {category === "Gaming" && (
-            <MaterialSymbol
-              className="icon"
-              size={24}
-              icon="sports_esports"
-            />
+            <MaterialSymbol className="icon" size={24} icon="sports_esports" />
           )}
           <div className="text">{category}</div>
         </div>
       </div>
       <div className="detailsContainer">
         <div className="detailsContent">
-          <div className="description">
-            {description}
-          </div>
-          <hr/>
+          <div className="description">{description}</div>
+          <hr />
           <div className="details">
             <div className="detail">
               <MaterialSymbol
@@ -150,6 +146,10 @@ export default function WebinarBox({
           </div>
         </div>
         <div className="joinButtonContainer">
+          <button onClick={handleSeeDetails} className="joinButton">
+            See Details
+          </button>
+          {/* <div className="joinButtonContainer">
           {type == "ongoing" ? 
           isRegistered ? (
             <a href={meetingLink} className="joinButton">Join Meeting</a>
@@ -165,7 +165,7 @@ export default function WebinarBox({
           )}
           <div className="joinDetails">
             Participant: <b>{participantNo}</b>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

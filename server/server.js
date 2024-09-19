@@ -13,6 +13,7 @@ const multer = require("multer");
 const { error } = require("console");
 const StudentRoute = require("./StudentRoutes/StudentRoute");
 const AdminRoute = require("./AdminRoutes/AdminRoute");
+const OrganizerRoute = require("./OrganizerRoutes/OrganizerRoute");
 
 // Middleware
 app.use(cookies());
@@ -44,6 +45,7 @@ connection.connect((error) => {
 
 app.use("/student", StudentRoute);
 app.use("/admin", AdminRoute);
+app.use("/organizer", OrganizerRoute);
 
 app.post("/registrationPage", (req, res) => {
   const token = req.cookies.userRegistered;
@@ -80,18 +82,18 @@ app.post("/registrationPage", (req, res) => {
 
             // Create an array of queries for inserting interests
             const interestQueries = interests.map((interest) => {
-//              return new Promise((resolve, reject) => {
-                connection.query(
-                  "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
-                  [interest, userId],
-                  (err) => {
-                    if (err) {
-                      return reject(err);
-                    }
-                    resolve();
+              //              return new Promise((resolve, reject) => {
+              connection.query(
+                "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
+                [interest, userId],
+                (err) => {
+                  if (err) {
+                    return reject(err);
                   }
-                );
-   //           });
+                  resolve();
+                }
+              );
+              //           });
             });
 
             return res.json({ status: "Success" });
@@ -208,7 +210,8 @@ app.post("/login", (req, res) => {
       [email],
       (err, results) => {
         if (err) {
-          return res.json({ Error: "Login error in server" });
+          throw err;
+          // return res.json({ Error: "Login error in server" });
         }
 
         if (results.length > 0) {
@@ -246,7 +249,7 @@ app.post("/login", (req, res) => {
       [email],
       (err, results) => {
         if (err) {
-          return res.json({ Error: "Login error in server" });
+          throw err;
         }
 
         if (results.length > 0) {
@@ -296,6 +299,10 @@ app.get("/", verifyToken, (req, res) => {
       WHERE s.student_id = ?
       GROUP BY s.student_id
     `;
+  } else if (userType == "organizer") {
+    query = `SELECT * FROM organizer WHERE organizer_id = ?`;
+  } else if (userType == "admin") {
+    query = `SELECT * FROM admin WHERE admin_id = ?`;
   }
 
   connection.query(query, [userId], (err, results) => {

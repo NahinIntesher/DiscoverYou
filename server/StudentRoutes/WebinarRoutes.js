@@ -7,36 +7,35 @@ module.exports = (router) => {
   router.get("/webinars", verifyToken, (req, res) => {
     let userId = req.userId;
 
-    const query = `SELECT 
-    w.*,
-    COUNT(w_p.webinar_id) AS participant_count,
-    CASE 
-        WHEN NOW() < w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
-        ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
-    END AS calculated_time,
-    u.name AS host_name,
-    CASE
-      WHEN EXISTS (
-        SELECT *
-        FROM webinar_participants
-        WHERE webinar_participants.webinar_id = w.webinar_id
-      )
-      THEN true
-      ELSE false
-    END AS is_joined
-    FROM 
-        webinars w
-    LEFT JOIN 
-        webinar_participants w_p
-    ON 
-        w.webinar_id = w_p.webinar_id
-    LEFT JOIN 
-        user u
-    ON 
-        w.host_id = u.user_id
-    GROUP BY 
-        w.webinar_id;
-`;
+    const query = `
+      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
+      CASE 
+          WHEN NOW() < w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
+          ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
+      END AS calculated_time,
+      organizer.organizer_name AS host_name,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM webinar_participants
+          WHERE webinar_participants.webinar_id = w.webinar_id
+        )
+        THEN true
+        ELSE false
+      END AS is_joined
+      FROM 
+          webinars w
+      LEFT JOIN 
+          webinar_participants w_p
+      ON 
+          w.webinar_id = w_p.webinar_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.host_id = organizer.organizer_id
+      GROUP BY 
+          w.webinar_id;
+    `;
     connection.query(query, [userId], (err, result) => {
       if (err) {
         console.log(err);
@@ -57,26 +56,93 @@ module.exports = (router) => {
       (err, results) => {
         if (err) throw err;
 
-        if (results.length > 0) { 
+        if (results.length > 0) {
           connection.query(
             "DELETE FROM webinar_participants WHERE webinar_id = ? AND participant_id = ?;",
             [webinarId, userId],
-            function(err, results) {
+            function (err, results) {
               if (err) throw err;
-              return res.json({status: "Unregistered"});
+              return res.json({ status: "Unregistered" });
             }
           );
         } else {
           connection.query(
             "INSERT INTO webinar_participants(webinar_id, participant_id) VALUES (?, ?);",
             [webinarId, userId],
-            function(err, results) {
+            function (err, results) {
               if (err) throw err;
-              return res.json({status: "Registered"});
+              return res.json({ status: "Registered" });
             }
           );
         }
       }
     );
+  });
+
+  router.get("/webinar/:webinarId", verifyToken, (req, res) => {
+    const { webinarId } = req.params;
+
+    // Fetch webinar details
+    const webinarQuery = `
+      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
+        CASE 
+            WHEN NOW() < w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
+            ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
+        END AS calculated_time,
+        organizer.organizer_name AS host_name,
+        CASE
+          WHEN EXISTS (
+            SELECT *
+            FROM webinar_participants
+            WHERE webinar_participants.webinar_id = w.webinar_id
+          )
+          THEN true
+          ELSE false
+        END AS is_joined
+        FROM 
+            webinars w
+        LEFT JOIN 
+            webinar_participants w_p
+        ON 
+            w.webinar_id = w_p.webinar_id
+        LEFT JOIN 
+            organizer
+        ON 
+            w.host_id = organizer.organizer_id
+        WHERE w.webinar_id = ?;
+        
+      `;
+
+    // Fetch webinar participants
+    const participantsQuery = `
+    SELECT webinar_participants.*, student.student_name AS participant_name
+    FROM webinar_participants
+    JOIN student ON webinar_participants.participant_id = student.student_id
+    WHERE webinar_participants.webinar_id = ?`;
+
+    connection.query(webinarQuery, [webinarId], (err, webinarResults) => {
+      if (err) {
+        console.error("Error fetching webinar:", err);
+        return res.json({ error: "Error fetching webinar details" });
+      }
+      if (webinarResults.length === 0) {
+        return res.json({ error: "Webinar not found" });
+      }
+
+      connection.query(
+        participantsQuery,
+        [webinarId],
+        (err, participantsResults) => {
+          if (err) {
+            console.error("Error fetching webinar participants:", err);
+            return res.json({ error: "Error fetching webinar participants" });
+          }
+          return res.json({
+            webinar: webinarResults[0],
+            participants: participantsResults,
+          });
+        }
+      );
+    });
   });
 };
