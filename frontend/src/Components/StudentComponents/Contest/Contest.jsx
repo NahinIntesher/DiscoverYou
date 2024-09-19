@@ -13,7 +13,6 @@ export default function Contest() {
     axios
       .get("http://localhost:3000/student/contest")
       .then((res) => {
-        console.log("Full API Response:", res); // Check response structure
         const contests = res.data.contests;
         const now = new Date();
 
@@ -56,12 +55,13 @@ export default function Contest() {
                 name={contest.contest_name}
                 details={contest.contest_details}
                 category={contest.contest_category}
-                organizer={contest.organizer}
+                organizer={contest.organizer_name}
                 date={contest.start_time}
                 startTime={contest.start_time}
                 endTime={contest.end_time}
                 participants={contest.participant_count}
                 calculatedTime={contest.calculated_time}
+                isJoined={contest.is_joined}
                 type="ongoing"
               />
             ))}

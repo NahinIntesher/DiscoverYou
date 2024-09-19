@@ -14,13 +14,13 @@ export default function ContestSubmissions({ submissions }) {
                   <span className="font-medium text-black ">
                     Participant name: <strong>{submission.participant_name}</strong>
                   </span>
-                  <span className="text-black ">{new Date(submission.submission_time).toLocaleString()}</span>
+                  <span className="text-black ">{new Date(submission.submission_date_time).toLocaleString()}</span>
                 </div>
                 <div className="mt-2 ">
                   <p className="text-black  item-problem"><strong>Problem:</strong> {submission.problem_name}</p>
                   <p className="text-black item-solution"><strong>Solution:</strong></p>
                   <div className="item-code">
-                    <pre><code>{submission.solution}</code></pre>
+                    <pre><code>{submission.problem_solution}</code></pre>
                   </div>
                 </div>
               </li>

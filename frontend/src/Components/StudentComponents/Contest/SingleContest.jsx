@@ -39,8 +39,7 @@ const SingleContest = () => {
   return (
     <div className="mainContent">
       <Header title={data.contest.contest_name} semiTitle={data.contest.contest_category+" Contest"}/>
-      <div className="container">
-        <h2 className="titleSingleContest mb-5 text-2xl rounded-lg ">Contest name: {data.contest.contest_name}</h2>
+      <div className="container p-5">
 
         <div className="tabs">
           <button

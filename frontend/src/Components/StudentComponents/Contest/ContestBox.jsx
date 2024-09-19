@@ -1,9 +1,12 @@
 import React from "react";
+import { useState } from "react";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../../assets/images/desert4.jpg";
 import ContestTimeRemaining from "../../CommonComponents/contestTimeRemaining";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 export default function ContestBox({
   id,
   name,
@@ -15,6 +18,7 @@ export default function ContestBox({
   endTime,
   participants,
   calculatedTime,
+  isJoined,
   type,
 }) {
   function getPMTime(datetime) {
@@ -30,6 +34,33 @@ export default function ContestBox({
     return time.toLocaleString("en-US", { dateStyle: "medium" });
   }
   const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(isJoined);
+  const [participantNo, setParticipantNo] = useState(participants);
+
+  function registerContest() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/contest/register", {
+        contestId: id,
+      })
+      .then((res) => {
+        console.log(res.data.status);
+        if (res.data.status === "Registered") {
+          setIsRegistered(true);
+          setParticipantNo((prevValue) => prevValue + 1);
+        } else if (res.data.status === "Unregistered") {
+          setIsRegistered(false);
+          setParticipantNo((prevValue) => prevValue - 1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  function notRegisteredError() {
+    alert("Sorry, you didn't registered for this contest!");
+  }
+
   const handleClick = () => {
     console.log(id);
     console.log(name);
@@ -78,14 +109,36 @@ export default function ContestBox({
         </div>
         <div className="joinButtonContainer">
           {type == "ongoing" ? (
-            <div className="joinButton" onClick={handleClick}>Enter</div>
+            isRegistered ? (
+              <button onClick={handleClick} className="joinButton">
+                Join Contest
+              </button>
+            ) : (
+              <button
+                onClick={notRegisteredError}
+                className="joinButton inactiveButton"
+              >
+                Join Contest
+              </button>
+            )
           ) : type == "upcoming" ? (
-            <div className="joinButton" onClick={handleClick}>Register</div>
+            isRegistered ? (
+              <button className="joinButton" onClick={registerContest}>
+                Unregister
+              </button>
+            ) : (
+              <button className="joinButton" onClick={registerContest}>
+                Register
+              </button>
+            )
           ) : (
-            <div className="joinButton" onClick={handleClick}>Details</div>
+            <button onClick={handleClick} className="joinButton">
+              See Details
+            </button>
           )}
+
           <div className="joinDetails">
-            Registered: <b>{participants}</b>
+            Registered: <b>{participantNo}</b>
           </div>
         </div>
       </div>
