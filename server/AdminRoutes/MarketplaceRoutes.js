@@ -45,7 +45,7 @@ module.exports = (router, multer) => {
     const id = req.userID;
     const query = `SELECT 
     p.*, 
-    u.name as seller_name,
+    s.student_name as seller_name,
     CONCAT("http://localhost:3000/admin/marketplace/products/image/", 
         (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
     FROM 
@@ -54,8 +54,8 @@ module.exports = (router, multer) => {
         product_images AS p_i
         ON p.product_id = p_i.product_id
     JOIN 
-        user AS u
-        ON p.seller_id = u.user_id
+        student AS s
+        ON p.seller_id = s.student_id
     WHERE 
         p.approval_status = ?
     GROUP BY 
@@ -71,24 +71,24 @@ module.exports = (router, multer) => {
     const mediaId = req.params.id;
 
     connection.query(
-      `
-    SELECT product_image 
-    FROM product_images 
-    WHERE media_id = ?
-  `,
-      [mediaId],
-      (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) {
-          return res.status(404).send("Media not found.");
-        }
+        `
+      SELECT product_image 
+      FROM product_images 
+      WHERE media_id = ?
+    `,
+        [mediaId],
+        (err, results) => {
+          if (err) throw err;
+          if (results.length === 0) {
+            return res.status(404).send("Media not found.");
+          }
 
-        const imageData = results[0].product_image;
-        res.setHeader("Content-Type", "image/");
-        res.send(imageData);
-      }
-    );
-  });
+          const imageData = results[0].product_image;
+          res.setHeader("Content-Type", "image/");
+          res.send(imageData);
+        }
+      );
+    });
 
   router.post("/marketplace/product/approve", verifyToken, (req, res) => {
     const { productId } = req.body;

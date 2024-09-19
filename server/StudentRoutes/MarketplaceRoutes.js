@@ -90,7 +90,7 @@ module.exports = (router, multer) => {
       const files = req.files;
 
       connection.query(
-        `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id, product_type, product_on_stock)
+        `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id, product_type, product_in_stock)
           VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [productName, productPrice, productCategory, productDetails, id, productType, productOnStock],
         (err, results) => {

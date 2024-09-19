@@ -7,7 +7,7 @@ import "react-material-symbols/rounded";
 
 export default function AddProduct({ interests }) {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     productName: "",
     productCategory: interests[0],
@@ -56,28 +56,32 @@ export default function AddProduct({ interests }) {
     e.preventDefault();
 
     const finalData = new FormData();
-    finalData.append('productName', formData.productName);
-    finalData.append('productCategory', formData.productCategory);
-    finalData.append('productType', formData.productType);
-    finalData.append('productOnStock', formData.productOnStock);
-    finalData.append('productDetails', formData.productDetails);
-    finalData.append('productPrice', formData.productPrice);
+    finalData.append("productName", formData.productName);
+    finalData.append("productCategory", formData.productCategory);
+    finalData.append("productType", formData.productType);
+    finalData.append("productOnStock", formData.productOnStock);
+    finalData.append("productDetails", formData.productDetails);
+    finalData.append("productPrice", formData.productPrice);
     formData.images.forEach((file, index) => {
-        finalData.append(`images`, file); 
+      finalData.append(`images`, file);
     });
 
-    if(formData.images.length < 2) {
+    if (formData.images.length < 1) {
       alert("Add atleast 2 images!");
       return;
     }
-    
+
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/student/marketplace/add-product", finalData, {
+      .post(
+        "http://localhost:3000/student/marketplace/add-product",
+        finalData,
+        {
           headers: {
-              'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
-      })
+        }
+      )
       .then((res) => {
         if (res.data.status === "Success") {
           console.log("Product adding  Success!");
@@ -138,7 +142,6 @@ export default function AddProduct({ interests }) {
               </select>
             </div>
 
-
             <div className="input">
               <label htmlFor="productType">
                 Product Type <span className="required">*</span>
@@ -149,8 +152,7 @@ export default function AddProduct({ interests }) {
               </select>
             </div>
 
-            {
-              formData.productType == "physical" && (
+            {formData.productType == "physical" && (
               <div className="input">
                 <label name="productOnStock">
                   Product On Stock <span className="required">*</span>
@@ -162,10 +164,9 @@ export default function AddProduct({ interests }) {
                   placeholder="Enter number of product on stock"
                   required
                 />
-              </div>)
-            }
+              </div>
+            )}
 
-          
             <div className="input">
               <label htmlFor="productDetails">
                 Add Product Details <span className="required">*</span>
@@ -190,7 +191,11 @@ export default function AddProduct({ interests }) {
                 accept="image/*"
                 required
               />
-              {formData.images.length < 2 && <p className="bottomRequired">Add at least 2 image of you product</p>}
+              {formData.images.length < 1 && (
+                <p className="bottomRequired">
+                  Add at least 1 image of you product
+                </p>
+              )}
             </div>
 
             <div className="mediaContainer">

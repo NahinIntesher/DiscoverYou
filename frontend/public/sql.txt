@@ -1,1 +1,1 @@
-ALTER TABLE `showcase_posts` ADD `post_category` VARCHAR(50) NOT NULL AFTER `post_content`;
+ALTER TABLE `contest_problems` CHANGE `problem_details` `problem_desccription` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL; 
