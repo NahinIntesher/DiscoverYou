@@ -6,7 +6,7 @@
 .givePostBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 5px;
     border-radius: 80px;
     margin: 8px;
@@ -22,7 +22,7 @@
 .givePostBox .textBox {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - 180px);
+    width: calc(100% - 140px);
     max-width: 860px;
     margin: 8px;
     background-color: #ffffff;
@@ -204,7 +204,7 @@
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     margin: 10px;
     width: calc(100% - 20px);
-    max-width: 900px;
+    max-width: 940px;
     text-align: left;
 }
 
@@ -215,7 +215,7 @@
 .postBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 4px 6px;

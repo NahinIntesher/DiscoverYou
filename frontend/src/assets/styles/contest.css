@@ -1,9 +1,9 @@
 .contentTitle {
     background-image: 
-        radial-gradient(400px 80px at right top, #ffe79acc, #ffe79a99, transparent),
-        radial-gradient(400px 80px at left top, #ffe79acc, #ffe79a99, transparent),
-        radial-gradient(400px 80px at left bottom, #ffa952, #ffa952cc, #ffa95299, transparent),
-        linear-gradient(#ffa952,#ffe79a);
+        radial-gradient(400px 80px at right top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        radial-gradient(400px 80px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        radial-gradient(400px 80px at left bottom, rgb(var(--medium)), rgba(var(--medium), 0.8), rgba(var(--medium), 0.6), transparent),
+        linear-gradient(rgb(var(--medium)),rgb(var(--light)));
     position: relative;
 }
 .contentTitle .title {
@@ -14,10 +14,10 @@
     font-weight: 600;
     color: #ffffff;
     text-shadow: 
-        -4px -4px 12px #ff161680,
-        -4px -4px 42px #f0595999,
-        4px 4px 12px #ef5a5a80,
-        4px 4px 42px #ef5a5a99;
+        -4px -4px 12px rgba(var(--dark), 0.6),
+        -4px -4px 42px rgba(var(--dark), 0.6),
+        4px 4px 12px rgba(var(--dark), 0.6),
+        4px 4px 42px rgba(var(--dark), 0.6);
 }
 .contentTitle .buttonContainer {
     position: absolute;
@@ -27,15 +27,15 @@
 }
 .contentTitle .button {
     background-image: 
-    radial-gradient(120px 40px at left top, #ffa952, #ffa952cc, #ffa85299, transparent),
-    linear-gradient(#ef5a5a, #ffa952);
+    radial-gradient(120px 40px at left top, rgb(var(--medium)), rgba(var(--medium), 0.8), rgba(var(--medium), 0.6), transparent),
+    linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 16px 16px;
     color: #ffffff;
     font-weight: 500;
     border-radius: 14px;
     box-shadow:
-        -8px -8px 16px #ffe79acc,
-        8px 8px 16px #ffe79acc;
+        -8px -8px 16px rgba(var(--light), 0.8),
+        8px 8px 16px rgba(var(--light), 0.8);
     cursor: pointer;
     margin: 4px;
 }
@@ -43,8 +43,8 @@
 .contentTitle .button:hover{
     box-shadow:
         4px 4px 12px rgba(0,0,0,0.2),
-        -8px -8px 16px #ffe79acc,
-        8px 8px 16px #ffe79acc;
+        -8px -8px 16px rgba(var(--light), 0.8),
+        8px 8px 16px rgba(var(--light), 0.8);
 }
 
 .contentTitle .button .icon {
@@ -64,13 +64,6 @@
     margin: 4px 16px;
 }
 
-
-.contentSemiTitle::before {
-    display: block;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
-    width: 10px;
-    height: 10px;
-}
 
 .scrollContainer {
     overflow-x: scroll;
@@ -129,8 +122,8 @@
     margin-right: 10px;
 }
 .contestBox .category {
-    background-color: rgba(255, 169, 82, 0.4);
-    color: #ef5a5acc;
+    background-color: rgba(var(--medium), 0.4);
+    color: rgba(var(--dark), 0.8);
     padding: 2px 12px;
     border-radius: 20px;
     display: inline-block;
@@ -233,8 +226,8 @@
 .contestBox .joinButtonContainer .joinButton {
     display: inline-block;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 24px;
     border-radius: 60px;
@@ -243,8 +236,8 @@
     cursor: pointer;
 }
 .contestBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(100,0,0,0.2);
-    text-shadow: 2px 2px 8px rgba(100,0,0,0.6);
+    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
 }
 .contestBox .joinButtonContainer .joinDetails {
     font-size: 13px;
@@ -334,8 +327,8 @@
     margin-right: 10px;
 }
 .webinarBox .category {
-    background-color: rgba(255, 169, 82, 0.4);
-    color: #ef5a5acc;
+    background-color: rgba(var(--medium), 0.4);
+    color: rgba(var(--dark), 0.8);
     padding: 2px 12px;
     border-radius: 20px;
     display: inline-block;
@@ -452,8 +445,8 @@
 .webinarBox .joinButtonContainer .joinButton {
     display: inline-block;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 24px;
     border-radius: 60px;
@@ -462,8 +455,8 @@
     cursor: pointer;
 }
 .webinarBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(100,0,0,0.2);
-    text-shadow: 2px 2px 8px rgba(100,0,0,0.6);
+    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
 }
 .webinarBox .joinButtonContainer .joinDetails {
     font-size: 13px;

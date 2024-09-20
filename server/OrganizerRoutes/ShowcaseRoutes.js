@@ -74,11 +74,11 @@ module.exports = (router, multer) => {
         SELECT *
         FROM showcase_post_reactions
         WHERE showcase_post_reactions.post_id = s_p.post_id 
-        AND showcase_post_reactions.reactor_student_id = '${userId}'
+        AND showcase_post_reactions.reactor_organizer_id = '${userId}'
       ) THEN 1
       ELSE 0
     END AS is_reacted,
-    COUNT(DISTINCT s_p_r.reactor_student_id) AS reaction_count,
+    COUNT(DISTINCT s_p_r.reactor_organizer_id) AS reaction_count,
     COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
     GROUP_CONCAT(
         CONCAT(
@@ -127,11 +127,11 @@ module.exports = (router, multer) => {
         SELECT *
         FROM showcase_post_reactions
         WHERE showcase_post_reactions.post_id = s_p.post_id 
-        AND showcase_post_reactions.reactor_id = '${userId}'
+        AND showcase_post_reactions.reactor_organizer_id = '${userId}'
       ) THEN 1
       ELSE 0
     END AS is_reacted,
-    COUNT(DISTINCT s_p_r.reactor_id) AS reaction_count,
+    COUNT(DISTINCT s_p_r.reactor_organizer_id) AS reaction_count,
     COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
     GROUP_CONCAT(
         CONCAT(
@@ -232,13 +232,13 @@ module.exports = (router, multer) => {
         `
       SELECT * 
       FROM showcase_post_reactions 
-      WHERE post_id = ? AND reactor_student_id = ?`,
+      WHERE post_id = ? AND reactor_id = ?`,
         [postId, userId],
         function (error, result) {
           if (error) throw error;
           if (result.length <= 0) {
             connection.query(
-              `INSERT INTO showcase_post_reactions(post_id, reactor_student_id) 
+              `INSERT INTO showcase_post_reactions(post_id, reactor_id) 
           VALUES(?, ?)`,
               [postId, userId],
               function (error, result) {
@@ -249,7 +249,7 @@ module.exports = (router, multer) => {
           } else {
             connection.query(
               `DELETE FROM showcase_post_reactions 
-            WHERE post_id = ? AND reactor_student_id = ?`,
+            WHERE post_id = ? AND reactor_id = ?`,
               [postId, userId],
               function (error, result) {
                 if (error) throw error;

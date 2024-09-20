@@ -3,6 +3,10 @@ import "../../../assets/styles/contest.css";
 import ContestBox from "./ContestBox";
 import axios from "axios";
 import NotFound from "../../CommonComponents/NotFound";
+import { Link } from "react-router-dom";
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
+
 
 export default function Contest() {
   const [previousContests, setPreviousContests] = useState([]);
@@ -43,6 +47,12 @@ export default function Contest() {
       <div className="contentTitle">
         <div className="content">
           <div className="title">Contest</div>
+          <div className="buttonContainer">
+            <Link to="/community/new" className="button">
+                <MaterialSymbol className="icon" size={24} icon="add" />
+                <div className="text">Create New Contest</div>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="content">

@@ -6,7 +6,7 @@ import Dashboard from "../Components/OrganizerComponents/Dashboard";
 import Contest from "../Components/OrganizerComponents/Contest/Contest";
 import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
 
-import Showcase from "../Components/OrganizerComponents/Showcase";
+import Showcase from "../Components/OrganizerComponents/Showcase/Showcase";
 import Community from "../Components/OrganizerComponents/Community";
 import Course from "../Components/OrganizerComponents/Course";
 import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
@@ -18,7 +18,7 @@ import Profile from "../Components/OrganizerComponents/Profile";
 export default function Student({ handleLogout, user }) {
   return (
     <BrowserRouter>
-      <div className="container">
+      <div className="container" data-theme={user.type}>
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
           <Route path="/" element={<Dashboard />} />

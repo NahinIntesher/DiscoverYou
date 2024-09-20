@@ -12,7 +12,7 @@ export default function Showcase({user}) {
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/student/showcase/post")
+          .get("http://localhost:3000/organizer/showcase/post")
           .then((res) => {
             const postsData = res.data?.posts || [];
             setPosts(postsData);
@@ -29,7 +29,6 @@ export default function Showcase({user}) {
                     <div className="title">Showcase</div>
                 </div>
             </div>
-            <GivePostBox setUpdatePost={setUpdatePost} user={user}/>   
             <div className="postBoxContainer">
             {
                 posts.length > 0 ?

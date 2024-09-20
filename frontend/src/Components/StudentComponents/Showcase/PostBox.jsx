@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";

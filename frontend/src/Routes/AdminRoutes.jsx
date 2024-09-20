@@ -20,7 +20,7 @@ import Profile from "../Components/AdminComponents/Profile";
 export default function Student({ handleLogout, user }) {
   return (
     <BrowserRouter>
-      <div className="container">
+      <div className="container" data-theme={user.type}>
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
