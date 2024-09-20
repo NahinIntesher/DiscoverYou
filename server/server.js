@@ -72,40 +72,69 @@ app.post("/registrationPage", (req, res) => {
       .hash(password, 10)
       .then((hashedPassword) => {
         // Insert the user into the user table
+        // Define a function to generate the next student_id
+        const generateStudentId = (currentMaxId) => {
+          // Remove the 'St' prefix and parse the numeric part
+          const numericPart = parseInt(currentMaxId.replace("St", ""), 10);
+
+          // Increment the numeric part by 1 and pad with leading zeros to maintain the format
+          const newNumericPart = numericPart + 1;
+          return `St${String(newNumericPart).padStart(7, "0")}`;
+        };
+
+        // Step 1: Retrieve the current maximum student_id from the student table
         connection.query(
-          "INSERT INTO student (student_name, student_date_of_birth, student_gender, student_address, student_mobile_no, student_email, student_password) VALUES (?, ?, ?, ?, ?, ?, ?)",
-          [name, dateOfBirth, gender, address, phone, email, hashedPassword],
-          (err, results) => {
+          "SELECT MAX(student_id) as maxId FROM student",
+          (err, result) => {
             if (err) throw err;
-            // Retrieve the user_id of the newly inserted user
-            const userId = results.insertId;
 
-            // Create an array of queries for inserting interests
-            const interestQueries = interests.map((interest) => {
-              //              return new Promise((resolve, reject) => {
-              connection.query(
-                "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
-                [interest, userId],
-                (err) => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve();
-                }
-              );
-              //           });
-            });
+            // Step 2: Generate a new student_id based on the current maxId
+            const newStudentId = generateStudentId(
+              result[0].maxId || "St0000000"
+            ); // Default if no records
 
-            return res.json({ status: "Success" });
+            // Step 3: Insert the new student record with the generated student_id
+            connection.query(
+              "INSERT INTO student (student_id, student_name, student_date_of_birth, student_gender, student_address, student_mobile_no, student_email, student_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+              [
+                newStudentId,
+                name,
+                dateOfBirth,
+                gender,
+                address,
+                phone,
+                email,
+                hashedPassword,
+              ],
+              (err, results) => {
+                if (err) throw err;
 
-            // Execute all interest insertion queries
-            // Promise.all(interestQueries)
-            //   .then(() => {
-            //     return res.json({ status: "Success" });
-            //   })
-            //   .catch((error) => {
-            //     return res.json({ Error: "Error inserting interests" });
-            //   });
+                // Step 4: Insert the student's interests using the new student_id
+                const interestQueries = interests.map((interest) => {
+                  return new Promise((resolve, reject) => {
+                    connection.query(
+                      "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
+                      [interest, newStudentId],
+                      (err) => {
+                        if (err) {
+                          return reject(err);
+                        }
+                        resolve();
+                      }
+                    );
+                  });
+                });
+
+                // Step 5: Execute all interest insertion queries
+                Promise.all(interestQueries)
+                  .then(() => {
+                    return res.json({ status: "Success" });
+                  })
+                  .catch((error) => {
+                    return res.json({ Error: "Error inserting interests" });
+                  });
+              }
+            );
           }
         );
       })
