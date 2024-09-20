@@ -18,8 +18,6 @@ export default function Sidebar({logoutAction, user}) {
                 <SidebarOption name="Dashboard" href="/" icon="dashboard"/>
                 <SidebarOption name="Showcase" href="/showcase" icon="gallery_thumbnail"/>
                 <SidebarOption name="Contest" href="/contest" icon="rewarded_ads"/>
-                <SidebarOption name="Community" href="/community" icon="groups"/>
-                <SidebarOption name="Course" href="/course" icon="auto_stories"/>
                 <SidebarOption name="Webinar" href="/webinar" icon="patient_list"/>
                 <SidebarOption name="Marketplace" href="/marketplace" icon="shopping_cart"/>
                 <SidebarOption name="Hiring" href="/hiring" icon="person_search"/>

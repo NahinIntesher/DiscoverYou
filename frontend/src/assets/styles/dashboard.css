@@ -19,17 +19,17 @@
 .header {
   background-image: radial-gradient(
       420px 60px at right bottom,
-      #ffe79a99,
+      rgba(var(--light), 0.6),
       transparent
     ),
     radial-gradient(
       420px 60px at left top,
-      #ffa952,
-      #ffa952cc,
-      #ffa85299,
+      rgb(var(--medium)),
+      rgba(var(--medium), 0.8),
+      rgba(var(--medium), 0.6),
       transparent
     ),
-    linear-gradient(#ef5a5a, #ffa952);
+    linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
   position: relative;
   padding: 8px 10px;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);

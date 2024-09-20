@@ -14,6 +14,7 @@ import Marketplace from "../Components/OrganizerComponents/Marketplace";
 import Hiring from "../Components/OrganizerComponents/Hiring";
 import Notification from "../Components/OrganizerComponents/Notification";
 import Profile from "../Components/OrganizerComponents/Profile";
+import Post from "../Components/OrganizerComponents/Showcase/Post";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -22,7 +23,9 @@ export default function Student({ handleLogout, user }) {
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+
           <Route path="/showcase" element={<Showcase user={user} />} />
+          <Route path="/showcase/post/:postId" element={<Post />} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />

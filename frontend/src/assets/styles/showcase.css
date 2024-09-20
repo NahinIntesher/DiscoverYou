@@ -178,8 +178,8 @@
     display: inline-block;
     vertical-align: middle;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 28px;
     border-radius: 60px;
@@ -323,14 +323,14 @@
     font-size: 15px;
 }
 .postBox .active {
-    background-color: rgba(255, 169, 82, 0.4);
-    color: #ef5a5a;
+    background-color: rgba(var(--medium), 0.4);
+    color: rgb(var(--dark));
 }
 .postBox .active .text {
     font-weight: 600;
 }
 .postBox .active:hover {
-    background-color: rgba(255, 169, 82, 0.5);
+    background-color: rgba(var(--medium), 0.5);
 }
 .postBox .postDetails {
     font-size: 14px;
@@ -359,14 +359,14 @@
     box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
     margin: 10px;
     width: calc(100% - 20px);
-    max-width: 900px;
+    max-width: 940px;
     text-align: center;  
     padding: 6px;  
 }
 .giveCommentBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 8px;
@@ -395,8 +395,8 @@
     display: inline-block;
     vertical-align: middle;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 28px;
     border-radius: 60px;
@@ -410,7 +410,7 @@
     border-radius: 18px;
     margin: 10px;
     width: calc(100% - 20px);
-    max-width: 900px;
+    max-width: 940px;
     text-align: center;  
     background-color: rgba(0,0,0,0.1);
     padding: 12px;  
@@ -432,7 +432,7 @@
 .commentBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 6px;

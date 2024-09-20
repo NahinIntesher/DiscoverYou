@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CommunityBox from "../../CommonComponents/CommunityBox";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function BrowseCommunities() {
     const [communities, setCommunities] = useState([]);
@@ -20,7 +21,7 @@ export default function BrowseCommunities() {
 
     return (
         <div className="tabContent">
-        {
+        {   communities.length > 0 ?
             communities.map(function(community){
                 return (
                     <CommunityBox 
@@ -35,6 +36,8 @@ export default function BrowseCommunities() {
                     />
                 )
             })
+            :
+            <NotFound message="No Community Found"/>
         }
         </div>
     );

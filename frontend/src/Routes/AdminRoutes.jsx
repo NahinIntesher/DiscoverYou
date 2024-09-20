@@ -6,7 +6,7 @@ import Dashboard from "../Components/AdminComponents/Dashboard";
 import Contest from "../Components/AdminComponents/Contest/Contest";
 import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
 
-import Showcase from "../Components/AdminComponents/Showcase";
+import Showcase from "../Components/AdminComponents/Showcase/Showcase";
 import Community from "../Components/AdminComponents/Community";
 import Course from "../Components/AdminComponents/Course";
 import Webinar from "../Components/AdminComponents/Webinar/Webinar";
@@ -16,6 +16,7 @@ import PendingProducts from "../Components/AdminComponents/Marketplace/PendingPr
 import Hiring from "../Components/AdminComponents/Hiring";
 import Notification from "../Components/AdminComponents/Notification";
 import Profile from "../Components/AdminComponents/Profile";
+import Post from "../Components/AdminComponents/Showcase/Post";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -24,7 +25,9 @@ export default function Student({ handleLogout, user }) {
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+
           <Route path="/showcase" element={<Showcase user={user} />} />
+          <Route path="/showcase/post/:postId" element={<Post />} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />

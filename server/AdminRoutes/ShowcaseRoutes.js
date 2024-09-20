@@ -74,7 +74,7 @@ module.exports = (router, multer) => {
         SELECT *
         FROM showcase_post_reactions
         WHERE showcase_post_reactions.post_id = s_p.post_id 
-        AND showcase_post_reactions.reactor_organizer_id = '${userId}'
+        AND showcase_post_reactions.reactor_admin_id = '${userId}'
       ) THEN 1
       ELSE 0
     END AS is_reacted,
@@ -133,11 +133,11 @@ module.exports = (router, multer) => {
         SELECT *
         FROM showcase_post_reactions
         WHERE showcase_post_reactions.post_id = s_p.post_id 
-        AND showcase_post_reactions.reactor_organizer_id = '${userId}'
+        AND showcase_post_reactions.reactor_admin_id = '${userId}'
       ) THEN 1
       ELSE 0
     END AS is_reacted,
-    COUNT(DISTINCT s_p_r.reactor_organizer_id) AS reaction_count,
+    COUNT(DISTINCT s_p_r.reactor_admin_id) AS reaction_count,
     COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
     (
       SELECT 
@@ -257,13 +257,13 @@ module.exports = (router, multer) => {
         `
       SELECT * 
       FROM showcase_post_reactions 
-      WHERE post_id = ? AND reactor_organizer_id = ?`,
+      WHERE post_id = ? AND reactor_admin_id = ?`,
         [postId, userId],
         function (error, result) {
           if (error) throw error;
           if (result.length <= 0) {
             connection.query(
-              `INSERT INTO showcase_post_reactions(post_id, reactor_organizer_id) 
+              `INSERT INTO showcase_post_reactions(post_id, reactor_admin_id) 
           VALUES(?, ?)`,
               [postId, userId],
               function (error, result) {
@@ -274,7 +274,7 @@ module.exports = (router, multer) => {
           } else {
             connection.query(
               `DELETE FROM showcase_post_reactions 
-            WHERE post_id = ? AND reactor_organizer_id = ?`,
+            WHERE post_id = ? AND reactor_admin_id = ?`,
               [postId, userId],
               function (error, result) {
                 if (error) throw error;
@@ -295,7 +295,7 @@ module.exports = (router, multer) => {
         const { postId, commentContent } = req.body;
   
         connection.query(
-          `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_organizer_id)
+          `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_admin_id)
           VALUES (?, ?, ?)`,
           [commentContent, postId, userId],
           (err, results) => {

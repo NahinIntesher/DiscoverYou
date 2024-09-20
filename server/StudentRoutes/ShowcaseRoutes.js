@@ -78,14 +78,20 @@ module.exports = (router, multer) => {
       ) THEN 1
       ELSE 0
     END AS is_reacted,
-    COUNT(DISTINCT s_p_r.reactor_student_id) AS reaction_count,
+    COUNT(DISTINCT s_p_r.reaction_id) AS reaction_count,
     COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
-    GROUP_CONCAT(
-        CONCAT(
+    (
+      SELECT 
+        GROUP_CONCAT(
+          CONCAT(
             '{"media_url": "http://localhost:3000/student/showcase/media/cdn/', s_p_m.media_id, 
             '", "media_type": "', s_p_m.media_type, '"}'
-        ) 
-        SEPARATOR ', '
+          ) SEPARATOR ', '
+        )
+      FROM 
+        showcase_post_media AS s_p_m
+      WHERE 
+        s_p_m.post_id = s_p.post_id
     ) AS media_array
     FROM 
       showcase_posts AS s_p
@@ -127,18 +133,24 @@ module.exports = (router, multer) => {
         SELECT *
         FROM showcase_post_reactions
         WHERE showcase_post_reactions.post_id = s_p.post_id 
-        AND showcase_post_reactions.reactor_id = '${userId}'
+        AND showcase_post_reactions.reactor_student_id = '${userId}'
       ) THEN 1
       ELSE 0
     END AS is_reacted,
-    COUNT(DISTINCT s_p_r.reactor_id) AS reaction_count,
+    COUNT(DISTINCT s_p_r.reaction_id) AS reaction_count,
     COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
-    GROUP_CONCAT(
-        CONCAT(
+    (
+      SELECT 
+        GROUP_CONCAT(
+          CONCAT(
             '{"media_url": "http://localhost:3000/student/showcase/media/cdn/', s_p_m.media_id, 
             '", "media_type": "', s_p_m.media_type, '"}'
-        ) 
-        SEPARATOR ', '
+          ) SEPARATOR ', '
+        )
+      FROM 
+        showcase_post_media AS s_p_m
+      WHERE 
+        s_p_m.post_id = s_p.post_id
     ) AS media_array
     FROM 
       showcase_posts AS s_p
@@ -169,13 +181,26 @@ module.exports = (router, multer) => {
         SELECT 
           s_p_c.*,
           TIMESTAMPDIFF(SECOND, s_p_c.comment_date_time, NOW()) AS comment_time_ago,
-          s.student_name AS commentator_name
+          CASE 
+            WHEN s_p_c.commentator_student_id IS NOT NULL THEN s.student_name
+            WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN o.organizer_name
+            WHEN s_p_c.commentator_admin_id IS NOT NULL THEN a.admin_name
+            ELSE NULL
+          END AS commentator_name
         FROM 
           showcase_post_comments AS s_p_c 
-        JOIN
+        LEFT JOIN
           student AS s
         ON
-          s_p_c.commenter_id = s.student_id
+          s_p_c.commentator_student_id = s.student_id
+        LEFT JOIN
+          organizer AS o
+        ON
+          s_p_c.commentator_organizer_id = o.organizer_id
+        LEFT JOIN
+          admin AS a
+        ON
+          s_p_c.commentator_admin_id = a.admin_id
         WHERE
           s_p_c.post_id = ?
         ORDER BY
@@ -270,7 +295,7 @@ module.exports = (router, multer) => {
         const { postId, commentContent } = req.body;
   
         connection.query(
-          `INSERT INTO showcase_post_comments (comment_content, post_id, commenter_id)
+          `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_student_id)
           VALUES (?, ?, ?)`,
           [commentContent, postId, userId],
           (err, results) => {

@@ -33,7 +33,7 @@ export default function Post() {
         
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/organizer/showcase/comment", {
+        .post("http://localhost:3000/admin/showcase/comment", {
             commentContent: commentContent,
             postId: postId
         })
@@ -51,7 +51,7 @@ export default function Post() {
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/organizer/showcase/singlePost/"+postId)
+          .get("http://localhost:3000/admin/showcase/singlePost/"+postId)
           .then((res) => {
             const postData = res.data?.post || [];
             const commentsData = res.data?.comments || [];

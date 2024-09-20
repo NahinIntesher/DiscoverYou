@@ -55,7 +55,7 @@ export default function Contest() {
                 name={contest.contest_name}
                 details={contest.contest_details}
                 category={contest.contest_category}
-                organizer={contest.organizer_name}
+                organizer={contest.organizer}
                 date={contest.start_time}
                 startTime={contest.start_time}
                 endTime={contest.end_time}

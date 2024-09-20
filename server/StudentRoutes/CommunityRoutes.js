@@ -10,20 +10,20 @@ module.exports = (router) => {
     
     const query = `SELECT 
       c.*, 
-      u.name AS community_admin_name,
+      s.student_name AS community_admin_name,
       CASE
         WHEN EXISTS (
           SELECT *
-          FROM community_member
-          WHERE community_member.community_id = c.community_id 
-          AND community_member.member_id = ${userId} AND community_member.req_for_join_status = 1
+          FROM community_members
+          WHERE community_members.community_id = c.community_id 
+          AND community_members.member_id = '${userId}' AND community_members.req_for_join_status = 1
         )
         THEN "yes"
         WHEN EXISTS (
           SELECT *
-          FROM community_member
-          WHERE community_member.community_id = c.community_id 
-          AND community_member.member_id = ${userId} AND community_member.req_for_join_status = 0
+          FROM community_members
+          WHERE community_members.community_id = c.community_id 
+          AND community_members.member_id = '${userId}' AND community_members.req_for_join_status = 0
         )
         THEN "pending"
         ELSE "no"
@@ -32,11 +32,11 @@ module.exports = (router) => {
       FROM 
         communities AS c
       JOIN 
-        user AS u
+        student AS s
       ON 
-        c.community_admin_id = u.user_id
+        c.admin_id = s.student_id
       JOIN 
-        community_member AS c_m
+        community_members AS c_m
       ON 
         c.community_id = c_m.community_id AND c_m.req_for_join_status = 1
       WHERE 
@@ -63,16 +63,16 @@ module.exports = (router) => {
     
     const query = `SELECT 
       c.*, 
-      u.name AS community_admin_name,
+      s.student_name AS community_admin_name,
       COUNT(DISTINCT c_m.member_id) AS total_member
       FROM 
         communities AS c
       JOIN 
-        user AS u
+        student AS s
       ON 
-        c.community_admin_id = u.user_id
+        c.admin_id = s.student_id
       JOIN 
-        community_member AS c_m
+        community_members AS c_m
       ON 
         c.community_id = c_m.community_id
       WHERE 
@@ -87,17 +87,17 @@ module.exports = (router) => {
         SELECT 
           c_m.*,
           CASE
-            WHEN c_m.messenger_id = ${userId}
+            WHEN c_m.messenger_id = '${userId}'
             THEN true
             ELSE false
           END AS own_message,
-          u.name AS messenger_name
+          s.student_name AS messenger_name
         FROM 
           community_messages AS c_m
         JOIN 
-          user AS u
+          student AS s
         ON
-          c_m.messenger_id = u.user_id
+          c_m.messenger_id = s.student_id
         WHERE 
           community_id = ${communityId} 
         ORDER BY 
@@ -117,14 +117,14 @@ module.exports = (router) => {
         const { communityName, communityCategory, communityDescription } = req.body;
   
         connection.query(
-          `INSERT INTO communities (community_name, community_category, community_description, community_admin_id, approval_status)
+          `INSERT INTO communities (community_name, community_category, community_description, admin_id, approval_status)
           VALUES (?, ?, ?, ?, ?)`,
           [communityName, communityCategory, communityDescription, userId, 1],
           (err, results) => {
             if (err) throw err;
             let communityId = results.insertId;
             connection.query(
-              `INSERT INTO community_member (community_id, member_id, req_for_join_status)
+              `INSERT INTO community_members (community_id, member_id, req_for_join_status)
               VALUES (?, ?, ?)`,
               [communityId, userId, 1],
               (err, nestedResults) => {
@@ -164,7 +164,7 @@ module.exports = (router) => {
       const userId = req.userId;
       const { communityId } = req.body;
       connection.query(
-        `INSERT INTO community_member (community_id, member_id, req_for_join_status)
+        `INSERT INTO community_members (community_id, member_id, req_for_join_status)
         VALUES (?, ?, ?)`,
         [communityId, userId, 0],
         (err, results) => {
@@ -181,21 +181,21 @@ module.exports = (router) => {
     
     const query = `SELECT 
       c_m.*,
-      u.name as member_name,
+      s.student_name as member_name,
       c.community_name,
-      c.community_admin_id
+      c.admin_id
       FROM 
-        community_member AS c_m
+        community_members AS c_m
       JOIN 
         communities AS c
       ON
         c_m.community_id = c.community_id
       JOIN 
-        user AS u
+        student AS s
       ON
-        c_m.member_id = u.user_id
+        c_m.member_id = s.student_id
       WHERE
-        c.community_admin_id = ${userId} AND c_m.req_for_join_status = 0
+        c.admin_id = '${userId}' AND c_m.req_for_join_status = 0
       `;
 
     connection.query(query, (err, results) => {
@@ -210,7 +210,7 @@ module.exports = (router) => {
     (req, res) => {
       const { memberId, communityId } = req.body;
       connection.query(
-        `UPDATE community_member SET req_for_join_status = '1' 
+        `UPDATE community_members SET req_for_join_status = '1' 
         WHERE member_id = ? AND community_id = ?;`,
         [memberId, communityId],
         (err, results) => {
@@ -227,7 +227,7 @@ module.exports = (router) => {
     (req, res) => {
       const { memberId, communityId } = req.body;
       connection.query(
-        `DELETE FROM community_member 
+        `DELETE FROM community_members 
         WHERE member_id = ? AND community_id = ?;`,
         [memberId, communityId],
         (err, results) => {
