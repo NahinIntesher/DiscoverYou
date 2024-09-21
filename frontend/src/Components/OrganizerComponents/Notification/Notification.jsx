@@ -3,8 +3,8 @@ import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import "react-material-symbols/rounded";
 
-export default function Showcase({ user }) {
-  const [hirings, sethirings] = useState([]);
+export default function Notifications({ user }) {
+  const [notifications, setnotifications] = useState([]);
 
   // useEffect(() => {
   //     axios
@@ -22,7 +22,7 @@ export default function Showcase({ user }) {
     <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
-          <div className="title">Hirings</div>
+          <div className="title">Notifications</div>
         </div>
       </div>
     </div>

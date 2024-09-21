@@ -3,7 +3,7 @@ import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import "react-material-symbols/rounded";
 
-export default function Showcase({ user }) {
+export default function Hirings({ user }) {
   const [hirings, sethirings] = useState([]);
 
   // useEffect(() => {

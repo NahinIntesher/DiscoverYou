@@ -4,17 +4,15 @@ import Sidebar from "../../src/Components/OrganizerComponents/Sidebar";
 import Dashboard from "../Components/OrganizerComponents/Dashboard";
 
 import Contest from "../Components/OrganizerComponents/Contest/Contest";
-import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
+import SingleContest from "../Components/OrganizerComponents/Contest/SingleContest";
 
 import Showcase from "../Components/OrganizerComponents/Showcase/Showcase";
-import Community from "../Components/OrganizerComponents/Community";
-import Course from "../Components/OrganizerComponents/Course";
 import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
 import Marketplace from "../Components/OrganizerComponents/Marketplace/Marketplace";
-import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
+import Hiring from "../../src/Components/OrganizerComponents/Hiring/Hiring";
 
-import Notification from "../Components/OrganizerComponents/Notification";
-import Profile from "../Components/OrganizerComponents/Profile";
+import Notification from "../../src/Components/OrganizerComponents/Notification/Notification";
+import Profile from "../Components/OrganizerComponents/Profile/Profile";
 import Post from "../Components/OrganizerComponents/Showcase/Post";
 
 export default function Student({ handleLogout, user }) {
@@ -31,8 +29,6 @@ export default function Student({ handleLogout, user }) {
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
-          <Route path="/community" element={<Community />} />
-          <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />

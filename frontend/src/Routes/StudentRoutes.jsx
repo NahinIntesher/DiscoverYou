@@ -16,8 +16,8 @@ import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
 
 import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
-import Notification from "../Components/StudentComponents/Notification";
-import Profile from "../Components/StudentComponents/Profile";
+import Notification from "../Components/StudentComponents/Notification/Notification";
+import Profile from "../Components/StudentComponents/Profile/Profile";
 
 import Community from "../Components/StudentComponents/Community/Community";
 import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";

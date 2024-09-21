@@ -4,7 +4,7 @@ import Sidebar from "../../src/Components/AdminComponents/Sidebar";
 import Dashboard from "../Components/AdminComponents/Dashboard";
 
 import Contest from "../Components/AdminComponents/Contest/Contest";
-import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
+import SingleContest from "../Components/AdminComponents/Contest/SingleContest";
 
 import Showcase from "../Components/AdminComponents/Showcase/Showcase";
 import Community from "../Components/AdminComponents/Community";
@@ -13,10 +13,10 @@ import Webinar from "../Components/AdminComponents/Webinar/Webinar";
 import Marketplace from "../Components/AdminComponents/Marketplace/Marketplace";
 import PendingProducts from "../Components/AdminComponents/Marketplace/PendingProducts";
 
-import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
+import Hiring from "../../src/Components/AdminComponents/Hiring/Hiring";
 
 import Notification from "../Components/AdminComponents/Notification";
-import Profile from "../Components/AdminComponents/Profile";
+import Profile from "../Components/AdminComponents/Profile/Profile";
 import Post from "../Components/AdminComponents/Showcase/Post";
 
 export default function Student({ handleLogout, user }) {
