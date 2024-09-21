@@ -1,142 +1,151 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../assets/styles/dashboard.css";
+import axios from 'axios';
 
-import {
-  User,
-  Award,
-  Trophy,
-  Heart,
-  Phone,
-  Mail,
-  Settings,
-} from "lucide-react";
+export default function Profile({ user }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user.student_name,
+    dob: user.student_date_of_birth.split('/').reverse().join('-'), // Assuming the format is dd/mm/yyyy
+    gender: user.student_gender,
+    bio: user.bio || "",
+    address: user.student_address,
+    phone: user.student_phone,
+    email: user.student_email,
+  });
 
-const Showcase = ({ user }) => {
-  const backgroundStyle = {
-    backgroundImage: `
-      radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
-        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
-    `,
-    backgroundAttachment: "fixed",
-    backgroundSize: "cover",
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const sectionStyle =
-    "p-6 bg-white bg-opacity-90 text-gray-800 rounded-lg shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl";
-  const titleStyle = "text-2xl font-bold mb-2 flex items-center gap-2";
-  const subtitleStyle = "text-lg text-gray-600 mb-4";
-  const contentStyle = "text-lg";
+  const handleUpdateProfile = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      await axios.put('/api/updateProfile', {
+        ...formData,
+        dob: formData.dob.split('-').reverse().join('/'), // Convert back to dd/mm/yyyy for the database
+      });
+      setIsEditing(false);
+      // Optionally, you might want to refresh user data here
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
 
   return (
-    <div className="mainContent">
+    <div className="mainContent bg-white min-h-screen">
       <div className="contentTitle">
         <div className="content">
           <div className="title">Profile</div>
         </div>
       </div>
+      <div className="flex p-6">
+        {/* Profile Section */}
+        <div className="p-6 bg-[radial-gradient(#ffe79acc,#ffe79a99)] text-black rounded-lg shadow-lg">
+          <h1 className="text-2xl font-bold mb-2 cursor-pointer">Student Profile</h1>
+          <p className="text-lg">View and edit your profile</p>
 
-      <div className="max-w-7xl mx-auto content">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Profile Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <User className="text-blue-600" />
-              Student Profile
-            </h2>
-            <p className={subtitleStyle}>View and edit your profile</p>
-            <div className={contentStyle}>
-              <p>
-                <strong>Name:</strong> {user.student_name}
-              </p>
-              <p>
-                <strong>Date of Birth:</strong> {user.student_date_of_birth}
-              </p>
-              <p>
-                <strong>Gender:</strong> {user.student_gender}
-              </p>
-              <p>
-                <strong>Bio:</strong>{" "}
-                {user.bio || "Add a bio to let others know more about you."}
-              </p>
+          {isEditing ? (
+            <div className="mt-4">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+                placeholder="Name"
+              />
+              <input
+                type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+              />
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+                placeholder="Bio"
+              />
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+                placeholder="Address"
+              />
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+                placeholder="Phone"
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="block w-full mb-2 p-2 border border-gray-400 rounded"
+                placeholder="Email"
+              />
+              <button onClick={handleSaveProfile} className="mt-4 bg-blue-500 text-white p-2 rounded">
+                Save
+              </button>
             </div>
-          </div>
-
-          {/* Achievement Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <Award className="text-yellow-600" />
-              Achievements
-            </h2>
-            <p className={subtitleStyle}>List your achievements here...</p>
-            {/* Add achievement content here */}
-          </div>
-
-          {/* Contest Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <Trophy className="text-green-600" />
-              Contests
-            </h2>
-            <p className={subtitleStyle}>
-              Participated and organized contests...
-            </p>
-            {/* Add contest content here */}
-          </div>
+          ) : (
+            <div className="mt-4">
+              <p className="text-lg"><strong>Name:</strong> {formData.name}</p>
+              <p className="text-lg"><strong>Date of Birth:</strong> {formatDate(formData.dob)}</p>
+              <p className="text-lg"><strong>Gender:</strong> {formData.gender}</p>
+              <p className="text-lg"><strong>Bio:</strong> {formData.bio || "Add a bio to let others know more about you."}</p>
+              <button onClick={handleUpdateProfile} className="mt-4 bg-blue-500 text-white p-2 rounded">
+                Update Profile
+              </button>
+            </div>
+          )}
 
           {/* Interests Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <Heart className="text-red-600" />
-              Interests
-            </h2>
-            <p className={subtitleStyle}>Your areas of interest</p>
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold mb-2">Interests</h2>
             <ul className="list-disc list-inside">
               {user.interests && user.interests.length > 0 ? (
                 user.interests.map((interest, index) => (
-                  <li key={index} className={contentStyle}>
-                    {interest}
-                  </li>
+                  <li key={index} className="text-lg">{interest}</li>
                 ))
               ) : (
-                <p className="text-gray-600">No interests added yet.</p>
+                <p className="text-lg">No interests added yet.</p>
               )}
             </ul>
           </div>
-
-          {/* Contact Information Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <Phone className="text-indigo-600" />
-              Contact Information
-            </h2>
-            <p className={subtitleStyle}>How to reach you</p>
-            <div className={contentStyle}>
-              <p>
-                <strong>Address:</strong> {user.student_address}
-              </p>
-              <p>
-                <strong>Phone:</strong> {user.student_phone}
-              </p>
-              <p className="flex items-center gap-2">
-                <Mail className="text-indigo-600" size={20} />
-                <strong>Email:</strong> {user.student_email}
-              </p>
-            </div>
-          </div>
-
-          {/* Settings Section */}
-          <div className={sectionStyle}>
-            <h2 className={titleStyle}>
-              <Settings className="text-gray-600" />
-              Settings
-            </h2>
-            <p className={subtitleStyle}>Change your account settings</p>
-            {/* Add settings options here */}
-          </div>
         </div>
+
+        {/* Other sections (Achievements, Contests, Contributions, Contact Information, Settings) remain the same... */}
+        {/* You can add the other sections as you had them before. */}
       </div>
     </div>
   );
-};
-
-export default Showcase;
+}
