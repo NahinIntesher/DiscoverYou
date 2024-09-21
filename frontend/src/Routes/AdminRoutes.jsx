@@ -13,7 +13,8 @@ import Webinar from "../Components/AdminComponents/Webinar/Webinar";
 import Marketplace from "../Components/AdminComponents/Marketplace/Marketplace";
 import PendingProducts from "../Components/AdminComponents/Marketplace/PendingProducts";
 
-import Hiring from "../Components/AdminComponents/Hiring";
+import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
+
 import Notification from "../Components/AdminComponents/Notification";
 import Profile from "../Components/AdminComponents/Profile";
 import Post from "../Components/AdminComponents/Showcase/Post";

@@ -120,6 +120,6 @@ module.exports = (router, multer) => {
   );
 
   router.get("/marketplace", verifyToken, (req, res) => {
-    res.json({ messege: "Market Place" });
+    res.json({ messege: "Student Market Place" });
   });
 };

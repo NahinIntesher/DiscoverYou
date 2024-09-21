@@ -10,8 +10,9 @@ import Showcase from "../Components/OrganizerComponents/Showcase/Showcase";
 import Community from "../Components/OrganizerComponents/Community";
 import Course from "../Components/OrganizerComponents/Course";
 import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
-import Marketplace from "../Components/OrganizerComponents/Marketplace";
-import Hiring from "../Components/OrganizerComponents/Hiring";
+import Marketplace from "../Components/OrganizerComponents/Marketplace/Marketplace";
+import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
+
 import Notification from "../Components/OrganizerComponents/Notification";
 import Profile from "../Components/OrganizerComponents/Profile";
 import Post from "../Components/OrganizerComponents/Showcase/Post";

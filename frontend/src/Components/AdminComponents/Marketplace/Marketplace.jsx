@@ -14,7 +14,7 @@ export default function Marketplace() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/marketplace/products")
+            .get("http://localhost:3000/admin/marketplace/products")
             .then((res) => {
                 console.log("Success");
                 const productsData = res.data?.products || [];

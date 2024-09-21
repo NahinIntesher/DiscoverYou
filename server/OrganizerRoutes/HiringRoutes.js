@@ -4,8 +4,9 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
 module.exports = (router) => {
+  
 
   router.get("/hirings", verifyToken, (req, res) => {
-    res.json({ messege: "This is hiring section of Student" });
+    res.json({ messege: "This is hiring section of Organizer" });
   });
 };

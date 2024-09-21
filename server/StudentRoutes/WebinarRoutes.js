@@ -145,4 +145,39 @@ module.exports = (router) => {
       );
     });
   });
+
+  router.post("/webinar/add-webinar", verifyToken, (req, res) => {
+    const host_id = req.userId;
+    const {
+      webinar_name,
+      webinar_description,
+      webinar_category,
+      start_time,
+      end_time,
+      recorded_link,
+      meeting_link,
+      approver_id,
+    } = req.body;
+
+    connection.query(
+      `INSERT INTO webinars (host_id, webinar_name, webinar_description,	webinar_category,	start_time,	end_time, recorded_link, meeting_link, approver_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        host_id,
+        webinar_name,
+        webinar_description,
+        webinar_category,
+        start_time,
+        end_time,
+        recorded_link,
+        meeting_link,
+        approver_id,
+      ],
+      (err, results) => {
+        if (err) throw err;
+
+        res.json({ status: "Success" });
+      }
+    );
+  });
 };

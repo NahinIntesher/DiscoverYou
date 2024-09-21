@@ -15,7 +15,7 @@ import Course from "../Components/StudentComponents/Course";
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
 
-import Hiring from "../Components/StudentComponents/Hiring";
+import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
 import Notification from "../Components/StudentComponents/Notification";
 import Profile from "../Components/StudentComponents/Profile";
 

@@ -71,8 +71,8 @@
 .productBox .textContainer .buttonContainer .button { 
     flex: auto;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 18px;
     border-radius: 60px;
