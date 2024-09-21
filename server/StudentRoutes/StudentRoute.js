@@ -7,6 +7,7 @@ require("./ContestRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./CommunityRoutes")(router);
 require("./WebinarRoutes")(router);
+require("./HiringRoutes")(router);
 require("./MarketplaceRoutes")(router, multer);
 
 module.exports = router;
