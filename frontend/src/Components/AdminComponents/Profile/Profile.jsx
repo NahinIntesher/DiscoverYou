@@ -1,46 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "../../../assets/styles/profile.css";
+import { Link } from "react-router-dom";
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
+import dp from "../../../assets/images/desert4.jpg";
+import "../../../assets/styles/Profile.css";
+
 
 export default function Profile({ user }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user.admin_name,
-    dob: user.admin_date_of_birth.split("/").reverse().join("-"), // Assuming the format is dd/mm/yyyy
-    gender: user.admin_gender,
-    bio: user.bio || "",
-    address: user.admin_address,
-    phone: user.admin_phone,
-    email: user.admin_email,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleUpdateProfile = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveProfile = async () => {
-    try {
-      await axios.post(
-        "http://localhost:3000/admin/profile/updateProfile",
-        {
-          ...formData,
-          dob: formData.dob.split("-").reverse().join("/"), // Convert back to dd/mm/yyyy for the database
-        }
-      );
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-    }
-  };
-
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${day}/${month}/${year}`;
+  const extractDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
   return (
@@ -48,140 +21,160 @@ export default function Profile({ user }) {
       <div className="contentTitle">
         <div className="content">
           <div className="title">Profile</div>
+          <div className="buttonContainer">
+            <Link to="/update-profile" className="button">
+              <MaterialSymbol className="icon" size={24} icon="edit" />
+              <div className="text">Edit Profile</div>
+            </Link>
+            <Link to="/settings" className="button">
+              <MaterialSymbol className="icon" size={24} icon="settings" />
+              <div className="text">Settings</div>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="profileContainer">
-        <div className="profileHeader">
-          <h1 className="title">Admin Profile</h1>
-          <button className="editButton" onClick={isEditing ? handleSaveProfile : handleUpdateProfile}>
-            {isEditing ? "Save Profile" : "Edit Profile"}
-          </button>
+        <div className="profileTopBox">
+          <div className="profilePicture">
+            <img
+              src={dp} 
+              alt="Profile"
+            />
+          </div>
+          <div className="details">
+            <div className="name">{user.admin_name}</div>
+            <div className="userPoints">        
+              <MaterialSymbol className="icon" size={22} icon="star" fill/>
+              <div className="text">POINTS</div> 
+              <div className="point">1,42{user.admin_points}</div>
+            </div>
+            <div className="interests">
+              {user.interests.map(function(interest) {
+                return (<Interest category={interest}/>)
+              }) 
+              }
+            </div>
+          </div>
         </div>
-        <div className="profileContent">
-          {isEditing ? (
-            renderInputFields()
-          ) : (
-            <>
-              <div className="section">
-                <h2 className="sectionTitle">Personal Information</h2>
-                <div className="sectionContent">
-                  <ProfileField label="Name" value={formData.name} />
-                  <ProfileField label="Date of Birth" value={formatDate(formData.dob)} />
-                  <ProfileField label="Gender" value={formData.gender} />
-                </div>
-              </div>
-              <div className="section">
-                <h2 className="sectionTitle">Contact Information</h2>
-                <div className="sectionContent">
-                  <ProfileField label="Address" value={formData.address} />
-                  <ProfileField label="Phone" value={formData.phone} />
-                  <ProfileField label="Email" value={formData.email} />
-                </div>
-              </div>
-              <div className="section">
-                <h2 className="sectionTitle">Bio</h2>
-                <div className="sectionContent">
-                  <p>{formData.bio || "No bio available."}</p>
-                </div>
-              </div>
-            </>
-          )}
+
+
+        <div className="profileDetails"> 
+          <div className="contributionSectionContainer">
+            <ContributionBox 
+              count={93} 
+              title="Contests Participation" 
+              icon="rewarded_ads"
+              secondaryCount={6}
+              secondaryTitle="Contest Winner"
+            /> 
+            <ContributionBox 
+              count={13} 
+              title="Courses Enrolled"
+              icon="auto_stories" 
+              secondaryCount={6}
+              secondaryTitle="Course Completed"
+            />
+            <ContributionBox
+              count={132} 
+              title="Showcase Posts" 
+              icon="gallery_thumbnail"
+              secondaryCount={1340}
+              secondaryTitle="Post Reactions"
+            /> 
+          </div>
+          <div className="profileDetailsSectionContainer">
+            <ProfileSection title="Personal Information">
+              <ProfileField
+                icon="calendar_month"
+                label="Date of Birth"
+                value={extractDate(user.admin_date_of_birth)}
+              />
+              <ProfileField icon="group" label="Gender" value={user.admin_gender} />
+            </ProfileSection>
+            <ProfileSection title="Contact Information">
+              <ProfileField icon="call" label="Phone" value={user.admin_mobile_no} />
+              <ProfileField icon="mail" label="Email" value={user.admin_email} />
+            </ProfileSection>
+          </div>
         </div>
       </div>
     </div>
   );
-
-  function renderInputFields() {
-    return (
-      <>
-        <div className="inputGroup">
-          <label className="inputLabel">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="inputField"
-            placeholder="Name"
-          />
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Date of Birth</label>
-          <input
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleInputChange}
-            className="inputField"
-          />
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Gender</label>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-            className="inputField"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Bio</label>
-          <textarea
-            name="bio"
-            value={formData.bio}
-            onChange={handleInputChange}
-            className="inputField"
-            placeholder="Bio"
-          />
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Address</label>
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleInputChange}
-            className="inputField"
-            placeholder="Address"
-          />
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            className="inputField"
-            placeholder="Phone"
-          />
-        </div>
-        <div className="inputGroup">
-          <label className="inputLabel">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="inputField"
-            placeholder="Email"
-          />
-        </div>
-      </>
-    );
-  }
 }
 
-function ProfileField({ label, value }) {
+function ProfileSection({ title, children }) {
   return (
-    <div className="profileField">
-      <p className="text-lg font-medium">
-        <strong>{label}:</strong> {value}
-      </p>
+    <div className="profileDetailsSection">
+      <h2 className="title">{title}</h2>
+      {children}
     </div>
   );
+}
+
+function ProfileField({ icon, label, value }) {
+  return (
+    <div className="profileSectionField">
+      <MaterialSymbol className="icon" size={28} icon={icon}/>
+      <div className="texts">
+        <div className="label">{label}</div>
+        <div className="value">{value}</div>
+      </div>
+    </div>
+  );
+}
+
+function Interest({category}) {
+  return(
+    <div className="userInterest">
+      {category === "Competitive Programming" && (
+        <MaterialSymbol className="icon" size={24} icon="code" />
+      )}
+      {category === "Singing" && (
+        <MaterialSymbol className="icon" size={24} icon="queue_music" />
+      )}
+      {category === "Graphics Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="polyline" />
+      )}
+      {category === "Photography" && (
+        <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+      )}
+      {category === "Web/App Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="web" />
+      )}
+      {category === "Writing" && (
+        <MaterialSymbol className="icon" size={24} icon="edit_note" />
+      )}
+      {category === "Art & Craft" && (
+        <MaterialSymbol className="icon" size={24} icon="draw" />
+      )}
+      {category === "Debating" && (
+        <MaterialSymbol className="icon" size={24} icon="communication" />
+      )}
+      {category === "Gaming" && (
+        <MaterialSymbol
+          className="icon"
+          size={24}
+          icon="sports_esports"
+        />
+      )}
+      <div className="text">{category}</div>
+    </div>
+  )
+}
+
+function ContributionBox({count, title, secondaryCount, secondaryTitle, icon}) {
+  return(
+    <div className="contributionBox">
+      <MaterialSymbol className="icon" size={50} icon={icon}/>
+      <MaterialSymbol className="floatedIcon" size={180} icon={icon}/>
+      <div className="texts">
+        <div className="count">{count}</div>
+        <div className="title">{title}</div>
+      </div>
+      <div className="secondDetail">
+        <span className="count">{secondaryCount}</span>{" "}
+        <span className="title">{secondaryTitle}</span>
+      </div>
+    </div> 
+  )
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../../assets/images/desert4.jpg";
+import "../../../assets/styles/Profile.css";
 
 
 

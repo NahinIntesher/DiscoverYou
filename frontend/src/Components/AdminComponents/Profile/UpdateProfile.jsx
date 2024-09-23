@@ -19,18 +19,17 @@ export default function UpdateProfile({ user }) {
   };
 
   const [formData, setFormData] = useState({
-    name: user.student_name,
-    date_of_birth: extractDate(user.student_date_of_birth),
-    gender: user.student_gender,
-    address: user.student_address,
-    mobile_no: user.student_mobile_no,
-    email: user.student_email,
+    name: user.admin_name,
+    date_of_birth: extractDate(user.admin_date_of_birth),
+    gender: user.admin_gender,
+    address: user.admin_address,
+    mobile_no: user.admin_mobile_no,
+    email: user.admin_email,
     oldPassword: "",
     password: "",
     updatePassword: "",
   });
 
-  console.log(formData);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -81,8 +80,8 @@ export default function UpdateProfile({ user }) {
       newErrors.email = "Please enter a valid email address.";
     }
 
-    setErrors(newErrors);
-    console.log(newErrors);
+    // setErrors(newErrors);
+    // console.log(newErrors);
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
@@ -101,7 +100,14 @@ export default function UpdateProfile({ user }) {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    console.log(name);
+    console.log(value);
+    setFormData(function (prevFormData) {
+      return {
+        ...prevFormData,
+        [name]: value,
+      };
+    });
   };
 
   return (
@@ -113,9 +119,7 @@ export default function UpdateProfile({ user }) {
             <div className="title">Update Your Profile</div>
             {/* Name */}
             <div className="input">
-              <label>
-                Name
-              </label>
+              <label>Name</label>
               <input
                 type="text"
                 id="name"
@@ -129,9 +133,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Birth Date */}
             <div className="input">
-              <label htmlFor="date_of_birth">
-                Date of Birth
-              </label>
+              <label htmlFor="date_of_birth">Date of Birth</label>
               <input
                 type="date"
                 id="date_of_birth"
@@ -143,30 +145,23 @@ export default function UpdateProfile({ user }) {
 
             {/* Gender */}
             <div className="input">
-              <label>
-                Gender
-              </label>
+              <label>Gender</label>
               <div className="flex flex-wrap gap-4">
-                <label htmlFor="genderMale" className="flex items-center">
+                <label htmlFor="gender" className="flex items-center">
                   <input
                     type="radio"
-                    id="genderMale"
                     name="gender"
                     value="Male"
-                    checked={formData.gender === "Male"}
-                    onChange={handleInputChange}
+                    // onChange={handleInputChange}
                     className="form-radio"
                   />
                   <span className="ml-2">Male</span>
-                </label>
-                <label htmlFor="genderFemale" className="flex items-center">
+
                   <input
                     type="radio"
-                    id="genderFemale"
                     name="gender"
                     value="Female"
-                    checked={formData.gender === "Female"}
-                    onChange={handleInputChange}
+                    // onChange={handleInputChange}
                     className="form-radio"
                   />
                   <span className="ml-2">Female</span>
@@ -176,9 +171,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Address */}
             <div className="input">
-              <label>
-                Address
-              </label>
+              <label>Address</label>
               <textarea
                 id="address"
                 name="address"
@@ -190,9 +183,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Mobile Number */}
             <div className="input">
-              <label>
-                Mobile Number
-              </label>
+              <label>Mobile Number</label>
               <input
                 type="tel"
                 id="mobile_no"
@@ -200,9 +191,7 @@ export default function UpdateProfile({ user }) {
                 value={formData.mobile_no}
                 onChange={handleInputChange}
               />
-              {errors.mobile_no && (
-                <p className="error">{errors.mobile_no}</p>
-              )}
+              {errors.mobile_no && <p className="error">{errors.mobile_no}</p>}
             </div>
 
             {/* Profile Picture */}
@@ -224,9 +213,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Email */}
             <div className="input">
-              <label>
-                Email
-              </label>
+              <label>Email</label>
               <input
                 type="email"
                 id="email"
@@ -239,9 +226,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Old Password */}
             <div className="input">
-              <label>
-                Old Password
-              </label>
+              <label>Old Password</label>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -263,9 +248,7 @@ export default function UpdateProfile({ user }) {
             {/* New Password */}
             {formData.oldPassword && (
               <div className="input">
-                <label>
-                  New Password
-                </label>
+                <label>New Password</label>
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
@@ -290,9 +273,7 @@ export default function UpdateProfile({ user }) {
             {/* Confirm Password */}
             {formData.oldPassword && (
               <div className="input">
-                <label>
-                  Confirm New Password
-                </label>
+                <label>Confirm New Password</label>
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
@@ -300,7 +281,7 @@ export default function UpdateProfile({ user }) {
                   placeholder="••••••••••••••••"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                 />
+                />
                 <div
                   className="absolute right-3 top-11 cursor-pointer"
                   onClick={toggleConfirmPasswordVisibility}
@@ -313,9 +294,7 @@ export default function UpdateProfile({ user }) {
                 </div>
               </div>
             )}
-            <button>
-              Register
-            </button>
+            <button>Save</button>
           </form>
         </div>
       </div>

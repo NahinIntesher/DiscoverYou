@@ -96,8 +96,8 @@
   font-size: 15px;
 }
 .formBox .error {
-  background-color: rgba(180,0,0,0.4);
-  color: rgb(160,0,0);
+  background-color: rgba(180, 0, 0, 0.4);
+  color: rgb(160, 0, 0);
   margin: 6px 4px;
   border-radius: 10px;
   padding: 8px 16px;
@@ -149,11 +149,11 @@
   display: inline-block;
   background-image: radial-gradient(
       420px 40px at left top,
-      #ffe79acc,
-      #ffe79a99,
+      rgba(var(--light), 0.8),
+      rgba(var(--light), 0.6),
       transparent
     ),
-    linear-gradient(#ef5a5a, #ffa952);
+    linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
   color: #ffffff;
   padding: 14px 24px;
   border-radius: 60px;

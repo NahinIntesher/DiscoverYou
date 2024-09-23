@@ -19,12 +19,12 @@ export default function UpdateProfile({ user }) {
   };
 
   const [formData, setFormData] = useState({
-    name: user.student_name,
-    date_of_birth: extractDate(user.student_date_of_birth),
-    gender: user.student_gender,
-    address: user.student_address,
-    mobile_no: user.student_mobile_no,
-    email: user.student_email,
+    name: user.organizer_name,
+    date_of_birth: extractDate(user.organizer_date_of_birth),
+    gender: user.organizer_gender,
+    address: user.organizer_address,
+    mobile_no: user.organizer_mobile_no,
+    email: user.organizer_email,
     oldPassword: "",
     password: "",
     updatePassword: "",

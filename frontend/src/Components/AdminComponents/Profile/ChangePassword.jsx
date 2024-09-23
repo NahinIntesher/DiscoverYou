@@ -5,7 +5,6 @@ import Header from "../../CommonComponents/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
-import "../../../assets/styles/Profile.css";
 
 export default function UpdateProfile({ user }) {
   const navigate = useNavigate();
@@ -19,12 +18,12 @@ export default function UpdateProfile({ user }) {
   };
 
   const [formData, setFormData] = useState({
-    name: user.student_name,
-    date_of_birth: extractDate(user.student_date_of_birth),
-    gender: user.student_gender,
-    address: user.student_address,
-    mobile_no: user.student_mobile_no,
-    email: user.student_email,
+    name: user.admin_name,
+    date_of_birth: extractDate(user.admin_date_of_birth),
+    gender: user.admin_gender,
+    address: user.admin_address,
+    mobile_no: user.admin_mobile_no,
+    email: user.admin_email,
     oldPassword: "",
     password: "",
     updatePassword: "",

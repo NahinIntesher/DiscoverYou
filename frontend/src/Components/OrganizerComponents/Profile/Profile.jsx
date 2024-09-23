@@ -2,36 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
+import dp from "../../../assets/images/desert4.jpg";
+
+
 
 export default function Profile({ user }) {
-  const [isEditing, setIsEditing] = useState(false);
-
   const extractDate = (dateString) => {
-    if (dateString.includes('T')) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }).replace(/\//g, '/');
-    }
-    
-    const parts = dateString.split("/");
-    if (parts.length === 3) {
-      return dateString;
-    }
-    
-    return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
-
-  const [formData, setFormData] = useState({
-    name: user.organizer_name,
-    date_of_birth: extractDate(user.organizer_date_of_birth),
-    gender: user.organizer_gender,
-    address: user.organizer_address,
-    phone: user.organizer_mobile_no,
-    email: user.organizer_email,
-  });
 
   return (
     <div className="mainContent">
@@ -43,38 +26,77 @@ export default function Profile({ user }) {
               <MaterialSymbol className="icon" size={24} icon="edit" />
               <div className="text">Edit Profile</div>
             </Link>
+            <Link to="/settings" className="button">
+              <MaterialSymbol className="icon" size={24} icon="settings" />
+              <div className="text">Settings</div>
+            </Link>
           </div>
         </div>
       </div>
-      <div className="p-6">
-        {isEditing ? (
-          <UpdateProfile />
-        ) : (
-          <div className="space-y-6">
-            <div className="flex flex-col items-center justify-center gap-5">
-              <img
-                src="" // Add the user's profile image URL here
-                alt="Profile"
-                width={200}
-                height={200}
-                className="bg-gray-300 border-indigo-500 border-4 rounded-full flex items-center justify-center"
-              />
-              <p className="text-2xl text-black font-semibold">{formData.name}</p>
+      <div className="profileContainer">
+        <div className="profileTopBox">
+          <div className="profilePicture">
+            <img
+              src={dp} 
+              alt="Profile"
+            />
+          </div>
+          <div className="details">
+            <div className="name">{user.organizer_name}</div>
+            <div className="userPoints">        
+              <MaterialSymbol className="icon" size={22} icon="star" fill/>
+              <div className="text">POINTS</div> 
+              <div className="point">1,42{user.organizer_points}</div>
             </div>
+            <div className="interests">
+              {user.interests.map(function(interest) {
+                return (<Interest category={interest}/>)
+              }) 
+              }
+            </div>
+          </div>
+        </div>
+
+
+        <div className="profileDetails"> 
+          <div className="contributionSectionContainer">
+            <ContributionBox 
+              count={93} 
+              title="Contests Participation" 
+              icon="rewarded_ads"
+              secondaryCount={6}
+              secondaryTitle="Contest Winner"
+            /> 
+            <ContributionBox 
+              count={13} 
+              title="Courses Enrolled"
+              icon="auto_stories" 
+              secondaryCount={6}
+              secondaryTitle="Course Completed"
+            />
+            <ContributionBox
+              count={132} 
+              title="Showcase Posts" 
+              icon="gallery_thumbnail"
+              secondaryCount={1340}
+              secondaryTitle="Post Reactions"
+            /> 
+          </div>
+          <div className="profileDetailsSectionContainer">
             <ProfileSection title="Personal Information">
               <ProfileField
+                icon="calendar_month"
                 label="Date of Birth"
-                value={formData.date_of_birth}
+                value={extractDate(user.organizer_date_of_birth)}
               />
-              <ProfileField label="Gender" value={formData.gender} />
+              <ProfileField icon="group" label="Gender" value={user.organizer_gender} />
             </ProfileSection>
             <ProfileSection title="Contact Information">
-              <ProfileField label="Address" value={formData.address} />
-              <ProfileField label="Phone" value={formData.phone} />
-              <ProfileField label="Email" value={formData.email} />
+              <ProfileField icon="call" label="Phone" value={user.organizer_mobile_no} />
+              <ProfileField icon="mail" label="Email" value={user.organizer_email} />
             </ProfileSection>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -82,18 +104,77 @@ export default function Profile({ user }) {
 
 function ProfileSection({ title, children }) {
   return (
-    <div className="border-b border-gray-200 pb-4">
-      <h2 className="text-xl font-semibold text-gray-800 mb-3">{title}</h2>
-      <div className="space-y-2">{children}</div>
+    <div className="profileDetailsSection">
+      <h2 className="title">{title}</h2>
+      {children}
     </div>
   );
 }
 
-function ProfileField({ label, value }) {
+function ProfileField({ icon, label, value }) {
   return (
-    <div>
-      <span className="font-medium text-gray-600">{label}:</span>{" "}
-      <span className="text-gray-800">{value}</span>
+    <div className="profileSectionField">
+      <MaterialSymbol className="icon" size={28} icon={icon}/>
+      <div className="texts">
+        <div className="label">{label}</div>
+        <div className="value">{value}</div>
+      </div>
     </div>
   );
+}
+
+function Interest({category}) {
+  return(
+    <div className="userInterest">
+      {category === "Competitive Programming" && (
+        <MaterialSymbol className="icon" size={24} icon="code" />
+      )}
+      {category === "Singing" && (
+        <MaterialSymbol className="icon" size={24} icon="queue_music" />
+      )}
+      {category === "Graphics Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="polyline" />
+      )}
+      {category === "Photography" && (
+        <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+      )}
+      {category === "Web/App Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="web" />
+      )}
+      {category === "Writing" && (
+        <MaterialSymbol className="icon" size={24} icon="edit_note" />
+      )}
+      {category === "Art & Craft" && (
+        <MaterialSymbol className="icon" size={24} icon="draw" />
+      )}
+      {category === "Debating" && (
+        <MaterialSymbol className="icon" size={24} icon="communication" />
+      )}
+      {category === "Gaming" && (
+        <MaterialSymbol
+          className="icon"
+          size={24}
+          icon="sports_esports"
+        />
+      )}
+      <div className="text">{category}</div>
+    </div>
+  )
+}
+
+function ContributionBox({count, title, secondaryCount, secondaryTitle, icon}) {
+  return(
+    <div className="contributionBox">
+      <MaterialSymbol className="icon" size={50} icon={icon}/>
+      <MaterialSymbol className="floatedIcon" size={180} icon={icon}/>
+      <div className="texts">
+        <div className="count">{count}</div>
+        <div className="title">{title}</div>
+      </div>
+      <div className="secondDetail">
+        <span className="count">{secondaryCount}</span>{" "}
+        <span className="title">{secondaryTitle}</span>
+      </div>
+    </div> 
+  )
 }

@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
+import "../../../assets/styles/Profile.css";
 
 export default function UpdateProfile({ user }) {
   const navigate = useNavigate();
@@ -313,8 +314,8 @@ export default function UpdateProfile({ user }) {
                 </div>
               </div>
             )}
-            <button>
-              Register
+            <button className="">
+              Save
             </button>
           </form>
         </div>
