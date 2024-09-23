@@ -95,6 +95,14 @@
   margin: 4px 8px;
   font-size: 15px;
 }
+.formBox .error {
+  background-color: rgba(180,0,0,0.4);
+  color: rgb(160,0,0);
+  margin: 6px 4px;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 15px;
+}
 .formBox label .required {
   color: red;
 }
@@ -104,8 +112,14 @@
 }
 .formBox .input {
   margin: 8px 12px;
+  position: relative;
 }
-.formBox input,
+.formBox input[type="text"],
+.formBox input[type="password"],
+.formBox input[type="email"],
+.formBox input[type="number"],
+.formBox input[type="tel"],
+.formBox input[type="date"],
 .formBox textarea,
 .formBox select {
   border-radius: 12px;
@@ -120,7 +134,12 @@
   display: block;
 }
 
-.formBox input:focus,
+.formBox input[type="text"]:focus,
+.formBox input[type="password"]:focus,
+.formBox input[type="email"]:focus,
+.formBox input[type="number"]:focus,
+.formBox input[type="tel"]:focus,
+.formBox input[type="date"]:focus,
 .formBox textarea:focus,
 .formBox select:focus {
   border: 2px solid #ffa952;

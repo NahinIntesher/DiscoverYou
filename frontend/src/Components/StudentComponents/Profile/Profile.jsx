@@ -1,158 +1,180 @@
 import React, { useState } from "react";
-import { Edit2, Save } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
+import dp from "../../../assets/images/desert4.jpg";
+
+
 
 export default function Profile({ user }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user.student_name,
-    dob: user.student_date_of_birth.split("/").reverse().join("-"),
-    gender: user.student_gender,
-    bio: user.bio || "",
-    address: user.student_address,
-    phone: user.student_phone,
-    email: user.student_email,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleUpdateProfile = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveProfile = async () => {
-    // Implement save logic here
-    setIsEditing(false);
-  };
-
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${day}/${month}/${year}`;
+  const extractDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-100 to-indigo-200 min-h-screen p-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-500 to-indigo-600 p-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-white">Student Profile</h1>
-            <button
-              className="px-4 py-2 bg-white text-indigo-600 rounded-full shadow-md hover:bg-indigo-100 transition duration-300 flex items-center"
-              onClick={isEditing ? handleSaveProfile : handleUpdateProfile}
-            >
-              {isEditing ? (
-                <>
-                  <Save size={18} className="mr-2" />
-                  Save Profile
-                </>
-              ) : (
-                <>
-                  <Edit2 size={18} className="mr-2" />
-                  Edit Profile
-                </>
-              )}
-            </button>
+    <div className="mainContent">
+      <div className="contentTitle">
+        <div className="content">
+          <div className="title">Profile</div>
+          <div className="buttonContainer">
+            <Link to="/update-profile" className="button">
+              <MaterialSymbol className="icon" size={24} icon="edit" />
+              <div className="text">Edit Profile</div>
+            </Link>
+            <Link to="/settings" className="button">
+              <MaterialSymbol className="icon" size={24} icon="settings" />
+              <div className="text">Settings</div>
+            </Link>
           </div>
         </div>
-        <div className="p-6">
-          {isEditing ? (
-            renderInputFields()
-          ) : (
-            <div className="space-y-6">
-              <ProfileSection title="Personal Information">
-                <ProfileField label="Name" value={formData.name} />
-                <ProfileField label="Date of Birth" value={formatDate(formData.dob)} />
-                <ProfileField label="Gender" value={formData.gender} />
-              </ProfileSection>
-              <ProfileSection title="Contact Information">
-                <ProfileField label="Address" value={formData.address} />
-                <ProfileField label="Phone" value={formData.phone} />
-                <ProfileField label="Email" value={formData.email} />
-              </ProfileSection>
-              <ProfileSection title="Bio">
-                <p className="text-gray-700">{formData.bio || "No bio available."}</p>
-              </ProfileSection>
+      </div>
+      <div className="profileContainer">
+        <div className="profileTopBox">
+          <div className="profilePicture">
+            <img
+              src={dp} 
+              alt="Profile"
+            />
+          </div>
+          <div className="details">
+            <div className="name">{user.student_name}</div>
+            <div className="userPoints">        
+              <MaterialSymbol className="icon" size={22} icon="star" fill/>
+              <div className="text">POINTS</div> 
+              <div className="point">1,42{user.student_points}</div>
             </div>
-          )}
+            <div className="interests">
+              {user.interests.map(function(interest) {
+                return (<Interest category={interest}/>)
+              }) 
+              }
+            </div>
+          </div>
+        </div>
+
+
+        <div className="profileDetails"> 
+          <div className="contributionSectionContainer">
+            <ContributionBox 
+              count={93} 
+              title="Contests Participation" 
+              icon="rewarded_ads"
+              secondaryCount={6}
+              secondaryTitle="Contest Winner"
+            /> 
+            <ContributionBox 
+              count={13} 
+              title="Courses Enrolled"
+              icon="auto_stories" 
+              secondaryCount={6}
+              secondaryTitle="Course Completed"
+            />
+            <ContributionBox
+              count={132} 
+              title="Showcase Posts" 
+              icon="gallery_thumbnail"
+              secondaryCount={1340}
+              secondaryTitle="Post Reactions"
+            /> 
+          </div>
+          <div className="profileDetailsSectionContainer">
+            <ProfileSection title="Personal Information">
+              <ProfileField
+                icon="calendar_month"
+                label="Date of Birth"
+                value={extractDate(user.student_date_of_birth)}
+              />
+              <ProfileField icon="group" label="Gender" value={user.student_gender} />
+            </ProfileSection>
+            <ProfileSection title="Contact Information">
+              <ProfileField icon="call" label="Phone" value={user.student_mobile_no} />
+              <ProfileField icon="mail" label="Email" value={user.student_email} />
+            </ProfileSection>
+          </div>
         </div>
       </div>
     </div>
   );
-
-  function renderInputFields() {
-    return (
-      <div className="space-y-4">
-        <InputField label="Name" name="name" value={formData.name} onChange={handleInputChange} />
-        <InputField label="Date of Birth" name="dob" value={formData.dob} onChange={handleInputChange} type="date" />
-        <div className="space-y-1">
-          <label className="block text-sm font-medium text-gray-700">Gender</label>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <InputField label="Bio" name="bio" value={formData.bio} onChange={handleInputChange} textarea />
-        <InputField label="Address" name="address" value={formData.address} onChange={handleInputChange} />
-        <InputField label="Phone" name="phone" value={formData.phone} onChange={handleInputChange} />
-        <InputField label="Email" name="email" value={formData.email} onChange={handleInputChange} type="email" />
-      </div>
-    );
-  }
 }
 
 function ProfileSection({ title, children }) {
   return (
-    <div className="border-b border-gray-200 pb-4">
-      <h2 className="text-xl font-semibold text-gray-800 mb-3">{title}</h2>
-      <div className="space-y-2">{children}</div>
+    <div className="profileDetailsSection">
+      <h2 className="title">{title}</h2>
+      {children}
     </div>
   );
 }
 
-function ProfileField({ label, value }) {
+function ProfileField({ icon, label, value }) {
   return (
-    <div>
-      <span className="font-medium text-gray-600">{label}:</span>{" "}
-      <span className="text-gray-800">{value}</span>
+    <div className="profileSectionField">
+      <MaterialSymbol className="icon" size={28} icon={icon}/>
+      <div className="texts">
+        <div className="label">{label}</div>
+        <div className="value">{value}</div>
+      </div>
     </div>
   );
 }
 
-function InputField({ label, name, value, onChange, type = "text", textarea = false }) {
-  const inputClasses = "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
-  
-  return (
-    <div className="space-y-1">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
-      {textarea ? (
-        <textarea
-          id={name}
-          name={name}
-          rows={3}
-          className={inputClasses}
-          value={value}
-          onChange={onChange}
-        />
-      ) : (
-        <input
-          type={type}
-          id={name}
-          name={name}
-          className={inputClasses}
-          value={value}
-          onChange={onChange}
+function Interest({category}) {
+  return(
+    <div className="userInterest">
+      {category === "Competitive Programming" && (
+        <MaterialSymbol className="icon" size={24} icon="code" />
+      )}
+      {category === "Singing" && (
+        <MaterialSymbol className="icon" size={24} icon="queue_music" />
+      )}
+      {category === "Graphics Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="polyline" />
+      )}
+      {category === "Photography" && (
+        <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+      )}
+      {category === "Web/App Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="web" />
+      )}
+      {category === "Writing" && (
+        <MaterialSymbol className="icon" size={24} icon="edit_note" />
+      )}
+      {category === "Art & Craft" && (
+        <MaterialSymbol className="icon" size={24} icon="draw" />
+      )}
+      {category === "Debating" && (
+        <MaterialSymbol className="icon" size={24} icon="communication" />
+      )}
+      {category === "Gaming" && (
+        <MaterialSymbol
+          className="icon"
+          size={24}
+          icon="sports_esports"
         />
       )}
+      <div className="text">{category}</div>
     </div>
-  );
+  )
+}
+
+function ContributionBox({count, title, secondaryCount, secondaryTitle, icon}) {
+  return(
+    <div className="contributionBox">
+      <MaterialSymbol className="icon" size={50} icon={icon}/>
+      <MaterialSymbol className="floatedIcon" size={180} icon={icon}/>
+      <div className="texts">
+        <div className="count">{count}</div>
+        <div className="title">{title}</div>
+      </div>
+      <div className="secondDetail">
+        <span className="count">{secondaryCount}</span>{" "}
+        <span className="title">{secondaryTitle}</span>
+      </div>
+    </div> 
+  )
 }

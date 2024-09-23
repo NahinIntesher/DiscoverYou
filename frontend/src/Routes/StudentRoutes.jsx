@@ -26,6 +26,7 @@ import PendingMembers from "../Components/StudentComponents/Community/PendingMem
 
 import Marketplace from "../Components/StudentComponents/Marketplace/Marketplace";
 import AddProduct from "../Components/StudentComponents/Marketplace/AddProduct";
+import UpdateProfile from "../Components/StudentComponents/Profile/UpdateProfile";
 
 export default function Student({ handleLogout, user }) {
   return (
@@ -64,6 +65,8 @@ export default function Student({ handleLogout, user }) {
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/profile" element={<Profile user={user} />} />
+          <Route path="/update-profile" element={<UpdateProfile user={user} />} />
+          
         </Routes>
       </div>
     </BrowserRouter>

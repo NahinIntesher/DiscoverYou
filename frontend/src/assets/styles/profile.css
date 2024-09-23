@@ -1,94 +1,200 @@
 .profileContainer {
   width: 100%;
-  height:min-content;
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(var(--light), 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  position: relative;
+  text-align: center;
+  padding: 10px;
 }
 
-.profileHeader {
-  display: flex;
-  align-items: center;
+.profileTopBox {
+  margin: 10px;
 }
 
-.profileHeader .title {
-  font-size: 30px;
+.userPoints {
+  background-color: rgba(0,0,0,0.1);
+  display: block;
+  margin: 8px auto;
+  width: fit-content;
+  padding: 4px;
+  border-radius: 20px;
+}
+
+.userPoints .text {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 4px;
+  font-size: 14px;
+}
+.userPoints .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+  margin-left: 6px;
+}
+.userPoints .point {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+  padding: 2px 12px;
+  background-color: #ffffff;
+  border-radius: 20px;
   font-weight: 600;
-  color: #ececec;
-  margin-right: auto;
-  text-shadow:
-      -4px -4px 12px rgba(var(--dark), 0.6),
-      4px 4px 12px rgba(var(--dark), 0.6);
+  color: rgba(var(--dark),0.8);
 }
 
-.editButton {
-  background-image:
-      radial-gradient(120px 40px at left top, rgb(var(--medium)), rgba(var(--medium), 0.8), transparent),
-      linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
-  padding: 10px 20px;
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 14px;
-  box-shadow: -4px -4px 8px rgba(var(--light), 0.8),
-              4px 4px 8px rgba(var(--light), 0.8);
-  cursor: pointer;
-  margin-left: 24px;
+.profileTopBox .profilePicture {
+  background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+  padding: 7px;
+  display: inline-block;
+  border-radius: 200px;
+  margin: 10px;
+}
+.profileTopBox .profilePicture img {
+  width: 180px;
+  height: 180px;
+  border-radius: 200px;
+  border: 6px #ffffff solid;
+}
+.profileTopBox .details {
+
+}
+.profileTopBox .details .name {
+  font-weight: 600;
+  font-size: 28px;
 }
 
-.editButton:hover {
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+.profileDetails {
+  padding: 10px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.profileContent {
-  margin-top: 16px;
+.profileDetailsSectionContainer {
+  display: flex;
+}
+.profileDetailsSection {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+  margin: 8px;
+  padding: 12px;
+  text-align: left;
 }
 
-.profileContent .section {
-  margin-bottom: 16px;
-}
-
-.profileContent .sectionTitle {
+.profileDetailsSection .title {
   font-size: 20px;
   font-weight: 600;
-  color: rgba(var(--dark), 0.9);
+  padding: 6px 12px;
+}
+.profileSectionField {
+  margin: 2px 4px;
+}
+.profileSectionField .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 6px;
+}
+.profileSectionField .texts {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 6px;
 }
 
-.profileContent .sectionContent {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.profileSectionField .label {
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.profileContent .sectionContent p {
-  margin: 0;
-  color: rgba(var(--dark), 0.7);
+
+.contributionSectionContainer {
+  display: flex;
+}
+.contributionBox {
+  position: relative;
+  flex: 1;
+  background-image: 
+  radial-gradient(240px 80px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+  linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+  border-radius: 16px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+  margin: 8px;
+  text-align: left;
+  color: #ffffff;
+  padding: 10px;
+  overflow: hidden;
 }
 
-.inputGroup {
-  margin-bottom: 16px;
+.contributionBox .icon {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  margin: 10px 16px;
+  color: rgb(var(--extralight));
+}
+.contributionBox .floatedIcon {
+  position: absolute;
+  color: rgba(var(--light));
+  top: 10px;
+  right: 10px;
+  opacity: 0.2;
+  z-index: 0;
+}
+.contributionBox .texts {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 6px;
+  z-index: 200;
 }
 
-.inputLabel {
-  display: block;
-  margin-bottom: 8px;
+.contributionBox .texts .count{
+  font-size: 50px;
+  line-height: 100%;
+  font-weight: 600;
+  text-shadow: 4px 4px 8px rgba(var(--dark),0.8);
+}
+.contributionBox .texts .title {
   font-weight: 500;
-  color: rgba(var(--dark), 0.9);
+  opacity: 0.9;
 }
 
-.inputField {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid rgba(var(--medium), 0.3);
-  border-radius: 8px;
-  font-size: 16px;
+.contributionBox .secondDetail {
+  font-weight: 500;
+  opacity: 0.9;
+  background-color: rgba(var(--extradark), 0.2);
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
 }
 
-.inputField:focus {
-  outline: none;
-  border-color: rgb(var(--medium));
-  box-shadow: 0 0 0 2px rgba(var(--medium), 0.2);
+.contributionBox .secondDetail .count {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(var(--extralight));
+}
+.contributionBox .secondDetail .title {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.userInterest {
+  background-color: rgba(var(--medium), 0.4);
+  color: rgba(var(--dark), 0.8);
+  padding: 2px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 4px;
+}
+.userInterest .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+}
+.userInterest .text {
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 2px 4px;
 }
