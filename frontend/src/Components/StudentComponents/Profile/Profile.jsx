@@ -5,15 +5,13 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/desert4.jpg";
 import "../../../assets/styles/Profile.css";
 
-
-
 export default function Profile({ user }) {
   const extractDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
   };
 
@@ -37,51 +35,46 @@ export default function Profile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img
-              src={dp} 
-              alt="Profile"
-            />
+            <img src={dp} alt="Profile" />
           </div>
           <div className="details">
             <div className="name">{user.student_name}</div>
-            <div className="userPoints">        
-              <MaterialSymbol className="icon" size={22} icon="star" fill/>
-              <div className="text">POINTS</div> 
+            <div className="userPoints">
+              <MaterialSymbol className="icon" size={22} icon="star" fill />
+              <div className="text">POINTS</div>
               <div className="point">1,42{user.student_points}</div>
             </div>
             <div className="interests">
-              {user.interests.map(function(interest) {
-                return (<Interest category={interest}/>)
-              }) 
-              }
+              {user.interests.map(function (interest) {
+                return <Interest key={interest} category={interest} />;
+              })}
             </div>
           </div>
         </div>
 
-
-        <div className="profileDetails"> 
+        <div className="profileDetails">
           <div className="contributionSectionContainer">
-            <ContributionBox 
-              count={93} 
-              title="Contests Participation" 
+            <ContributionBox
+              count={93}
+              title="Contests Participation"
               icon="rewarded_ads"
               secondaryCount={6}
               secondaryTitle="Contest Winner"
-            /> 
-            <ContributionBox 
-              count={13} 
+            />
+            <ContributionBox
+              count={13}
               title="Courses Enrolled"
-              icon="auto_stories" 
+              icon="auto_stories"
               secondaryCount={6}
               secondaryTitle="Course Completed"
             />
             <ContributionBox
-              count={132} 
-              title="Showcase Posts" 
+              count={132}
+              title="Showcase Posts"
               icon="gallery_thumbnail"
               secondaryCount={1340}
               secondaryTitle="Post Reactions"
-            /> 
+            />
           </div>
           <div className="profileDetailsSectionContainer">
             <ProfileSection title="Personal Information">
@@ -90,11 +83,23 @@ export default function Profile({ user }) {
                 label="Date of Birth"
                 value={extractDate(user.student_date_of_birth)}
               />
-              <ProfileField icon="group" label="Gender" value={user.student_gender} />
+              <ProfileField
+                icon="group"
+                label="Gender"
+                value={user.student_gender}
+              />
             </ProfileSection>
             <ProfileSection title="Contact Information">
-              <ProfileField icon="call" label="Phone" value={user.student_mobile_no} />
-              <ProfileField icon="mail" label="Email" value={user.student_email} />
+              <ProfileField
+                icon="call"
+                label="Phone"
+                value={user.student_mobile_no}
+              />
+              <ProfileField
+                icon="mail"
+                label="Email"
+                value={user.student_email}
+              />
             </ProfileSection>
           </div>
         </div>
@@ -115,7 +120,7 @@ function ProfileSection({ title, children }) {
 function ProfileField({ icon, label, value }) {
   return (
     <div className="profileSectionField">
-      <MaterialSymbol className="icon" size={28} icon={icon}/>
+      <MaterialSymbol className="icon" size={28} icon={icon} />
       <div className="texts">
         <div className="label">{label}</div>
         <div className="value">{value}</div>
@@ -124,8 +129,8 @@ function ProfileField({ icon, label, value }) {
   );
 }
 
-function Interest({category}) {
-  return(
+function Interest({ category }) {
+  return (
     <div className="userInterest">
       {category === "Competitive Programming" && (
         <MaterialSymbol className="icon" size={24} icon="code" />
@@ -152,22 +157,24 @@ function Interest({category}) {
         <MaterialSymbol className="icon" size={24} icon="communication" />
       )}
       {category === "Gaming" && (
-        <MaterialSymbol
-          className="icon"
-          size={24}
-          icon="sports_esports"
-        />
+        <MaterialSymbol className="icon" size={24} icon="sports_esports" />
       )}
       <div className="text">{category}</div>
     </div>
-  )
+  );
 }
 
-function ContributionBox({count, title, secondaryCount, secondaryTitle, icon}) {
-  return(
+function ContributionBox({
+  count,
+  title,
+  secondaryCount,
+  secondaryTitle,
+  icon,
+}) {
+  return (
     <div className="contributionBox">
-      <MaterialSymbol className="icon" size={50} icon={icon}/>
-      <MaterialSymbol className="floatedIcon" size={180} icon={icon}/>
+      <MaterialSymbol className="icon" size={50} icon={icon} />
+      <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
       <div className="texts">
         <div className="count">{count}</div>
         <div className="title">{title}</div>
@@ -176,6 +183,6 @@ function ContributionBox({count, title, secondaryCount, secondaryTitle, icon}) {
         <span className="count">{secondaryCount}</span>{" "}
         <span className="title">{secondaryTitle}</span>
       </div>
-    </div> 
-  )
+    </div>
+  );
 }

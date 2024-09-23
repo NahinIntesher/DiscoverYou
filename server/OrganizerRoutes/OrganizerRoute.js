@@ -9,5 +9,6 @@ require("./WebinarRoutes")(router);
 require("./HiringRoutes")(router);
 require("./MarketplaceRoutes")(router, multer);
 require("./NotificationRoutes")(router);
+require("./ProfileRoutes")(router);
 
 module.exports = router;

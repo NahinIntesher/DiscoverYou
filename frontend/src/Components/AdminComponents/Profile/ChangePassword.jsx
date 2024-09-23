@@ -5,11 +5,11 @@ import Header from "../../CommonComponents/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
+import "../../../assets/styles/Profile.css";
 
-export default function ChangePassword() {
+export default function UpdateProfile({ user }) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setshowConfirmPassword] = useState(false);
 
@@ -21,28 +21,36 @@ export default function ChangePassword() {
   const [formData, setFormData] = useState({
     oldPassword: "",
     password: "",
-    updatePassword: "",
+    confirmPassword: "",
   });
 
-  const toggleOldPasswordVisibility = () => {
-    setShowOldPassword(!showOldPassword);
-  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
   const toggleConfirmPasswordVisibility = () => {
     setshowConfirmPassword(!showConfirmPassword);
   };
-
+  const validateName = (name) => /^[a-zA-Z\s]{1,30}$/.test(name);
+  const validateMobileNumber = (mobile_no) => /^\d{11}$/.test(mobile_no);
   const validatePassword = (password) =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,36}$/.test(
       password
     );
+  const validateEmail = (email) =>
+    /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
 
+  // Form Submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-
+    if (!validateName(formData.name)) {
+      newErrors.name =
+        "Name must contain only letters and be between 1 and 30 characters long.";
+    }
+    if (!validateMobileNumber(formData.mobile_no)) {
+      newErrors.mobile_no =
+        "Please enter a valid mobile number with exactly 11 digits.";
+    }
     if (formData.password && !validatePassword(formData.password)) {
       newErrors.password =
         "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
@@ -62,9 +70,12 @@ export default function ChangePassword() {
         newErrors.confirmPassword = "New and Confirm passwords do not match.";
       }
     }
+    if (!validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
 
-    setErrors(newErrors);
-    console.log(newErrors);
+    // setErrors(newErrors);
+    // console.log(newErrors);
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
@@ -83,44 +94,47 @@ export default function ChangePassword() {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(function (prevFormData) {
+      return {
+        ...prevFormData,
+        [name]: value,
+      };
+    });
   };
 
   return (
     <div className="mainContent">
-      <Header title="Change Password" />
+      <Header title="Update Profile" />
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
-            <div className="title">Update Your Password</div>
+            <div className="title">Update Your Profile</div>
+
             {/* Old Password */}
             <div className="input">
-              <label>
-                Old Password
-              </label>
+              <label>Old Password</label>
               <input
-                type={showOldPassword ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="oldPassword"
                 placeholder="•••••••••••••"
                 onChange={handleInputChange}
               />
               <div
-                className="showPassword"
-                onClick={toggleOldPasswordVisibility}
+                className="absolute right-3 top-11 cursor-pointer"
+                onClick={togglePasswordVisibility}
               >
-                {showOldPassword ? (
-                  <MaterialSymbol icon="visibility" size={20} />
+                {showPassword ? (
+                  <MaterialSymbol icon="visibility" size={18} />
                 ) : (
-                  <MaterialSymbol icon="visibility_off" size={20} />
+                  <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
             </div>
+            {/* New Password */}
 
             <div className="input">
-              <label>
-                New Password
-              </label>
+              <label>New Password</label>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -130,21 +144,20 @@ export default function ChangePassword() {
                 onChange={handleInputChange}
               />
               <div
-                className="showPassword"
+                className="absolute right-3 top-11 cursor-pointer"
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? (
-                  <MaterialSymbol icon="visibility" size={20} />
+                  <MaterialSymbol icon="visibility" size={18} />
                 ) : (
-                  <MaterialSymbol icon="visibility_off" size={20} />
+                  <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
             </div>
 
+            {/* Confirm Password */}
             <div className="input">
-              <label>
-                Confirm New Password
-              </label>
+              <label>Confirm New Password</label>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
@@ -152,21 +165,19 @@ export default function ChangePassword() {
                 placeholder="••••••••••••••••"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                />
+              />
               <div
-                className="showPassword"
+                className="absolute right-3 top-11 cursor-pointer"
                 onClick={toggleConfirmPasswordVisibility}
               >
                 {showConfirmPassword ? (
-                  <MaterialSymbol icon="visibility" size={20} />
+                  <MaterialSymbol icon="visibility" size={18} />
                 ) : (
-                  <MaterialSymbol icon="visibility_off" size={20} />
+                  <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
             </div>
-            <button>
-              Change Password
-            </button>
+            <button className="">Save</button>
           </form>
         </div>
       </div>
