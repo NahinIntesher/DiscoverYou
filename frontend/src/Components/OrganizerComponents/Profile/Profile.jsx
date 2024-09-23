@@ -1,151 +1,99 @@
 import React, { useState } from "react";
-import "../../../assets/styles/dashboard.css";
-import axios from 'axios';
+import { Link } from "react-router-dom";
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
 
 export default function Profile({ user }) {
   const [isEditing, setIsEditing] = useState(false);
+
+  const extractDate = (dateString) => {
+    if (dateString.includes('T')) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).replace(/\//g, '/');
+    }
+    
+    const parts = dateString.split("/");
+    if (parts.length === 3) {
+      return dateString;
+    }
+    
+    return "";
+  };
+
   const [formData, setFormData] = useState({
-    name: user.student_name,
-    dob: user.student_date_of_birth.split('/').reverse().join('-'), // Assuming the format is dd/mm/yyyy
-    gender: user.student_gender,
-    bio: user.bio || "",
-    address: user.student_address,
-    phone: user.student_phone,
-    email: user.student_email,
+    name: user.organizer_name,
+    date_of_birth: extractDate(user.organizer_date_of_birth),
+    gender: user.organizer_gender,
+    address: user.organizer_address,
+    phone: user.organizer_mobile_no,
+    email: user.organizer_email,
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleUpdateProfile = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveProfile = async () => {
-    try {
-      await axios.put('/api/updateProfile', {
-        ...formData,
-        dob: formData.dob.split('-').reverse().join('/'), // Convert back to dd/mm/yyyy for the database
-      });
-      setIsEditing(false);
-      // Optionally, you might want to refresh user data here
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-    }
-  };
-
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-  };
-
   return (
-    <div className="mainContent bg-white min-h-screen">
+    <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
           <div className="title">Profile</div>
-        </div>
-      </div>
-      <div className="flex p-6">
-        {/* Profile Section */}
-        <div className="p-6 bg-[radial-gradient(#ffe79acc,#ffe79a99)] text-black rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold mb-2 cursor-pointer">Student Profile</h1>
-          <p className="text-lg">View and edit your profile</p>
-
-          {isEditing ? (
-            <div className="mt-4">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-                placeholder="Name"
-              />
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-              />
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-                placeholder="Bio"
-              />
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-                placeholder="Address"
-              />
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-                placeholder="Phone"
-              />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="block w-full mb-2 p-2 border border-gray-400 rounded"
-                placeholder="Email"
-              />
-              <button onClick={handleSaveProfile} className="mt-4 bg-blue-500 text-white p-2 rounded">
-                Save
-              </button>
-            </div>
-          ) : (
-            <div className="mt-4">
-              <p className="text-lg"><strong>Name:</strong> {formData.name}</p>
-              <p className="text-lg"><strong>Date of Birth:</strong> {formatDate(formData.dob)}</p>
-              <p className="text-lg"><strong>Gender:</strong> {formData.gender}</p>
-              <p className="text-lg"><strong>Bio:</strong> {formData.bio || "Add a bio to let others know more about you."}</p>
-              <button onClick={handleUpdateProfile} className="mt-4 bg-blue-500 text-white p-2 rounded">
-                Update Profile
-              </button>
-            </div>
-          )}
-
-          {/* Interests Section */}
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold mb-2">Interests</h2>
-            <ul className="list-disc list-inside">
-              {user.interests && user.interests.length > 0 ? (
-                user.interests.map((interest, index) => (
-                  <li key={index} className="text-lg">{interest}</li>
-                ))
-              ) : (
-                <p className="text-lg">No interests added yet.</p>
-              )}
-            </ul>
+          <div className="buttonContainer">
+            <Link to="/update-profile" className="button">
+              <MaterialSymbol className="icon" size={24} icon="edit" />
+              <div className="text">Edit Profile</div>
+            </Link>
           </div>
         </div>
-
-        {/* Other sections (Achievements, Contests, Contributions, Contact Information, Settings) remain the same... */}
-        {/* You can add the other sections as you had them before. */}
       </div>
+      <div className="p-6">
+        {isEditing ? (
+          <UpdateProfile />
+        ) : (
+          <div className="space-y-6">
+            <div className="flex flex-col items-center justify-center gap-5">
+              <img
+                src="" // Add the user's profile image URL here
+                alt="Profile"
+                width={200}
+                height={200}
+                className="bg-gray-300 border-indigo-500 border-4 rounded-full flex items-center justify-center"
+              />
+              <p className="text-2xl text-black font-semibold">{formData.name}</p>
+            </div>
+            <ProfileSection title="Personal Information">
+              <ProfileField
+                label="Date of Birth"
+                value={formData.date_of_birth}
+              />
+              <ProfileField label="Gender" value={formData.gender} />
+            </ProfileSection>
+            <ProfileSection title="Contact Information">
+              <ProfileField label="Address" value={formData.address} />
+              <ProfileField label="Phone" value={formData.phone} />
+              <ProfileField label="Email" value={formData.email} />
+            </ProfileSection>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProfileSection({ title, children }) {
+  return (
+    <div className="border-b border-gray-200 pb-4">
+      <h2 className="text-xl font-semibold text-gray-800 mb-3">{title}</h2>
+      <div className="space-y-2">{children}</div>
+    </div>
+  );
+}
+
+function ProfileField({ label, value }) {
+  return (
+    <div>
+      <span className="font-medium text-gray-600">{label}:</span>{" "}
+      <span className="text-gray-800">{value}</span>
     </div>
   );
 }

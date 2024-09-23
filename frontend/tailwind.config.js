@@ -4,6 +4,7 @@ module.exports = {
     "./src/**/Registration.{js,jsx,ts,tsx}",
     "./src/**/Login.{js,jsx,ts,tsx}",
     "./src/**/Profile.{js,jsx,ts,tsx}",
+    "./src/**/UpdateProfile.{js,jsx,ts,tsx}",
     "./src/**/Webinar.{js,jsx,ts,tsx}",
     "./src/**/WebinarBox.{js,jsx,ts,tsx}",
     

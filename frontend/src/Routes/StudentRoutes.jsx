@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sidebar from "../../src/Components/StudentComponents/Sidebar";
-import Dashboard from "../Components/StudentComponents/Dashboard";
+import Dashboard from "../Components/StudentComponents/Dashboard/Dashborad";
 
 import Contest from "../Components/StudentComponents/Contest/Contest";
 import SingleContest from "../Components/StudentComponents/Contest/SingleContest";
@@ -10,7 +10,7 @@ import SingleContest from "../Components/StudentComponents/Contest/SingleContest
 import Showcase from "../Components/StudentComponents/Showcase/Showcase";
 import Post from "../Components/StudentComponents/Showcase/Post";
 
-import Course from "../Components/StudentComponents/Course";
+import Course from "../Components/StudentComponents/Course/Course";
 
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
