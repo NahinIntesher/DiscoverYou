@@ -24,30 +24,20 @@ export default function UpdateProfile({ user }) {
     gender: user.admin_gender,
     address: user.admin_address,
     mobile_no: user.admin_mobile_no,
-    email: user.admin_email,
-    oldPassword: "",
-    password: "",
-    updatePassword: "",
+    email: user.admin_email
   });
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  const toggleConfirmPasswordVisibility = () => {
-    setshowConfirmPassword(!showConfirmPassword);
-  };
   const validateName = (name) => /^[a-zA-Z\s]{1,30}$/.test(name);
   const validateMobileNumber = (mobile_no) => /^\d{11}$/.test(mobile_no);
-  const validatePassword = (password) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,36}$/.test(
-      password
-    );
   const validateEmail = (email) =>
     /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
 
   // Form Submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(formData);
+    return;
     const newErrors = {};
     if (!validateName(formData.name)) {
       newErrors.name =
@@ -57,30 +47,12 @@ export default function UpdateProfile({ user }) {
       newErrors.mobile_no =
         "Please enter a valid mobile number with exactly 11 digits.";
     }
-    if (formData.password && !validatePassword(formData.password)) {
-      newErrors.password =
-        "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
-    }
-    if (
-      formData.confirmPassword &&
-      !validatePassword(formData.confirmPassword)
-    ) {
-      newErrors.confirmPassword =
-        "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
-    }
-    if (formData.oldPassword) {
-      // if (formData.password !== formData.oldPassword) {
-      //   newErrors.oldPassword = "New and old passwords do not match.";
-      // }
-      if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "New and Confirm passwords do not match.";
-      }
-    }
+
     if (!validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
 
-    // setErrors(newErrors);
+    setErrors(newErrors);
     // console.log(newErrors);
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
@@ -100,13 +72,11 @@ export default function UpdateProfile({ user }) {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name);
-    console.log(value);
-    setFormData(function (prevFormData) {
-      return {
-        ...prevFormData,
-        [name]: value,
-      };
+    setFormData(function(prevFormData){
+      return { 
+        ...prevFormData, 
+        [name]: value 
+      }
     });
   };
 
@@ -115,11 +85,13 @@ export default function UpdateProfile({ user }) {
       <Header title="Update Profile" />
       <div className="formBoxContainer">
         <div className="formBox">
-          <form onClick={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="title">Update Your Profile</div>
             {/* Name */}
             <div className="input">
-              <label>Name</label>
+              <label>
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
@@ -133,7 +105,9 @@ export default function UpdateProfile({ user }) {
 
             {/* Birth Date */}
             <div className="input">
-              <label htmlFor="date_of_birth">Date of Birth</label>
+              <label htmlFor="date_of_birth">
+                Date of Birth
+              </label>
               <input
                 type="date"
                 id="date_of_birth"
@@ -143,35 +117,39 @@ export default function UpdateProfile({ user }) {
               />
             </div>
 
-            {/* Gender */}
+            {/* Gender
             <div className="input">
-              <label>Gender</label>
-              <div className="flex flex-wrap gap-4">
-                <label htmlFor="gender" className="flex items-center">
+              <label>
+                Gender
+              </label>
+              <div className="inputRadio">
+                <label htmlFor="gender">
                   <input
                     type="radio"
                     name="gender"
                     value="Male"
-                    // onChange={handleInputChange}
-                    className="form-radio"
+                    onChange={handleInputChange}
+                    checked={formData.gender == "Male"}
                   />
-                  <span className="ml-2">Male</span>
-
+                  <span className="radioLabel">Male</span>
+                  
                   <input
                     type="radio"
                     name="gender"
                     value="Female"
-                    // onChange={handleInputChange}
-                    className="form-radio"
+                    onChange={handleInputChange}
+                    checked={formData.gender == "Female"}
                   />
-                  <span className="ml-2">Female</span>
+                  <span className="radioLabel">Female</span>
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* Address */}
             <div className="input">
-              <label>Address</label>
+              <label>
+                Address
+              </label>
               <textarea
                 id="address"
                 name="address"
@@ -183,7 +161,9 @@ export default function UpdateProfile({ user }) {
 
             {/* Mobile Number */}
             <div className="input">
-              <label>Mobile Number</label>
+              <label>
+                Mobile Number
+              </label>
               <input
                 type="tel"
                 id="mobile_no"
@@ -191,7 +171,9 @@ export default function UpdateProfile({ user }) {
                 value={formData.mobile_no}
                 onChange={handleInputChange}
               />
-              {errors.mobile_no && <p className="error">{errors.mobile_no}</p>}
+              {errors.mobile_no && (
+                <p className="error">{errors.mobile_no}</p>
+              )}
             </div>
 
             {/* Profile Picture */}
@@ -213,7 +195,9 @@ export default function UpdateProfile({ user }) {
 
             {/* Email */}
             <div className="input">
-              <label>Email</label>
+              <label>
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -224,77 +208,9 @@ export default function UpdateProfile({ user }) {
               {errors.email && <p className="error">{errors.email}</p>}
             </div>
 
-            {/* Old Password */}
-            <div className="input">
-              <label>Old Password</label>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="oldPassword"
-                placeholder="•••••••••••••"
-                onChange={handleInputChange}
-              />
-              <div
-                className="absolute right-3 top-11 cursor-pointer"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? (
-                  <MaterialSymbol icon="visibility" size={18} />
-                ) : (
-                  <MaterialSymbol icon="visibility_off" size={18} />
-                )}
-              </div>
-            </div>
-            {/* New Password */}
-            {formData.oldPassword && (
-              <div className="input">
-                <label>New Password</label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  placeholder="•••••••••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-                <div
-                  className="absolute right-3 top-11 cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <MaterialSymbol icon="visibility" size={18} />
-                  ) : (
-                    <MaterialSymbol icon="visibility_off" size={18} />
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Confirm Password */}
-            {formData.oldPassword && (
-              <div className="input">
-                <label>Confirm New Password</label>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="••••••••••••••••"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                />
-                <div
-                  className="absolute right-3 top-11 cursor-pointer"
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  {showConfirmPassword ? (
-                    <MaterialSymbol icon="visibility" size={18} />
-                  ) : (
-                    <MaterialSymbol icon="visibility_off" size={18} />
-                  )}
-                </div>
-              </div>
-            )}
-            <button>Save</button>
+            <button>
+              Save
+            </button>
           </form>
         </div>
       </div>

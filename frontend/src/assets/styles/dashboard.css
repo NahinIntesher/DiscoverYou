@@ -145,6 +145,21 @@
   border: 2px solid #ffa952;
   outline: #ffa952 1px solid;
 }
+
+.formBox .input .showPassword {
+  position: absolute;
+  right: 16px;
+  bottom: 8px;
+}
+
+.formBox input[type="radio"] {
+  margin: 8px 2px;
+}
+.formBox .radioLabel {
+  display: inline-block;
+  width: 50px;
+  padding: 2px;
+}
 .formBox button {
   display: inline-block;
   background-image: radial-gradient(
@@ -221,6 +236,46 @@
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.4);
   color: #ffffff;
+}
+
+
+
+.settingOptionBox {
+  display: inline-block;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  width: calc(100% - 20px);
+  max-width: 900px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.settingOption {
+  display: block;
+  padding: 16px;
+  border-bottom: 2px solid rgba(0,0,0,0.1);
+  font-size: 16px;
+  font-weight: 500;
+}
+.settingOption:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.settingOption .icon {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 8px;
+}
+.settingOption .text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 8px;
+}
+
+.delete {
+  color: rgba(240,0,0);
 }
 
 @media screen and (min-width: 1600px) {

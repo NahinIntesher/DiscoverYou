@@ -27,7 +27,7 @@ export default function Profile({ user }) {
               <MaterialSymbol className="icon" size={24} icon="edit" />
               <div className="text">Edit Profile</div>
             </Link>
-            <Link to="/settings" className="button">
+            <Link to="/profile/settings" className="button">
               <MaterialSymbol className="icon" size={24} icon="settings" />
               <div className="text">Settings</div>
             </Link>

@@ -30,7 +30,6 @@ export default function UpdateProfile({ user }) {
     updatePassword: "",
   });
 
-  console.log(formData);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -81,8 +80,8 @@ export default function UpdateProfile({ user }) {
       newErrors.email = "Please enter a valid email address.";
     }
 
-    setErrors(newErrors);
-    console.log(newErrors);
+    // setErrors(newErrors);
+    // console.log(newErrors);
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
@@ -101,7 +100,12 @@ export default function UpdateProfile({ user }) {
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(function(prevFormData){
+      return { 
+        ...prevFormData, 
+        [name]: value 
+      }
+    });
   };
 
   return (
@@ -109,7 +113,7 @@ export default function UpdateProfile({ user }) {
       <Header title="Update Profile" />
       <div className="formBoxContainer">
         <div className="formBox">
-          <form onClick={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="title">Update Your Profile</div>
             {/* Name */}
             <div className="input">
@@ -141,38 +145,33 @@ export default function UpdateProfile({ user }) {
               />
             </div>
 
-            {/* Gender */}
+            {/* Gender
             <div className="input">
               <label>
                 Gender
               </label>
-              <div className="flex flex-wrap gap-4">
-                <label htmlFor="genderMale" className="flex items-center">
+              <div className="inputRadio">
+                <label htmlFor="gender">
                   <input
                     type="radio"
-                    id="genderMale"
                     name="gender"
                     value="Male"
-                    checked={formData.gender === "Male"}
                     onChange={handleInputChange}
-                    className="form-radio"
+                    checked={formData.gender == "Male"}
                   />
-                  <span className="ml-2">Male</span>
-                </label>
-                <label htmlFor="genderFemale" className="flex items-center">
+                  <span className="radioLabel">Male</span>
+                  
                   <input
                     type="radio"
-                    id="genderFemale"
                     name="gender"
                     value="Female"
-                    checked={formData.gender === "Female"}
                     onChange={handleInputChange}
-                    className="form-radio"
+                    checked={formData.gender == "Female"}
                   />
-                  <span className="ml-2">Female</span>
+                  <span className="radioLabel">Female</span>
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* Address */}
             <div className="input">
@@ -313,8 +312,8 @@ export default function UpdateProfile({ user }) {
                 </div>
               </div>
             )}
-            <button>
-              Register
+            <button className="">
+              Save
             </button>
           </form>
         </div>
