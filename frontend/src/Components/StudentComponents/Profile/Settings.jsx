@@ -5,21 +5,52 @@ import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
+
 export default function Settings({interests}) {
+    const [deleteBoxActive, setDeleteBoxActive] = useState(false);
+    const navigate = useNavigate();
+
+    const handleDelete = () => {
+        axios.defaults.withCredentials = true;
+        axios
+        .post("http://localhost:3000/student/profile/settings/delete")
+        .then((res) => {
+          if (res.data.status === "Success") {
+            navigate("/");
+          } else {
+            alert("Cannot delete profile!");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+        
+    
+    
+
     return (
         <div className="mainContent">
             <Header title={"Settings"}/>
             <div className="formBoxContainer">
+                <div className={deleteBoxActive ? "dialogBoxBackground" : "none"}>
+                    <div className="dialogBox">
+                        <div className="title">Delete Account</div>
+                        <div className="details">Do you want to delete your account permanently?</div>
+                        <div className="buttonContainer"> 
+                            <div className="button" onClick={handleDelete}>Yes</div>
+                            <div className="buttonAlt" onClick={()=> {setDeleteBoxActive(false)}}>Cancel</div>
+                        </div>
+                    </div>
+                </div>
                 <div className="settingOptionBox">
                     <Link to="/profile/settings/change-password" className="settingOption">
                         <MaterialSymbol className="icon" size={24} icon="password" />
                         <div className="text">Change Password</div>
                     </Link>
-                    <div className="settingOption">
+                    <Link to="/profile/settings/change-interests" className="settingOption">
                         <MaterialSymbol className="icon" size={24} icon="interests" />
                         <div className="text">Change Interests</div>
-                    </div>
-                    <div className="settingOption delete">
+                    </Link>
+                    <div onClick={()=> {setDeleteBoxActive(true)}} className="settingOption delete">
                         <MaterialSymbol className="icon" size={24} icon="delete" />
                         <div className="text">Delete Account</div>
                     </div>

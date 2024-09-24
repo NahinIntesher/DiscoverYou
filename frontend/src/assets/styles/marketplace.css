@@ -61,7 +61,7 @@
 }
 .productBox .textContainer .price {
     flex-grow: 1;
-    color: #F78256;
+    color: rgba(var(--dark), 0.8);
     font-size: 20px;
     font-weight: 600;
     margin: 4px;

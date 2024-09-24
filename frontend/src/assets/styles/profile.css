@@ -181,7 +181,7 @@
 .userInterest {
   background-color: rgba(var(--medium), 0.4);
   color: rgba(var(--dark), 0.8);
-  padding: 2px 12px;
+  padding: 4px 12px;
   border-radius: 20px;
   display: inline-block;
   margin: 4px;
@@ -195,6 +195,77 @@
   display: inline-block;
   vertical-align: middle;
   font-weight: 500;
-  font-size: 14px;
-  margin: 2px 4px;
+  font-size: 15px;
+  margin: 2px 5px;
+}
+
+.dialogBoxBackground {
+  background-color: rgba(0,0,0,0.4);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.none {
+  display: none;
+}
+.dialogBoxBackground .dialogBox {
+  background-color: #ffffff;
+  padding: 14px;
+  border-radius: 18px;
+  text-align: left;
+}
+
+.dialogBoxBackground .dialogBox .title {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 6px 14px;
+}
+
+.dialogBoxBackground .dialogBox .details {
+  padding: 4px 14px;
+}
+
+.dialogBoxBackground .dialogBox .buttonContainer {
+  display: flex;
+  margin: 4px;
+  margin-top: 10px;
+}
+
+.dialogBoxBackground .dialogBox .buttonContainer .button {
+  flex: 1;
+  background-image: 
+    radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+    linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 60px;
+  font-weight: 600;
+  margin: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dialogBoxBackground .dialogBox .buttonContainer .buttonAlt {
+  flex: 1;
+  background-color: rgba(0,0,0,0.15);
+  padding: 10px 24px;
+  border-radius: 60px;
+  font-weight: 600;
+  margin: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dialogBoxBackground .dialogBox .buttonContainer .button:hover {
+  box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
+  text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+}
+
+.dialogBoxBackground .dialogBox .buttonContainer .buttonAlt:hover {
+  background-color: rgba(0,0,0,0.3);
 }

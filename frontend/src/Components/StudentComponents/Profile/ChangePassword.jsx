@@ -17,7 +17,7 @@ export default function ChangePassword({ user }) {
   const [formData, setFormData] = useState({
     oldPassword: "",
     password: "",
-    updatePassword: "",
+    confirmPassword: "",
   });
 
   const toggleOldPasswordVisibility = () => {
@@ -29,6 +29,7 @@ export default function ChangePassword({ user }) {
   const toggleConfirmPasswordVisibility = () => {
     setshowConfirmPassword(!showConfirmPassword);
   };
+
   const validatePassword = (password) =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,36}$/.test(
       password
@@ -48,8 +49,8 @@ export default function ChangePassword({ user }) {
       newErrors.password =
         "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
     }
-    if (formData.updatePassword && !validatePassword(formData.updatePassword)) {
-      newErrors.updatePassword =
+    if (formData.confirmPassword && !validatePassword(formData.confirmPassword)) {
+      newErrors.confirmPassword =
         "Password must be between 8 and 36 characters long, containing an uppercase letter, a lowercase letter, a digit, and a special character.";
     }
 
@@ -58,24 +59,28 @@ export default function ChangePassword({ user }) {
     }
 
     setErrors(newErrors);
-    // console.log(newErrors);
+    console.log(newErrors);
     console.log(formData);
 
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
-      navigate(-1);
-      // axios
-      //   .post("http://localhost:3000/organizer/profile/update", formData)
-      //   .then((res) => {
-      //     if (res.data.status === "Success") {
-      //       console.log("Profile Update Success!");
-      //     } else {
-      //       alert(res.data.Error);
-      //     }
-      //   })
-      //   .catch((err) => console.log(err));
+      axios
+        .post("http://localhost:3000/student/profile/settings/change-password", formData)
+        .then((res) => {
+          if (res.data.status === "Success") {
+            navigate(-1);
+            alert("Profile Updated Successfully!");
+          } else {
+            setErrors(
+              {...errors, 
+                serverError: res.data.Error
+              });
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(function (prevFormData) {
@@ -88,12 +93,11 @@ export default function ChangePassword({ user }) {
 
   return (
     <div className="mainContent">
-      <Header title="Update Profile" />
+      <Header title="Change Password" />
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
             <div className="title">Change Your Password</div>
-
             {/* Old Password */}
             <div className="input">
               <label>Old Password</label>
@@ -114,6 +118,8 @@ export default function ChangePassword({ user }) {
                   <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
+              {errors.oldPassword && <p className="error">{errors.oldPassword}</p>}
+              {errors.serverError && <p className="error">{errors.serverError}</p>}
             </div>
             {/* New Password */}
             <div className="input">
@@ -136,6 +142,7 @@ export default function ChangePassword({ user }) {
                   <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
+              {errors.password && <p className="error">{errors.password}</p>}
             </div>
 
             {/* Confirm Password */}
@@ -159,6 +166,7 @@ export default function ChangePassword({ user }) {
                   <MaterialSymbol icon="visibility_off" size={18} />
                 )}
               </div>
+              {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
             </div>
             <button type="submit">Save</button>
           </form>

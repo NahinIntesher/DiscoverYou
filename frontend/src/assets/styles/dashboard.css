@@ -15,6 +15,9 @@
 .mainContent .miniBreak {
   height: 12px;
 }
+.mainContent .smallBreak {
+  height: 2px;
+}
 
 .header {
   background-image: radial-gradient(
@@ -68,10 +71,11 @@
 .formBoxContainer {
   text-align: center;
   padding: 10px;
-  height: calc(100dvh - 73px);
+  height: calc(100dvh - 69px);
   align-items: center;
   justify-content: center;
   overflow: scroll;
+  position: relative;
 }
 
 .formBox {
@@ -94,6 +98,11 @@
   font-weight: 450;
   margin: 4px 8px;
   font-size: 15px;
+}
+.formBox .label {
+  margin: 6px 8px; 
+  font-size: 15px;
+  font-weight: 500;
 }
 .formBox .error {
   background-color: rgba(180, 0, 0, 0.4);
@@ -142,8 +151,52 @@
 .formBox input[type="date"]:focus,
 .formBox textarea:focus,
 .formBox select:focus {
-  border: 2px solid #ffa952;
-  outline: #ffa952 1px solid;
+  border: 2px solid rgb(var(--medium));
+  outline: rgb(var(--medium)) 1px solid;
+}
+
+.formBox .userInterest {
+  padding: 4px;
+  margin: 6px 4px;
+}
+.formBox .userInterest .icon {
+  padding: 0 6px;
+}
+.formBox .userInterest .text {
+  font-size: 15px;
+  margin-right: 12px;
+}
+.formBox .userInterest .remove {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.formBox .userInterest .remove .icon {
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  padding: 0;
+  text-align: center;
+  display: block;
+}
+
+.formBox .userInterest .remove:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.formBox .unselectedInterest {
+  cursor: pointer;
+}
+.formBox .unselectedInterest:hover {
+  background-color: rgba(var(--medium), 0.7);
+  cursor: pointer;
+}
+.formBox .unselectedInterest .text {
+  margin-right: 16px;
 }
 
 .formBox .input .showPassword {
@@ -258,6 +311,7 @@
   border-bottom: 2px solid rgba(0,0,0,0.1);
   font-size: 16px;
   font-weight: 500;
+  cursor: pointer;
 }
 .settingOption:hover {
   background-color: rgba(0,0,0,0.05);
@@ -276,6 +330,7 @@
 
 .delete {
   color: rgba(240,0,0);
+  border-bottom: 0;
 }
 
 @media screen and (min-width: 1600px) {

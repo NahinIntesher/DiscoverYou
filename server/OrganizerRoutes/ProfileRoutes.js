@@ -68,15 +68,15 @@ module.exports = (router, multer) => {
     const id = req.userId;
     const { name, email, mobile_no, address, date_of_birth } = req.body;
     const query = `
-      UPDATE student
+      UPDATE organizer
       SET 
-        student_name = ?, 
-        student_email = ?, 
-        student_mobile_no = ?, 
-        student_address = ?, 
-        student_date_of_birth = ?
+        organizer_name = ?, 
+        organizer_email = ?, 
+        organizer_mobile_no = ?, 
+        organizer_address = ?, 
+        organizer_date_of_birth = ?
       WHERE 
-        student_id = ?;
+        organizer_id = ?;
     `;
 
     connection.query(
@@ -105,7 +105,7 @@ module.exports = (router, multer) => {
   router.post("/profile/settings/change-password", verifyToken, (req, res) => {
     const id = req.userId;
     const { oldPassword, password } = req.body;
-    const passwordQuery = `Select student_password from student where id = ?`;
+    const passwordQuery = `Select organizer_password from organizer where id = ?`;
     connection.query(passwordQuery, [id], (err, results) => {
       if (err) {
         console.error(err);
@@ -126,7 +126,7 @@ module.exports = (router, multer) => {
                     error: err.message,
                   });
                 }
-                const query = `UPDATE student SET student_password = ? WHERE student_id = ?`;
+                const query = `UPDATE organizer SET organizer_password = ? WHERE organizer_id = ?`;
                 connection.query(
                   query,
                   [hashedPassword, id],
@@ -168,8 +168,8 @@ module.exports = (router, multer) => {
       return res.status(400).json({ error: "Interests should be an array" });
     }
 
-    // Step 1: Delete existing interests for the student
-    const deleteQuery = "DELETE FROM student_interests WHERE student_id = ?";
+    // Step 1: Delete existing interests for the organizer
+    const deleteQuery = "DELETE FROM organizer_interests WHERE organizer_id = ?";
     connection.query(deleteQuery, [id], (err, result) => {
       if (err) {
         console.error(err);

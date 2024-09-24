@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "../../../assets/styles/Profile.css";
 
-export default function UpdateProfile({ user }) {
+export default function UpdateProfile({ user, setUser }) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
@@ -54,13 +54,25 @@ export default function UpdateProfile({ user }) {
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
       axios
-        .post("http://localhost:3000/organizer/profile/update", formData)
+        .post("http://localhost:3000/student/profile/update", formData)
         .then((res) => {
           if (res.data.status === "successful") {
             console.log("Profile Update Success!");
+
+            setUser(function(prev){
+              return {
+                ...prev,
+                student_name: formData.name,
+                student_date_of_birth: formData.date_of_birth,
+                student_address: formData.address,
+                student_email: formData.email,
+                student_mobile_no: formData.mobile_no
+              }
+            });
+
             navigate("/profile");
           } else {
-            alert("Hola error");
+            alert("Cannot update profile!");
           }
         })
         .catch((err) => console.log(err));

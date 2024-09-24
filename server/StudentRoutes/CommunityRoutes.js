@@ -31,11 +31,11 @@ module.exports = (router) => {
       COUNT(DISTINCT c_m.member_id) AS total_member
       FROM 
         communities AS c
-      JOIN 
+      LEFT JOIN 
         student AS s
       ON 
         c.admin_id = s.student_id
-      JOIN 
+      LEFT JOIN 
         community_members AS c_m
       ON 
         c.community_id = c_m.community_id AND c_m.req_for_join_status = 1
@@ -157,23 +157,39 @@ module.exports = (router) => {
     }
   );
 
-  router.post(
-    "/community/join",
-    verifyToken,
-    (req, res) => {
-      const userId = req.userId;
-      const { communityId } = req.body;
-      connection.query(
-        `INSERT INTO community_members (community_id, member_id, req_for_join_status)
-        VALUES (?, ?, ?)`,
-        [communityId, userId, 0],
-        (err, results) => {
-          if (err) throw err;
-          return res.json({ status: "Success" });
+
+  router.post("/community/join", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { communityId } = req.body;
+
+    connection.query(
+      "SELECT * FROM community_members WHERE community_id = ? AND member_id = ?",
+      [communityId, userId],
+      (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0) {
+          connection.query(
+            "DELETE FROM community_members WHERE community_id = ? AND member_id = ?;",
+            [communityId, userId],
+            function (err, results) {
+              if (err) throw err;
+              return res.json({ status: "Unregistered" });
+            }
+          );
+        } else {
+          connection.query(
+            "INSERT INTO community_members(community_id, member_id) VALUES (?, ?);",
+            [communityId, userId],
+            function (err, results) {
+              if (err) throw err;
+              return res.json({ status: "Registered" });
+            }
+          );
         }
-      );
-    }
-  );
+      }
+    );
+  });
 
 
   router.get("/community/pendingMembers", verifyToken, (req, res) => {

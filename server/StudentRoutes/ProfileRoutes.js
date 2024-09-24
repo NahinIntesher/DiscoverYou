@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router, multer) => {
+module.exports = (router, multer, bcrypt) => {
   // const storage = multer.memoryStorage();
 
   // const upload = multer({
@@ -103,17 +103,19 @@ module.exports = (router, multer) => {
     );
   });
   router.post("/profile/settings/change-password", verifyToken, (req, res) => {
+    console.log(req.body);
     const id = req.userId;
-    const { oldPassword, password } = req.body;
-    const passwordQuery = `Select student_password from student where id = ?`;
+    const { oldPassword, password, confirmPassword } = req.body;
+    const passwordQuery = `select student_password from student where student_id = ?`;
     connection.query(passwordQuery, [id], (err, results) => {
       if (err) {
         console.error(err);
         return res.json({ status: "unsuccessful", error: err.message });
       }
+      console.log(results[0]);
       bcrypt.compare(
         oldPassword.toString(),
-        results[0].password,
+        results[0].student_password,
         (err, response) => {
           if (err) return res.json({ Error: "Error comparing password" });
           if (response) {
@@ -139,7 +141,7 @@ module.exports = (router, multer) => {
                       });
                     }
                     res.json({
-                      status: "successful",
+                      status: "Success",
                       message: "Password updated successfully.",
                     });
                   }
@@ -152,7 +154,7 @@ module.exports = (router, multer) => {
               });
             }
           } else {
-            return res.json({ Error: "Password incorrect" });
+            return res.json({ Error: "Old password is incorrect" });
           }
         }
       );
@@ -209,5 +211,26 @@ module.exports = (router, multer) => {
             .json({ error: "Error inserting new interests" });
         });
     });
+  });
+
+
+  router.post("/profile/settings/delete", verifyToken, (req, res) => {
+    console.log(req.body);
+    const id = req.userId;
+    const deleteQuery = 'DELETE FROM student WHERE student_id = ?';
+    // const deleteQuery = 'SELECT * FROM student WHERE student_id = ?';
+
+    connection.query(deleteQuery, [id], (err, response) => {
+        if (err) { 
+          throw err;
+//          return res.status(500).json({ error: "Error deleting the account" });
+        }
+        res.clearCookie("userRegistered");
+        return res.json({
+          status: "Success",
+          message: "Account deleted successfully.",
+        });
+      }
+    );
   });
 };

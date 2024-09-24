@@ -28,9 +28,10 @@ import Marketplace from "../Components/StudentComponents/Marketplace/Marketplace
 import AddProduct from "../Components/StudentComponents/Marketplace/AddProduct";
 import UpdateProfile from "../Components/StudentComponents/Profile/UpdateProfile";
 import Settings from "../Components/StudentComponents/Profile/Settings";
-import ChangePassword from "../Components/AdminComponents/Profile/ChangePassword";
+import ChangePassword from "../Components/StudentComponents/Profile/ChangePassword";
+import ChangeInterest from "../Components/StudentComponents/Profile/ChangeInterest";
 
-export default function Student({ handleLogout, user }) {
+export default function Student({ handleLogout, user, setUser }) {
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
@@ -68,8 +69,9 @@ export default function Student({ handleLogout, user }) {
           <Route path="/notification" element={<Notification />} />
           <Route path="/profile" element={<Profile user={user} />} />
           <Route path="/profile/settings" element={<Settings/>} />
+          <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
-          <Route path="/update-profile" element={<UpdateProfile user={user} />} />
+          <Route path="/profile/settings/change-interests" element={<ChangeInterest user={user} setUser={setUser}/>} />
           
         </Routes>
       </div>

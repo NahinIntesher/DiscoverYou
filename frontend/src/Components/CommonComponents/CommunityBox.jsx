@@ -15,12 +15,15 @@ export default function CommunityBox({ id, name, category, description, adminNam
             communityId: id
         })
         .then((res) => {
-          if (res.data.status === "Success") {
-            console.log("Message Send Success!");
-            setJoinStatus("pending")
-          } else {
-            alert(res.data.Error);
-          }
+            if (res.data.status === "Registered") {
+                setJoinStatus("pending")
+                setParticipantNo((prevValue) => prevValue + 1);
+            } else if (res.data.status === "Unregistered") {
+                setJoinStatus("no");
+                setParticipantNo((prevValue) => prevValue - 1);
+            } else {
+                alert(res.data.Error);
+            }
         })
         .catch((err) => console.log(err));
     };
@@ -69,7 +72,7 @@ export default function CommunityBox({ id, name, category, description, adminNam
                     {joinStatus == "yes" ? (
                         <Link to={"/community/"+id} className="joinButton">Enter</Link>
                     ) : joinStatus == "pending" ? (
-                        <div className="joinButton">Requested</div>
+                        <div onClick={joinCommunity} className="joinButton">Requested</div>
                     ) : (
                         <div onClick={joinCommunity} className="joinButton">Join</div>
                     ) 
