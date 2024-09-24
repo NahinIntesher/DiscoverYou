@@ -31,7 +31,7 @@ export default function Community() {
         <div className="mainContent">
             <div className="contentTitle">
                 <div className="content">
-                    <div className="title">Commuanity</div>
+                    <div className="title">Community</div>
                     <div className="buttonContainer">
                         <Link to="/community/new" className="button">
                             <MaterialSymbol className="icon" size={24} icon="add" />
