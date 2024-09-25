@@ -32,7 +32,7 @@ import ChangePassword from "../Components/StudentComponents/Profile/ChangePasswo
 import ChangeInterest from "../Components/StudentComponents/Profile/ChangeInterest";
 import PendingCommunities from "../Components/StudentComponents/Community/PendingCommunities";
 
-export default function Student({ handleLogout, user, setUser }) {
+export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
@@ -73,7 +73,7 @@ export default function Student({ handleLogout, user, setUser }) {
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/profile/settings" element={<Settings/>} />
+          <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
           <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
           <Route path="/profile/settings/change-interests" element={<ChangeInterest user={user} setUser={setUser}/>} />

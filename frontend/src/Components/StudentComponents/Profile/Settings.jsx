@@ -6,7 +6,7 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
 
-export default function Settings({interests}) {
+export default function Settings({setUser, setAuthorized}) {
     const [deleteBoxActive, setDeleteBoxActive] = useState(false);
     const navigate = useNavigate();
 
@@ -16,6 +16,8 @@ export default function Settings({interests}) {
         .post("http://localhost:3000/student/profile/settings/delete")
         .then((res) => {
           if (res.data.status === "Success") {
+            setAuthorized(false);
+            setUser({});
             navigate("/");
           } else {
             alert("Cannot delete profile!");

@@ -55,11 +55,11 @@ function App() {
   if (loaded) {
     if (authorized) {
       if (user.type == "student") {
-        return <StudentRoutes handleLogout={handleLogout} user={user} setUser={setUser} />;
+        return <StudentRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
       } else if (user.type == "organizer") {
-        return <OrganizerRoutes handleLogout={handleLogout} user={user} setUser={setUser} />;
+        return <OrganizerRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
       } else if (user.type == "admin") {
-        return <AdminRoutes handleLogout={handleLogout} user={user} setUser={setUser} />;
+        return <AdminRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
       }
     } else {
       return (

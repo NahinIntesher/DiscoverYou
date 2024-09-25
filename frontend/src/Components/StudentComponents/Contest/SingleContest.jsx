@@ -39,29 +39,13 @@ const SingleContest = () => {
   return (
     <div className="mainContent">
       <Header title={data.contest.contest_name} semiTitle={data.contest.contest_category+" Contest"}/>
+
+      <div className="tabContainer">
+          <div className={activeTab == "problems" ? "activeTab" : "tab"} onClick={function(){setActiveTab("problems")}}>Contest Problems</div>
+          <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function(){setActiveTab("participants")}}>Contest Participants</div>
+          <div className={activeTab == "submissions" ? "activeTab" : "tab"} onClick={function(){setActiveTab("submissions")}}>Contest Submissions</div>
+      </div>
       <div className="container p-5">
-
-        <div className="tabs">
-          <button
-            className={`tab-button ${activeTab === "problems" ? "active" : ""}`}
-            onClick={() => setActiveTab("problems")}
-          >
-            Contest Problems
-          </button>
-          <button
-            className={`tab-button ${activeTab === "participants" ? "active" : ""}`}
-            onClick={() => setActiveTab("participants")}
-          >
-            Contest Participants
-          </button>
-          <button
-            className={`tab-button ${activeTab === "submissions" ? "active" : ""}`}
-            onClick={() => setActiveTab("submissions")}
-          >
-            Contest Submissions
-          </button>
-        </div>
-
         <div className="tab-content">
           {activeTab === "problems" && (
             <div className="content-section blue">

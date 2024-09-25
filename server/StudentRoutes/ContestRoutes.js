@@ -80,7 +80,7 @@ module.exports = (router) => {
       
       FROM 
           contests 
-      JOIN 
+      LEFT JOIN 
           organizer ON contests.organizer_id = organizer.organizer_id 
       LEFT JOIN 
           contest_participants ON contests.contest_id = contest_participants.contest_id 
@@ -112,12 +112,12 @@ module.exports = (router) => {
     try {
       // Fetch contest details
       const contestResults = await queryPromise(contestQuery, [
-        contestId,
         userId,
+        contestId
       ]);
-      if (contestResults.length === 0) {
-        return res.json({ Error: "Contest not found" });
-      }
+      // if (contestResults.length === 0) {
+      //   return res.json({ Error: "Contest not found" });
+      // }
       const contest = contestResults[0];
 
       // Fetch contest problems

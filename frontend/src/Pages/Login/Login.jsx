@@ -10,7 +10,7 @@ export default function LoginPage({ setAuthorized, setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    category: "",
+    category: "student",
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -24,6 +24,13 @@ export default function LoginPage({ setAuthorized, setUser }) {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  function handleCategoryChange(role) {
+    setFormData({
+      ...formData,
+      category: role,
+    });
+  } 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -133,7 +140,7 @@ export default function LoginPage({ setAuthorized, setUser }) {
             </div>
 
             {/* Category */}
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <label className="block text-gray-700 text-md">
                 Your Category <span className="text-red-500">*</span>
               </label>
@@ -150,6 +157,27 @@ export default function LoginPage({ setAuthorized, setUser }) {
                 <option value="student">Student</option>
                 <option value="organizer">Organizer</option>
               </select>
+            </div> */}
+            <div className="mt-4 mb-2">
+              <label className="block text-gray-700 text-md">
+                Category 
+              </label>
+            </div>
+            <div className="mb-4 flex justify-center space-x-4">
+              {['student', 'organizer', 'admin'].map((role) => (
+                <button
+                  key={role}
+                  type="button"
+                  onClick={() => handleCategoryChange(role)}
+                  className={`p-3 w-28 rounded-lg border-2 transition duration-300 ${
+                    formData.category === role
+                      ? 'bg-yellow-500 text-white'
+                      : 'bg-[#feffdf] text-black border-gray-400'
+                  }`}
+                >
+                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                </button>
+              ))}
             </div>
 
             {/* Remember Me */}
