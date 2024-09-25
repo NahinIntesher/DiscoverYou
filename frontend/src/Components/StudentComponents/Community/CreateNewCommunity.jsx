@@ -34,6 +34,7 @@ export default function CreateNewCommunity({interests}) {
           if (res.data.status === "Success") {
             console.log("Community Creation Success!");
             navigate(-1);
+            alert("Community successfully submitted for approval!");
 //            setUpdatePost((prevData) => prevData+1);
           } else {
             alert(res.data.Error);
@@ -79,7 +80,7 @@ export default function CreateNewCommunity({interests}) {
                                 placeholder="Enter community description"
                             />
                         </div>
-                        <button>Submit for Approval</button>
+                        <button>Submit For Approval</button>
                     </form>
                 </div>
             </div>

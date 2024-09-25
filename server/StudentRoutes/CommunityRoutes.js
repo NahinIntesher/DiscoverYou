@@ -56,6 +56,59 @@ module.exports = (router) => {
     });
   });
 
+  router.get("/community/my", verifyToken, (req, res) => {
+    let userId = req.userId;
+    
+    const query = `SELECT 
+      c.*, 
+      s.student_name AS community_admin_name,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM community_members
+          WHERE community_members.community_id = c.community_id 
+          AND community_members.member_id = '${userId}' AND community_members.req_for_join_status = 1
+        )
+        THEN "yes"
+        WHEN EXISTS (
+          SELECT *
+          FROM community_members
+          WHERE community_members.community_id = c.community_id 
+          AND community_members.member_id = '${userId}' AND community_members.req_for_join_status = 0
+        )
+        THEN "pending"
+        ELSE "no"
+      END AS is_joined,
+      COUNT(DISTINCT c_m.member_id) AS total_member
+      FROM 
+        communities AS c
+      LEFT JOIN 
+        student AS s
+      ON 
+        c.admin_id = s.student_id
+      LEFT JOIN 
+        community_members AS c_m
+      ON 
+        c.community_id = c_m.community_id AND c_m.req_for_join_status = 1
+      WHERE 
+        c.approval_status = 1
+      GROUP BY
+        c.community_id
+      HAVING 
+        is_joined = "yes" OR is_joined = "pending";    
+      `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      connection.query(`
+        SELECT * FROM communities WHERE communities.approval_status = 0
+        `, (err, nestedResults) => {
+          if (err) throw err;
+          return res.json({ communities: results, myPendingCommunities: nestedResults.length });
+      });
+    });
+  });
+
 
   router.get("/community/single/:communityId", verifyToken, (req, res) => {
     const communityId = req.params.communityId;
@@ -63,7 +116,7 @@ module.exports = (router) => {
     
     const query = `SELECT 
       c.*, 
-      s.student_name AS community_admin_name,
+      s.student_name AS admin_name,
       COUNT(DISTINCT c_m.member_id) AS total_member
       FROM 
         communities AS c
@@ -87,7 +140,7 @@ module.exports = (router) => {
         SELECT 
           c_m.*,
           CASE
-            WHEN c_m.messenger_id = '${userId}'
+            WHEN c_m.member_id = '${userId}'
             THEN true
             ELSE false
           END AS own_message,
@@ -97,7 +150,7 @@ module.exports = (router) => {
         JOIN 
           student AS s
         ON
-          c_m.messenger_id = s.student_id
+          c_m.member_id = s.student_id
         WHERE 
           community_id = ${communityId} 
         ORDER BY 
@@ -119,20 +172,10 @@ module.exports = (router) => {
         connection.query(
           `INSERT INTO communities (community_name, community_category, community_description, admin_id, approval_status)
           VALUES (?, ?, ?, ?, ?)`,
-          [communityName, communityCategory, communityDescription, userId, 1],
+          [communityName, communityCategory, communityDescription, userId, 0],
           (err, results) => {
             if (err) throw err;
-            let communityId = results.insertId;
-            connection.query(
-              `INSERT INTO community_members (community_id, member_id, req_for_join_status)
-              VALUES (?, ?, ?)`,
-              [communityId, userId, 1],
-              (err, nestedResults) => {
-                if (err) throw err;
-            
-                return res.json({ status: "Success" });
-              }
-            );
+            return res.json({ status: "Success" });
           }
         );
     }
@@ -146,7 +189,7 @@ module.exports = (router) => {
         const { message, communityId } = req.body;
   
         connection.query(
-          `INSERT INTO community_messages (community_id, messenger_id, message_content)
+          `INSERT INTO community_messages (community_id, member_id, message_content)
           VALUES (?, ?, ?)`,
           [communityId, userId, message],
           (err, results) => {
@@ -220,6 +263,36 @@ module.exports = (router) => {
     });
   });
 
+
+  router.get("/community/pending-details", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    connection.query(`SELECT 
+      c_m.member_id,
+      c.community_id
+      FROM 
+        community_members AS c_m
+      JOIN 
+        communities AS c
+      ON
+        c_m.community_id = c.community_id
+      WHERE
+        c.admin_id = '${userId}' AND c_m.req_for_join_status = 0`, 
+    (err, results) => {
+      if (err) throw err;
+      connection.query(`SELECT 
+        c.community_id
+        FROM 
+          communities AS c
+        WHERE
+          c.admin_id = '${userId}' AND c.approval_status = 0`, 
+      (err, nestedResults) => {
+        if (err) throw err;
+        return res.json({ pendingMembersNo: results.length, pendingCommunitiesNo: nestedResults.length});
+      });
+    });
+  });
+
   router.post(
     "/community/member/approve",
     verifyToken,
@@ -253,5 +326,26 @@ module.exports = (router) => {
       );
     }
   );
+
+
+  router.get("/community/pending", verifyToken, (req, res) => {
+    let userId = req.userId;
+    
+    const query = `SELECT 
+      c.*
+      FROM 
+        communities AS c
+      WHERE 
+        c.approval_status = 0 AND c.admin_id = '${userId}'
+      GROUP BY
+        c.community_id
+      `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+
+      return res.json({ communities: results });
+    });
+  });
 
 };

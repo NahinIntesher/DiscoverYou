@@ -8,7 +8,7 @@ export default function MyCommunities() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/community")
+            .get("http://localhost:3000/student/community/my")
             .then((res) => {
                 console.log("Success");
                 const communitiesData = res.data?.communities || [];

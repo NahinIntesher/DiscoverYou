@@ -30,6 +30,7 @@ import UpdateProfile from "../Components/StudentComponents/Profile/UpdateProfile
 import Settings from "../Components/StudentComponents/Profile/Settings";
 import ChangePassword from "../Components/StudentComponents/Profile/ChangePassword";
 import ChangeInterest from "../Components/StudentComponents/Profile/ChangeInterest";
+import PendingCommunities from "../Components/StudentComponents/Community/PendingCommunities";
 
 export default function Student({ handleLogout, user, setUser }) {
   return (
@@ -53,6 +54,10 @@ export default function Student({ handleLogout, user, setUser }) {
           <Route
             path="/community/members/pending"
             element={<PendingMembers />}
+          />
+          <Route
+            path="/community/pending"
+            element={<PendingCommunities />}
           />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
