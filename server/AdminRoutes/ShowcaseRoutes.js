@@ -63,6 +63,7 @@ module.exports = (router, multer) => {
 
   router.get("/showcase/post", verifyToken, (req, res) => {
     const userId = req.userId;
+    const {sort, category} = req.query;
 
     const query = `SELECT 
     s_p.*, 
@@ -107,10 +108,12 @@ module.exports = (router, multer) => {
     LEFT JOIN 
       showcase_post_comments AS s_p_c 
     ON s_p_c.post_id = s_p.post_id
+    WHERE 
+      s_p.post_category IN(${category})
     GROUP BY
       s_p.post_id
     ORDER BY
-      s_p.post_date_time DESC;
+      ${sort} DESC;
     `;
 
     connection.query(query, (err, results) => {

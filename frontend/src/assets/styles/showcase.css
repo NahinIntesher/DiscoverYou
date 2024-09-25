@@ -197,6 +197,7 @@
     text-align: center;
 }
 
+
 .postBox {
     display: inline-block;
     background-color: #ffffff;
@@ -244,6 +245,7 @@
 .postBox .postContent {
     padding: 12px 20px;
     color: rgba(0,0,0,0.6);
+    white-space: pre;
 }
 
 .postBox .mediaContainer {

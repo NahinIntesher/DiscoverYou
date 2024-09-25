@@ -5,7 +5,7 @@ import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";
 
-export default function PostBox({postId, posterName, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
+export default function PostBox({postId, posterName, postCategory, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
     const [isReacted, setIsReacted] = useState(isPostReacted);
     const [reactionCount, setReactionCount] = useState(postReactionCount);
 
@@ -103,6 +103,8 @@ export default function PostBox({postId, posterName, postContent, postTime, post
                 <div className="detail">{getDate(postTime)}</div>
                 <div className="divider"></div>
                 <div className="detail">{getPMTime(postTime)}</div>
+                <div className="divider"></div>
+                <div className="detail">{postCategory}</div>
             </div>
             <div className="postActionBoxContainer">
                 { isReacted ? 

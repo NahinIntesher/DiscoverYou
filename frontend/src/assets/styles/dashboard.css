@@ -333,6 +333,57 @@
   border-bottom: 0;
 }
 
+.filterBox {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.filterBox .title {
+  flex-shrink: 1;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 2px 10px;
+}
+.filterBox .filters {
+  flex-grow: 1;
+  text-align: right;
+}
+.filterBox .filters .filter {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 2px 12px;
+  border-radius: 30px;
+}
+.filterBox .filters .filterName {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 2px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+.filterBox .filters .filter .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+}
+.filterBox .filters .filter select {
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 4px;
+  margin: 2px;
+  font-size: 15px;
+  outline: 0;
+}
+
+.filterBoxShowcase {
+  max-width: 940px;
+}
+
 @media screen and (min-width: 1600px) {
   .mainContent {
     width: calc(100% - 330px);

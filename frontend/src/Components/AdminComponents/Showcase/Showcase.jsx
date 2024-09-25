@@ -2,17 +2,47 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../../assets/styles/showcase.css";
 import 'react-material-symbols/rounded';
-import GivePostBox from "../../CommonComponents/GivePostBox";
 import PostBox from "./PostBox";
 import NotFound from "../../CommonComponents/NotFound";
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
+
 
 export default function Showcase({user}) {    
     const [posts, setPosts] = useState([]);
-    const [updatePost, setUpdatePost] = useState(0);
+
+    const allInterests = [
+        "Competitive Programming",
+        "Web/App Designing",
+        "Gaming",
+        "Photography",
+        "Debating",
+        "Singing",
+        "Writing",
+        "Art & Craft",
+        "Graphics Designing",
+    ];
+
+    const [formData, setFormData] = useState({
+        sort: "s_p.post_date_time",
+        category: allInterests.map((interest)=> `'${interest}'`).join()
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(function (prevFormData) {
+          return {
+            ...prevFormData,
+            [name]: value,
+          };
+        });
+    };
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/admin/showcase/post")
+          .get("http://localhost:3000/admin/showcase/post", {
+            params: formData
+          })
           .then((res) => {
             const postsData = res.data?.posts || [];
             setPosts(postsData);
@@ -20,7 +50,7 @@ export default function Showcase({user}) {
           .catch((error) => {
             console.error("Error fetching posts:", error);
           });
-    }, [updatePost]);
+    }, [formData]);
     
     return (
         <div className="mainContent">
@@ -30,6 +60,30 @@ export default function Showcase({user}) {
                 </div>
             </div>
             <div className="postBoxContainer">
+            <div className="smallBreak"></div>
+                <div className="filterBox filterBoxShowcase">
+                    <div className="title">Filter</div>
+                    <div className="filters">
+                        <div className="filterName">Sort By</div>
+                        <div className="filter">
+                            <MaterialSymbol className="icon" size={22} icon="tune" />
+                            <select name="sort" onChange={handleInputChange}>
+                                <option value="s_p.post_date_time">Newest First</option>
+                                <option value="reaction_count">Most Liked</option>
+                            </select>
+                        </div>
+                        <div className="filterName">Category</div>
+                        <div className="filter">
+                            <InterestIcon category={formData.category}/>
+                            <select name="category" onChange={handleInputChange}>
+                                <option value={allInterests.map((interest)=> `'${interest}'`)}>All</option>
+                                {allInterests.map((interest)=> 
+                                    <option value={`'${interest}'`}>{interest}</option>
+                                )}
+                            </select>
+                        </div>
+                    </div>
+                </div>
             {
                 posts.length > 0 ?
                 posts.map(function(post){
@@ -56,3 +110,39 @@ export default function Showcase({user}) {
         </div>
     );
 }
+
+
+function InterestIcon(data) {
+    console.log(data);
+    if (data.category == "'Competitive Programming'") {
+      return <MaterialSymbol className="icon" size={22} icon="code" />
+    }
+    else if (data.category == "'Singing'") {
+      return <MaterialSymbol className="icon" size={22} icon="queue_music" />
+    }
+    else if (data.category == "'Graphics Designing'") {
+      return <MaterialSymbol className="icon" size={22} icon="polyline" />
+    }
+    else if (data.category == "'Photography'") {
+      return <MaterialSymbol className="icon" size={22} icon="photo_camera" />
+    }
+    else if (data.category == "'Web/App Designing'") {
+      return <MaterialSymbol className="icon" size={22} icon="web" />
+    }
+    else if (data.category == "'Writing'") {
+      return <MaterialSymbol className="icon" size={22} icon="edit_note" />
+    }
+    else if (data.category == "'Art & Craft'") {
+      return <MaterialSymbol className="icon" size={22} icon="draw" />
+    }
+    else if (data.category == "'Debating'") {
+      return <MaterialSymbol className="icon" size={22} icon="communication" />
+    }
+    else if (data.category == "'Gaming'") {
+      return <MaterialSymbol className="icon" size={22} icon="sports_esports" />
+    }
+    else {
+        return <MaterialSymbol className="icon" size={22} icon="interests" />
+    }
+}
+
