@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router, multer) => {
+module.exports = (router, multer, bcrypt) => {
   // const storage = multer.memoryStorage();
 
   // const upload = multer({
@@ -25,7 +25,7 @@ module.exports = (router, multer) => {
   //   const id = req.userID;
   //   const query = `SELECT
   //    p.*,
-  //   CONCAT("http://localhost:3000/organizer/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+  //   CONCAT("http://localhost:3000/admin/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
   //    FROM
   //       products as p
   //    JOIN
@@ -68,15 +68,15 @@ module.exports = (router, multer) => {
     const id = req.userId;
     const { name, email, mobile_no, address, date_of_birth } = req.body;
     const query = `
-      UPDATE student
+      UPDATE admin
       SET 
-        student_name = ?, 
-        student_email = ?, 
-        student_mobile_no = ?, 
-        student_address = ?, 
-        student_date_of_birth = ?
+        admin_name = ?, 
+        admin_email = ?, 
+        admin_mobile_no = ?, 
+        admin_address = ?, 
+        admin_date_of_birth = ?
       WHERE 
-        student_id = ?;
+        admin_id = ?;
     `;
 
     connection.query(
@@ -102,10 +102,11 @@ module.exports = (router, multer) => {
       }
     );
   });
+
   router.post("/profile/settings/change-password", verifyToken, (req, res) => {
     const id = req.userId;
-    const { oldPassword, password } = req.body;
-    const passwordQuery = `Select student_password from student where id = ?`;
+    const { oldPassword, password, confirmPassword } = req.body;
+    const passwordQuery = `select admin_password from admin where admin_id = ?`;
     connection.query(passwordQuery, [id], (err, results) => {
       if (err) {
         console.error(err);
@@ -113,7 +114,7 @@ module.exports = (router, multer) => {
       }
       bcrypt.compare(
         oldPassword.toString(),
-        results[0].password,
+        results[0].admin_password,
         (err, response) => {
           if (err) return res.json({ Error: "Error comparing password" });
           if (response) {
@@ -126,7 +127,7 @@ module.exports = (router, multer) => {
                     error: err.message,
                   });
                 }
-                const query = `UPDATE student SET student_password = ? WHERE student_id = ?`;
+                const query = `UPDATE admin SET admin_password = ? WHERE admin_id = ?`;
                 connection.query(
                   query,
                   [hashedPassword, id],
@@ -139,7 +140,7 @@ module.exports = (router, multer) => {
                       });
                     }
                     res.json({
-                      status: "successful",
+                      status: "Success",
                       message: "Password updated successfully.",
                     });
                   }
@@ -152,62 +153,29 @@ module.exports = (router, multer) => {
               });
             }
           } else {
-            return res.json({ Error: "Password incorrect" });
+            return res.json({ Error: "Old Password is incorrect" });
           }
         }
       );
     });
   });
 
-  router.post("/profile/settings/change-interests", verifyToken, (req, res) => {
+  router.post("/profile/settings/delete", verifyToken, (req, res) => {
+    console.log(req.body);
     const id = req.userId;
-    const { interests } = req.body;
+    const deleteQuery = "DELETE FROM admin WHERE admin_id = ?";
+    // const deleteQuery = 'SELECT * FROM admin WHERE admin_id = ?';
 
-    // Check if interests is an array
-    if (!Array.isArray(interests)) {
-      return res.status(400).json({ error: "Interests should be an array" });
-    }
-
-    // Step 1: Delete existing interests for the student
-    const deleteQuery = "DELETE FROM student_interests WHERE student_id = ?";
-    connection.query(deleteQuery, [id], (err, result) => {
+    connection.query(deleteQuery, [id], (err, response) => {
       if (err) {
-        console.error(err);
-        return res
-          .status(500)
-          .json({ error: "Error deleting existing interests" });
+        throw err;
+        //          return res.status(500).json({ error: "Error deleting the account" });
       }
-
-      // Step 2: Insert new interests
-      const interestQueries = interests.map((interest) => {
-        return new Promise((resolve, reject) => {
-          connection.query(
-            "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
-            [interest, id],
-            (err) => {
-              if (err) {
-                return reject(err);
-              }
-              resolve();
-            }
-          );
-        });
+      res.clearCookie("userRegistered");
+      return res.json({
+        status: "Success",
+        message: "Account deleted successfully.",
       });
-
-      // Execute all interest insertion queries
-      Promise.all(interestQueries)
-        .then(() => {
-          return res.json({
-            status: "Success",
-            message: "Interests updated successfully.",
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          return res
-            .status(500)
-            .json({ error: "Error inserting new interests" });
-        });
     });
   });
 };

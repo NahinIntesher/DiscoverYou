@@ -69,7 +69,7 @@ export default function ChangePassword({ user }) {
         .then((res) => {
           if (res.data.status === "Success") {
             navigate(-1);
-            alert("Profile Updated Successfully!");
+            alert("Password Updated Successfully!");
           } else {
             setErrors(
               {...errors, 

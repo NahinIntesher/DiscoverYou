@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router, multer) => {
+module.exports = (router, multer, bcrypt) => {
   // const storage = multer.memoryStorage();
 
   // const upload = multer({
@@ -102,18 +102,19 @@ module.exports = (router, multer) => {
       }
     );
   });
+
   router.post("/profile/settings/change-password", verifyToken, (req, res) => {
+    console.log(req.body);
     const id = req.userId;
-    const { oldPassword, password } = req.body;
-    const passwordQuery = `Select organizer_password from organizer where id = ?`;
+    const { oldPassword, password, confirmPassword } = req.body;
+    const passwordQuery = `select organizer_password from organizer where organizer_id = ?`;
     connection.query(passwordQuery, [id], (err, results) => {
       if (err) {
-        console.error(err);
         return res.json({ status: "unsuccessful", error: err.message });
       }
       bcrypt.compare(
         oldPassword.toString(),
-        results[0].password,
+        results[0].organizer_password,
         (err, response) => {
           if (err) return res.json({ Error: "Error comparing password" });
           if (response) {
@@ -139,7 +140,7 @@ module.exports = (router, multer) => {
                       });
                     }
                     res.json({
-                      status: "successful",
+                      status: "Success",
                       message: "Password updated successfully.",
                     });
                   }
@@ -152,62 +153,29 @@ module.exports = (router, multer) => {
               });
             }
           } else {
-            return res.json({ Error: "Password incorrect" });
+            return res.json({ Error: "Old password is incorrect" });
           }
         }
       );
     });
   });
 
-  router.post("/profile/settings/change-interests", verifyToken, (req, res) => {
+  router.post("/profile/settings/delete", verifyToken, (req, res) => {
+    console.log(req.body);
     const id = req.userId;
-    const { interests } = req.body;
+    const deleteQuery = "DELETE FROM organizer WHERE organizer_id = ?";
+    // const deleteQuery = 'SELECT * FROM student WHERE student_id = ?';
 
-    // Check if interests is an array
-    if (!Array.isArray(interests)) {
-      return res.status(400).json({ error: "Interests should be an array" });
-    }
-
-    // Step 1: Delete existing interests for the organizer
-    const deleteQuery = "DELETE FROM organizer_interests WHERE organizer_id = ?";
-    connection.query(deleteQuery, [id], (err, result) => {
+    connection.query(deleteQuery, [id], (err, response) => {
       if (err) {
-        console.error(err);
-        return res
-          .status(500)
-          .json({ error: "Error deleting existing interests" });
+        throw err;
+        //          return res.status(500).json({ error: "Error deleting the account" });
       }
-
-      // Step 2: Insert new interests
-      const interestQueries = interests.map((interest) => {
-        return new Promise((resolve, reject) => {
-          connection.query(
-            "INSERT INTO student_interests (interest_name, student_id) VALUES (?, ?)",
-            [interest, id],
-            (err) => {
-              if (err) {
-                return reject(err);
-              }
-              resolve();
-            }
-          );
-        });
+      res.clearCookie("userRegistered");
+      return res.json({
+        status: "Success",
+        message: "Account deleted successfully.",
       });
-
-      // Execute all interest insertion queries
-      Promise.all(interestQueries)
-        .then(() => {
-          return res.json({
-            status: "Success",
-            message: "Interests updated successfully.",
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          return res
-            .status(500)
-            .json({ error: "Error inserting new interests" });
-        });
     });
   });
 };

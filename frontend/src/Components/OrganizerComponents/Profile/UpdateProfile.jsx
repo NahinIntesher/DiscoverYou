@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "../../../assets/styles/Profile.css";
 
-export default function UpdateProfile({ user }) {
+export default function UpdateProfile({ user, setUser }) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setshowConfirmPassword] = useState(false);
 
   const extractDate = (dateString) => {
     const date = new Date(dateString);
@@ -24,7 +22,7 @@ export default function UpdateProfile({ user }) {
     gender: user.organizer_gender,
     address: user.organizer_address,
     mobile_no: user.organizer_mobile_no,
-    email: user.organizer_email
+    email: user.organizer_email,
   });
 
   const validateName = (name) => /^[a-zA-Z\s]{1,30}$/.test(name);
@@ -55,26 +53,38 @@ export default function UpdateProfile({ user }) {
     axios.defaults.withCredentials = true;
     if (Object.keys(newErrors).length === 0) {
       console.log(formData);
-      navigate(-1);
-      // axios
-      //   .post("http://localhost:3000/organizer/profile/update", formData)
-      //   .then((res) => {
-      //     if (res.data.status === "Success") {
-      //       console.log("Profile Update Success!");
-      //     } else {
-      //       alert(res.data.Error);
-      //     }
-      //   })
-      //   .catch((err) => console.log(err));
+      axios
+        .post("http://localhost:3000/organizer/profile/update", formData)
+        .then((res) => {
+          if (res.data.status === "successful") {
+            console.log("Profile Update Success!");
+
+            setUser(function(prev){
+              return {
+                ...prev,
+                organizer_name: formData.name,
+                organizer_date_of_birth: formData.date_of_birth,
+                organizer_address: formData.address,
+                organizer_email: formData.email,
+                organizer_mobile_no: formData.mobile_no
+              }
+            });
+
+            navigate("/profile");
+          } else {
+            alert("Cannot update profile!");
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(function(prevFormData){
-      return { 
-        ...prevFormData, 
-        [name]: value 
-      }
+    setFormData(function (prevFormData) {
+      return {
+        ...prevFormData,
+        [name]: value,
+      };
     });
   };
 
@@ -87,9 +97,7 @@ export default function UpdateProfile({ user }) {
             <div className="title">Update Your Profile</div>
             {/* Name */}
             <div className="input">
-              <label>
-                Name
-              </label>
+              <label>Name</label>
               <input
                 type="text"
                 id="name"
@@ -103,9 +111,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Birth Date */}
             <div className="input">
-              <label htmlFor="date_of_birth">
-                Date of Birth
-              </label>
+              <label htmlFor="date_of_birth">Date of Birth</label>
               <input
                 type="date"
                 id="date_of_birth"
@@ -145,9 +151,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Address */}
             <div className="input">
-              <label>
-                Address
-              </label>
+              <label>Address</label>
               <textarea
                 id="address"
                 name="address"
@@ -159,9 +163,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Mobile Number */}
             <div className="input">
-              <label>
-                Mobile Number
-              </label>
+              <label>Mobile Number</label>
               <input
                 type="tel"
                 id="mobile_no"
@@ -169,9 +171,7 @@ export default function UpdateProfile({ user }) {
                 value={formData.mobile_no}
                 onChange={handleInputChange}
               />
-              {errors.mobile_no && (
-                <p className="error">{errors.mobile_no}</p>
-              )}
+              {errors.mobile_no && <p className="error">{errors.mobile_no}</p>}
             </div>
 
             {/* Profile Picture */}
@@ -193,9 +193,7 @@ export default function UpdateProfile({ user }) {
 
             {/* Email */}
             <div className="input">
-              <label>
-                Email
-              </label>
+              <label>Email</label>
               <input
                 type="email"
                 id="email"
@@ -206,9 +204,7 @@ export default function UpdateProfile({ user }) {
               {errors.email && <p className="error">{errors.email}</p>}
             </div>
 
-            <button>
-              Save
-            </button>
+            <button>Save</button>
           </form>
         </div>
       </div>

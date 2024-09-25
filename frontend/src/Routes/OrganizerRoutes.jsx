@@ -15,10 +15,12 @@ import Notification from "../../src/Components/OrganizerComponents/Notification/
 
 import Profile from "../Components/OrganizerComponents/Profile/Profile";
 import UpdateProfile from "../Components/OrganizerComponents/Profile/UpdateProfile";
+import Settings from "../Components/OrganizerComponents/Profile/Settings";
+import ChangePassword from "../Components/OrganizerComponents/Profile/ChangePassword";
 
 import Post from "../Components/OrganizerComponents/Showcase/Post";
 
-export default function Student({ handleLogout, user }) {
+export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
@@ -36,8 +38,11 @@ export default function Student({ handleLogout, user }) {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
+
           <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/update-profile" element={<UpdateProfile user={user} />} />
+          <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
+          <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
+          <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
         </Routes>
       </div>
     </BrowserRouter>
