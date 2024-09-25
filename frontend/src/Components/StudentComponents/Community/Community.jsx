@@ -12,15 +12,18 @@ export default function Community() {
     const [activeTab, setActiveTab] = useState(["browseCommunities"]);
     
     const [pendingMemberNo, setPendingMemberNo] = useState(0);
+    const [pendingCommunitiesNo, setPendingCommunitiesNo] = useState(0);
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/community/pendingMembers")
+            .get("http://localhost:3000/student/community/pending-details")
             .then((res) => {
                 console.log("Success");
-                const pendingMembers = res.data?.pendingMembers || [];
-                console.log(pendingMembers);
-                setPendingMemberNo(pendingMembers.length);
+                const pendingMembersNo = res.data?.pendingMembersNo || [];
+                const pendingCommunitiesNo = res.data?.pendingCommunitiesNo || [];
+
+                setPendingMemberNo(pendingMembersNo);
+                setPendingCommunitiesNo(pendingCommunitiesNo);
             })
             .catch((error) => {
                 console.error("Error fetching contests:", error);
@@ -40,6 +43,17 @@ export default function Community() {
                     </div>
                 </div>
             </div>
+            {pendingCommunitiesNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        Your {pendingCommunitiesNo} communities approval are in pending.
+                    </div>
+                    <Link to={"/community/pending"} className="button">
+                        Pending Communities
+                    </Link>
+                </div>
+            }
             {pendingMemberNo != 0 &&
                 <div className="pendingBox">
                     <MaterialSymbol className="icon" size={32} icon="error" />
