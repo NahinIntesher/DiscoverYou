@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CommunityBox from "../../CommonComponents/CommunityBox";
+import CommunityBox from "./CommunityBox";
 import NotFound from "../../CommonComponents/NotFound";
 
 export default function BrowseCommunities() {
