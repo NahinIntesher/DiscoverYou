@@ -248,10 +248,10 @@
   border-radius: 10px;
 }
 .activeTab {
-  background-color: rgba(255, 169, 82, 0.4);
-  color: #ef5a5a;
+  background-color: rgba(var(--medium), 0.4);
+  color: rgb(var(--dark));
   font-weight: 600;
-  border: 1px #ef5a5a solid;
+  border: 1px rgb(var(--dark)) solid;
 }
 .tabContent {
   padding: 10px;

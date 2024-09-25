@@ -21,11 +21,11 @@
     margin-right: 10px;
 }
 .communityBox .category {
-    background-color: rgba(255, 169, 82, 0.4);
+    background-color: rgba(var(--medium), 0.4);
     padding: 2px 12px;
     border-radius: 20px;
     display: inline-block;
-    color: #ef5a5acc;
+    color: rgb(var(--dark));
     margin-top: 8px;
 }
 .communityBox .category .icon {
@@ -72,8 +72,8 @@
 .communityBox .joinButtonContainer .joinButton {
     display: inline-block;
     background-image: 
-        radial-gradient(80px 30px at left top, #ffe79acc, #ffe79a99, transparent),
-        linear-gradient(#ef5a5a, #ffa952);
+        radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
     padding: 10px 24px;
     border-radius: 60px;
@@ -301,7 +301,7 @@
 
 .pendingMemberBox .profilePicture {
     flex-shrink: 1;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 10px;
@@ -382,4 +382,176 @@
     display: inline-block;
     vertical-align: middle;
     margin: 4px;
+}
+
+
+.pendingCommunityBox {
+    text-align: left;
+    width: calc(100% - 20px);
+    max-width: 980px;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    margin: 8px;
+    padding: 8px;
+    display: inline-flex;
+    align-items: center;
+}
+.pendingCommunityBox .communityDetails {
+    flex-grow: 1;
+}
+.pendingCommunityBox .communityDetails .name {
+    font-size: 20px;
+    font-weight: 600;
+}
+.pendingCommunityBox .buttonContainer {
+    padding: 4px;
+    flex: 0 0 180px;
+}
+.pendingCommunityBox .acceptButton, 
+.pendingCommunityBox .rejectButton, 
+.pendingCommunityBox .defaultButton {
+    color: #02590fcc;
+    background-color: #B2DEB9;
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin: 10px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.pendingCommunityBox .acceptButton:hover {
+    color: #02590f;
+    background-color: #73BD7E;
+}
+.pendingCommunityBox .rejectButton {
+    color: #c62d42cc;
+    background-color: #F4CED3;
+}
+
+.pendingCommunityBox .rejectButton:hover {
+    color: #c62d42;
+    background-color: #E9A1AA;
+}
+
+.pendingCommunityBox .defaultButton {
+    color: rgb(var(--dark));
+    background-color: rgba(var(--medium), 0.4);
+}
+
+.pendingCommunityBox .defaultButton:hover {
+    background-color: rgba(var(--medium), 0.6);
+}
+
+.pendingCommunityBox .acceptButton .icon, 
+.pendingCommunityBox .rejectButton .icon, 
+.pendingCommunityBox .defaultButton .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+
+.pendingCommunityBox .acceptButton .text, 
+.pendingCommunityBox .rejectButton .text , 
+.pendingCommunityBox .defaultButton .text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+}
+
+
+
+.pendingCommunityBox .communityDetails .title {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 4px 4px;
+    text-wrap: wrap;
+    line-height: 120%;
+    margin-right: 10px;
+}
+.pendingCommunityBox .communityDetails .category {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: rgba(var(--medium), 0.4);
+    padding: 2px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    color: rgb(var(--dark));
+    margin-left: 4px;
+}
+.pendingCommunityBox .communityDetails .category .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+.pendingCommunityBox .communityDetails .category .text {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 2px 4px;
+}
+
+.pendingCommunityBox .communityDetails .informationContainer {
+    padding: 8px 10px;
+    display: flex;
+}
+.pendingCommunityBox .communityDetails .information {
+    flex: auto;
+    display: inline-block;
+    vertical-align: middle;
+    flex-grow: 1;
+    overflow: hidden;
+}
+.pendingCommunityBox .communityDetails .description {
+    background-color: rgba(0, 0, 0, 0.08);
+    padding: 12px;
+    margin: 8px;
+    border-radius: 10px;
+}
+.pendingCommunityBox .communityDetails .description .detail {
+    padding: 2px 6px;
+    font-size: 15px;
+}
+
+.pendingCommunityBox .communityDetails .organizer {
+    background-color: rgba(0,0,0,0.12);
+    border-radius: 30px;
+    padding: 4px;
+    width: fit-content;
+    text-align: left;
+    margin-bottom: 8px;
+}
+.pendingCommunityBox .communityDetails .organizer .organizerPicture {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border-radius: 46px;
+    border: 2.5px #ffffff solid;
+    overflow: hidden;
+}
+.pendingCommunityBox .communityDetails .organizer .organizerDetails {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    padding: 4px 8px;
+}
+
+.pendingCommunityBox .communityDetails .organizer .organizerDetails .detailTitle {
+    display: inline-block;
+    vertical-align: middle;   
+    font-size: 14px;
+    line-height: 120%;
+}
+.pendingCommunityBox .communityDetails .organizer .organizerDetails .detailInfo { 
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 0 4px;
 }
