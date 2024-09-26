@@ -129,6 +129,7 @@
 .formBox input[type="number"],
 .formBox input[type="tel"],
 .formBox input[type="date"],
+.formBox input[type="datetime-local"],
 .formBox textarea,
 .formBox select {
   border-radius: 12px;
@@ -149,6 +150,7 @@
 .formBox input[type="number"]:focus,
 .formBox input[type="tel"]:focus,
 .formBox input[type="date"]:focus,
+.formBox input[type="datetime-local"]:focus,
 .formBox textarea:focus,
 .formBox select:focus {
   border: 2px solid rgb(var(--medium));
@@ -383,6 +385,72 @@
 .filterBoxShowcase {
   max-width: 940px;
 }
+
+.detailsSection {
+  display: inline-block;
+  width: calc(100% - 20px);
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+  margin: 4px 10px;
+  padding: 14px;
+  text-align: left;
+  max-width: 1040px;
+}
+
+.participantList {
+  display: inline-block;
+  width: calc(100% - 20px);
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+  margin: 4px 10px;
+  text-align: left;
+  max-width: 1040px;  
+}
+.participant {
+  padding: 8px 10px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+.participant .profilePicture {
+  display: inline-block;
+  vertical-align: middle;
+  background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+  padding: 3px;
+  border-radius: 80px;
+  margin: 10px;
+}
+.participant .profilePicture img {
+  border-radius: 60px;
+  border: 3px solid #ffffff;
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+.participant .participantDetails {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px;
+}
+.participant .participantDetails .name {
+  font-weight: 600;
+}
+
+.participant .participantDetails .viewProfile {
+  background-color: rgba(var(--medium), 0.4);
+  color: rgb(var(--dark));
+  padding: 4px 16px;
+  font-size: 13px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.participant .participantDetails .viewProfile:hover {
+  background-color: rgba(var(--medium), 0.6);
+}
+
 
 @media screen and (min-width: 1600px) {
   .mainContent {

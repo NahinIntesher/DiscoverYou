@@ -24,6 +24,7 @@ import Settings from "../Components/AdminComponents/Profile/Settings";
 import ChangePassword from "../Components/AdminComponents/Profile/ChangePassword";
 
 import Post from "../Components/AdminComponents/Showcase/Post";
+import SingleWebinar from "../Components/AdminComponents/Webinar/SingleWebinar";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -40,7 +41,10 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community />} />
+
           <Route path="/webinar" element={<Webinar />} />
+          <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
+
           <Route path="/marketplace" element={<Marketplace />} />
           <Route
             path="/marketplace/product-req"

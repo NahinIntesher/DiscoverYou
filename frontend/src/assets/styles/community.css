@@ -398,6 +398,13 @@
     display: inline-flex;
     align-items: center;
 }
+.pendingCommunityBox table th {
+    font-weight: 600;
+    padding: 1px 4px;
+}
+.pendingCommunityBox table td {
+    padding: 1px 6px;
+}
 .pendingCommunityBox .communityDetails {
     flex-grow: 1;
 }

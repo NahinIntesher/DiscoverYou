@@ -1,0 +1,1 @@
+ALTER TABLE `webinars` CHANGE `approver_id` `approver_id` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;

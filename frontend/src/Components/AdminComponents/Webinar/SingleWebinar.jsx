@@ -11,7 +11,6 @@ import NotFound from "../../CommonComponents/NotFound";
 
 const SingleWebinar = () => {
   const { webinarId } = useParams();
-  const [isRegistered, setIsRegistered] = useState(false);
   const [participantNo, setParticipantNo] = useState(0);
   const [data, setData] = useState({
     webinar: null,
@@ -37,15 +36,14 @@ const SingleWebinar = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/student/webinar/${webinarId}`)
+      .get(`http://localhost:3000/admin/webinar/${webinarId}`)
       .then((response) => {
         console.log("Full API Response:", response.data.webinar);
         setData(response.data);
         setLoading(false);
         const webinar = response.data.webinar;
-
+        
         setWebinarType(webinar.webinar_type);
-        setIsRegistered(webinar.is_joined);
         setParticipantNo(webinar.participant_count);
       })
       .catch((error) => {
@@ -53,28 +51,8 @@ const SingleWebinar = () => {
       });
   }, [participantNo]);
 
-  function registerWebinar() {
-    axios.defaults.withCredentials = true;
-    axios
-      .post("http://localhost:3000/student/webinars/register", {
-        webinarId: webinarId,
-      })
-      .then((res) => {
-        console.log(res.data.status);
-        if (res.data.status === "Registered") {
-          setIsRegistered(true);
-          setParticipantNo((prevValue) => prevValue + 1);
-        } else if (res.data.status === "Unregistered") {
-          setIsRegistered(false);
-          setParticipantNo((prevValue) => prevValue - 1);
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-  function notRegisteredError() {
-    alert("Sorry, you didn't registered for this webinar!");
+  function notAvailableError() {
+    alert("Sorry, webinar is not finished!");
   }
 
   if (loading) return <p>Loading...</p>;
@@ -103,31 +81,12 @@ const SingleWebinar = () => {
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            {webinarType == "ongoing" ? (
-              isRegistered ? (
-                <a href={data.webinar.meeting_link} className="joinButton">
-                  Join Meeting
-                </a>
-              ) : (
-                <button
-                  onClick={notRegisteredError}
-                  className="joinButton inactiveButton"
-                >
-                  Join Meeting
-                </button>
-              )
-            ) : webinarType == "upcoming" ? (
-              isRegistered ? (
-                <button className="joinButton" onClick={registerWebinar}>
-                  Unregister
-                </button>
-              ) : (
-                <button className="joinButton" onClick={registerWebinar}>
-                  Register
-                </button>
-              )
-            ) : (
+            {webinarType === "previous" ? (
               <a href={data.webinar.recorded_link} className="joinButton">
+                Watch Record
+              </a>            
+            ) : (
+              <a onClick={notAvailableError} className="joinButton inactiveButton">
                 Watch Record
               </a>
             )}

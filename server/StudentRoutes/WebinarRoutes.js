@@ -4,21 +4,18 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
 module.exports = (router) => {
-  router.get("/webinars", verifyToken, (req, res) => {
+  router.get("/webinars/ongoing", verifyToken, (req, res) => {
     let userId = req.userId;
 
     const query = `
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
-      CASE 
-          WHEN NOW() < w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
-          ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
-      END AS calculated_time,
+      TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
       organizer.organizer_name AS host_name,
       CASE
         WHEN EXISTS (
           SELECT *
           FROM webinar_participants
-          WHERE webinar_participants.webinar_id = w.webinar_id
+          WHERE webinar_participants.webinar_id = w.webinar_id AND webinar_participants.participant_id = ?
         )
         THEN true
         ELSE false
@@ -33,6 +30,90 @@ module.exports = (router) => {
           organizer
       ON 
           w.host_id = organizer.organizer_id
+      WHERE
+        (NOW() >= w.start_time) AND (NOW() <= w.end_time) AND w.approval_status = 1
+      GROUP BY 
+          w.webinar_id;
+    `;
+    connection.query(query, [userId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ webinars: result });
+    });
+  });
+
+  router.get("/webinars/upcoming", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
+      TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
+      organizer.organizer_name AS host_name,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM webinar_participants
+          WHERE webinar_participants.webinar_id = w.webinar_id AND webinar_participants.participant_id = ?
+        )
+        THEN true
+        ELSE false
+      END AS is_joined
+      FROM 
+          webinars w
+      LEFT JOIN 
+          webinar_participants w_p
+      ON 
+          w.webinar_id = w_p.webinar_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.host_id = organizer.organizer_id
+      WHERE
+        NOW() <= w.start_time AND w.approval_status = 1
+      GROUP BY 
+          w.webinar_id;
+    `;
+    connection.query(query, [userId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ webinars: result });
+    });
+  });
+
+  router.get("/webinars/previous", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
+      TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
+      organizer.organizer_name AS host_name,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM webinar_participants
+          WHERE webinar_participants.webinar_id = w.webinar_id AND webinar_participants.participant_id = ?
+        )
+        THEN true
+        ELSE false
+      END AS is_joined
+      FROM 
+          webinars w
+      LEFT JOIN 
+          webinar_participants w_p
+      ON 
+          w.webinar_id = w_p.webinar_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.host_id = organizer.organizer_id
+      WHERE
+        NOW() >= w.end_time AND w.approval_status = 1
       GROUP BY 
           w.webinar_id;
     `;
@@ -80,6 +161,7 @@ module.exports = (router) => {
   });
 
   router.get("/webinar/:webinarId", verifyToken, (req, res) => {
+    const userId = req.userId;
     const { webinarId } = req.params;
 
     // Fetch webinar details
@@ -94,11 +176,16 @@ module.exports = (router) => {
           WHEN EXISTS (
             SELECT *
             FROM webinar_participants
-            WHERE webinar_participants.webinar_id = w.webinar_id
+            WHERE webinar_participants.webinar_id = w.webinar_id AND webinar_participants.participant_id = ?
           )
           THEN true
           ELSE false
-        END AS is_joined
+        END AS is_joined,
+        CASE 
+          WHEN NOW() >= w.end_time THEN "previous"
+          WHEN NOW() <= w.start_time THEN "upcoming"
+          ELSE "ongoing"  
+        END AS webinar_type
         FROM 
             webinars w
         LEFT JOIN 
@@ -120,7 +207,7 @@ module.exports = (router) => {
     JOIN student ON webinar_participants.participant_id = student.student_id
     WHERE webinar_participants.webinar_id = ?`;
 
-    connection.query(webinarQuery, [webinarId], (err, webinarResults) => {
+    connection.query(webinarQuery, [userId, webinarId], (err, webinarResults) => {
       if (err) {
         console.error("Error fetching webinar:", err);
         return res.json({ error: "Error fetching webinar details" });

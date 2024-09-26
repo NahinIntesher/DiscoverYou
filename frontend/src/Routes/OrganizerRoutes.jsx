@@ -19,6 +19,9 @@ import Settings from "../Components/OrganizerComponents/Profile/Settings";
 import ChangePassword from "../Components/OrganizerComponents/Profile/ChangePassword";
 
 import Post from "../Components/OrganizerComponents/Showcase/Post";
+import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNewWebinar";
+import PendingWebinar from "../Components/OrganizerComponents/Webinar/PendingWebinar";
+import SingleWebinar from "../Components/OrganizerComponents/Webinar/SingleWebinar";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -35,6 +38,10 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/webinar" element={<Webinar />} />
+          <Route path="/webinar/new" element={<CreateNewWebinar />} />
+          <Route path="/webinar/pending" element={<PendingWebinar />} />
+          <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
+
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

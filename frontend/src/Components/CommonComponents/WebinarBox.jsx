@@ -19,11 +19,10 @@ export default function WebinarBox({
   endTime,
   participants,
   calculatedTime,
-  type,
-  isJoined,
+  type
 }) {
-  const [isRegistered, setIsRegistered] = useState(isJoined);
-  const [participantNo, setParticipantNo] = useState(participants);
+  // const [isRegistered, setIsRegistered] = useState(isJoined);
+  // const [participantNo, setParticipantNo] = useState(participants);
   const navigate = useNavigate();
 
   function getPMTime(datetime) {
