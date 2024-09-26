@@ -8,13 +8,14 @@ import SingleContest from "../Components/AdminComponents/Contest/SingleContest";
 
 import Showcase from "../Components/AdminComponents/Showcase/Showcase";
 import Community from "../Components/AdminComponents/Community/Community";
-import Course from "../Components/AdminComponents/Course/Course";
 import Webinar from "../Components/AdminComponents/Webinar/Webinar";
 import Marketplace from "../Components/AdminComponents/Marketplace/Marketplace";
 import PendingProducts from "../Components/AdminComponents/Marketplace/PendingProducts";
 
-import Hiring from "../../src/Components/AdminComponents/Hiring/Hiring";
+import Course from "../Components/AdminComponents/Course/Course";
+import PendingCourse from "../Components/AdminComponents/Course/PendingCourses";
 
+import Hiring from "../../src/Components/AdminComponents/Hiring/Hiring";
 import Notification from "../Components/AdminComponents/Notification/Notification";
 
 import Profile from "../Components/AdminComponents/Profile/Profile";
@@ -39,13 +40,17 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community />} />
-          <Route path="/course" element={<Course />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route
             path="/marketplace/product-req"
             element={<PendingProducts interests={user.interests} />}
           />
+          
+          <Route path="/course" element={<Course />} />
+          <Route path="/course/pending" element={<PendingCourse />} />
+          
+          
           <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

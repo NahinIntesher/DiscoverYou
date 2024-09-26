@@ -11,6 +11,9 @@ import Showcase from "../Components/StudentComponents/Showcase/Showcase";
 import Post from "../Components/StudentComponents/Showcase/Post";
 
 import Course from "../Components/StudentComponents/Course/Course";
+import CreateNewCourses from "../Components/StudentComponents/Course/CreateNewCourses";
+import PendingParticipants from "../Components/StudentComponents/Course/PendingParticipants";
+import PendingCourse from "../Components/StudentComponents/Course/PendingCourses";
 
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
@@ -47,21 +50,16 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community />} />
-          <Route
-            path="/community/new"
-            element={<CreateNewCommunity interests={user.interests} />}
-          />
-          <Route
-            path="/community/members/pending"
-            element={<PendingMembers />}
-          />
-          <Route
-            path="/community/pending"
-            element={<PendingCommunities />}
-          />
+          <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
+          <Route path="/community/members/pending" element={<PendingMembers />} />
+          <Route path="/community/pending" element={<PendingCommunities />} />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
           <Route path="/course" element={<Course />} />
+          <Route path="/course/new" element={<CreateNewCourses interests={user.interests} />} />
+          <Route path="/course/participants/pending" element={<PendingParticipants />} />
+          <Route path="/course/pending" element={<PendingCourse />} />
+          
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
           <Route path="/marketplace" element={<Marketplace />} />
@@ -72,6 +70,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/marketplace/cart" element={<Marketplace />} />
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
+          
+          
           <Route path="/profile" element={<Profile user={user} />} />
           <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
           <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />

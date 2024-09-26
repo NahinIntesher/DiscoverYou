@@ -1,30 +1,82 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../../assets/styles/dashboard.css";
-import "react-material-symbols/rounded";
+import { MaterialSymbol } from 'react-material-symbols';
+import 'react-material-symbols/rounded';
+import { Link } from "react-router-dom";
+import "../../../assets/styles/community.css";
+import MyCourses from "./MyCourses";
+import BrowseCourses from "./BrowseCourses";
 
-export default function Hirings({ user }) {
-  const [hirings, sethirings] = useState([]);
+export default function Community() {
+    const [activeTab, setActiveTab] = useState(["browseCourses"]);
+    
+    const [pendingParticipantsNo, setPendingParticipantsNo] = useState(0);
+    const [pendingCoursesNo, setPendingCoursesNo] = useState(0);
 
-  // useEffect(() => {
-  //     axios
-  //       .get("http://localhost:3000/organizer/hirings")
-  //       .then((res) => {
-  //         const hirings = res.data?.hirings || [];
-  //         sethirings(hirings);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching hirings:", error);
-  //       });
-  // }, [updatePost]);
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/student/course/pending-details")
+            .then((res) => {
+                console.log("Success");
+                const pendingParticipantsNo = res.data?.pendingParticipantsNo || [];
+                const pendingCoursesNo = res.data?.pendingCoursesNo || [];
 
-  return (
-    <div className="mainContent">
-      <div className="contentTitle">
-        <div className="content">
-          <div className="title">Courses</div>
+                setPendingParticipantsNo(pendingParticipantsNo);
+                setPendingCoursesNo(pendingCoursesNo);
+            })
+            .catch((error) => {
+                console.error("Error fetching contests:", error);
+            });
+    }, []);
+
+    return (
+        <div className="mainContent">
+            <div className="contentTitle">
+                <div className="content">
+                    <div className="title">Course</div>
+                    <div className="buttonContainer">
+                        <Link to="/course/new" className="button">
+                            <MaterialSymbol className="icon" size={24} icon="add" />
+                            <div className="text">Create New course</div>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+            {pendingCoursesNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        Your {pendingCoursesNo} Courses approval are in pending.
+                    </div>
+                    <Link to={"/course/pending"} className="button">
+                        Pending Courses
+                    </Link>
+                </div>
+            }
+            {pendingParticipantsNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        {pendingParticipantsNo} members approval pending in your Courses.
+                    </div>
+                    <Link to={"/course/participants/pending"} className="button">
+                        Pending participants
+                    </Link>
+                </div>
+            }
+            <div className="tabContainer">
+                <div className={activeTab == "myCourses" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myCourses")}}>My Courses</div>
+                <div className={activeTab == "browseCourses" ? "activeTab" : "tab"} onClick={function(){setActiveTab("browseCourses")}}>Browse Courses</div>
+            </div>
+            {
+                activeTab == "myCourses" &&
+                <MyCourses />
+            }
+            {
+                activeTab == "browseCourses" &&
+                <BrowseCourses />
+            }
         </div>
-      </div>
-    </div>
-  );
+    );
 }

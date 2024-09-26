@@ -1,0 +1,48 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CourseBox from "../../CommonComponents/CourseBox";
+import NotFound from "../../CommonComponents/NotFound";
+
+export default function MyCourses() {
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/student/course/my")
+            .then((res) => {
+                console.log("Success");
+                const CoursesData = res.data?.courses || [];
+
+                //      return course.is_joined == "yes";    
+
+                setCourses(CoursesData);
+            })
+            .catch((error) => {
+                console.error("Error fetching contests:", error);
+            });
+    }, []);
+
+    return (
+        <div className="tabContent">
+        {
+            courses.length > 0 ?
+            courses.map(function(course){
+                return (
+                    <CourseBox 
+                        key={course.course_id}
+                        id={course.course_id}
+                        name={course.course_name}
+                        category={course.course_category}
+                        description={course.course_description}
+                        mentorName={course.course_mentor_name}
+                        isJoined={course.is_joined}
+                        totalMember={course.total_member}
+                    />
+                )
+            })
+            :
+            <NotFound message="No course Found"/>
+        }
+        </div>
+    );
+}
