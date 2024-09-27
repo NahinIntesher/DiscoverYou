@@ -9,7 +9,10 @@ import SingleContest from "../Components/OrganizerComponents/Contest/SingleConte
 import Showcase from "../Components/OrganizerComponents/Showcase/Showcase";
 import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
 import Marketplace from "../Components/OrganizerComponents/Marketplace/Marketplace";
+
 import Hiring from "../../src/Components/OrganizerComponents/Hiring/Hiring";
+import NewHiring from "../../src/Components/OrganizerComponents/Hiring/NewHiring";
+
 
 import Notification from "../../src/Components/OrganizerComponents/Notification/Notification";
 
@@ -43,7 +46,11 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
           <Route path="/marketplace" element={<Marketplace />} />
+          
           <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring/new" element={<NewHiring />} />
+
+
           <Route path="/notification" element={<Notification />} />
 
           <Route path="/profile" element={<Profile user={user} />} />
