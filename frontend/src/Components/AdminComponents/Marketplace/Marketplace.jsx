@@ -6,24 +6,24 @@ import "../../../assets/styles/marketplace.css";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";
-import ProductBox from "../../CommonComponents/ProductBox";
+import BrowseProducts from "./BrowseProducts";
+import PendingProducts from "./PendingProducts";
 
 export default function Marketplace() {
+    const [activeTab, setActiveTab] = useState(["browseProducts"]);
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:3000/admin/marketplace/products")
-            .then((res) => {
-                console.log("Success");
-                const productsData = res.data?.products || [];
-                setProducts(productsData);
-            })
-            .catch((error) => {
-                console.error("Error fetching contests:", error);
-            });
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get("http://localhost:3000/admin/marketplace/products")
+    //         .then((res) => {
+    //             console.log("Success");
+    //             const productsData = res.data?.products || [];
+    //             setProducts(productsData);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching contests:", error);
+    //         });
+    // }, []);
 
     return (
         <div className="mainContent">
@@ -42,19 +42,12 @@ export default function Marketplace() {
                     </div>
                 </div>
             </div>
-            <div className="productBoxContainer">
-                {
-                    products.map(function(product){
-                        return (
-                            <ProductBox
-                                productName={product.product_name}
-                                productImage={product.image_url}
-                                productPrice={product.product_price}
-                            />
-                        )
-                    })
-                }
+            <div className="tabContainer">
+                <div className={activeTab == "pendingProducts" ? "activeTab" : "tab"} onClick={function(){setActiveTab("pendingProducts")}}>Pending Products</div>
+                <div className={activeTab == "browseProducts" ? "activeTab" : "tab"} onClick={function(){setActiveTab("browseProducts")}}>Browse Products</div>
             </div>
+            {activeTab == "browseProducts" && <BrowseProducts/>}
+            {activeTab == "pendingProducts" && <PendingProducts/>}
 
         </div>
     );

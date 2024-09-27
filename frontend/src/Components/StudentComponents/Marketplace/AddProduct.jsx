@@ -84,7 +84,7 @@ export default function AddProduct({ interests }) {
       )
       .then((res) => {
         if (res.data.status === "Success") {
-          console.log("Product adding  Success!");
+          alert("The product was successfully submitted for admin approval!");
           navigate(-1);
         } else {
           alert(res.data.Error);
@@ -122,7 +122,7 @@ export default function AddProduct({ interests }) {
                 name="productPrice"
                 onChange={handleChange}
                 type="number"
-                placeholder="Enter product price $"
+                placeholder="Enter product price (৳)"
                 required
               />
             </div>

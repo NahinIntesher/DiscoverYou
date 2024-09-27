@@ -119,6 +119,24 @@ module.exports = (router, multer) => {
     }
   );
 
+  router.get("/marketplace/pending-details", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const query = `SELECT
+     p.product_id 
+     FROM 
+        products as p
+      WHERE
+        p.approval_status = 0 AND p.seller_id = '${userId}'
+      GROUP BY p.product_id`;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+
+      return res.json({ pendingProductsNo: results.length });
+    });
+  });
+
   router.get("/marketplace", verifyToken, (req, res) => {
     res.json({ messege: "Student Market Place" });
   });
