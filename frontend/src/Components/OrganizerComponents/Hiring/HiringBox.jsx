@@ -39,80 +39,64 @@ export default function HiringBox({
   }
 
   return (
-    <div className="webinarBox">
+    <div className="hiringBox">
       <div className="titleContainer">
-        <div className="title">{jobName}</div>
-        <div className="category">
-          {jobCategory === "Competitive Programming" && (
-            <MaterialSymbol className="icon" size={24} icon="code" />
-          )}
-          {jobCategory === "Singing" && (
-            <MaterialSymbol className="icon" size={24} icon="queue_music" />
-          )}
-          {jobCategory === "Graphics Designing" && (
-            <MaterialSymbol className="icon" size={24} icon="polyline" />
-          )}
-          {jobCategory === "Photography" && (
-            <MaterialSymbol className="icon" size={24} icon="photo_camera" />
-          )}
-          {jobCategory === "Web/App Designing" && (
-            <MaterialSymbol className="icon" size={24} icon="web" />
-          )}
-          {jobCategory === "Writing" && (
-            <MaterialSymbol className="icon" size={24} icon="edit_note" />
-          )}
-          {jobCategory === "Art & Craft" && (
-            <MaterialSymbol className="icon" size={24} icon="draw" />
-          )}
-          {jobCategory === "Debating" && (
-            <MaterialSymbol className="icon" size={24} icon="communication" />
-          )}
-          {jobCategory === "Gaming" && (
-            <MaterialSymbol className="icon" size={24} icon="sports_esports" />
-          )}
-          <div className="text">{jobCategory}</div>
+        <div className="information">
+          <div className="title">{jobName}</div>
+          <div className="semiTitle">{companyName}</div>
+          <div className="category">
+            {jobCategory === "Competitive Programming" && (
+              <MaterialSymbol className="icon" size={24} icon="code" />
+            )}
+            {jobCategory === "Singing" && (
+              <MaterialSymbol className="icon" size={24} icon="queue_music" />
+            )}
+            {jobCategory === "Graphics Designing" && (
+              <MaterialSymbol className="icon" size={24} icon="polyline" />
+            )}
+            {jobCategory === "Photography" && (
+              <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+            )}
+            {jobCategory === "Web/App Designing" && (
+              <MaterialSymbol className="icon" size={24} icon="web" />
+            )}
+            {jobCategory === "Writing" && (
+              <MaterialSymbol className="icon" size={24} icon="edit_note" />
+            )}
+            {jobCategory === "Art & Craft" && (
+              <MaterialSymbol className="icon" size={24} icon="draw" />
+            )}
+            {jobCategory === "Debating" && (
+              <MaterialSymbol className="icon" size={24} icon="communication" />
+            )}
+            {jobCategory === "Gaming" && (
+              <MaterialSymbol className="icon" size={24} icon="sports_esports" />
+            )}
+            <div className="text">{jobCategory}</div>
+          </div>
+        </div>
+        <div className="salaryContainer">
+            <div className="name">Salary</div>
+            <div className="count">{jobSalery}৳</div>
         </div>
       </div>
       <div className="detailsContainer">
-        <div className="detailsContent">
-          <div className="description">{jobDescription}</div>
-          <hr />
+        <div className="description">
+            <div className="name">Job Details</div>
+            {jobDescription}
+          </div>
           <div className="details">
             <div className="detail">
-              <div className="text">
-                <div className="detailTitle">Job Salery</div>
-
-                <div className="detailInfo">
-                  <MaterialSymbol
-                    className="icon"
-                    size={20}
-                    icon="attach_money"
-                  />
-                  {jobSalery}
-                </div>
-              </div>
-            </div>
-            <div className="detail">
-              <MaterialSymbol
-                className="icon"
-                size={28}
-                icon="calendar_month"
-              />
-              <div className="text">
-                <div className="detailTitle">Last date for apply</div>
+              <div className="detailTitle">Last Date For Apply</div>
                 <div className="detailInfo">
                   {getDate(endTime)} ({getPMTime(endTime)})
                 </div>
-              </div>
             </div>
-          </div>
-          {
             <ContestTimeRemaining
               type={"ongoing"}
               calculatedTime={calculatedTime}
             />
-          }
-        </div>
+          </div>
       </div>
       <div className="bottomContainer">
         <div className="hostContainer">

@@ -59,7 +59,7 @@ export default function Hiring({ user }) {
           </Link>
         </div>
       )}
-      <div className="scrollContainer">
+      <div className="hiringBoxContainer">
         
         {hirings.map((hiring) => (
           <HiringBox
