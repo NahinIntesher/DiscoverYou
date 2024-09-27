@@ -140,7 +140,7 @@ module.exports = (router, multer) => {
 
   router.get("/marketplace/pending", verifyToken, (req, res) => {
     const userID = req.userId;
-    
+
     const query = `SELECT 
     p.*, 
     s.student_name as seller_name,
@@ -163,6 +163,21 @@ module.exports = (router, multer) => {
       if (err) throw err;
       res.json({ products: results });
     });
+  });
+
+  
+  router.post("/marketplace/pending/delete", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { productId } = req.body;
+    connection.query(
+      `DELETE FROM products 
+      WHERE product_id = ? AND seller_id = ?;`,
+      [productId, userId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
   });
 
   router.get("/marketplace", verifyToken, (req, res) => {
