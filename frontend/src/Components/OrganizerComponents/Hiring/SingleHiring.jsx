@@ -53,6 +53,17 @@ const SingleHiring = () => {
     alert("Sorry, hiring is not finished!");
   }
 
+  function applyJob() {
+    axios.post(`http://localhost:3000/organizer/hirings/apply`).then((response) => {
+      console.log("Full API Response:", response.data);
+      if (response.data.status === "success") {
+        setApplicantNo(applicantNo + 1);
+      } else {
+        notAvailableError();
+      }
+    });
+  }
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -79,7 +90,7 @@ const SingleHiring = () => {
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            Link
+            <button className="joinButton" onClick={applyJob}>Apply now</button>
             <div className="joinDetails">
               <b>Applicants:</b> {applicantNo}
             </div>
