@@ -6,14 +6,12 @@ import PendingHiringBox from "./PendingHiringBox";
 
 export default function PendingWebinar({interests}) {
     const [pendingHirings, setPendingHirings] = useState([]);
-
     const [update, setUpdate] = useState(0);
 
     useEffect(() => {
         axios
             .get("http://localhost:3000/organizer/hirings/pending")
             .then((res) => {
-                console.log("Success");
                 const pendingHirings = res.data?.hirings || [];
                 setPendingHirings(pendingHirings);
             })

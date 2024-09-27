@@ -3,9 +3,10 @@ import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function PendingWebinarBox({
-  id,
+  hiringId,
   organizerId,
   organizerName,
   companyName,
@@ -19,6 +20,8 @@ export default function PendingWebinarBox({
   calculatedTime,
   setUpdate,
 }) {
+  const navigate = useNavigate();
+
   function getPMTime(datetime) {
     let time = new Date(datetime);
     return time.toLocaleString("en-US", {
@@ -30,6 +33,28 @@ export default function PendingWebinarBox({
   function getDate(datetime) {
     let time = new Date(datetime);
     return time.toLocaleString("en-US", { dateStyle: "long" });
+  }
+
+  function editDetails() {
+    navigate("/hiring/edit/" + hiringId);
+  }
+
+  function deleteHiring() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/organizer/hirings/delete", {
+        hiringId: hiringId,
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          alert('Hiring "' + jobName + '" successfully deleted!');
+          setUpdate((prevData) => prevData + 1);
+          navigate("/hiring/pending");
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   function approveMember() {
@@ -138,23 +163,24 @@ export default function PendingWebinarBox({
               </tr>
               <tr>
                 <th>Last Date</th>
-                <td>{getDate(endTime)} ({getPMTime(endTime)})</td>
+                <td>
+                  {getDate(endTime)} ({getPMTime(endTime)})
+                </td>
                 <td></td>
               </tr>
               <tr>
-                <td>
-                </td>
+                <td></td>
               </tr>
             </table>
           </div>
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" >
+        <div className="defaultButton" onClick={editDetails}>
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
         </div>
-        <div className="rejectButton">
+        <div className="rejectButton" onClick={deleteHiring}>
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>

@@ -14,6 +14,7 @@ import Hiring from "../../src/Components/OrganizerComponents/Hiring/Hiring";
 import NewHiring from "../../src/Components/OrganizerComponents/Hiring/NewHiring";
 import PendingHirings from "../../src/Components/OrganizerComponents/Hiring/PendingHirings";
 import SingleHiring from "../../src/Components/OrganizerComponents/Hiring/SingleHiring";
+import EditHiring from "../../src/Components/OrganizerComponents/Hiring/EditHiring";
 
 import Notification from "../../src/Components/OrganizerComponents/Notification/Notification";
 
@@ -57,6 +58,7 @@ export default function Student({
           <Route path="/hiring/new" element={<NewHiring />} />
           <Route path="/hiring/pending" element={<PendingHirings />} />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
+          <Route path="/hiring/edit/:hiringId" element={<EditHiring />} />
 
           <Route path="/notification" element={<Notification />} />
 

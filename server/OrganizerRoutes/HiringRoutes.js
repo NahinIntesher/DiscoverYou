@@ -263,4 +263,46 @@ module.exports = (router) => {
       );
     });
   });
+
+  router.post("/hirings/delete", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { hiringId } = req.body;
+    console.log("hiringId", hiringId);
+
+    connection.query(
+      "DELETE FROM hirings WHERE hiring_id = ? AND organizer_id = ?;",
+      [hiringId, userId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });
+
+  router.post("/hirings/edit/:hiringId", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { 
+      companyName, 
+      jobName, 
+      jobCategory, 
+      jobDescription, 
+      jobSalary, 
+      endTime 
+    } = req.body; // Change from req.query to req.body
+    const { hiringId } = req.params; // Extract hiringId from params
+    
+    connection.query(
+      `UPDATE hirings SET company_name = ?, job_name = ?, job_category = ?, job_description = ?, job_salary = ?, end_time = ?
+       WHERE hiring_id = ? AND organizer_id = ?`,
+      [companyName, jobName, jobCategory, jobDescription, jobSalary, endTime, hiringId, userId],
+      (err, results) => {
+        if (err) {
+          console.error("Error updating hiring details:", err);
+          return res.json({ error: "Failed to update hiring details" });
+        }
+        return res.json({ status: "Success" });
+      }
+    );
+  });
+  
 };
