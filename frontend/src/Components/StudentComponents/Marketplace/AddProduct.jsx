@@ -66,7 +66,7 @@ export default function AddProduct({ interests }) {
       finalData.append(`images`, file);
     });
 
-    if (formData.images.length < 1) {
+    if (formData.images.length < 2) {
       alert("Add atleast 2 images!");
       return;
     }
@@ -191,9 +191,9 @@ export default function AddProduct({ interests }) {
                 accept="image/*"
                 required
               />
-              {formData.images.length < 1 && (
+              {formData.images.length < 2 && (
                 <p className="bottomRequired">
-                  Add at least 1 image of you product
+                  Add at least 2 image of you product
                 </p>
               )}
             </div>

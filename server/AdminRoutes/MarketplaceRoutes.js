@@ -135,7 +135,38 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.get("/marketplace", verifyToken, (req, res) => {
-    res.json({ messege: "Organizer Market Place" });
-  });
+  router.post(
+    "/marketplace/approve",
+    verifyToken,
+    (req, res) => {
+      const userId = req.userId;
+      const { productId } = req.body;
+      connection.query(
+        `UPDATE products SET approval_status = '1', approver_id = ? 
+        WHERE product_id = ?;`,
+        [userId, productId],
+        (err, results) => {
+          if (err) throw err;
+          return res.json({ status: "Success" });
+        }
+      );
+    }
+  );
+
+  router.post(
+    "/marketplace/reject",
+    verifyToken,
+    (req, res) => {
+      const { productId } = req.body;
+      connection.query(
+        `DELETE FROM products 
+        WHERE product_id = ?;`,
+        [productId],
+        (err, results) => {
+          if (err) throw err;
+          return res.json({ status: "Success" });
+        }
+      );
+    }
+  );
 };

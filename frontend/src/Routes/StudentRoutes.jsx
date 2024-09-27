@@ -34,6 +34,7 @@ import Settings from "../Components/StudentComponents/Profile/Settings";
 import ChangePassword from "../Components/StudentComponents/Profile/ChangePassword";
 import ChangeInterest from "../Components/StudentComponents/Profile/ChangeInterest";
 import PendingCommunities from "../Components/StudentComponents/Community/PendingCommunities";
+import PendingProducts from "../Components/StudentComponents/Marketplace/PendingProducts";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -62,12 +63,14 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
+
           <Route path="/marketplace" element={<Marketplace />} />
           <Route
             path="/marketplace/add-product"
             element={<AddProduct interests={user.interests} />}
           />
-          <Route path="/marketplace/cart" element={<Marketplace />} />
+          <Route path="/marketplace/pending-products" element={<PendingProducts />} />
+
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />
           

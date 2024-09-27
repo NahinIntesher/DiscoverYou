@@ -28,15 +28,15 @@ export default function PendingProductBox({
     return time.toLocaleString("en-US", { dateStyle: "long" });
   }
 
-  function approveMember() {
+  function approve() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/admin/webinars/approve", {
-        webinarId: id,
+      .post("http://localhost:3000/admin/marketplace/approve", {
+        productId: productId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Webinar "' + name + '" successfully approved!');
+          alert('Product "' + productName + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -45,15 +45,15 @@ export default function PendingProductBox({
       .catch((err) => console.log(err));
   }
 
-  function rejectMember() {
+  function reject() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/admin/webinars/reject", {
-        webinarId: id,
+      .post("http://localhost:3000/admin/marketplace/reject", {
+        productId: productId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Webinar "' + name + '" has been rejected.');
+          alert('Product "' + productName + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -125,11 +125,11 @@ export default function PendingProductBox({
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="acceptButton" onClick={approveMember}>
+        <div className="acceptButton" onClick={approve}>
           <MaterialSymbol className="icon" size={22} icon="check" />
           <div className="text">Approve</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton" onClick={reject}>
           <MaterialSymbol className="icon" size={22} icon="close" />
           <div className="text">Reject</div>
         </div>

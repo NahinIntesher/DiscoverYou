@@ -106,15 +106,6 @@ export default function PendingProductBox({
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
-            <div className="organizerPicture">
-              <img src={dp} />
-            </div>
-            <div className="organizerDetails">
-              <div className="detailTitle">Requested By</div>
-              <div className="detailInfo">{productSeller}</div>
-            </div>
-          </div>
           <div className="detail">
             <table>
               <tr><th>Price</th><td>{productPrice}৳</td></tr>
@@ -125,13 +116,13 @@ export default function PendingProductBox({
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="acceptButton" onClick={approveMember}>
-          <MaterialSymbol className="icon" size={22} icon="check" />
-          <div className="text">Approve</div>
+        <div className="defaultButton" onClick={approveMember}>
+          <MaterialSymbol className="icon" size={22} icon="edit" />
+          <div className="text">Edit Details</div>
         </div>
         <div className="rejectButton" onClick={rejectMember}>
           <MaterialSymbol className="icon" size={22} icon="close" />
-          <div className="text">Reject</div>
+          <div className="text">Delete</div>
         </div>
       </div>
     </div>

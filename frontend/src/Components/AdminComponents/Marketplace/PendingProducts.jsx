@@ -27,7 +27,7 @@ export default function PendingProducts() {
             .catch((error) => {
                 console.error("Error fetching contests:", error);
             });
-    }, []);
+    }, [update]);
 
 
     return (

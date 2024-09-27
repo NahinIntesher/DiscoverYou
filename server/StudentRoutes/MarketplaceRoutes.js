@@ -137,6 +137,34 @@ module.exports = (router, multer) => {
     });
   });
 
+
+  router.get("/marketplace/pending", verifyToken, (req, res) => {
+    const userID = req.userId;
+    
+    const query = `SELECT 
+    p.*, 
+    s.student_name as seller_name,
+    CONCAT("http://localhost:3000/admin/marketplace/products/image/", 
+        (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+    FROM 
+        products AS p
+    JOIN 
+        product_images AS p_i
+        ON p.product_id = p_i.product_id
+    JOIN 
+        student AS s
+        ON p.seller_id = s.student_id
+    WHERE 
+        p.approval_status = 0 AND p.seller_id = '${userID}'
+    GROUP BY 
+        p.product_id;
+    `;
+    connection.query(query, [0], (err, results) => {
+      if (err) throw err;
+      res.json({ products: results });
+    });
+  });
+
   router.get("/marketplace", verifyToken, (req, res) => {
     res.json({ messege: "Student Market Place" });
   });

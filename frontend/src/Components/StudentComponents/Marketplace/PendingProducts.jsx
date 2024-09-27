@@ -3,11 +3,10 @@ import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import PendingMemberBox from "../../CommonComponents/PendingMemberBox";
 import NotFoundAlt from "../../CommonComponents/NotFoundAlt";
-import PendingCommunityBox from "./PendingCommunityBox";
 import PendingProductBox from "./PendingProductBox";
 
-export default function PendingCommunities({interests}) {
-    const [pendingCommunities, setPendingCommunities] = useState([]);
+export default function PendingProducts({interests}) {
+    const [pendingProducts, setPendingProducts] = useState([]);
 
     const [update, setUpdate] = useState(0);
 
@@ -16,8 +15,8 @@ export default function PendingCommunities({interests}) {
             .get("http://localhost:3000/student/marketplace/pending")
             .then((res) => {
                 console.log("Success");
-                const pendingCommunities = res.data?.communities || [];
-                setPendingCommunities(pendingCommunities);
+                const pendingProducts = res.data?.products || [];
+                setPendingProducts(pendingProducts);
             })
             .catch((error) => {
                 console.error("Error fetching contests:", error);
@@ -28,9 +27,9 @@ export default function PendingCommunities({interests}) {
         <div className="mainContent">
             <Header title={"Pending Products"}/>
             { 
-                pendingCommunities.length ?
+                pendingProducts.length ?
                 <div className="pendingMembersList">
-                    {pendingCommunities.map(function(community, index){
+                    {pendingProducts.map(function(product, index){
                         return(
                             <PendingProductBox
                                 key={index}
@@ -48,7 +47,7 @@ export default function PendingCommunities({interests}) {
                     })}
                 </div>
                 :
-                <NotFoundAlt icon="supervisor_account" message={"You have no pending community!"}/>
+                <NotFoundAlt icon="production_quantity_limits" message={"You have no pending product!"}/>
             }
         </div>
     )
