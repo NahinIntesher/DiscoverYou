@@ -69,7 +69,6 @@ export default function CourseBox({ id, name, category, description, mentorName,
                     </div>
                 </div>
                 <div className="joinButtonContainer">
-                    <Link to={"/course/"+id} className="joinButton">Details</Link>
                     <div className="joinDetails">
                         Member: <b>{totalMember}</b>
                     </div>
