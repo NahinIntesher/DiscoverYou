@@ -144,7 +144,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     p.*, 
     s.student_name as seller_name,
-    CONCAT("http://localhost:3000/admin/marketplace/products/image/", 
+    CONCAT("http://localhost:3000/student/marketplace/products/image/", 
         (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
     FROM 
         products AS p
@@ -180,7 +180,38 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.get("/marketplace", verifyToken, (req, res) => {
-    res.json({ messege: "Student Market Place" });
+
+  router.get("/marketplace/product/:productId", verifyToken, (req, res) => {
+    const productId = req.params.productId;
+    const userId = req.userId;
+    
+    const query = `SELECT
+     p.*, s.student_name AS seller_name
+     FROM 
+        products as p
+     JOIN
+        student as s
+      ON
+        p.seller_id = s.student_id
+      WHERE
+        p.product_id = '${productId}'
+      GROUP BY p.product_id`;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      connection.query(`
+        SELECT 
+            CONCAT("http://localhost:3000/student/marketplace/products/image/", media_id) AS image_url
+        FROM 
+          product_images
+        WHERE 
+          product_id = ${productId} 
+        `, (err, nestedResults) => {
+          if (err) throw err;
+          return res.json({ product: results[0], images: nestedResults });
+      });
+    });
   });
+
+
 };

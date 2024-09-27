@@ -25,6 +25,8 @@ export default function BrowseProducts() {
                 products.map(function(product){
                     return (
                         <ProductBox
+                            key={product.product_id}
+                            productId={product.product_id}
                             productName={product.product_name}
                             productImage={product.image_url}
                             productPrice={product.product_price}

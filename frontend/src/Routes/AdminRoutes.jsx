@@ -25,6 +25,7 @@ import ChangePassword from "../Components/AdminComponents/Profile/ChangePassword
 
 import Post from "../Components/AdminComponents/Showcase/Post";
 import SingleWebinar from "../Components/AdminComponents/Webinar/SingleWebinar";
+import Product from "../Components/AdminComponents/Marketplace/Product";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -50,6 +51,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
             path="/marketplace/product-req"
             element={<PendingProducts interests={user.interests} />}
           />
+          <Route path="/marketplace/product/:productId" element={<Product />} />
           
           <Route path="/course" element={<Course />} />
           <Route path="/course/pending" element={<PendingCourse />} />

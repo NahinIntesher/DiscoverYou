@@ -27,6 +27,7 @@ import Post from "../Components/OrganizerComponents/Showcase/Post";
 import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNewWebinar";
 import PendingWebinar from "../Components/OrganizerComponents/Webinar/PendingWebinar";
 import SingleWebinar from "../Components/OrganizerComponents/Webinar/SingleWebinar";
+import Product from "../Components/OrganizerComponents/Marketplace/Product";
 
 export default function Student({
   handleLogout,
@@ -53,6 +54,7 @@ export default function Student({
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace/product/:productId" element={<Product />} />
 
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/new" element={<NewHiring />} />
