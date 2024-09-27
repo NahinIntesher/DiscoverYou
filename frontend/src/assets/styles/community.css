@@ -398,6 +398,15 @@
     display: inline-flex;
     align-items: center;
 }
+.pendingCommunityBox .productImage {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    margin: 8px;
+    border-radius: 10px;
+    display: block;
+    background-color: rgba(0,0,0,0.1);
+}
 .pendingCommunityBox table th {
     font-weight: 600;
     padding: 1px 4px;

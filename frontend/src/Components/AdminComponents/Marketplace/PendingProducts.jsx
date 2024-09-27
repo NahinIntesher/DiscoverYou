@@ -6,9 +6,10 @@ import "../../../assets/styles/marketplace.css";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";
-import PendingProductBox from "../../CommonComponents/PendingProductBox";
+import PendingProductBox from "./PendingProductBox";
 import Header from '../../CommonComponents/Header';
 import NotFoundAlt from '../../CommonComponents/NotFoundAlt';
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function PendingProducts() {
     const [update, setUpdate] = useState(0);
@@ -30,27 +31,27 @@ export default function PendingProducts() {
 
 
     return (
-        <div className="mainContent">
-            <Header title={"Pending Products"} />
-            {
-                pendingProducts.length ? (
-                    <div className="productBoxContainer">
-                        {pendingProducts.map((product, index) => (
-                            <PendingProductBox
-                                key={index}
-                                productId={product.product_id}
-                                productName={product.product_name}
-                                productImage={product.image_url}
-                                productPrice={product.product_price}
-                                productSeller={product.seller_name}
-                                setUpdate={setUpdate} 
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <NotFoundAlt icon="supervisor_account" message={"No product requests pending!"} />
-                )
-            }
+        <div className="productBoxContainer">            
+            {pendingProducts.length ? (
+                <>
+                    {pendingProducts.map((product, index) => (
+                        <PendingProductBox
+                            key={index}
+                            productId={product.product_id}
+                            productName={product.product_name}
+                            productImage={product.image_url}
+                            productPrice={product.product_price}
+                            productCategory={product.product_category}
+                            productType={product.product_type}
+                            productDetails={product.product_details}
+                            productSeller={product.seller_name}
+                            setUpdate={setUpdate} 
+                        />
+                    ))}
+                </>
+            ) : (
+                <NotFound message={"No product requests pending!"} />
+            )}
         </div>
     );
 }
