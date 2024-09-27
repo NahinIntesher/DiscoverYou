@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductBox({
+  productId,
   productName,
   productImage,
   productPrice,
   productCategory
 }) {
-  const navigate = useNavigate();
-  const showDetails = () => {
-    navigate("/marketplace/product-details");
-  };
+ 
   const showCart = () => {};
 
   return (
@@ -27,9 +25,9 @@ export default function ProductBox({
           <div className="price">{productPrice}৳</div>
         </div>
         <div className="buttonContainer">
-          <div className="button" onClick={showDetails}>
+          <Link to={"/marketplace/product/"+productId} className="button">
             Details
-          </div>
+          </Link>
           <div className="buttonAlt" onClick={showCart}>
             Add To Cart
           </div>

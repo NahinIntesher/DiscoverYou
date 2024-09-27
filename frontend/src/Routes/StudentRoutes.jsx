@@ -35,6 +35,7 @@ import ChangePassword from "../Components/StudentComponents/Profile/ChangePasswo
 import ChangeInterest from "../Components/StudentComponents/Profile/ChangeInterest";
 import PendingCommunities from "../Components/StudentComponents/Community/PendingCommunities";
 import PendingProducts from "../Components/StudentComponents/Marketplace/PendingProducts";
+import Product from "../Components/StudentComponents/Marketplace/Product";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -70,6 +71,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
             element={<AddProduct interests={user.interests} />}
           />
           <Route path="/marketplace/pending-products" element={<PendingProducts />} />
+          <Route path="/marketplace/product/:productId" element={<Product />} />
 
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/notification" element={<Notification />} />

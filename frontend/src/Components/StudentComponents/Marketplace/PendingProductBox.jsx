@@ -45,15 +45,15 @@ export default function PendingProductBox({
       .catch((err) => console.log(err));
   }
 
-  function rejectMember() {
+  function deleteProduct() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/admin/webinars/reject", {
-        webinarId: id,
+      .post("http://localhost:3000/student/marketplace/pending/delete", {
+        productId: productId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Webinar "' + name + '" has been rejected.');
+          alert('Product "' + productName + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -120,7 +120,7 @@ export default function PendingProductBox({
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton" onClick={deleteProduct}>
           <MaterialSymbol className="icon" size={22} icon="close" />
           <div className="text">Delete</div>
         </div>
