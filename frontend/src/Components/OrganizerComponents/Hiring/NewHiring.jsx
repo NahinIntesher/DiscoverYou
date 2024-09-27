@@ -45,19 +45,19 @@ export default function NewHiring({ interests }) {
     e.preventDefault();
 
     axios.defaults.withCredentials = true;
-    // axios
-    //   .post("http://localhost:3000/organizer/hiring/new", formData)
-    //   .then((res) => {
-    //     if (res.data.status === "Success") {
-    //       console.log("Community Creation Success!");
-    //       navigate(-1);
-    //       alert("Community successfully submitted for approval!");
-    //       //            setUpdatePost((prevData) => prevData+1);
-    //     } else {
-    //       alert(res.data.Error);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+    axios
+      .post("http://localhost:3000/organizer/hiring/new", formData)
+      .then((res) => {
+        if (res.data.status === "Success") {
+          console.log("Hiring Creation Success!");
+          navigate('/hiring');
+          alert("Hiring successfully submitted for approval!");
+          setUpdatePost((prevData) => prevData+1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
     console.log(formData);
   };
   return (

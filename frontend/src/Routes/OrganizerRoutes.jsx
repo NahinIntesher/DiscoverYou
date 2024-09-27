@@ -12,7 +12,7 @@ import Marketplace from "../Components/OrganizerComponents/Marketplace/Marketpla
 
 import Hiring from "../../src/Components/OrganizerComponents/Hiring/Hiring";
 import NewHiring from "../../src/Components/OrganizerComponents/Hiring/NewHiring";
-
+import PendingHirings from "../../src/Components/OrganizerComponents/Hiring/PendingHirings";
 
 import Notification from "../../src/Components/OrganizerComponents/Notification/Notification";
 
@@ -26,7 +26,12 @@ import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNe
 import PendingWebinar from "../Components/OrganizerComponents/Webinar/PendingWebinar";
 import SingleWebinar from "../Components/OrganizerComponents/Webinar/SingleWebinar";
 
-export default function Student({ handleLogout, user, setUser, setAuthorized }) {
+export default function Student({
+  handleLogout,
+  user,
+  setUser,
+  setAuthorized,
+}) {
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
@@ -46,17 +51,28 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
           <Route path="/marketplace" element={<Marketplace />} />
-          
+
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/new" element={<NewHiring />} />
-
+          <Route path="/hiring/pending" element={<PendingHirings />} />
 
           <Route path="/notification" element={<Notification />} />
 
           <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
-          <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
-          <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
+          <Route
+            path="/profile/settings"
+            element={
+              <Settings setUser={setUser} setAuthorized={setAuthorized} />
+            }
+          />
+          <Route
+            path="/update-profile"
+            element={<UpdateProfile user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/profile/settings/change-password"
+            element={<ChangePassword />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

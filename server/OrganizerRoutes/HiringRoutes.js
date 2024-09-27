@@ -22,7 +22,7 @@ module.exports = (router) => {
     );
   });
 
-  router.get("/hirings/ongoing", verifyToken, (req, res) => {
+  router.get("/hirings", verifyToken, (req, res) => {
     let userId = req.userId;
 
     const query = `
@@ -40,89 +40,7 @@ module.exports = (router) => {
       ON 
           h.organizer_id = organizer.organizer_id
       WHERE
-        (NOW() >= h.start_time) AND (NOW() <= h.end_time) AND h.approval_status = 1
-      GROUP BY 
-          h.hiring_id;
-    `;
-    connection.query(query, [userId], (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.json({ message: "Failed" });
-      }
-
-      return res.json({ hirings: result });
-    });
-  });
-
-  router.get("/hirings/upcoming", verifyToken, (req, res) => {
-    let userId = req.userId;
-
-    const query = `
-      SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
-      TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
-      organizer.organizer_name AS organizer_name,
-      CASE
-        WHEN EXISTS (
-          SELECT *
-          FROM hiring_applicants
-          WHERE hiring_applicants.hiring_id = h.hiring_id
-        )
-        THEN true
-        ELSE false
-      END AS is_joined
-      FROM 
-          hirings h
-      LEFT JOIN 
-          hiring_applicants h_a
-      ON 
-          h.hiring_id = h_a.hiring_id
-      LEFT JOIN 
-          organizer
-      ON 
-          h.organizer_id = organizer.organizer_id
-      WHERE
-        NOW() <= h.start_time AND h.approval_status = 1
-      GROUP BY 
-          h.hiring_id;
-    `;
-    connection.query(query, [userId], (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.json({ message: "Failed" });
-      }
-
-      return res.json({ hirings: result });
-    });
-  });
-
-  router.get("/hirings/previous", verifyToken, (req, res) => {
-    let userId = req.userId;
-
-    const query = `
-      SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
-      TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
-      organizer.organizer_name AS organizer_name,
-      CASE
-        WHEN EXISTS (
-          SELECT *
-          FROM hiring_applicants
-          WHERE hiring_applicants.hiring_id = h.hiring_id
-        )
-        THEN true
-        ELSE false
-      END AS is_joined
-      FROM 
-          hirings h
-      LEFT JOIN 
-          hiring_applicants h_a
-      ON 
-          h.hiring_id = h_a.hiring_id
-      LEFT JOIN 
-          organizer
-      ON 
-          h.organizer_id = organizer.organizer_id
-      WHERE
-        NOW() >= h.end_time AND h.approval_status = 1
+        NOW() <= h.end_time AND h.approval_status = 1
       GROUP BY 
           h.hiring_id;
     `;

@@ -6,15 +6,18 @@ import axios from "axios";
 
 export default function PendingWebinarBox({
   id,
+  organizerId,
+  organizerName,
   companyName,
   jobName,
   jobCategory,
   jobDescription,
-  organizerName,
-  organizerId,
-  setUpdate,
+  jobSalery,
   startTime,
   endTime,
+  applicantsCount,
+  calculatedTime,
+  setUpdate,
 }) {
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -134,13 +137,12 @@ export default function PendingWebinarBox({
                 <td>{jobSalery}</td>
               </tr>
               <tr>
-                <th>Date</th>
-                <td>{getDate(startTime)}</td>
+                <th>Last Date</th>
+                <td>{getDate(endTime)} ({getPMTime(endTime)})</td>
+                <td></td>
               </tr>
               <tr>
-                <th>Time</th>
                 <td>
-                  {getPMTime(startTime)} - {getPMTime(endTime)}
                 </td>
               </tr>
             </table>
@@ -148,11 +150,11 @@ export default function PendingWebinarBox({
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" onClick={approveMember}>
+        <div className="defaultButton" >
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton">
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>

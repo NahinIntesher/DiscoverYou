@@ -32,16 +32,19 @@ export default function PendingWebinar({interests}) {
                     return (
                         <PendingHiringBox 
                             key={hiring.hiring_id}
-                            id={hiring.hiring_id}
+                            hiringId={hiring.hiring_id}
+                            organizerId={hiring.organizer_id}
+                            organizerName={hiring.organizer_name}
                             companyName={hiring.company_name}
                             jobName={hiring.job_name}
                             jobCategory={hiring.job_category}
                             jobDescription={hiring.job_description}
-                            organizerName={hiring.organizer_name}
-                            organizerId={hiring.organizer_id}
-                            setUpdate={setUpdate}
                             startTime={hiring.start_time}
                             endTime={hiring.end_time}
+                            jobSalery={hiring.job_salary}
+                            applicantsCount={hiring.applicant_count}
+                            calculatedTime={hiring.calculated_time}
+                            setUpdate={setUpdate}
                         />
                     )
                 })}

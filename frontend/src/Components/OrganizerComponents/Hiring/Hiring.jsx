@@ -2,23 +2,33 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import "react-material-symbols/rounded";
-// import HiringBox from "./HiringBox";
-import OngoingHirings from "./OngoingHirings";
-import UpcomingHirings from "./UpcomingHirings";
-import PreviousHirings from "./PreviousHirings";
+import HiringBox from "./HiringBox";
 import { MaterialSymbol } from "react-material-symbols";
 // import MyWebinars from "./MyHirings";
 import { Link } from "react-router-dom";
 
 export default function Hiring({ user }) {
+  const [hirings, setHirings] = useState([]);
   const [pendingHiringsNo, setPendingHiringsNo] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/organizer/hirings/pending")
       .then((res) => {
-        const pendingHiringsNo = res.data?.pendingHiringsNo || [];
-        setPendingHiringsNo(pendingHiringsNo);
+        const pendingHiringsNo = res.data?.hirings || [];
+        setPendingHiringsNo(pendingHiringsNo.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching hirings:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/organizer/hirings")
+      .then((response) => {
+        const hiringsData = response.data.hirings;
+        setHirings(hiringsData);
       })
       .catch((error) => {
         console.error("Error fetching hirings:", error);
@@ -38,32 +48,36 @@ export default function Hiring({ user }) {
           </div>
         </div>
       </div>
-      {pendingHiringsNo != 0 &&
-          <div className="pendingBox">
-              <MaterialSymbol className="icon" size={32} icon="error" />
-              <div className="text">
-                  Your {pendingHiringsNo} hirings approval are in pending.
-              </div>
-              <Link to={"/webinar/pending"} className="button">
-                  Pending Hirings
-              </Link>
+      {pendingHiringsNo != 0 && (
+        <div className="pendingBox">
+          <MaterialSymbol className="icon" size={32} icon="error" />
+          <div className="text">
+            Your {pendingHiringsNo} hirings approval are in pending.
           </div>
-      }
-      <div className="content">
-        <h3 className="contentSemiTitle">My Hirings</h3>
-        {/* <MyWebinar/> */}
-        <div className="miniBreak"></div>
-  
-        <h3 className="contentSemiTitle">Ongoing Hirings</h3>
-        <OngoingHirings/>
-        <div className="miniBreak"></div>
-
-        <h3 className="contentSemiTitle">Upcoming Hirings</h3>
-        <UpcomingHirings/>
-        <div className="miniBreak"></div>
-
-        <h3 className="contentSemiTitle">Previous Hirings</h3>
-        <PreviousHirings/>
+          <Link to={"/hiring/pending"} className="button">
+            Pending Hirings
+          </Link>
+        </div>
+      )}
+      <div className="scrollContainer">
+        
+        {hirings.map((hiring) => (
+          <HiringBox
+            key={hiring.hiring_id}
+            hiringId={hiring.hiring_id}
+            organizerId={hiring.organizer_id}
+            organizerName={hiring.organizer_name}
+            companyName={hiring.company_name}
+            jobName={hiring.job_name}
+            jobCategory={hiring.job_category}
+            jobDescription={hiring.job_description}
+            startTime={hiring.start_time}
+            endTime={hiring.end_time}
+            jobSalery={hiring.job_salary}
+            applicantsCount={hiring.applicant_count}
+            calculatedTime={hiring.calculated_time}
+          />
+        ))}
       </div>
     </div>
   );

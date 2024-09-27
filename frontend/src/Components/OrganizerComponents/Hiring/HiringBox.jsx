@@ -1,21 +1,25 @@
 import React from "react";
+import dp from "../../../assets/images/desert.jpg";
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
+import ContestTimeRemaining from "../../CommonComponents/ContestTimeRemaining";
+import { useNavigate } from "react-router-dom";
 
 export default function HiringBox({
   hiringId,
+  organizerId,
+  organizerName,
   companyName,
   jobName,
   jobCategory,
   jobDescription,
-  organizerName,
-  organizerId,
-  setUpdate,
+  jobSalery,
   startTime,
   endTime,
+  applicantsCount,
   calculatedTime,
-  participants,
-  type,
 }) {
-
+  const navigate = useNavigate();
   function getPMTime(datetime) {
     let time = new Date(datetime);
     return time.toLocaleString("en-US", {
@@ -28,6 +32,12 @@ export default function HiringBox({
     let time = new Date(datetime);
     return time.toLocaleString("en-US", { dateStyle: "medium" });
   }
+
+  function seeDetails() {
+    console.log("See Details");
+    navigate("/hiring/" + hiringId);
+  }
+
   return (
     <div className="webinarBox">
       <div className="titleContainer">
@@ -69,29 +79,39 @@ export default function HiringBox({
           <hr />
           <div className="details">
             <div className="detail">
+              <div className="text">
+                <div className="detailTitle">Job Salery</div>
+
+                <div className="detailInfo">
+                  <MaterialSymbol
+                    className="icon"
+                    size={20}
+                    icon="attach_money"
+                  />
+                  {jobSalery}
+                </div>
+              </div>
+            </div>
+            <div className="detail">
               <MaterialSymbol
                 className="icon"
                 size={28}
                 icon="calendar_month"
               />
               <div className="text">
-                <div className="detailTitle">Date</div>
-                <div className="detailInfo">{getDate(startTime)}</div>
-              </div>
-            </div>
-            <div className="detail">
-              <MaterialSymbol className="icon" size={28} icon="schedule" />
-              <div className="text">
-                <div className="detailTitle">Time</div>
+                <div className="detailTitle">Last date for apply</div>
                 <div className="detailInfo">
-                  {getPMTime(startTime)} - {getPMTime(endTime)}
+                  {getDate(endTime)} ({getPMTime(endTime)})
                 </div>
               </div>
             </div>
           </div>
-          {(type == "ongoing" || type == "upcoming") && (
-            <ContestTimeRemaining type={type} calculatedTime={calculatedTime} />
-          )}
+          {
+            <ContestTimeRemaining
+              type={"ongoing"}
+              calculatedTime={calculatedTime}
+            />
+          }
         </div>
       </div>
       <div className="bottomContainer">
@@ -107,26 +127,9 @@ export default function HiringBox({
           </div>
         </div>
         <div className="joinButtonContainer">
-          <button onClick={handleSeeDetails} className="joinButton">
+          <button className="joinButton" onClick={seeDetails}>
             See Details
           </button>
-          {/* <div className="joinButtonContainer">
-          {type == "ongoing" ? 
-          isRegistered ? (
-            <a href={meetingLink} className="joinButton">Join Meeting</a>
-          ) :  (
-            <div onClick={notRegisteredError} className="joinButton inactiveButton">Join Meeting</div>
-          ) : type == "upcoming" ? 
-          isRegistered ? (
-            <div className="joinButton" onClick={registerWebinar}>Unregister</div>
-          ) : (
-            <div className="joinButton" onClick={registerWebinar}>Register</div>
-          ) : (
-            <a href={recordedLink} className="joinButton">Watch Record</a>
-          )}
-          <div className="joinDetails">
-            Participant: <b>{participantNo}</b>
-          </div> */}
         </div>
       </div>
     </div>
