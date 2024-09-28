@@ -15,12 +15,6 @@ export default function GivePostBox({user,setUpdatePost}) {
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [postCategory, setPostCategory] = useState(categories[0]);
 
-    const [durations, setDurations] = useState({});
-    
-    function formatedDuration(duration) {
-        return `${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`;
-    }
-
     const handleLoadedMetadata = (file, index, event) => {
         const duration = event.target.duration;
         setDurations((prevDurations) => ({

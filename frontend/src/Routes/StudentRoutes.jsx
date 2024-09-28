@@ -14,6 +14,7 @@ import Course from "../Components/StudentComponents/Course/Course";
 import CreateNewCourses from "../Components/StudentComponents/Course/CreateNewCourses";
 import PendingParticipants from "../Components/StudentComponents/Course/PendingParticipants";
 import PendingCourse from "../Components/StudentComponents/Course/PendingCourses";
+import SingleCourse from "../Components/StudentComponents/Course/SingleCourse";
 
 import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
@@ -61,6 +62,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/course/new" element={<CreateNewCourses interests={user.interests} />} />
           <Route path="/course/participants/pending" element={<PendingParticipants />} />
           <Route path="/course/pending" element={<PendingCourse />} />
+          <Route path="/course/:courseId" element={<SingleCourse />} />
+          {/* <Route path="/course/:courseId/add-material" element={<AddMaterial />} /> */}
           
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />

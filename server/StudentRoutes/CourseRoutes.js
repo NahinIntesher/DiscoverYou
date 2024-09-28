@@ -120,29 +120,67 @@ module.exports = (router) => {
     });
   });
 
-  router.get("/course/single/:courseId", verifyToken, (req, res) => {
-    const courseId = req.params.courseId;
+  router.get("/course/:courseId", verifyToken, (req, res) => {
     const userId = req.userId;
+    const courseId = req.params.courseId; // Correctly extract courseId
 
-    const query = `SELECT 
-      c.*, 
-      s.student_name AS mentor_name,
-      COUNT(DISTINCT c_p.participant_id) AS total_member
-      FROM 
-        courses AS c
-      JOIN 
-        student AS s
-      ON 
-        c.mentor_id = s.student_id
-      JOIN 
-        course_participants AS c_p
-      ON 
-        c.course_id = c_p.participant_id
-      WHERE 
-        c.course_id = ${courseId}
-      GROUP BY
-        c.course_id
-      `;
+    // Fetch course details query
+    const courseQuery = `
+    SELECT c.*, COUNT(c_p.course_id) AS participant_count,
+      student.student_name AS mentor_name,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM course_participants
+          WHERE course_participants.course_id = c.course_id AND course_participants.participant_id = ?
+        )
+        THEN true
+        ELSE false
+      END AS is_joined
+    FROM courses c
+    LEFT JOIN course_participants c_p
+      ON c.course_id = c_p.course_id
+    LEFT JOIN student
+      ON c.mentor_id = student.student_id
+    WHERE c.course_id = ?;  -- Reference courseId correctly
+  `;
+
+    // Fetch course participants query
+    const participantsQuery = `
+    SELECT course_participants.*, student.student_name AS participant_name
+    FROM course_participants
+    JOIN student ON course_participants.participant_id = student.student_id
+    WHERE course_participants.course_id = ?`;
+
+    // Query for course details
+    connection.query(courseQuery, [userId, courseId], (err, courseResults) => {
+      if (err) {
+        console.error("Error fetching course:", err);
+        return res.json({ error: "Error fetching course details" });
+      }
+
+      if (courseResults.length === 0) {
+        return res.json({ error: "Course not found" });
+      }
+
+      // Query for participants after course details have been fetched
+      connection.query(
+        participantsQuery,
+        [courseId],
+        (err, participantsResults) => {
+          if (err) {
+            console.error("Error fetching course participants:", err);
+            return res.json({ error: "Error fetching course participants" });
+          }
+
+          // Return both course details and participants
+          return res.json({
+            course: courseResults[0],
+            participants: participantsResults,
+          });
+        }
+      );
+    });
   });
 
   router.post("/courses/new", verifyToken, (req, res) => {
@@ -309,4 +347,24 @@ module.exports = (router) => {
       return res.json({ courses: results });
     });
   });
+
+
+
+
+  // const storage = multer.memoryStorage();
+
+  // const upload = multer({
+  //   storage: storage,
+  //   limits: { fileSize: 50000000 }, // 10 MB
+  //   fileFilter: (req, file, cb) => {
+  //     const filetypes = /image\/|audio\/|video\|\application\//; // Accept all image, audio, and video types
+  //     const mimetype = filetypes.test(file.mimetype);
+
+  //     if (mimetype) {
+  //       return cb(null, true);
+  //     } else {
+  //       cb("Error: Images or PDF files only!");
+  //     }
+  //   },
+  // });
 };
