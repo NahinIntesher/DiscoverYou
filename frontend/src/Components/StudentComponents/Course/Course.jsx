@@ -16,7 +16,7 @@ export default function Community() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/course/pending-details")
+            .get("http://localhost:3000/student/courses/pending-details")
             .then((res) => {
                 console.log("Success");
                 const pendingParticipantsNo = res.data?.pendingParticipantsNo || [];

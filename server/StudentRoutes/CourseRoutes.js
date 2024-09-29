@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router) => {
+module.exports = (router, multer) => {
   router.get("/course", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -260,7 +260,7 @@ module.exports = (router) => {
     });
   });
 
-  router.get("/course/pending-details", verifyToken, (req, res) => {
+  router.get("/courses/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
 
     connection.query(
@@ -274,7 +274,7 @@ module.exports = (router) => {
       ON
         c_p.course_id = c.course_id
       WHERE
-        c.mentor_id = '${userId}' AND c_p.req_for_join_status = 0`,
+        c.mentor_id = '${userId}' AND c_p.req_for_join_status = 1`,
       (err, results) => {
         if (err) throw err;
         connection.query(
@@ -283,7 +283,7 @@ module.exports = (router) => {
         FROM 
           courses AS c
         WHERE
-          c.mentor_id = '${userId}' AND c.approval_status = 0`,
+          c.mentor_id = '${userId}' AND c.approval_status = 1`,
           (err, nestedResults) => {
             if (err) throw err;
             return res.json({
@@ -295,6 +295,7 @@ module.exports = (router) => {
       }
     );
   });
+
 
   router.post("/course/member/approve", verifyToken, (req, res) => {
     const { participantId, courseId } = req.body;
@@ -347,9 +348,6 @@ module.exports = (router) => {
       return res.json({ courses: results });
     });
   });
-
-
-
 
   // const storage = multer.memoryStorage();
 
