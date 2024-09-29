@@ -3,7 +3,8 @@ import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function PendingCourseBox({
   id,
   name,
@@ -13,6 +14,10 @@ export default function PendingCourseBox({
   mentorId,
   setUpdate,
 }) {
+  const navigate = useNavigate();
+  function seeDetails(){
+    navigate('/course/'+id);
+  }
   function approveMember() {
     axios.defaults.withCredentials = true;
     axios
@@ -106,6 +111,11 @@ export default function PendingCourseBox({
         </div>
       </div>
       <div className="buttonContainer">
+        {/* <Link to={"/course/"+id} className="acceptButton joinButton">See Details</Link> */}
+        <div className="acceptButton" onClick={seeDetails}>
+          <MaterialSymbol className="icon" size={22} icon="info" />
+          <div className="text">See Details</div>
+        </div>
         <div className="acceptButton" onClick={approveMember}>
           <MaterialSymbol className="icon" size={22} icon="check" />
           <div className="text">Approve</div>

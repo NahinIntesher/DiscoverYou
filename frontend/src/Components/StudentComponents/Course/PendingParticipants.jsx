@@ -11,7 +11,7 @@ export default function PendingParticipants({interests}) {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/course/pendingParticipants")
+            .get("http://localhost:3000/student/courses/pendingParticipants")
             .then((res) => {
                 console.log("Success");
                 const pendingParticipants = res.data?.pendingParticipants || [];

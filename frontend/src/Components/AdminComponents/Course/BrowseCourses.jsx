@@ -8,7 +8,7 @@ export default function BrowseCourses() {
     
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/course")
+            .get("http://localhost:3000/admin/course")
             .then((res) => {
                 console.log("Success");
                 const coursesData = res.data?.courses || [];

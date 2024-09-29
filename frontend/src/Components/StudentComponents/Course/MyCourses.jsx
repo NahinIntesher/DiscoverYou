@@ -8,7 +8,7 @@ export default function MyCourses() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/course/my")
+            .get("http://localhost:3000/student/courses/my")
             .then((res) => {
                 console.log("Success");
                 const CoursesData = res.data?.courses || [];

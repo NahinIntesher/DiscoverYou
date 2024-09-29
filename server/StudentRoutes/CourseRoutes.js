@@ -4,6 +4,7 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
 module.exports = (router, multer) => {
+  
   router.get("/course", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -61,7 +62,7 @@ module.exports = (router, multer) => {
     });
   });
 
-  router.get("/course/my", verifyToken, (req, res) => {
+  router.get("/courses/my", verifyToken, (req, res) => {
     let userId = req.userId;
 
     const query = `SELECT 
@@ -69,38 +70,33 @@ module.exports = (router, multer) => {
       s.student_name AS course_mentor_name,
       CASE
         WHEN EXISTS (
-          SELECT *
+          SELECT 1
           FROM course_participants
           WHERE course_participants.course_id = c.course_id 
-          AND course_participants.participant_id = '${userId}' AND course_participants.req_for_join_status = 1
-        )
-        THEN "yes"
+          AND course_participants.participant_id = '${userId}'
+          AND course_participants.req_for_join_status = 1
+        ) THEN "yes"
         WHEN EXISTS (
-          SELECT *
+          SELECT 1
           FROM course_participants
           WHERE course_participants.course_id = c.course_id 
-          AND course_participants.participant_id = '${userId}' AND course_participants.req_for_join_status = 0
-        )
-        THEN "pending"
+          AND course_participants.participant_id = '${userId}'
+          AND course_participants.req_for_join_status = 0
+        ) THEN "pending"
         ELSE "no"
       END AS is_joined,
-      COUNT(DISTINCT c_p.participant_id) AS total_member
-      FROM 
-        courses AS c
-      LEFT JOIN 
-        student AS s
-      ON 
-        c.mentor_id = s.student_id
-      LEFT JOIN 
-        course_participants AS c_p
-      ON 
-        c.course_id = c_p.course_id AND c_p.req_for_join_status = 1
-      WHERE 
-        c.approval_status = 1
-      GROUP BY
-        c.course_id
-      HAVING 
-        is_joined = "yes" OR is_joined = "pending";    
+      COUNT(DISTINCT c_p.participant_id) AS total_member,
+      c.approval_status
+    FROM 
+      courses AS c
+    JOIN 
+      student AS s ON c.mentor_id = s.student_id
+    LEFT JOIN 
+      course_participants AS c_p ON c.course_id = c_p.course_id AND c_p.req_for_join_status = 1
+    WHERE 
+      c.mentor_id = '${userId}'
+    GROUP BY
+      c.course_id;    
       `;
 
     connection.query(query, (err, results) => {
@@ -232,7 +228,7 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.get("/course/pendingParticipants", verifyToken, (req, res) => {
+  router.get("/courses/pendingParticipants", verifyToken, (req, res) => {
     const userId = req.userId;
 
     const query = `SELECT 
@@ -262,11 +258,13 @@ module.exports = (router, multer) => {
 
   router.get("/courses/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
-
-    connection.query(
-      `SELECT 
-      c_p.participant_id,
-      c.course_id
+    console.log(userId);
+  
+    // First query to get pending participants
+    const query1 = `
+      SELECT 
+        c_p.participant_id,
+        c.course_id
       FROM 
         course_participants AS c_p
       JOIN 
@@ -274,27 +272,42 @@ module.exports = (router, multer) => {
       ON
         c_p.course_id = c.course_id
       WHERE
-        c.mentor_id = '${userId}' AND c_p.req_for_join_status = 1`,
-      (err, results) => {
-        if (err) throw err;
-        connection.query(
-          `SELECT 
+        c.mentor_id = ? AND c_p.req_for_join_status = 1
+    `;
+  
+    // Second query to get approved courses
+    const query2 = `
+      SELECT 
         c.course_id
-        FROM 
-          courses AS c
-        WHERE
-          c.mentor_id = '${userId}' AND c.approval_status = 1`,
-          (err, nestedResults) => {
-            if (err) throw err;
-            return res.json({
-              pendingParticipantsNo: results.length,
-              pendingCoursesNo: nestedResults.length,
-            });
-          }
-        );
+      FROM 
+        courses AS c
+      WHERE
+        c.mentor_id = ? AND c.approval_status = 1
+    `;
+  
+    // Execute the first query
+    connection.query(query1, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching pending participants:", err);
+        return res.status(500).send("Server error while fetching pending participants.");
       }
-    );
+  
+      // Execute the second query
+      connection.query(query2, [userId], (err, nestedResults) => {
+        if (err) {
+          console.error("Error fetching approved courses:", err);
+          return res.status(500).send("Server error while fetching approved courses.");
+        }
+  
+        // Respond with the result
+        return res.json({
+          pendingParticipantsNo: results.length,
+          pendingCoursesNo: nestedResults.length,
+        });
+      });
+    });
   });
+  
 
 
   router.post("/course/member/approve", verifyToken, (req, res) => {
@@ -323,7 +336,7 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.get("/course/pending", verifyToken, (req, res) => {
+  router.get("/courses/pending", verifyToken, (req, res) => {
     let userId = req.userId;
 
     const query = `SELECT 

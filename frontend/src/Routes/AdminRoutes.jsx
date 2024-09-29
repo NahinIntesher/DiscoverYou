@@ -14,6 +14,7 @@ import PendingProducts from "../Components/AdminComponents/Marketplace/PendingPr
 
 import Course from "../Components/AdminComponents/Course/Course";
 import PendingCourse from "../Components/AdminComponents/Course/PendingCourses";
+import SingleCourse from "../Components/AdminComponents/Course/SingleCourse";
 
 import Hiring from "../../src/Components/AdminComponents/Hiring/Hiring";
 import Notification from "../Components/AdminComponents/Notification/Notification";
@@ -55,6 +56,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           
           <Route path="/course" element={<Course />} />
           <Route path="/course/pending" element={<PendingCourse />} />
+          <Route path="/course/:courseId" element={<SingleCourse />} />
           
           
           <Route path="/marketplace/cart" element={<Marketplace />} />
