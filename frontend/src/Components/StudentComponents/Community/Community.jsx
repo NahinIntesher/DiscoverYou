@@ -3,16 +3,27 @@ import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../assets/styles/community.css";
 import MyCommunities from "./MyCommunities";
 import BrowseCommunities from "./BrowseCommunities";
 
-export default function Community() {
+export default function Community({user}) {
     const [activeTab, setActiveTab] = useState(["browseCommunities"]);
     
     const [pendingMemberNo, setPendingMemberNo] = useState(0);
     const [pendingCommunitiesNo, setPendingCommunitiesNo] = useState(0);
+
+    const navigate = useNavigate();
+
+    function createCommunity() {
+        if(user.student_points >= 250) {
+            navigate("/community/new")
+        }
+        else {
+            alert("You should acheive atleast 500 points to create course!");
+        }
+    }
 
     useEffect(() => {
         axios
@@ -36,10 +47,10 @@ export default function Community() {
                 <div className="content">
                     <div className="title">Community</div>
                     <div className="buttonContainer">
-                        <Link to="/community/new" className="button">
+                        <div onClick={createCommunity} className={user.student_points >= 250 ? "button" : "button inactiveButton"}>
                             <MaterialSymbol className="icon" size={24} icon="add" />
                             <div className="text">Create New Community</div>
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -12,14 +12,12 @@ export default function CreateNewCourse({ interests }) {
     courseName: "",
     courseCategory: interests[0],
     courseDescription: "",
-    coursePrice: 0,
     courseMaterials: [],
+    courseMaterialNames: [],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // e.target.style.height = 'inherit';
-    // e.target.style.height = `${e.target.scrollHeight}px`
     setFormData(function (oldFormData) {
       return {
         ...oldFormData,
@@ -54,10 +52,7 @@ export default function CreateNewCourse({ interests }) {
       setFormData(function (oldFormData) {
         return {
           ...oldFormData,
-          courseMaterials: [
-            ...oldFormData.courseMaterials,
-            ...Array.from(event.target.files),
-          ],
+          tempMaterial: event.target.files,
         };
       });
     } else {
@@ -75,6 +70,22 @@ export default function CreateNewCourse({ interests }) {
     });
   }
 
+  const addMaterial = () => {
+    setFormData(function (oldFormData) {
+      return {
+        ...oldFormData,
+        courseMaterials: [
+          ...oldFormData.courseMaterials,
+          ...Array.from(oldFormData.tempMaterial),
+        ],
+        courseMaterialNames: [
+          ...oldFormData.courseMaterialNames,
+          oldFormData.tempMaterialName
+        ]
+      };
+    });    
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -83,18 +94,24 @@ export default function CreateNewCourse({ interests }) {
     finalData.append("courseCategory", formData.courseCategory);
     finalData.append("coursePrice", formData.coursePrice);
     finalData.append("courseDescription", formData.courseDescription);
+    finalData.append("courseMaterialNames", formData.courseMaterialNames);
     formData.courseMaterials.forEach((file, index) => {
       finalData.append(`courseMaterials`, file);
     });
 
-    if (formData.courseMaterials.length < 5) {
+
+    if (formData.courseMaterials.length < 2) {
       alert("Add at least 5 course materials!");
       return;
     }
 
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/student/courses/new", finalData)
+      .post("http://localhost:3000/student/courses/new", finalData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         if (res.data.status === "Success") {
           console.log("Course Creation Success!");
@@ -132,15 +149,15 @@ export default function CreateNewCourse({ interests }) {
                 })}
               </select>
             </div>
-            <div className="input">
+            {/* <div className="input">
               <label htmlFor="coursePrice">Course Price</label>
               <input
                 name="coursePrice"
                 onChange={handleChange}
                 type="number"
-                placeholder="Enter course price $"
+                placeholder="Enter course price (৳)"
               />
-            </div>
+            </div> */}
             <div className="input">
               <label htmlFor="courseDescription">Course Description</label>
               <textarea
@@ -149,11 +166,22 @@ export default function CreateNewCourse({ interests }) {
                 placeholder="Enter course description"
               />
             </div>
-
+            <div className="smallBreak"></div>
+            <div className="title">Add Course Materials</div>
             {/* Course Materials */}
+            
+            <div className="input">
+              <label name="tempMaterialName">Material Name</label>
+              <input
+                name="tempMaterialName"
+                onChange={handleChange}
+                type="text"
+                placeholder="Enter material name"
+              />
+            </div>
             <div className="input">
               <label htmlFor="courseMaterials">
-                Add Course Materials <span className="required">*</span>
+                Material File <span className="required">*</span>
               </label>
               <input
                 type="file"
@@ -168,6 +196,7 @@ export default function CreateNewCourse({ interests }) {
                 </p>
               )}
             </div>
+            <div onClick={addMaterial}>Add Material</div>
 
             <div className="mediaContainer">
               {formData.courseMaterials.map(function (file, index) {

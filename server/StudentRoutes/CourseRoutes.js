@@ -179,17 +179,55 @@ module.exports = (router, multer) => {
     });
   });
 
-  router.post("/courses/new", verifyToken, (req, res) => {
+  const storage = multer.memoryStorage();
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+      const filetypes = /image\/|audio\/|video\/|\application\//; // Accept all image, audio, and video types
+      const mimetype = filetypes.test(file.mimetype);
+
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb("Error: Images or PDF files only!");
+      }
+    },
+  });
+
+  router.post("/courses/new", upload.array("courseMaterials"), verifyToken, (req, res) => {
     const userId = req.userId;
-    const { courseName, courseCategory, courseDescription, coursePrice } =
-      req.body;
+    const { courseName, courseCategory, courseDescription, courseMaterialNames } = req.body;
+    const files = req.files;
+    
+    console.log(courseMaterialNames);
 
     connection.query(
-      `INSERT INTO courses (course_name, course_category, course_description, course_price, mentor_id, approval_status)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-      [courseName, courseCategory, courseDescription, coursePrice, userId, 0],
+      `INSERT INTO courses (course_name, course_category, course_description, mentor_id, approval_status)
+          VALUES (?, ?, ?, ?, ?)`,
+      [courseName, courseCategory, courseDescription, userId, 0],
       (err, results) => {
         if (err) throw err;
+
+        let courseId = results.insertId;
+
+        if (files.length != 0) {
+          files.map(function(file, index){
+            const { mimetype, buffer } = file;
+            connection.query(
+              `INSERT INTO  course_materials (course_id, material_name, material_blob, material_type)
+          VALUES (?, ?, ?, ?)`,
+              [courseId, buffer, mimetype, courseMaterialNames[index]],
+              (err, result) => {
+                if (err) {
+                  console.error("Database insertion error:", err);
+                  throw err;
+                }
+              }
+            );
+          }); 
+        }
         return res.json({ status: "Success" });
       }
     );
@@ -272,7 +310,7 @@ module.exports = (router, multer) => {
       ON
         c_p.course_id = c.course_id
       WHERE
-        c.mentor_id = ? AND c_p.req_for_join_status = 1
+        c.mentor_id = ? AND c_p.req_for_join_status = 0
     `;
   
     // Second query to get approved courses
@@ -282,7 +320,7 @@ module.exports = (router, multer) => {
       FROM 
         courses AS c
       WHERE
-        c.mentor_id = ? AND c.approval_status = 1
+        c.mentor_id = ? AND c.approval_status = 0
     `;
   
     // Execute the first query
@@ -361,21 +399,4 @@ module.exports = (router, multer) => {
       return res.json({ courses: results });
     });
   });
-
-  // const storage = multer.memoryStorage();
-
-  // const upload = multer({
-  //   storage: storage,
-  //   limits: { fileSize: 50000000 }, // 10 MB
-  //   fileFilter: (req, file, cb) => {
-  //     const filetypes = /image\/|audio\/|video\|\application\//; // Accept all image, audio, and video types
-  //     const mimetype = filetypes.test(file.mimetype);
-
-  //     if (mimetype) {
-  //       return cb(null, true);
-  //     } else {
-  //       cb("Error: Images or PDF files only!");
-  //     }
-  //   },
-  // });
 };

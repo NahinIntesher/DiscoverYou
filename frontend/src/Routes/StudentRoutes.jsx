@@ -52,13 +52,13 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
-          <Route path="/community" element={<Community />} />
+          <Route path="/community" element={<Community user={user}/>} />
           <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
           <Route path="/community/members/pending" element={<PendingMembers />} />
           <Route path="/community/pending" element={<PendingCommunities />} />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
-          <Route path="/course" element={<Course />} />
+          <Route path="/course" element={<Course user={user}/>} />
           <Route path="/course/new" element={<CreateNewCourses interests={user.interests} />} />
           <Route path="/course/participants/pending" element={<PendingParticipants />} />
           <Route path="/course/pending" element={<PendingCourse />} />

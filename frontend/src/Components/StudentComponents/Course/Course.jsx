@@ -3,16 +3,27 @@ import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../assets/styles/community.css";
 import MyCourses from "./MyCourses";
 import BrowseCourses from "./BrowseCourses";
 
-export default function Community() {
+export default function Course({user}) {
     const [activeTab, setActiveTab] = useState(["browseCourses"]);
     
     const [pendingParticipantsNo, setPendingParticipantsNo] = useState(0);
     const [pendingCoursesNo, setPendingCoursesNo] = useState(0);
+    
+    const navigate = useNavigate();
+
+    function createCourse() {
+        if(user.student_points >= 500) {
+            navigate("/course/new")
+        }
+        else {
+            alert("You should acheive atleast 500 points to create course!");
+        }
+    }
 
     useEffect(() => {
         axios
@@ -36,10 +47,10 @@ export default function Community() {
                 <div className="content">
                     <div className="title">Course</div>
                     <div className="buttonContainer">
-                        <Link to="/course/new" className="button">
+                        <div onClick={createCourse} className={user.student_points >= 500 ? "button" : "button inactiveButton"}>
                             <MaterialSymbol className="icon" size={24} icon="add" />
                             <div className="text">Create New course</div>
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,7 +58,7 @@ export default function Community() {
                 <div className="pendingBox">
                     <MaterialSymbol className="icon" size={32} icon="error" />
                     <div className="text">
-                        Your {pendingCoursesNo} Courses approval are in pending.
+                        Your {pendingCoursesNo} courses approval are in pending.
                     </div>
                     <Link to={"/course/pending"} className="button">
                         Pending Courses

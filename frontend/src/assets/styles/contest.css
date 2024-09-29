@@ -38,6 +38,11 @@
         8px 8px 16px rgba(var(--light), 0.8);
     cursor: pointer;
     margin: 4px;
+    display: inline;
+}
+
+.contentTitle .inactiveButton {
+    opacity: 0.6;
 }
 
 .contentTitle .button:hover{
