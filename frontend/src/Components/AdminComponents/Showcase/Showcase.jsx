@@ -91,6 +91,8 @@ export default function Showcase({user}) {
                         <PostBox 
                             key={post.post_id}
                             postId={post.post_id}
+                            posterId={post.user_id} 
+                            posterPicture={post.user_picture}
                             posterName={post.user_name} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}

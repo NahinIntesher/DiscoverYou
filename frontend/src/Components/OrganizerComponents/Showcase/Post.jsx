@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostBox from "./PostBox";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { useParams, useNavigate } from "react-router-dom";
 import CommentBox from "../../CommonComponents/CommentBox";
 import NotFound from "../../CommonComponents/NotFound";
 import Header from "../../CommonComponents/Header";
 
-export default function Post() {
+export default function Post({user}) {
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState([]);
@@ -74,6 +74,8 @@ export default function Post() {
                         key={post.post_id}
                         postId={post.post_id}
                         posterName={post.user_name} 
+                        posterId={post.user_id} 
+                        posterPicture={post.user_picture}
                         postContent={post.post_content}
                         postTimeAgo={post.post_time_ago}
                         postMediaArray={post.media_array ? JSON.parse("["+post.media_array+"]") : []}
@@ -86,7 +88,7 @@ export default function Post() {
                 <div className="giveCommentBox">
                     <form onSubmit={handleSubmit}>
                         <div className="profilePicture">
-                            <img src={dp}/>
+                            <img src={user.organizer_picture ? user.organizer_picture : dp}/>
                         </div>
                         <textarea
                             id="content"
@@ -103,7 +105,7 @@ export default function Post() {
                     {   comments.length > 0 ?
                         comments.map(function(comment){
                             return (
-                                <CommentBox commentContent={comment.comment_content} commentatorName={comment.commentator_name} commentTimeAgo={comment.comment_time_ago}/>
+                                <CommentBox commentatorId={comment.commentator_id} commentatorPicture={comment.commentator_picture} commentContent={comment.comment_content} commentatorName={comment.commentator_name} commentTimeAgo={comment.comment_time_ago}/>
                             )
                         })
                         :

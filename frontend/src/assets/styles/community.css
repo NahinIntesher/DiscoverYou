@@ -61,6 +61,12 @@
     flex-grow: 1;
     overflow: hidden;
 }
+
+.communityBox .informationContainer .information .titleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .communityBox .joinButtonContainer {
     flex-shrink: 0; 
     display: inline-flex;

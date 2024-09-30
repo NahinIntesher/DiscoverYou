@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostBox from "./PostBox";
-import dp from "../../../assets/images/default.jpg";
+import dp from "../../../../assets/images/desert.jpg";
 import { useParams, useNavigate } from "react-router-dom";
-import CommentBox from "../../CommonComponents/CommentBox";
-import NotFound from "../../CommonComponents/NotFound";
-import Header from "../../CommonComponents/Header";
+import CommentBox from "../../../CommonComponents/CommentBox";
+import NotFound from "../../../CommonComponents/NotFound";
+import Header from "../../../CommonComponents/Header";
 
-export default function Post({user}) {
+export default function Post() {
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState([]);
@@ -33,7 +33,7 @@ export default function Post({user}) {
         
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/admin/showcase/comment", {
+        .post("http://localhost:3000/student/showcase/comment", {
             commentContent: commentContent,
             postId: postId
         })
@@ -51,7 +51,7 @@ export default function Post({user}) {
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/admin/showcase/singlePost/"+postId)
+          .get("http://localhost:3000/student/showcase/singlePost/"+postId)
           .then((res) => {
             const postData = res.data?.post || [];
             const commentsData = res.data?.comments || [];
@@ -73,8 +73,6 @@ export default function Post({user}) {
                     <PostBox 
                         key={post.post_id}
                         postId={post.post_id}
-                        posterId={post.user_id} 
-                        posterPicture={post.user_picture}
                         posterName={post.user_name} 
                         postContent={post.post_content}
                         postTimeAgo={post.post_time_ago}
@@ -85,33 +83,6 @@ export default function Post({user}) {
                         postTime={post.post_date_time}
                     />
                 }
-                <div className="giveCommentBox">
-                    <form onSubmit={handleSubmit}>
-                        <div className="profilePicture">
-                            <img src={user.admin_picture ? user.admin_picture : dp}/>
-                        </div>
-                        <textarea
-                            id="content"
-                            name="content"
-                            placeholder="Write something..."
-                            onChange={handleChange}
-                            value={commentContent}
-                        />        
-                        <button className="postButton" type="submit">Comment</button>
-                    </form>
-                </div>
-                <div className="commentBoxContainer">
-                    <div className="title">Comments</div>
-                    {   comments.length > 0 ?
-                        comments.map(function(comment){
-                            return (
-                                <CommentBox commentContent={comment.comment_content} commentatorId={comment.commentator_id} commentatorPicture={comment.commentator_picture} commentatorName={comment.commentator_name} commentTimeAgo={comment.comment_time_ago}/>
-                            )
-                        })
-                        :
-                        <NotFound message={"No comment!"}/>
-                    }
-                </div>
             </div>
         </div>
     );

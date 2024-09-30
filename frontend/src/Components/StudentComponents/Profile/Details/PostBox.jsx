@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import dp from "../../../assets/images/default.jpg";
+import dp from "../../../../assets/images/desert.jpg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";
 
-export default function PostBox({postId, posterId, posterName, posterPicture, postCategory, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
+export default function PostBox({postId, posterName, postCategory, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
     const [isReacted, setIsReacted] = useState(isPostReacted);
     const [reactionCount, setReactionCount] = useState(postReactionCount);
 
@@ -33,9 +33,7 @@ export default function PostBox({postId, posterId, posterName, posterPicture, po
     function reactPost() {
         axios.defaults.withCredentials = true;
         axios
-        .post("http://localhost:3000/student/showcase/react", {
-            postId: postId
-        })
+        .post("http://localhost:3000/student/showcase/react")
         .then((res) => {
           if (res.data.status === "Success") {
             if(res.data.message == "Liked") {
@@ -55,11 +53,11 @@ export default function PostBox({postId, posterId, posterName, posterPicture, po
     return (
         <div className="postBox">
             <div className="profile">
-                <Link to={"/profile/"+posterId} className="profilePicture">
-                    <img src={posterPicture ? posterPicture : dp}/>
-                </Link>
+                <div className="profilePicture">
+                    <img src={dp}/>
+                </div>
                 <div className="profileDetail">
-                    <Link to={"/profile/"+posterId} className="name">{posterName}</Link>
+                    <div className="name">{posterName}</div>
                     <div className="detail">{calculatePostAgoTime(postTimeAgo)}</div>
                 </div>
             </div>
@@ -105,23 +103,6 @@ export default function PostBox({postId, posterId, posterName, posterPicture, po
                 <div className="detail">{getPMTime(postTime)}</div>
                 <div className="divider"></div>
                 <div className="detail">{postCategory}</div>
-            </div>
-            <div className="postActionBoxContainer">
-                { isReacted ? 
-                    <div className="postActionBox active" onClick={reactPost}>
-                        <MaterialSymbol className="icon" fill size={22} icon="favorite"/>
-                        <div className="text">Liked</div>
-                    </div> 
-                    :
-                    <div className="postActionBox" onClick={reactPost}>
-                        <MaterialSymbol className="icon" size={22} icon="favorite"/>
-                        <div className="text">Like</div>
-                    </div> 
-                }
-                <Link to={"/showcase/post/"+postId} className="postActionBox">
-                    <MaterialSymbol className="icon" size={22} icon="chat_bubble"/>
-                    <div className="text">Comment</div>
-                </Link>
             </div>
         </div>
     );

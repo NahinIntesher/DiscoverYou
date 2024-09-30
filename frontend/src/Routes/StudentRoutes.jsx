@@ -22,6 +22,10 @@ import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar
 import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
 import Notification from "../Components/StudentComponents/Notification/Notification";
 import Profile from "../Components/StudentComponents/Profile/Profile";
+import CourseParticipated from "../Components/StudentComponents/Profile/Details/CourseParticipated";
+import WebinarParticipated from "../Components/StudentComponents/Profile/Details/WebinarParticipated";
+import ContestParticipated from "../Components/StudentComponents/Profile/Details/ContestParticipated";
+import ShowcasePosts from "../Components/StudentComponents/Profile/Details/ShowcasePosts";
 
 import Community from "../Components/StudentComponents/Community/Community";
 import CreateNewCommunity from "../Components/StudentComponents/Community/CreateNewCommunity";
@@ -38,6 +42,7 @@ import PendingCommunities from "../Components/StudentComponents/Community/Pendin
 import PendingProducts from "../Components/StudentComponents/Marketplace/PendingProducts";
 import Product from "../Components/StudentComponents/Marketplace/Product";
 import Material from "../Components/StudentComponents/Course/Material";
+import ChangeProfilePicture from "../Components/StudentComponents/Profile/ChangeProfilePicture";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -47,8 +52,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
         <Routes>
           <Route path="/" element={<Dashboard />} />
 
-          <Route path="/showcase" element={<Showcase user={user} />} />
-          <Route path="/showcase/post/:postId" element={<Post />} />
+          <Route path="/showcase" element={<Showcase user={user}/>} />
+          <Route path="/showcase/post/:postId" element={<Post  user={user}/>} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
@@ -87,8 +92,14 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
           <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
+          <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-interests" element={<ChangeInterest user={user} setUser={setUser}/>} />
+          <Route path="/profile/courseResults" element={<CourseParticipated user={user} />} />
+          <Route path="/profile/webinarResults" element={<WebinarParticipated user={user} />} />
+          <Route path="/profile/contestResults" element={<ContestParticipated user={user} />} />
+          <Route path="/profile/showcaseResults" element={<ShowcasePosts user={user} />} />
           
+
         </Routes>
       </div>
     </BrowserRouter>

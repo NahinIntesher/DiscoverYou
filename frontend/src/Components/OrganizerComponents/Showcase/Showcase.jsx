@@ -91,6 +91,8 @@ export default function Showcase({user}) {
                             key={post.post_id}
                             postId={post.post_id}
                             posterName={post.user_name} 
+                            posterId={post.user_id} 
+                            posterPicture={post.user_picture} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}
                             postMediaArray={JSON.parse("["+post.media_array+"]")}

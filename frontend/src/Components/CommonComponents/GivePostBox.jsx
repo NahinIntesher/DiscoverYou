@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../../assets/styles/showcase.css";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
@@ -111,7 +111,7 @@ export default function GivePostBox({ user, setUpdatePost }) {
     <div className="givePostBox">
       <form onSubmit={handleSubmit}>
         <div className="profilePicture">
-          <img src={dp} />
+          <img src={user.student_picture ? user.student_picture : dp} />
         </div>
         <div className="textBox">
           <div className="textareaContainer">

@@ -68,6 +68,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
     s_p_m.media_type,
     CASE
@@ -129,6 +130,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
     s_p_m.media_type,
     CASE
@@ -189,7 +191,19 @@ module.exports = (router, multer) => {
             WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN o.organizer_name
             WHEN s_p_c.commentator_admin_id IS NOT NULL THEN a.admin_name
             ELSE NULL
-          END AS commentator_name
+          END AS commentator_name,
+          CASE 
+            WHEN s_p_c.commentator_student_id IS NOT NULL THEN s.student_id
+            WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN o.organizer_id
+            WHEN s_p_c.commentator_admin_id IS NOT NULL THEN a.admin_id
+            ELSE NULL
+          END AS commentator_id,
+          CASE 
+            WHEN s_p_c.commentator_student_id IS NOT NULL THEN IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL)
+            WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL)
+            WHEN s_p_c.commentator_admin_id IS NOT NULL THEN IF(a.admin_picture IS NOT NULL, CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), NULL)
+            ELSE NULL
+          END AS commentator_picture
         FROM 
           showcase_post_comments AS s_p_c 
         LEFT JOIN

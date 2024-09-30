@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../../assets/images/desert4.jpg";
 import { Link } from "react-router-dom";
 
 export default function CourseBox({ id, name, category, description, mentorName, isJoined, totalMember }) {
@@ -68,12 +68,19 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <div className="text">{category}</div>
                     </div>
                 </div>
-                <div className="joinButtonContainer">
-                    {/* <Link to={"/course/"+id} className="joinButton">See Details</Link>     */}
+                {/* <div className="joinButtonContainer">
+                    {joinStatus == "yes" ? (
+                        <Link to={"/course/"+id} className="joinButton">Enter</Link>
+                    ) : joinStatus == "pending" ? (
+                        <div onClick={joinCourse} className="joinButton">Requested</div>
+                    ) : (
+                        <div onClick={joinCourse} className="joinButton">Join</div>
+                    ) 
+                    }
                     <div className="joinDetails">
                         Member: <b>{totalMember}</b>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="detailsContainer">
                 <div className="description">
@@ -85,7 +92,7 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <img src={dp} />
                     </div>
                     <div className="organizerDetails">
-                        <div className="detailTitle">Maintained By</div>
+                        <div className="detailTitle">Mentored By</div>
                         <div className="detailInfo">{mentorName}</div>
                     </div>
                 </div>

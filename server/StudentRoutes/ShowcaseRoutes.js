@@ -68,6 +68,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
     s_p_m.media_type,
     CASE
@@ -129,6 +130,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
     s_p_m.media_type,
     CASE
@@ -189,7 +191,19 @@ module.exports = (router, multer) => {
             WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN o.organizer_name
             WHEN s_p_c.commentator_admin_id IS NOT NULL THEN a.admin_name
             ELSE NULL
-          END AS commentator_name
+          END AS commentator_name,
+          CASE 
+            WHEN s_p_c.commentator_student_id IS NOT NULL THEN s.student_id
+            WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN o.organizer_id
+            WHEN s_p_c.commentator_admin_id IS NOT NULL THEN a.admin_id
+            ELSE NULL
+          END AS commentator_id,
+          CASE 
+            WHEN s_p_c.commentator_student_id IS NOT NULL THEN IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL)
+            WHEN s_p_c.commentator_organizer_id IS NOT NULL THEN IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL)
+            WHEN s_p_c.commentator_admin_id IS NOT NULL THEN IF(a.admin_picture IS NOT NULL, CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), NULL)
+            ELSE NULL
+          END AS commentator_picture
         FROM 
           showcase_post_comments AS s_p_c 
         LEFT JOIN
@@ -309,6 +323,70 @@ module.exports = (router, multer) => {
         );
     }
   );
+
+
+  
+  router.get("/showcase/post/my", verifyToken, (req, res) => {
+    const {sort, category} = req.query;
+
+    const userId = req.userId;
+
+    const query = `SELECT 
+    s_p.*, 
+    s.student_name AS user_name,
+    TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
+    s_p_m.media_type,
+    CASE
+      WHEN EXISTS (
+        SELECT *
+        FROM showcase_post_reactions
+        WHERE showcase_post_reactions.post_id = s_p.post_id 
+        AND showcase_post_reactions.reactor_student_id = '${userId}'
+      ) THEN 1
+      ELSE 0
+    END AS is_reacted,
+    COUNT(DISTINCT s_p_r.reaction_id) AS reaction_count,
+    COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
+    (
+      SELECT 
+        GROUP_CONCAT(
+          CONCAT(
+            '{"media_url": "http://localhost:3000/student/showcase/media/cdn/', s_p_m.media_id, 
+            '", "media_type": "', s_p_m.media_type, '"}'
+          ) SEPARATOR ', '
+        )
+      FROM 
+        showcase_post_media AS s_p_m
+      WHERE 
+        s_p_m.post_id = s_p.post_id
+    ) AS media_array
+    FROM 
+      showcase_posts AS s_p
+    JOIN 
+      student AS s 
+    ON s_p.user_id = s.student_id
+    LEFT JOIN 
+      showcase_post_media AS s_p_m
+    ON s_p_m.post_id = s_p.post_id
+    LEFT JOIN 
+      showcase_post_reactions AS s_p_r 
+    ON s_p_r.post_id = s_p.post_id
+    LEFT JOIN 
+      showcase_post_comments AS s_p_c 
+    ON s_p_c.post_id = s_p.post_id
+    WHERE
+      s_p.user_id = '${userId}'
+    GROUP BY
+      s_p.post_id
+    ORDER BY
+      s_p.post_date_time DESC;
+    `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      return res.json({ posts: results });
+    });
+  });
 };
 
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../../assets/styles/showcase.css";
+import "../../../../assets/styles/showcase.css";
 import 'react-material-symbols/rounded';
-import GivePostBox from "../../CommonComponents/GivePostBox";
-import PostBox from "./PostBox";
-import NotFound from "../../CommonComponents/NotFound";
+import NotFound from "../../../CommonComponents/NotFound";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
+import Header from "../../../CommonComponents/Header";
+import PostBox from "../../../StudentComponents/Showcase/PostBox"
 
 export default function Showcase({user}) {    
     const [posts, setPosts] = useState([]);
@@ -41,7 +41,7 @@ export default function Showcase({user}) {
 
     useEffect(() => {
         axios
-          .get("http://localhost:3000/student/showcase/post", {
+          .get("http://localhost:3000/student/showcase/post/my", {
             params: formData
           })
           .then((res) => {
@@ -55,38 +55,8 @@ export default function Showcase({user}) {
     
     return (
         <div className="mainContent">
-            <div className="contentTitle">
-                <div className="content">
-                    <div className="title">Showcase</div>
-                </div>
-            </div>
-            {}
-            <GivePostBox setUpdatePost={setUpdatePost} user={user}/>   
+            <Header title={`Webinar participated by ${user.student_name}`}/>
             <div className="postBoxContainer">
-                <div className="filterBox filterBoxShowcase">
-                    <div className="title">Filter</div>
-                    <div className="filters">
-                        <div className="filterName">Sort By</div>
-                        <div className="filter">
-                            <MaterialSymbol className="icon" size={22} icon="tune" />
-                            <select name="sort" onChange={handleInputChange}>
-                                <option value="s_p.post_date_time">Newest First</option>
-                                <option value="reaction_count">Most Liked</option>
-                            </select>
-                        </div>
-                        <div className="filterName">Category</div>
-                        <div className="filter">
-                            <InterestIcon category={formData.category}/>
-                            <select name="category" onChange={handleInputChange}>
-                                <option value={user.interests.map((interest)=> `'${interest}'`)}>My Interested</option>
-                                {allInterests.map((interest)=> 
-                                    <option value={`'${interest}'`}>{interest}</option>
-                                )}
-                                <option value={allInterests.map((interest)=> `'${interest}'`)}>All</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
             {
                 posts.length > 0 ?
                 posts.map(function(post){
@@ -94,9 +64,7 @@ export default function Showcase({user}) {
                         <PostBox 
                             key={post.post_id}
                             postId={post.post_id}
-                            posterId={post.user_id} 
                             posterName={post.user_name} 
-                            posterPicture={post.user_picture} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}
                             postMediaArray={JSON.parse("["+post.media_array+"]")}

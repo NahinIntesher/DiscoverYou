@@ -2,31 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../../assets/images/desert4.jpg";
 import { Link } from "react-router-dom";
 
-export default function CourseBox({ id, name, category, description, mentorName, isJoined, totalMember }) {
-    const [joinStatus, setJoinStatus] = useState(isJoined);
-
-    function joinCourse () {
-        axios.defaults.withCredentials = true;
-        axios
-        .post("http://localhost:3000/student/course/join", {
-            courseId: id
-        })
-        .then((res) => {
-            if (res.data.status === "Registered") {
-                setJoinStatus("pending")
-                setParticipantNo((prevValue) => prevValue + 1);
-            } else if (res.data.status === "Unregistered") {
-                setJoinStatus("no");
-                setParticipantNo((prevValue) => prevValue - 1);
-            } else {
-                alert(res.data.Error);
-            }
-        })
-        .catch((err) => console.log(err));
-    };
+export default function WebinarBox({ id, name, category, description, hostName, totalMember }) {
 
     return (
         <div className="communityBox">
@@ -68,16 +47,10 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <div className="text">{category}</div>
                     </div>
                 </div>
-                <div className="joinButtonContainer">
-                    {/* <Link to={"/course/"+id} className="joinButton">See Details</Link>     */}
-                    <div className="joinDetails">
-                        Member: <b>{totalMember}</b>
-                    </div>
-                </div>
             </div>
             <div className="detailsContainer">
                 <div className="description">
-                    <div className="titles">Course Description</div>
+                    <div className="titles">Webinar Description</div>
                     <div className="text">{description}</div>
                 </div>
                 <div className="organizer">
@@ -85,8 +58,8 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <img src={dp} />
                     </div>
                     <div className="organizerDetails">
-                        <div className="detailTitle">Maintained By</div>
-                        <div className="detailInfo">{mentorName}</div>
+                        <div className="detailTitle">Hosted By</div>
+                        <div className="detailInfo">{hostName}</div>
                     </div>
                 </div>
             </div>

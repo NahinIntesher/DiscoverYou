@@ -267,4 +267,39 @@ module.exports = (router) => {
       }
     );
   });
+
+  router.get("/webinars/my", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT 
+        w.webinar_name, 
+        w.webinar_description, 
+        w.webinar_category, 
+        COUNT(w_p.webinar_id) AS participant_count, 
+        organizer.organizer_name AS host_name
+    FROM 
+        webinars w
+    JOIN 
+        webinar_participants w_p
+    ON 
+        w.webinar_id = w_p.webinar_id
+    LEFT JOIN 
+        organizer
+    ON 
+        w.host_id = organizer.organizer_id
+    WHERE
+        w_p.participant_id = '${userId}'
+    GROUP BY 
+        w_p.webinar_id;
+    `;
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ myWebinars: result });
+    });
+  });
 };

@@ -6,65 +6,74 @@ const { promisify } = require("util");
 
 
 module.exports = (router, multer, bcrypt) => {
-  // const storage = multer.memoryStorage();
+  const storage = multer.memoryStorage();
 
-  // const upload = multer({
-  //   storage: storage,
-  //   limits: { fileSize: 50000000 }, // 10 MB
-  //   fileFilter: (req, file, cb) => {
-  //     const filetypes = /image\//; // Accept all image
-  //     const mimetype = filetypes.test(file.mimetype);
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+      const filetypes = /image\//; // Accept all image
+      const mimetype = filetypes.test(file.mimetype);
 
-  //     if (mimetype) {
-  //       return cb(null, true);
-  //     } else {
-  //       cb("Error: Images or PDF files only!");
-  //     }
-  //   },
-  // });
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb("Error: Images or PDF files only!");
+      }
+    },
+  });
 
-  // router.get("/marketplace/products", verifyToken, (req, res) => {
-  //   const id = req.userID;
-  //   const query = `SELECT
-  //    p.*,
-  //   CONCAT("http://localhost:3000/organizer/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
-  //    FROM
-  //       products as p
-  //    JOIN
-  //       product_images as p_i
-  //     ON
-  //       p.product_id = p_i.product_id
-  //     WHERE
-  //       p.approval_status = ?
-  //     GROUP BY p.product_id`;
-  //   connection.query(query, [1], (err, results) => {
-  //     if (err) throw err;
-  //     res.json({ products: results });
-  //   });
-  // });
 
-  // router.get("/marketplace/products/image/:id", (req, res) => {
-  //   const mediaId = req.params.id;
+  router.get("/profile/picture/:userId", verifyToken, (req, res) => {
+    const {userId} = req.params;
 
-  //   connection.query(
-  //     `
-  //     SELECT product_image
-  //     FROM product_images
-  //     WHERE media_id = ?
-  //   `,
-  //     [mediaId],
-  //     (err, results) => {
-  //       if (err) throw err;
-  //       if (results.length === 0) {
-  //         return res.status(404).send("Media not found.");
-  //       }
+    connection.query(`
+      SELECT student_picture
+      FROM student
+      WHERE student_id = ?
+    `,
+      [userId],
+      (err, results) => {
+        if (err) throw err;
+        if (results.length === 0) {
+          return res.status(404).send("Media not found.");
+        }
 
-  //       const imageData = results[0].product_image;
-  //       res.setHeader("Content-Type", "image/");
-  //       res.send(imageData);
-  //     }
-  //   );
-  // });
+        const imageData = results[0].student_picture;
+        res.setHeader("Content-Type", "image/");
+        res.send(imageData);
+      }
+    );
+  });
+
+  router.post("/profile/update-profile", upload.array("images"), verifyToken, (req, res) => {
+    const userId = req.userId;
+    const files = req.files;
+
+    if (files.length != 0) {
+      const { buffer } = files[0];
+      connection.query(
+        `UPDATE student SET student_picture = ?
+        WHERE student_id = ?`,
+        [buffer, userId],
+        (err, result) => {
+          if (err) {
+            console.error("Database insertion error:", err);
+            throw err;
+          }
+          res.json({
+            status: "Success"
+          });
+        }
+      );
+    }
+    else {
+      res.json({
+        status: "Unsuccessful",
+        message: "No file selected",
+      });
+    }
+  });
 
   router.post("/profile/update", verifyToken, (req, res) => {
     const id = req.userId;
@@ -260,7 +269,7 @@ module.exports = (router, multer, bcrypt) => {
     const courseQuery = `
         SELECT COUNT(participant_id) AS course_count 
         FROM course_participants 
-        WHERE participant_id = ?`;
+        WHERE participant_id = ? AND req_for_join_status = 1`;
 
     const webinarQuery = `
         SELECT COUNT(participant_id) AS webinar_count 

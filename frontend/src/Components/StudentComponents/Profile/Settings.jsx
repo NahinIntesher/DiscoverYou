@@ -52,6 +52,10 @@ export default function Settings({setUser, setAuthorized}) {
                         <MaterialSymbol className="icon" size={24} icon="interests" />
                         <div className="text">Change Interests</div>
                     </Link>
+                    <Link to="/profile/settings/change-profile-picture" className="settingOption">
+                        <MaterialSymbol className="icon" size={24} icon="person"/>
+                        <div className="text">Change Profile Picture</div>
+                    </Link>
                     <div onClick={()=> {setDeleteBoxActive(true)}} className="settingOption delete">
                         <MaterialSymbol className="icon" size={24} icon="delete" />
                         <div className="text">Delete Account</div>

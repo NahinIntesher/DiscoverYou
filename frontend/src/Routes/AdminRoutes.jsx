@@ -27,6 +27,7 @@ import ChangePassword from "../Components/AdminComponents/Profile/ChangePassword
 import Post from "../Components/AdminComponents/Showcase/Post";
 import SingleWebinar from "../Components/AdminComponents/Webinar/SingleWebinar";
 import Product from "../Components/AdminComponents/Marketplace/Product";
+import ChangeProfilePicture from "../Components/AdminComponents/Profile/ChangeProfilePicture";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -36,8 +37,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
         <Routes>
           <Route path="/" element={<Dashboard />} />
 
-          <Route path="/showcase" element={<Showcase user={user} />} />
-          <Route path="/showcase/post/:postId" element={<Post />} />
+          <Route path="/showcase" element={<Showcase user={user}/>} />
+          <Route path="/showcase/post/:postId" element={<Post user={user}/>} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
@@ -67,6 +68,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
           <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
+          <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
         </Routes>
       </div>
     </BrowserRouter>

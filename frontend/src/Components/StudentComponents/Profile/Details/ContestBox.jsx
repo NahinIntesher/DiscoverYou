@@ -2,37 +2,19 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../../assets/images/desert4.jpg";
 import { Link } from "react-router-dom";
 
-export default function CourseBox({ id, name, category, description, mentorName, isJoined, totalMember }) {
-    const [joinStatus, setJoinStatus] = useState(isJoined);
-
-    function joinCourse () {
-        axios.defaults.withCredentials = true;
-        axios
-        .post("http://localhost:3000/student/course/join", {
-            courseId: id
-        })
-        .then((res) => {
-            if (res.data.status === "Registered") {
-                setJoinStatus("pending")
-                setParticipantNo((prevValue) => prevValue + 1);
-            } else if (res.data.status === "Unregistered") {
-                setJoinStatus("no");
-                setParticipantNo((prevValue) => prevValue - 1);
-            } else {
-                alert(res.data.Error);
-            }
-        })
-        .catch((err) => console.log(err));
-    };
+export default function ContestBox({ id, name, category, details, organizerName, totalMember, rank}) {
 
     return (
         <div className="communityBox">
             <div className="informationContainer">
                 <div className="information">
-                    <div className="title">{name}</div>
+                    <div className="titleContainer">
+                        <div className="title">{name}</div>
+                        <div className="title">Rank: {rank}</div>
+                    </div>
                     <div className="category">
                         {category === "Competitive Programming" && (
                             <MaterialSymbol className="icon" size={24} icon="code" />
@@ -68,25 +50,19 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <div className="text">{category}</div>
                     </div>
                 </div>
-                <div className="joinButtonContainer">
-                    {/* <Link to={"/course/"+id} className="joinButton">See Details</Link>     */}
-                    <div className="joinDetails">
-                        Member: <b>{totalMember}</b>
-                    </div>
-                </div>
             </div>
             <div className="detailsContainer">
                 <div className="description">
-                    <div className="titles">Course Description</div>
-                    <div className="text">{description}</div>
+                    <div className="titles">Contest Description</div>
+                    <div className="text">{details}</div>
                 </div>
                 <div className="organizer">
                     <div className="organizerPicture">
                         <img src={dp} />
                     </div>
                     <div className="organizerDetails">
-                        <div className="detailTitle">Maintained By</div>
-                        <div className="detailInfo">{mentorName}</div>
+                        <div className="detailTitle">Organized By</div>
+                        <div className="detailInfo">{organizerName}</div>
                     </div>
                 </div>
             </div>

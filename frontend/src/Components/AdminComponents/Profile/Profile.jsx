@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import "../../../assets/styles/Profile.css";
 
 export default function Profile({ user }) {
@@ -35,7 +35,7 @@ export default function Profile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img src={dp} alt="Profile" />
+            <img src={user.admin_picture ? user.admin_picture : dp} alt="Profile" />
           </div>
           <div className="details">
             <div className="name">{user.admin_name}</div>

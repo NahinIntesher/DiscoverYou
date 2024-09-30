@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link } from "react-router-dom";
 
-export default function PostBox({postId, posterName, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
+export default function PostBox({postId, posterName, posterPicture, posterId, postContent, postTime, postTimeAgo, postMediaArray, isPostReacted, postReactionCount, postCommentCount}) {
     const [isReacted, setIsReacted] = useState(isPostReacted);
     const [reactionCount, setReactionCount] = useState(postReactionCount);
 
@@ -55,11 +55,11 @@ export default function PostBox({postId, posterName, postContent, postTime, post
     return (
         <div className="postBox">
             <div className="profile">
-                <div className="profilePicture">
-                    <img src={dp}/>
-                </div>
+                <Link to={"/profile/"+posterId} className="profilePicture">
+                    <img src={posterPicture ? posterPicture : dp}/>
+                </Link>
                 <div className="profileDetail">
-                    <div className="name">{posterName}</div>
+                    <Link to={"/profile/"+posterId} className="name">{posterName}</Link>
                     <div className="detail">{calculatePostAgoTime(postTimeAgo)}</div>
                 </div>
             </div>

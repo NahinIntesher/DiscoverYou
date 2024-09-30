@@ -217,6 +217,43 @@
   width: 50px;
   padding: 2px;
 }
+.formBoxContainer .currentProfilePicture {
+  display: inline-block;
+  background-image: linear-gradient(10deg, rgb(var(--dark)), rgb(var(--medium)));
+  border-radius: 50%;
+  padding: 10px;
+}
+.formBoxContainer .currentProfilePicture img {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  display: block;
+  border: 8px solid #ffffff;
+  object-fit: cover;
+}
+.formBoxContainer .uploadProfilePicture {
+  background-color: rgba(var(--medium), 0.4);
+  padding: 10px 24px;
+  border-radius: 40px;
+  width: fit-content;
+  color: rgb(var(--dark));
+  font-weight: 500;
+  margin: 10px auto;
+  position: relative;
+  cursor: pointer;
+}
+.formBoxContainer .uploadProfilePicture:hover {
+  background-color: rgba(var(--medium), 0.6);
+}
+.formBoxContainer .uploadProfilePicture input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+} 
 .formBox button {
   display: inline-block;
   background-image: radial-gradient(

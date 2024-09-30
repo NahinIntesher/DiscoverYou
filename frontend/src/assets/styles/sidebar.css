@@ -148,6 +148,11 @@ body {
     border: 3px #ffffff solid;
     overflow: hidden;
 }
+.sideMenu .profile .profilePicture img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+}
 .sideMenu .profile .details {
     width: calc(100% - 60px);
     display: inline-block;

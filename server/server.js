@@ -321,7 +321,17 @@ app.get("/", verifyToken, (req, res) => {
 
   if (userType == "student") {
     query = `
-      SELECT s.*, GROUP_CONCAT(si.interest_name) AS interests
+      SELECT 
+        s.student_id, 
+        s.student_name, 
+        s.student_email, 
+        s.student_points, 
+        s.student_address, 
+        s.student_mobile_no, 
+        s.student_date_of_birth, 
+        s.student_gender, 
+        IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS student_picture,
+        GROUP_CONCAT(si.interest_name) AS interests
       FROM student s
       LEFT JOIN student_interests si 
       ON s.student_id = si.student_id
@@ -329,9 +339,31 @@ app.get("/", verifyToken, (req, res) => {
       GROUP BY s.student_id
     `;
   } else if (userType == "organizer") {
-    query = `SELECT * FROM organizer WHERE organizer_id = ?`;
+    query = `
+    SELECT 
+      o.organizer_id, 
+      o.organizer_name, 
+      o.organizer_email, 
+      o.organizer_address, 
+      o.organizer_mobile_no, 
+      o.organizer_date_of_birth, 
+      o.organizer_gender, 
+      IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+    FROM organizer AS o 
+    WHERE o.organizer_id = ?`;
   } else if (userType == "admin") {
-    query = `SELECT * FROM admin WHERE admin_id = ?`;
+    query = `
+    SELECT 
+      a.admin_id, 
+      a.admin_name, 
+      a.admin_email, 
+      a.admin_address, 
+      a.admin_mobile_no, 
+      a.admin_date_of_birth, 
+      a.admin_gender, 
+      IF(a.admin_picture IS NOT NULL, CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), NULL) AS admin_picture
+    FROM admin AS a
+    WHERE a.admin_id = ?`;
   }
 
   connection.query(query, [userId], (err, results) => {
@@ -362,8 +394,6 @@ app.get("/logout", (req, res) => {
   res.clearCookie("userRegistered");
   res.json({ status: "Success" });
 });
-
-// Showcase
 
 // Start the server
 const port = 3000;

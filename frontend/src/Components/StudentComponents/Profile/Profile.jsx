@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import "../../../assets/styles/Profile.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile({ user }) {
   const [contestResults, setContestResults] = useState({});
@@ -57,7 +58,7 @@ export default function Profile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img src={dp} alt="Profile" />
+            <img src={user.student_picture ? user.student_picture : dp} alt="Profile" />
           </div>
           <div className="details">
             <div className="name">{user.student_name}</div>
@@ -83,7 +84,8 @@ export default function Profile({ user }) {
               secondaryCount={contestResults.rank_1_count}
               tertiaryCount={contestResults.rank_2_count}
               secondaryTitle="Winner"
-              tertiaryTitle="runner-up"
+              tertiaryTitle="Runner-up"
+              linkToRoute='contestResults'
             />
             <ContributionBox
               count={courseResults.course_count}
@@ -91,6 +93,7 @@ export default function Profile({ user }) {
               icon="auto_stories"
               secondaryCount={1}
               secondaryTitle="Completed"
+              linkToRoute='courseResults'
             />
             <ContributionBox
               count={showcaseResults.total_posts}
@@ -98,13 +101,15 @@ export default function Profile({ user }) {
               icon="gallery_thumbnail"
               secondaryCount={showcaseResults.total_reactions}
               secondaryTitle="Reactions"
+              linkToRoute='showcaseResults'
             />
             <ContributionBox
               count={webinarResults.webinar_count}
               title="Webinars Attended"
               icon="patient_list"
-              secondaryCount={showcaseResults.total_reactions}
-              secondaryTitle="talks"
+              // secondaryCount={showcaseResults.total_reactions}
+              secondaryTitle="No talks"
+              linkToRoute='webinarResults'
             />
           </div>
           <div className="profileDetailsSectionContainer">
@@ -203,12 +208,13 @@ function ContributionBox({
   secondaryTitle,
   tertiaryTitle,
   icon,
-}) {
-
-  const handleClick = () => {
-    alert("Clicked");
-  };
-  
+  linkToRoute,
+}) {  
+  const navigate = useNavigate();
+  const handleClick  = () => {
+    alert('clicked');
+    // navigate(`/${linkToRoute}`)
+  }
   return (
     <div className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
@@ -217,12 +223,17 @@ function ContributionBox({
         <div className="count">{count}</div>
         <div className="title">{title}</div>
       </div>
-      <div className="secondDetail" onClick={handleClick}>
-        <span className="count">{secondaryCount}</span>{" "}
-        <span className="title">{secondaryTitle}</span>{" "}
-        <span className="count">{tertiaryCount}</span>{" "}
-        <span className="title">{tertiaryTitle}</span>
-      </div>
+      <Link to={`/profile/${linkToRoute}`} className="secondDetail">
+        <div className="spanContainer">
+          <span className="count">{secondaryCount}</span>
+          <span className="title">{secondaryTitle}</span>
+        </div>
+
+        <div className="spanContainer">
+          <span className="count">{tertiaryCount}</span>
+          <span className="title">{tertiaryTitle}</span>
+        </div>
+      </Link>
     </div>
   );
 }

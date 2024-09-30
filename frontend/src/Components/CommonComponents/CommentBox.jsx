@@ -1,7 +1,8 @@
 import React from "react";
-import dp from "../../assets/images/desert.jpg"
+import dp from "../../assets/images/default.jpg"
+import { Link } from "react-router-dom";
 
-export default function CommentBox({commentContent, commentatorName, commentTimeAgo}) {
+export default function CommentBox({commentatorId, commentatorPicture, commentContent, commentatorName, commentTimeAgo}) {
     function calculatePostAgoTime(timeDifference){
         if(timeDifference<60){
             return "Few sec ago";
@@ -16,11 +17,11 @@ export default function CommentBox({commentContent, commentatorName, commentTime
 
     return (
         <div className="commentBox">
-            <div className="profilePicture">
-                <img src={dp}/>
-            </div>
+            <Link to={"/profile/"+commentatorId} className="profilePicture">
+                <img src={commentatorPicture ? commentatorPicture : dp}/>
+            </Link>
             <div className="commentContentBox">
-                <div className="name">{commentatorName}</div>
+                <Link to={"/profile/"+commentatorId} className="name">{commentatorName}</Link>
                 <div className="text">{commentContent}</div>
                 <div className="details">{calculatePostAgoTime(commentTimeAgo)}</div>
             </div>

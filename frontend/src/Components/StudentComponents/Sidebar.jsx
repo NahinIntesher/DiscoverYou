@@ -1,7 +1,7 @@
 import React, {Image} from "react";
 import "../../assets/styles/sidebar.css"
 import SidebarOption from "../SidebarOption";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../assets/images/default.jpg";
 import logo from "../../assets/images/logo.svg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
@@ -29,7 +29,7 @@ export default function Sidebar({logoutAction, user}) {
             <div className="dynamicGap"></div>
             <div className="profile">
                 <div className="profilePicture">
-                    <img src={dp}/>
+                    <img src={user.student_picture ? user.student_picture : dp}/>
                 </div>
                 <div className="details">
                     <div className="name">{user.student_name}</div>

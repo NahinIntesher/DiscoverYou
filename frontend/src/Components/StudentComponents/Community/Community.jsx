@@ -21,7 +21,7 @@ export default function Community({user}) {
             navigate("/community/new")
         }
         else {
-            alert("You should acheive atleast 500 points to create course!");
+            alert("You should acheive atleast 250 points to create community!");
         }
     }
 

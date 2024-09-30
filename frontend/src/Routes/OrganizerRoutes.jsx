@@ -28,6 +28,7 @@ import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNe
 import PendingWebinar from "../Components/OrganizerComponents/Webinar/PendingWebinar";
 import SingleWebinar from "../Components/OrganizerComponents/Webinar/SingleWebinar";
 import Product from "../Components/OrganizerComponents/Marketplace/Product";
+import ChangeProfilePicture from "../Components/OrganizerComponents/Profile/ChangeProfilePicture";
 
 export default function Student({
   handleLogout,
@@ -42,8 +43,8 @@ export default function Student({
         <Routes>
           <Route path="/" element={<Dashboard />} />
 
-          <Route path="/showcase" element={<Showcase user={user} />} />
-          <Route path="/showcase/post/:postId" element={<Post />} />
+          <Route path="/showcase" element={<Showcase user={user}/>} />
+          <Route path="/showcase/post/:postId" element={<Post  user={user}/>} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
@@ -79,6 +80,7 @@ export default function Student({
             path="/profile/settings/change-password"
             element={<ChangePassword />}
           />
+          <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
         </Routes>
       </div>
     </BrowserRouter>

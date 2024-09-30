@@ -52,6 +52,7 @@
   height: 180px;
   border-radius: 200px;
   border: 6px #ffffff solid;
+  object-fit: cover;
 }
 .profileTopBox .details {
 
@@ -162,10 +163,23 @@
   font-weight: 500;
   opacity: 0.9;
   background-color: rgba(var(--extradark), 0.2);
+  display: flex;
   margin: 0;
   padding: 10px;
   border-radius: 10px;
+  justify-content: center;
+  gap: 5px;
   text-align: center;
+  cursor: pointer;
+}
+
+.contributionBox .secondDetail .spanContainer {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
 }
 
 .contributionBox .secondDetail .count {
