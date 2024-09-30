@@ -11,6 +11,8 @@ export default function CommunityBox({
   category,
   description,
   adminName,
+  adminPicture,
+  adminId,
   isJoined,
   totalMember,
 }) {
@@ -87,15 +89,15 @@ export default function CommunityBox({
           <div className="titles">Community Description</div>
           <div className="text">{description}</div>
         </div>
-        <div className="organizer">
+        <Link to={"/profile/"+adminId} className="organizer">
           <div className="organizerPicture">
-            <img src={dp} />
+            <img src={adminPicture ? adminPicture : dp} />
           </div>
           <div className="organizerDetails">
             <div className="detailTitle">Maintained By</div>
             <div className="detailInfo">{adminName}</div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

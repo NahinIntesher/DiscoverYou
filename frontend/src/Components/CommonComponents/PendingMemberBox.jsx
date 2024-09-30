@@ -1,10 +1,11 @@
 import React from "react";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-export default function PendingMemberBox({memberId, communityId, memberName, communityName, setUpdate}) {
+export default function PendingMemberBox({memberId, communityId, memberName, memberPicture, communityName, setUpdate}) {
     function approveMember() {
         axios.defaults.withCredentials = true;
         axios
@@ -44,12 +45,12 @@ export default function PendingMemberBox({memberId, communityId, memberName, com
     return (
         <div className="pendingMemberBox">
             <div className="profilePicture">
-                <img src={dp}/>
+                <img src={memberPicture ? memberPicture : dp}/>
             </div>
             <div className="memberDetails">
                 <div className="name">{memberName}</div>
-                <div className="detail">Requested for joining <span className="community">{communityName}</span></div>
-                <div className="viewProfile">View Profile</div>
+                <div className="detail">Requested for joining <Link to={"/community/"+communityId} className="community">{communityName}</Link></div>
+                <Link to={"/profile/"+memberId} className="viewProfile">View Profile</Link>
             </div>
             <div className="buttonContainer">
                 <div className="acceptButton" onClick={approveMember}>

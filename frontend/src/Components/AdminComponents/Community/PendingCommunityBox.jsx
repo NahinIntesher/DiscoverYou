@@ -1,8 +1,9 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingCommunityBox({
   id,
@@ -10,10 +11,11 @@ export default function PendingCommunityBox({
   category,
   description,
   adminName,
+  adminPicture,
   adminId,
   setUpdate
 }) {
-  function approveMember() {
+  function approve() {
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/admin/community/approve", {
@@ -31,7 +33,7 @@ export default function PendingCommunityBox({
       .catch((err) => console.log(err));
   };
 
-  function rejectMember() {
+  function reject() {
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/admin/community/reject", {
@@ -91,26 +93,26 @@ export default function PendingCommunityBox({
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
+          <Link to={"/profile/"+adminId} className="organizer">
             <div className="organizerPicture">
-              <img src={dp} />
+              <img src={adminPicture ? adminPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Requested By</div>
               <div className="detailInfo">{adminName}</div>
             </div>
-          </div>
+          </Link>
           <div className="detail">
             {description}
           </div>
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="acceptButton" onClick={approveMember}>
+        <div className="acceptButton" onClick={approve}>
           <MaterialSymbol className="icon" size={22} icon="check" />
           <div className="text">Approve</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton" onClick={reject}>
           <MaterialSymbol className="icon" size={22} icon="close" />
           <div className="text">Reject</div>
         </div>

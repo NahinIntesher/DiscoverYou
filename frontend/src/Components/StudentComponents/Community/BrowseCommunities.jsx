@@ -31,6 +31,8 @@ export default function BrowseCommunities() {
                         category={community.community_category}
                         description={community.community_description}
                         adminName={community.community_admin_name}
+                        adminId={community.admin_id}
+                        adminPicture={community.community_admin_picture}
                         isJoined={community.is_joined}
                         totalMember={community.total_member}
                     />

@@ -29,11 +29,8 @@
 } 
 
 
-.colortest {
-    --dark: rgb(153, 0, 0);
-    --medium:  rgb(233, 47, 80);
-    --light: rgb(255, 128, 128);
-    --extralight: rgb(255, 217, 217);
+a {
+    display: inline-block;
 } 
 
 * {

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../assets/images/desert4.jpg";
+import dp from "../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
-export default function CommunityBox({ id, name, category, description, adminName, isJoined, totalMember }) {
+export default function CommunityBox({ id, name, category, description, adminId, adminName, adminPicture, isJoined, totalMember }) {
     const [joinStatus, setJoinStatus] = useState(isJoined);
 
     function joinCommunity () {
@@ -87,15 +87,15 @@ export default function CommunityBox({ id, name, category, description, adminNam
                     <div className="titles">Community Description</div>
                     <div className="text">{description}</div>
                 </div>
-                <div className="organizer">
+                <Link to={"/profile/"+adminId} className="organizer">
                     <div className="organizerPicture">
-                        <img src={dp} />
+                        <img src={adminPicture ? adminPicture : dp} />
                     </div>
                     <div className="organizerDetails">
                         <div className="detailTitle">Maintained By</div>
                         <div className="detailInfo">{adminName}</div>
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
     )

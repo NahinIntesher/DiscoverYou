@@ -35,6 +35,7 @@ export default function PendingMembers({interests}) {
                                 memberId={pendingMember.member_id}
                                 communityId={pendingMember.community_id}
                                 memberName={pendingMember.member_name}
+                                memberPicture={pendingMember.member_picture}
                                 communityName={pendingMember.community_name}
                                 setUpdate={setUpdate}
                             />

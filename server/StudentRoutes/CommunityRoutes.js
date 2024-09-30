@@ -63,6 +63,7 @@ module.exports = (router) => {
     const query = `SELECT 
       c.*, 
       s.student_name AS community_admin_name,
+      IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS community_admin_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -242,6 +243,7 @@ module.exports = (router) => {
     const query = `SELECT 
       c_m.*,
       s.student_name as member_name,
+      IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS member_picture,
       c.community_name,
       c.admin_id
       FROM 

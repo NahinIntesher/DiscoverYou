@@ -33,6 +33,7 @@ export default function PendingCommunities() {
                         category={community.community_category}
                         description={community.community_description}
                         adminName={community.community_admin_name}
+                        adminPicture={community.community_admin_picture}
                         adminId={community.community_admin_id}
                         setUpdate={setUpdate}
                         totalMember={community.total_member}
