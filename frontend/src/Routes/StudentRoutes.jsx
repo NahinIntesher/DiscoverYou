@@ -37,6 +37,7 @@ import ChangeInterest from "../Components/StudentComponents/Profile/ChangeIntere
 import PendingCommunities from "../Components/StudentComponents/Community/PendingCommunities";
 import PendingProducts from "../Components/StudentComponents/Marketplace/PendingProducts";
 import Product from "../Components/StudentComponents/Marketplace/Product";
+import Material from "../Components/StudentComponents/Course/Material";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -59,6 +60,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
           <Route path="/course" element={<Course user={user}/>} />
+          <Route path="/course/material/:materialId" element={<Material/>} />
+
           <Route path="/course/new" element={<CreateNewCourses interests={user.interests} />} />
           <Route path="/course/participants/pending" element={<PendingParticipants />} />
           <Route path="/course/pending" element={<PendingCourse />} />

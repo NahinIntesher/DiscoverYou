@@ -256,6 +256,7 @@ module.exports = (router) => {
             return res.json({ error: "Error fetching hiring applicants" });
           }
           return res.json({
+            status: "Success",
             hiring: hiringResults[0],
             applicants: applicantsResults,
           });

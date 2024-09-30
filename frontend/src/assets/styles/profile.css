@@ -97,6 +97,7 @@
   display: inline-block;
   vertical-align: middle;
   margin: 6px;
+  max-width: calc(100% - 60px);
 }
 
 .profileSectionField .label {
@@ -143,6 +144,7 @@
   vertical-align: middle;
   margin: 10px 6px;
   z-index: 200;
+  max-width: calc(100% - 100px);
 }
 
 .contributionBox .texts .count{

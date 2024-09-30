@@ -129,6 +129,7 @@
 .formBox input[type="number"],
 .formBox input[type="tel"],
 .formBox input[type="date"],
+.formBox input[type="file"],
 .formBox input[type="datetime-local"],
 .formBox textarea,
 .formBox select {
@@ -150,6 +151,7 @@
 .formBox input[type="number"]:focus,
 .formBox input[type="tel"]:focus,
 .formBox input[type="date"]:focus,
+.formBox input[type="file"]:focus,
 .formBox input[type="datetime-local"]:focus,
 .formBox textarea:focus,
 .formBox select:focus {
@@ -451,6 +453,132 @@
   background-color: rgba(var(--medium), 0.6);
 }
 
+.addMaterialSpecial {
+  display: flex;
+  align-items: end;
+  padding: 0 6px;
+  margin-top: 0;
+}
+.addMaterialSpecial .input {
+  margin: 0px 6px;
+  flex: 1;
+}
+
+.addMaterialSpecial .addButton {
+  background-color: rgba(var(--medium), 0.4);
+  text-align: center;
+  color: rgb(var(--dark));
+  font-weight: 600;
+  padding: 16px 24px;
+  border-radius: 16px;
+  margin: 4px;
+  margin-right: 12px;
+}
+
+.addMaterialSpecial .addButton:hover {
+  background-color: rgba(var(--medium), 0.6);
+}
+
+.formBox .materialContainer {
+  padding: 8px;
+}
+.formBox .materialBox {
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 8px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+}
+
+
+.formBox .materialBox .rejectButton {
+    display: flex;
+    color: #c62d42cc;
+    background-color: #F4CED3;
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin: 10px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.formBox .materialBox .rejectButton:hover {
+    color: #c62d42;
+    background-color: #E9A1AA;
+}
+
+.formBox .materialBox .rejectButton .icon{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+}
+.formBox .materialBox .rejectButton .text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 4px;
+    font-weight: 500;
+}
+
+.formBox .materialBox .textContainer {
+  flex-grow: 1;
+  margin: 8px;
+}
+.formBox .materialBox .textContainer .name {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 6px 4px;
+}
+
+.formBox .materialBox .textContainer .format {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  padding: 2px 12px;
+  width: fit-content;
+}
+
+
+.formBox .materialBox .media {
+  display: inline-block;
+  vertical-align: middle;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  margin: 6px;
+  background-color: rgba(0,0,0,0.1);
+  text-align: center;
+}
+.formBox .materialBox .media .audio {
+  display: block;
+  margin-top: 8px;
+}
+.formBox .materialBox .media .pdfIcon {
+  line-height: 80px;
+}
+.formBox .materialBox .media audio {
+  display: none;
+}
+.formBox .materialBox .media video {
+  display: none;
+}
+.formBox .materialBox .duration {
+  display: inline-block;
+  font-size: 12px;
+  background-color: rgba(0,0,0,0.4);
+  color: #ffffff;
+  padding: 1px 10px;
+  border-radius: 20px;
+}
+.formBox .materialBox .media img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
 
 @media screen and (min-width: 1600px) {
   .mainContent {

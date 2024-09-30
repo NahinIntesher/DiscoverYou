@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function CreateNewCourse({ interests }) {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export default function CreateNewCourse({ interests }) {
     courseDescription: "",
     courseMaterials: [],
     courseMaterialNames: [],
+    tempMaterial: "",
+    tempMaterialName: ""
   });
 
   const handleChange = (e) => {
@@ -59,31 +62,39 @@ export default function CreateNewCourse({ interests }) {
       alert("File should be image, video or audio!");
     }
   };
-  function removeMedia(index) {
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        courseMaterials: prevFormData.courseMaterials.filter(
-          (_, i) => i !== index
-        ),
-      };
-    });
-  }
-
-  const addMaterial = () => {
+  function removeMedia(index) {;
     setFormData(function (oldFormData) {
       return {
         ...oldFormData,
-        courseMaterials: [
-          ...oldFormData.courseMaterials,
-          ...Array.from(oldFormData.tempMaterial),
-        ],
-        courseMaterialNames: [
-          ...oldFormData.courseMaterialNames,
-          oldFormData.tempMaterialName
-        ]
+        courseMaterials: oldFormData.courseMaterials.filter(
+          (_, i) => i !== index
+        ),
+        courseMaterialNames: oldFormData.courseMaterialNames.filter(
+          (_, i) => i !== index
+        )
       };
-    });    
+    }); 
+  }
+
+  const addMaterial = () => {
+    if(formData.tempMaterial != "" && formData.tempMaterialName != "") {
+      setFormData(function (oldFormData) {
+        return {
+          ...oldFormData,
+          courseMaterials: [
+            ...oldFormData.courseMaterials,
+            ...Array.from(oldFormData.tempMaterial),
+          ],
+          courseMaterialNames: [
+            ...oldFormData.courseMaterialNames,
+            oldFormData.tempMaterialName
+          ]
+        };
+      }); 
+    }   
+    else {
+      alert("You did not add any material!")
+    }
   }
 
   const handleSubmit = (e) => {
@@ -170,146 +181,143 @@ export default function CreateNewCourse({ interests }) {
             <div className="title">Add Course Materials</div>
             {/* Course Materials */}
             
-            <div className="input">
-              <label name="tempMaterialName">Material Name</label>
-              <input
-                name="tempMaterialName"
-                onChange={handleChange}
-                type="text"
-                placeholder="Enter material name"
-              />
+            <div className="addMaterialSpecial">
+              <div className="input">
+                <label name="tempMaterialName">Material Name</label>
+                <input
+                  name="tempMaterialName"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter material name"
+                />
+              </div>
+              <div className="input">
+                <label htmlFor="courseMaterials">
+                  Material File 
+                </label>
+                <input
+                  type="file"
+                  name="materials"
+                  multiple
+                  onChange={handleFileChange}
+                  required
+                />
+              </div>
+              <div className="addButton" onClick={addMaterial}>Add</div>              
             </div>
-            <div className="input">
-              <label htmlFor="courseMaterials">
-                Material File <span className="required">*</span>
-              </label>
-              <input
-                type="file"
-                name="materials"
-                multiple
-                onChange={handleFileChange}
-                required
-              />
-              {formData.courseMaterials.length < 5 && (
-                <p className="bottomRequired">
-                  Add at least 5 materials of you course
-                </p>
-              )}
-            </div>
-            <div onClick={addMaterial}>Add Material</div>
-
-            <div className="mediaContainer">
-              {formData.courseMaterials.map(function (file, index) {
-                if (file.type.split("/")[0] == "image") {
-                  return (
-                    <div className="media" key={index}>
-                      <img
-                        key={index}
-                        src={URL.createObjectURL(file)}
-                        alt={`preview ${index}`}
-                      />
-                      <div
-                        className="remove"
-                        onClick={function () {
-                          removeMedia(index);
-                        }}
-                      >
-                        <MaterialSymbol
-                          className="icon"
-                          size={20}
-                          icon="close"
-                        />
+            {formData.courseMaterials.length ?
+              <div className="materialContainer">
+                {formData.courseMaterials.map(function (file, index) {
+                  if (file.type.split("/")[0] == "image") {
+                    return (
+                      <div className="materialBox" key={index}>
+                        <div className="media">
+                          <img
+                            key={index}
+                            src={URL.createObjectURL(file)}
+                            alt={`preview ${index}`}
+                          />
+                        </div>
+                        <div className="textContainer">
+                          <div className="name">{formData.courseMaterialNames[index]}</div>
+                          <div className="format">Image</div>
+                        </div>
+                        <div className="rejectButton" onClick={()=> removeMedia(index)}>
+                          <MaterialSymbol className="icon" size={22} icon="delete" />
+                          <div className="text">Delete</div>
+                        </div>
                       </div>
-                    </div>
-                  );
-                } else if (file.type.split("/")[0] == "audio") {
-                  return (
-                    <div className="media" key={index}>
-                      <audio
-                        src={URL.createObjectURL(file)}
-                        onLoadedMetadata={(event) =>
-                          handleLoadedMetadata(file, index, event)
-                        }
-                      />
-                      <MaterialSymbol className="audio" size={42} icon="mic" />
-                      <div className="duration">
-                        {durations[index]
-                          ? formatedDuration(durations[index])
-                          : "00.00"}
+                    );
+                  } else if (file.type.split("/")[0] == "audio") {
+                    return (
+                      <div className="materialBox" key={index}>
+                        <div className="media">
+                          <audio
+                            src={URL.createObjectURL(file)}
+                            onLoadedMetadata={(event) =>
+                              handleLoadedMetadata(file, index, event)
+                            }
+                          />
+                          <MaterialSymbol className="audio" size={42} icon="mic" />
+                          <div className="duration">
+                            {durations[index]
+                              ? formatedDuration(durations[index])
+                              : "00.00"}
+                          </div>
+                        </div>
+                        <div className="textContainer">
+                          <div className="name">{formData.courseMaterialNames[index]}</div>
+                          <div className="format">Audio</div>
+                        </div>
+                        <div className="rejectButton" onClick={()=> removeMedia(index)}>
+                          <MaterialSymbol className="icon" size={22} icon="delete" />
+                          <div className="text">Delete</div>
+                        </div>
                       </div>
-                      <div
-                        className="remove"
-                        onClick={function () {
-                          removeMedia(index);
-                        }}
-                      >
-                        <MaterialSymbol
-                          className="icon"
-                          size={20}
-                          icon="close"
-                        />
+                    );
+                  } else if (file.type.split("/")[0] == "video") {
+                    return (
+                      <div className="materialBox" key={index}>
+                        <div className="media">
+                          <video
+                            src={URL.createObjectURL(file)}
+                            onLoadedMetadata={(event) =>
+                              handleLoadedMetadata(file, index, event)
+                            }
+                          />
+                          <MaterialSymbol
+                            className="audio"
+                            size={42}
+                            icon="movie"
+                          />
+                          <div className="duration">
+                            {durations[index]
+                              ? formatedDuration(durations[index])
+                              : "00.00"}
+                          </div>
+                        </div>
+                        <div className="textContainer">
+                          <div className="name">{formData.courseMaterialNames[index]}</div>
+                          <div className="format">Video</div>
+                        </div>
+                        <div className="rejectButton" onClick={()=> removeMedia(index)}>
+                          <MaterialSymbol className="icon" size={22} icon="delete" />
+                          <div className="text">Delete</div>
+                        </div>
                       </div>
-                    </div>
-                  );
-                } else if (file.type.split("/")[0] == "video") {
-                  return (
-                    <div className="media" key={index}>
-                      <video
-                        src={URL.createObjectURL(file)}
-                        onLoadedMetadata={(event) =>
-                          handleLoadedMetadata(file, index, event)
-                        }
-                      />
-                      <MaterialSymbol
-                        className="audio"
-                        size={42}
-                        icon="movie"
-                      />
-                      <div className="duration">
-                        {durations[index]
-                          ? formatedDuration(durations[index])
-                          : "00.00"}
+                    );
+                  } else if (file.type.split("/")[0] == "application") {
+                    return (
+                      <div className="materialBox" key={index}>
+                        <div className="media">
+                          <MaterialSymbol
+                            className="pdfIcon"
+                            size={42}
+                            icon="description"
+                          />
+                        </div>
+                        <div className="textContainer">
+                          <div className="name">{formData.courseMaterialNames[index]}</div>
+                          <div className="format">PDF Document</div>
+                        </div>
+                        <div className="rejectButton" onClick={()=> removeMedia(index)}>
+                          <MaterialSymbol className="icon" size={22} icon="delete" />
+                          <div className="text">Delete</div>
+                        </div>
                       </div>
-                      <div
-                        className="remove"
-                        onClick={function () {
-                          removeMedia(index);
-                        }}
-                      >
-                        <MaterialSymbol
-                          className="icon"
-                          size={20}
-                          icon="close"
-                        />
-                      </div>
-                    </div>
-                  );
-                } else if (file.type.split("/")[0] == "application") {
-                  return (
-                    <div className="media" key={index}>
-                      <MaterialSymbol
-                        className="icon"
-                        size={42}
-                        icon="insert_drive_file"
-                      />
-                      <div
-                        className="remove"
-                        onClick={function () {
-                          removeMedia(index);
-                        }}
-                      >
-                        <MaterialSymbol
-                          className="icon"
-                          size={20}
-                          icon="close"
-                        />
-                      </div>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-
+                    );
+                  }
+                })}
+                {formData.courseMaterials.length < 5 && (
+                  <p className="bottomRequired">
+                    Add at least 5 materials of you course
+                  </p>
+                )}
+              </div>
+              : <div className="materialContainer">
+                <NotFound message="You did not add any material!"/>
+                </div>
+            }
             <button>Submit For Approval</button>
           </form>
         </div>

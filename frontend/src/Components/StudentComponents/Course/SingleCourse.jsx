@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -16,9 +16,10 @@ const Singlecourse = () => {
   const [data, setData] = useState({
     course: null,
     participants: [],
+    materials: []
   });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("course");
+  const [activeTab, setActiveTab] = useState("materials");
 
 
   function getPMTime(datetime) {
@@ -66,32 +67,25 @@ const Singlecourse = () => {
         <div className="leftSection">
           <div className="name">{data.course.course_name}</div>
           <Category category={data.course.course_category} />
-          <div className="hostContainer">
+        </div>
+        <div className="rightSection">
+        <div className="hostContainer">
             <div className="host">
               <div className="hostPicture">
                 <img src={dp} />
               </div>
               <div className="hostDetails">
-                <div className="detailTitle">Organized By</div>
+                <div className="detailTitle">Created By</div>
                 <div className="detailInfo">{data.course.mentor_name}</div>
               </div>
             </div>
           </div>
         </div>
-        <div className="rightSection">
-          <div className="joinButtonContainer">
-              <Link to={`/course/${courseId}/add-material`} className="joinButton">
-                Add Materials
-              </Link>
-            <div className="joinDetails">
-              <b>Participant:</b> {participantNo}
-            </div>
-          </div>
-        </div>
       </div>
       <div className="tabContainer">
-        <div className={activeTab == "course" ? "activeTab" : "tab"} onClick={function () { setActiveTab("course") }}>course Details</div>
-        <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>course Participants</div>
+        <div className={activeTab == "materials" ? "activeTab" : "tab"} onClick={function () { setActiveTab("materials") }}>Course Materials</div>
+        <div className={activeTab == "course" ? "activeTab" : "tab"} onClick={function () { setActiveTab("course") }}>Course Details</div>
+        <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>Course Participants</div>
       </div>
 
       {activeTab === "course" && (
@@ -105,6 +99,20 @@ const Singlecourse = () => {
           </div>
         </div>
       )}
+      {activeTab === "materials" && (
+        <div className="content center">
+            {data.materials.length > 0 ? (
+              <div className="materialList">
+                {data.materials.map((material) =>
+                  <Material key={material.material_id} material={material} />
+                )}
+              </div>
+            ) :
+              <NotFound message={"This course have no material!"} />
+            }
+        </div>)
+      }
+
       {activeTab === "participants" && (
         <div className="content center">
           {data.participants.length > 0 ? (
@@ -134,6 +142,120 @@ function Participant({ name }) {
       </div>
     </div>
   );
+}
+
+function Material({material}) {
+  const navigate = useNavigate();
+
+  function goToMaterial() {
+    axios.defaults.withCredentials = true;
+    axios
+    .post("http://localhost:3000/student/courses/material/complete/", {
+        materialId: material.material_id
+    })
+    .then((res) => {
+      if (res.data.status === "Success") {
+        navigate("/course/material/"+material.material_id);
+      } else {
+        alert(res.data.Error);
+      }
+    })
+    .catch((err) => console.log(err));
+  };
+
+  if (material.material_type.split("/")[0] == "image") {
+    return (
+      <div className="materialBox">
+        <div className="media">
+          <MaterialSymbol
+            className="icon"
+            size={42}
+            icon="image"
+          />
+        </div>
+        <div className="textContainer">
+          <div className="name">{material.material_name}</div>
+          <div className="format">Image</div>
+        </div>
+        <div className="buttonContainer">
+          <div className="button" onClick={goToMaterial}>View Image</div>
+          {material.is_completed ? 
+            <div className="completed">Completed</div>
+            : 
+            <div className="incomplete">Not completed</div>
+          }
+        </div>
+      </div>
+    );
+  } else if (material.material_type.split("/")[0] == "audio") {
+    return (
+      <div className="materialBox">
+        <div className="media">
+          <MaterialSymbol className="icon" size={42} icon="mic" />
+        </div>
+        <div className="textContainer">
+          <div className="name">{material.material_name}</div>
+          <div className="format">Audio</div>
+        </div>
+        <div className="buttonContainer">
+          <div className="button" onClick={goToMaterial}>Listen Audio</div>
+          {material.is_completed ? 
+            <div className="completed">Completed</div>
+            : 
+            <div className="incomplete">Not completed</div>
+          }
+        </div>
+      </div>
+    );
+  } else if (material.material_type.split("/")[0] == "video") {
+    return (
+      <div className="materialBox">
+        <div className="media">
+          <MaterialSymbol
+            className="icon"
+            size={42}
+            icon="movie"
+          />
+        </div>
+        <div className="textContainer">
+          <div className="name">{material.material_name}</div>
+          <div className="format">Video</div>
+        </div>
+        <div className="buttonContainer">
+          <div className="button" onClick={goToMaterial}>Watch Video</div>
+          {material.is_completed ? 
+            <div className="completed">Completed</div>
+            : 
+            <div className="incomplete">Not completed</div>
+          }
+        </div>
+      </div>
+    );
+  } else if (material.material_type.split("/")[0] == "application") {
+    return (
+      <div className="materialBox">
+        <div className="media">
+          <MaterialSymbol
+            className="icon"
+            size={42}
+            icon="description"
+          />
+        </div>
+        <div className="textContainer">
+          <div className="name">{material.material_name}</div>
+          <div className="format">PDF Document</div>
+        </div>
+        <div className="buttonContainer">
+          <div className="button" onClick={goToMaterial}>Read Document</div>
+          {material.is_completed ? 
+            <div className="completed">Completed</div>
+            : 
+            <div className="incomplete">Not completed</div>
+          }
+        </div>
+      </div>
+    );
+  }
 }
 
 

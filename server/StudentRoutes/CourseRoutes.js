@@ -65,7 +65,7 @@ module.exports = (router, multer) => {
   router.get("/courses/my", verifyToken, (req, res) => {
     let userId = req.userId;
 
-    const query = `SELECT 
+    const query1 = `SELECT 
       c.*, 
       s.student_name AS course_mentor_name,
       CASE
@@ -99,20 +99,65 @@ module.exports = (router, multer) => {
       c.course_id;    
       `;
 
-    connection.query(query, (err, results) => {
+      const query2 = `SELECT 
+      c.*, 
+      s.student_name AS course_mentor_name,
+      CASE
+        WHEN EXISTS (
+          SELECT 1
+          FROM course_participants
+          WHERE course_participants.course_id = c.course_id 
+          AND course_participants.participant_id = '${userId}'
+          AND course_participants.req_for_join_status = 1
+        ) THEN "yes"
+        WHEN EXISTS (
+          SELECT 1
+          FROM course_participants
+          WHERE course_participants.course_id = c.course_id 
+          AND course_participants.participant_id = '${userId}'
+          AND course_participants.req_for_join_status = 0
+        ) THEN "pending"
+        ELSE "no"
+      END AS is_joined,
+      COUNT(DISTINCT c_m.material_id) AS total_material,    
+      COUNT(DISTINCT c_p.participant_id) AS total_member,
+      (
+        SELECT COUNT(c_c_m.material_id) AS completed_material
+        FROM completed_course_materials AS c_c_m
+        JOIN course_materials AS c_m ON c_c_m.material_id = c_m.material_id
+        WHERE c_c_m.participant_id = '${userId}' AND c_m.course_id = c.course_id
+      ) AS completed_material,    
+      c.approval_status,
+      IF(COUNT(DISTINCT c_m.material_id) > 0, 
+        ((
+        SELECT COUNT(c_c_m.material_id) AS completed_material
+        FROM completed_course_materials AS c_c_m
+        JOIN course_materials AS c_m ON c_c_m.material_id = c_m.material_id
+        WHERE c_c_m.participant_id = '${userId}' AND c_m.course_id = c.course_id
+      ) / COUNT(DISTINCT c_m.material_id)) * 100, 0) AS completed_percentage
+    FROM 
+      courses AS c
+    JOIN 
+      student AS s ON c.mentor_id = s.student_id
+    LEFT JOIN 
+      course_materials AS c_m ON c.course_id = c_m.course_id
+    LEFT JOIN 
+      course_participants AS c_p ON c.course_id = c_p.course_id AND c_p.req_for_join_status = 1
+    GROUP BY
+      c.course_id    
+    HAVING
+      is_joined = "yes";
+    `;
+
+    connection.query(query1, (err, myCourseResults) => {
       if (err) throw err;
-      connection.query(
-        `
-        SELECT * FROM courses WHERE courses.approval_status = 0
-        `,
-        (err, nestedResults) => {
-          if (err) throw err;
-          return res.json({
-            courses: results,
-            myPendingCourses: nestedResults.length,
-          });
-        }
-      );
+      connection.query(query2, (err, enrolledCourseResult) => {
+        if (err) throw err;
+        return res.json({
+          myCourses: myCourseResults,
+          enrolledCourses: enrolledCourseResult
+        });
+      });
     });
   });
 
@@ -148,6 +193,22 @@ module.exports = (router, multer) => {
     JOIN student ON course_participants.participant_id = student.student_id
     WHERE course_participants.course_id = ?`;
 
+    const materialsQuery = `
+    SELECT c_m.material_id, c_m.material_name, c_m.material_type,
+    CASE
+      WHEN EXISTS (
+        SELECT *
+        FROM completed_course_materials AS c_c_m
+        WHERE c_c_m.material_id = c_m.material_id 
+        AND c_c_m.participant_id = '${userId}'
+      )
+      THEN true
+      ELSE false
+    END AS is_completed
+    FROM course_materials AS c_m
+    WHERE course_id = ?`;
+
+
     // Query for course details
     connection.query(courseQuery, [userId, courseId], (err, courseResults) => {
       if (err) {
@@ -170,10 +231,23 @@ module.exports = (router, multer) => {
           }
 
           // Return both course details and participants
-          return res.json({
-            course: courseResults[0],
-            participants: participantsResults,
-          });
+          connection.query(
+            materialsQuery,
+            [courseId],
+            (err, materialsResults) => {
+              if (err) {
+                console.error("Error fetching course participants:", err);
+                return res.json({ error: "Error fetching course participants" });
+              }
+    
+              // Return both course details and participants
+              return res.json({
+                course: courseResults[0],
+                participants: participantsResults,
+                materials: materialsResults,
+              });
+            }
+          );
         }
       );
     });
@@ -200,6 +274,7 @@ module.exports = (router, multer) => {
     const userId = req.userId;
     const { courseName, courseCategory, courseDescription, courseMaterialNames } = req.body;
     const files = req.files;
+    let courseMaterialNamesArray = courseMaterialNames.split(",");
     
     console.log(courseMaterialNames);
 
@@ -218,7 +293,7 @@ module.exports = (router, multer) => {
             connection.query(
               `INSERT INTO  course_materials (course_id, material_name, material_blob, material_type)
           VALUES (?, ?, ?, ?)`,
-              [courseId, buffer, mimetype, courseMaterialNames[index]],
+              [courseId, courseMaterialNamesArray[index], buffer, mimetype],
               (err, result) => {
                 if (err) {
                   console.error("Database insertion error:", err);
@@ -399,4 +474,85 @@ module.exports = (router, multer) => {
       return res.json({ courses: results });
     });
   });
+
+  router.get("/courses/material/:id", (req, res) => {
+    const materialId = req.params.id;
+
+    connection.query(
+      `
+    SELECT c_m.material_name, c_m.material_type, c.course_name as course_name,
+    CONCAT('http://localhost:3000/student/courses/material/cdn/', c_m.material_id) AS material_link
+    FROM course_materials AS c_m 
+    JOIN courses AS c
+    ON c_m.course_id = c.course_id
+    WHERE material_id = ?
+  `,
+      [materialId],
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({
+          material: results[0]
+        });
+      }
+    );
+  });
+
+  router.get("/courses/material/cdn/:id", (req, res) => {
+    const materialId = req.params.id;
+
+    connection.query(
+      `
+    SELECT *
+    FROM course_materials 
+    WHERE material_id = ?
+  `,
+      [materialId],
+      (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+          return res.status(404).send("Material not found.");
+        }
+
+        const media = results[0];
+        const mediaType = media.material_type;
+        const mediaData = media.material_blob;
+
+        res.setHeader("Content-Type", mediaType);
+
+        res.send(mediaData);
+      }
+    );
+  });
+
+
+  router.post("/courses/material/complete", verifyToken, (req, res) => {
+    let userId = req.userId;
+    const { materialId } = req.body;
+
+    const query1 = `SELECT *
+    FROM completed_course_materials
+    WHERE 
+      material_id = ${materialId} AND participant_id = '${userId}'
+    `;
+
+    const query2 = `INSERT INTO 
+    completed_course_materials (material_id, participant_id) 
+    VALUES (${materialId}, '${userId}');`;
+
+    connection.query(query1, (err, results) => {
+      if (err) throw err;
+      if(results.length <= 0) {
+        connection.query(query2, (err, results) => {
+          if (err) throw err;
+          return res.json({ status: "Success" });
+        });
+      }
+      else {
+        return res.json({ status: "Success" });
+      }
+    });
+  });
+
 };

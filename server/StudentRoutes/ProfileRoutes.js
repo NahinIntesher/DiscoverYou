@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
+const { promisify } = require("util");
+
 
 module.exports = (router, multer, bcrypt) => {
   // const storage = multer.memoryStorage();
@@ -232,5 +234,64 @@ module.exports = (router, multer, bcrypt) => {
         });
       }
     );
+  });
+
+  router.get("/profile", verifyToken, async (req, res) => {
+    const id = req.userId;
+
+    // SQL queries
+    const contestQuery = `
+        SELECT 
+            COUNT(cp.contest_id) AS total_contests,
+            SUM(CASE WHEN cp.result_position = 1 THEN 1 ELSE 0 END) AS rank_1_count,
+            SUM(CASE WHEN cp.result_position = 2 THEN 1 ELSE 0 END) AS rank_2_count
+        FROM contest_participants cp
+        JOIN student s ON s.student_id = cp.participant_id
+        WHERE s.student_id = ?`;
+
+    const showcasePostQuery = `
+        SELECT 
+            COUNT(sp.post_id) AS total_posts, 
+            COUNT(spr.reaction_id) AS total_reactions
+        FROM showcase_posts sp
+        LEFT JOIN showcase_post_reactions spr ON sp.post_id = spr.post_id
+        WHERE sp.user_id = ?`;
+
+    const courseQuery = `
+        SELECT COUNT(participant_id) AS course_count 
+        FROM course_participants 
+        WHERE participant_id = ?`;
+
+    const webinarQuery = `
+        SELECT COUNT(participant_id) AS webinar_count 
+        FROM webinar_participants 
+        WHERE participant_id = ?`;
+
+    try {
+      // Use promisified version of connection.query for cleaner async/await handling
+      const queryAsync = promisify(connection.query).bind(connection);
+
+      // Execute the queries concurrently
+      const [contestResults, showcaseResults, courseResults, webinarResults] =
+        await Promise.all([
+          queryAsync(contestQuery, [id]),
+          queryAsync(showcasePostQuery, [id]),
+          queryAsync(courseQuery, [id]),
+          queryAsync(webinarQuery, [id]),
+        ]);
+
+      // Respond with all the results
+      res.json({
+        status: "Success",
+        contestResults: contestResults[0],
+        showcaseResults: showcaseResults[0],
+        courseResults: courseResults[0],
+        webinarResults: webinarResults[0],
+      });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ status: "Error fetching data", error: err.message });
+    }
   });
 };

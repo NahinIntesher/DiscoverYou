@@ -536,7 +536,7 @@
     font-weight: 600;
 }
 
-.webinarHeader .leftSection .host {
+.webinarHeader .host {
     background-color: rgba(0,0,0,0.1);
     margin: 10px 4px;
     border-radius: 40px;
@@ -544,7 +544,7 @@
     width: fit-content;
     text-align: left;
 }
-.webinarHeader .leftSection .host .hostPicture {
+.webinarHeader .host .hostPicture {
     display: inline-block;
     vertical-align: middle;
     width: 48px;
@@ -553,7 +553,7 @@
     border: 3px #ffffff solid;
     overflow: hidden;
 }
-.webinarHeader .leftSection .host .hostDetails {
+.webinarHeader .host .hostDetails {
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
@@ -562,11 +562,11 @@
     margin-right: 16px;
 }
 
-.webinarHeader .leftSection .host .hostDetails .detailTitle {   
+.webinarHeader .host .hostDetails .detailTitle {   
     font-size: 13px;
     line-height: 120%;
 }
-.webinarHeader .leftSection .host .hostDetails .detailInfo { 
+.webinarHeader .host .hostDetails .detailInfo { 
     font-weight: 600;
     font-size: 15px;
 }

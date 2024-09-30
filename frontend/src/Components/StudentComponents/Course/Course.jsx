@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../../assets/styles/community.css";
 import MyCourses from "./MyCourses";
 import BrowseCourses from "./BrowseCourses";
+import "../../../assets/styles/course.css";
 
 export default function Course({user}) {
     const [activeTab, setActiveTab] = useState(["browseCourses"]);
@@ -69,7 +70,7 @@ export default function Course({user}) {
                 <div className="pendingBox">
                     <MaterialSymbol className="icon" size={32} icon="error" />
                     <div className="text">
-                        {pendingParticipantsNo} members approval pending in your Courses.
+                        {pendingParticipantsNo} members approval pending in your courses.
                     </div>
                     <Link to={"/course/participants/pending"} className="button">
                         Pending participants
