@@ -26,7 +26,7 @@ module.exports = (router, multer) => {
     const query = `SELECT
      p.*, 
     CONCAT("http://localhost:3000/admin/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
-     FROM 
+     FROM
         products as p
      JOIN
         product_images as p_i
@@ -46,6 +46,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     p.*, 
     s.student_name as seller_name,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS seller_picture,
     CONCAT("http://localhost:3000/admin/marketplace/products/image/", 
         (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
     FROM 

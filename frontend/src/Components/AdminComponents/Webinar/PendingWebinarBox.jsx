@@ -10,6 +10,7 @@ export default function PendingWebinarBox({
   category,
   description,
   hostName,
+  hostPicture,
   hostId,
   setUpdate,
   meetingLink,
@@ -108,7 +109,7 @@ export default function PendingWebinarBox({
         <div className="description">
           <div className="organizer">
             <div className="organizerPicture">
-              <img src={dp} />
+              <img src={hostPicture ? hostPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Requested By</div>

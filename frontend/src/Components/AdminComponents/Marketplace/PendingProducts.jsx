@@ -39,6 +39,7 @@ export default function PendingProducts() {
                             key={index}
                             productId={product.product_id}
                             productName={product.product_name}
+                            productSellerPicture={product.seller_picture}
                             productImage={product.image_url}
                             productPrice={product.product_price}
                             productCategory={product.product_category}

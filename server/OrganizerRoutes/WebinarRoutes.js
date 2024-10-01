@@ -26,7 +26,8 @@ module.exports = (router) => {
     const query = `
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
       TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
-      organizer.organizer_name AS host_name
+      organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
       FROM 
           webinars w
       LEFT JOIN 
@@ -59,6 +60,7 @@ module.exports = (router) => {
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
       TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
       organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -99,7 +101,8 @@ module.exports = (router) => {
     const query = `
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
       TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
-      organizer.organizer_name AS host_name
+      organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
       FROM 
           webinars w
       LEFT JOIN 
@@ -136,6 +139,7 @@ module.exports = (router) => {
           ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
       END AS calculated_time,
       organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
       CASE 
           WHEN NOW() >= w.end_time THEN "previous"
           WHEN NOW() <= w.start_time THEN "upcoming"
@@ -228,6 +232,7 @@ module.exports = (router) => {
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
       TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
       organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -275,6 +280,7 @@ module.exports = (router) => {
             ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
         END AS calculated_time,
         organizer.organizer_name AS host_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
         CASE 
           WHEN NOW() >= w.end_time THEN "previous"
           WHEN NOW() <= w.start_time THEN "upcoming"

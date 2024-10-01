@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../assets/images/desert4.jpg";
+import dp from "../../assets/images/default.jpg";
 import ContestTimeRemaining from "./contestTimeRemaining";
 import { useNavigate } from "react-router-dom";
 
 export default function WebinarBox({
   id,
   name,
+  hostPicture,
   description,
   category,
   recordedLink,
@@ -136,7 +137,7 @@ export default function WebinarBox({
         <div className="hostContainer">
           <div className="host">
             <div className="hostPicture">
-              <img src={dp} />
+              <img src={hostPicture ? hostPicture : dp} />
             </div>
             <div className="hostDetails">
               <div className="detailTitle">Organized By</div>

@@ -66,7 +66,7 @@ export default function Showcase({user}) {
                             postId={post.post_id}
                             posterName={post.user_name} 
                             postContent={post.post_content}
-                            posterPicture={post.student_picture}
+                            posterPicture={post.user_picture}
                             postTimeAgo={post.post_time_ago}
                             postMediaArray={JSON.parse("["+post.media_array+"]")}
                             isPostReacted={post.is_reacted}

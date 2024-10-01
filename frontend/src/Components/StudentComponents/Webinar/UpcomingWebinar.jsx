@@ -28,6 +28,7 @@ export default function UpcomingWebinar() {
             key={webinar.webinar_id}
             id={webinar.webinar_id}
             name={webinar.webinar_name}
+            hostPicture={webinar.host_picture}
             details={webinar.webinar_details}
             category={webinar.webinar_category}
             host={webinar.host_name}

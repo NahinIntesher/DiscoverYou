@@ -80,7 +80,7 @@ export default function Product() {
                         <Category category={product.product_category}/>
                         <div className="organizer">
                             <div className="organizerPicture">
-                            <img src={dp} />
+                            <img src={product.seller_picture ? product.seller_picture : dp} />
                             </div>
                             <div className="organizerDetails">
                             <div className="detailTitle">Selling By</div>

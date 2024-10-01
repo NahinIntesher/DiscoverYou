@@ -327,14 +327,13 @@ module.exports = (router, multer) => {
 
   
   router.get("/showcase/post/my", verifyToken, (req, res) => {
-    const {sort, category} = req.query;
-
     const userId = req.userId;
 
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     s_p_m.media_type,
     CASE
       WHEN EXISTS (

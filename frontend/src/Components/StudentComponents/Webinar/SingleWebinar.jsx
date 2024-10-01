@@ -5,7 +5,7 @@ import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import NotFound from "../../CommonComponents/NotFound";
 
 
@@ -92,7 +92,7 @@ const SingleWebinar = () => {
           <div className="hostContainer">
             <div className="host">
               <div className="hostPicture">
-                <img src={dp} />
+                <img src={data.webinar.host_picture ? data.webinar.host_picture : dp} />
               </div>
               <div className="hostDetails">
                 <div className="detailTitle">Organized By</div>

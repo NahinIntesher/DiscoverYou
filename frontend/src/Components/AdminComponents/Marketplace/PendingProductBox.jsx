@@ -7,6 +7,7 @@ import axios from "axios";
 export default function PendingProductBox({
   productId,
   productName,
+  productSellerPicture,
   productCategory,
   productImage,
   productPrice,
@@ -108,7 +109,7 @@ export default function PendingProductBox({
         <div className="description">
           <div className="organizer">
             <div className="organizerPicture">
-              <img src={dp} />
+              <img src={productSellerPicture ? productSellerPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Requested By</div>
