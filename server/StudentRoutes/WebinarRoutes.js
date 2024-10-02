@@ -282,7 +282,7 @@ module.exports = (router) => {
         w.webinar_category, 
         COUNT(w_p.webinar_id) AS participant_count, 
         organizer.organizer_name AS host_name,
-        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
     FROM 
         webinars w
     JOIN 

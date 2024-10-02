@@ -37,6 +37,7 @@ export default function CourseParticipated({user}) {
                             key={course.course_id}
                             id={course.course_id}
                             name={course.course_name}
+                            mentorPicture={course.mentor_picture}
                             category={course.course_category}
                             description={course.course_description}
                             mentorName={course.course_mentor_name}
@@ -57,6 +58,7 @@ export default function CourseParticipated({user}) {
                             key={course.course_id}
                             id={course.course_id}
                             name={course.course_name}
+                            mentorPicture={course.mentor_picture}
                             category={course.course_category}
                             description={course.course_description}
                             mentorName={course.course_mentor_name}

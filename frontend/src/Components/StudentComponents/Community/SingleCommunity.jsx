@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import Header from "../../CommonComponents/Header";
 import MessageBox from "../../CommonComponents/MessageBox";
 
@@ -79,6 +79,7 @@ export default function SingleCommunity({interests}) {
                             message={message.message_content} 
                             ownMessage={message.own_message}
                             messengerName={message.messenger_name}
+                            messengerPicture={message.messenger_picture}
                         />)
                     })
                 }

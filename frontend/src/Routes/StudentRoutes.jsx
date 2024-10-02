@@ -20,6 +20,9 @@ import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
 
 import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
+import SingleHiring from "../../src/Components/OrganizerComponents/Hiring/SingleHiring";
+
+
 import Notification from "../Components/StudentComponents/Notification/Notification";
 import Profile from "../Components/StudentComponents/Profile/Profile";
 import CourseParticipated from "../Components/StudentComponents/Profile/Details/CourseParticipated";
@@ -85,6 +88,8 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/marketplace/product/:productId" element={<Product />} />
 
           <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring/:hiringId" element={<SingleHiring />} />
+
           <Route path="/notification" element={<Notification />} />
           
           

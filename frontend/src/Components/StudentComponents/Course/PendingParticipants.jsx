@@ -35,6 +35,7 @@ export default function PendingParticipants({interests}) {
                                 participantId={pendingParticipant.participant_id}
                                 courseId={pendingParticipant.course_id}
                                 participantName={pendingParticipant.participant_name}
+                                participantPicture={pendingParticipant.partipant_picture}
                                 courseName={pendingParticipant.course_name}
                                 setUpdate={setUpdate}
                             />

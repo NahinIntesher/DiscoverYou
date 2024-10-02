@@ -146,7 +146,8 @@ module.exports = (router) => {
             THEN true
             ELSE false
           END AS own_message,
-          s.student_name AS messenger_name
+          s.student_name AS messenger_name,
+          IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS messenger_picture
         FROM 
           community_messages AS c_m
         JOIN 

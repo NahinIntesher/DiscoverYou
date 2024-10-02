@@ -36,6 +36,7 @@ export default function WebinarParticipated({user}) {
                             key={webinar.webinar_id}
                             id={webinar.webinar_id}
                             name={webinar.webinar_name}
+                            hostPicture={webinar.host_picture}
                             category={webinar.webinar_category}
                             description={webinar.webinar_description}
                             hostName={webinar.host_name}

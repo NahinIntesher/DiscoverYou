@@ -39,11 +39,11 @@ export default function Profile({ user }) {
           </div>
           <div className="details">
             <div className="name">{user.admin_name}</div>
-            <div className="userPoints">
+            {/* <div className="userPoints">
               <MaterialSymbol className="icon" size={22} icon="star" fill />
               <div className="text">POINTS</div>
               <div className="point">1442{user.admin_points}</div>
-            </div>
+            </div> */}
           </div>
         </div>
 

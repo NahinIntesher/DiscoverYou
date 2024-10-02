@@ -79,7 +79,7 @@ const SingleHiring = () => {
           <div className="hostContainer">
             <div className="host">
               <div className="hostPicture">
-                <img src={data.hiring.organizer_picture?data.hiring.organizer_picture:dp} />
+                <img src={data.hiring.organizer_picture ? data.hiring.organizer_picture : dp} />
               </div>
               <div className="hostDetails">
                 <div className="detailTitle">Organized By</div>

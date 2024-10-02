@@ -67,6 +67,7 @@ export default function Hiring({ user }) {
             hiringId={hiring.hiring_id}
             organizerId={hiring.organizer_id}
             organizerName={hiring.organizer_name}
+            organizerPicture={hiring.organizer_picture}
             companyName={hiring.company_name}
             jobName={hiring.job_name}
             jobCategory={hiring.job_category}

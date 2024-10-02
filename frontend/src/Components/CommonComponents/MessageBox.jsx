@@ -1,7 +1,7 @@
 import React from "react";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../assets/images/default.jpg";
 
-export default function MessageBox({message,ownMessage,messengerName}) {
+export default function MessageBox({message,ownMessage,messengerName,messengerPicture}) {
     if(ownMessage) {
         return (
             <div className="messageBox ownMessage">
@@ -14,7 +14,7 @@ export default function MessageBox({message,ownMessage,messengerName}) {
                     </div>
                 </div>
                 <div className="profilePicture">
-                    <img src={dp}/>
+                    <img src={messengerPicture?messengerPicture:dp}/>
                 </div>
             </div>
         )

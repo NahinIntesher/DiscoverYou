@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../assets/images/desert4.jpg";
+import dp from "../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
-export default function EnrolledCourseBox({ id, name, category, description, mentorName, isJoined, completedPercentage, totalMember }) {
+export default function EnrolledCourseBox({ id, name, category, description, mentorName, mentorPicture,isJoined, completedPercentage, totalMember }) {
     const [joinStatus, setJoinStatus] = useState(isJoined);
 
     function joinCourse () {
@@ -90,7 +90,7 @@ export default function EnrolledCourseBox({ id, name, category, description, men
                     </div>
                     <div className="organizer">
                         <div className="organizerPicture">
-                            <img src={dp} />
+                            <img src={mentorPicture ? mentorPicture : dp} />
                         </div>
                         <div className="organizerDetails">
                             <div className="detailTitle">Mentored By</div>

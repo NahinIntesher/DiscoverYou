@@ -10,6 +10,7 @@ export default function PendingCourseBox({
   category,
   description,
   mentorName,
+  mentorPicture,
   mentorId,
   setUpdate,
 }) {

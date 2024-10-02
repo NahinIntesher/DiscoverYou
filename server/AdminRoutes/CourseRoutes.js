@@ -10,6 +10,7 @@ module.exports = (router) => {
     const query = `SELECT 
       c.*, 
       s.student_name AS course_mentor_name,
+      IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS mentor_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -67,6 +68,7 @@ module.exports = (router) => {
     const query = `SELECT 
       c.*, 
       s.student_name AS course_mentor_name,
+      IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS mentor_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -128,6 +130,7 @@ module.exports = (router) => {
     const courseQuery = `
     SELECT c.*, COUNT(c_p.course_id) AS participant_count,
       student.student_name AS mentor_name,
+      IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS mentor_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -236,6 +239,7 @@ module.exports = (router) => {
     const query = `SELECT 
       c.*, 
       s.student_name AS course_mentor_name,
+      IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS mentor_picture,
       s.student_id AS course_mentor_id,
       COUNT(DISTINCT c_p.participant_id) AS total_member
       FROM 

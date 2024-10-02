@@ -1,10 +1,10 @@
 import React from "react";
-import dp from "../../assets/images/desert.jpg";
+import dp from "../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
 
-export default function PendingParticipantBox({participantId, courseId, participantName, courseName, setUpdate}) {
+export default function PendingParticipantBox({participantId, courseId, participantName,participantPicture, courseName, setUpdate}) {
   console.log(participantId, courseId, participantName, courseName);
     function approveMember() {
         axios.defaults.withCredentials = true;
@@ -45,7 +45,7 @@ export default function PendingParticipantBox({participantId, courseId, particip
     return (
         <div className="pendingMemberBox">
             <div className="profilePicture">
-                <img src={dp}/>
+                <img src={participantPicture ? participantPicture : dp}/>
             </div>
             <div className="memberDetails">
                 <div className="name">{participantName}</div>

@@ -28,7 +28,8 @@ module.exports = (router) => {
     const query = `
       SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
       TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
-      organizer.organizer_name AS organizer_name
+      organizer.organizer_name AS organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
       FROM 
           hirings h
       LEFT JOIN 
@@ -64,6 +65,7 @@ module.exports = (router) => {
           ELSE TIMESTAMPDIFF(SECOND,NOW(), h.end_time)    
       END AS calculated_time,
       organizer.organizer_name AS organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
       CASE 
           WHEN NOW() >= h.end_time THEN "previous"
           WHEN NOW() <= h.start_time THEN "upcoming"
@@ -167,6 +169,7 @@ module.exports = (router) => {
       SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
       TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
       organizer.organizer_name AS organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
       CASE
         WHEN EXISTS (
           SELECT *
@@ -213,6 +216,7 @@ module.exports = (router) => {
             ELSE TIMESTAMPDIFF(SECOND,NOW(), h.end_time)    
         END AS calculated_time,
         organizer.organizer_name AS organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
         CASE 
           WHEN NOW() >= h.end_time THEN "previous"
           WHEN NOW() <= h.start_time THEN "upcoming"

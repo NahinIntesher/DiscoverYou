@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../../assets/images/desert4.jpg";
+import dp from "../../../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
-export default function WebinarBox({ id, name, category, description, hostName, totalMember }) {
+export default function WebinarBox({ id, name, category, description, hostName,hostPicture, totalMember }) {
 
     return (
         <div className="communityBox">
@@ -55,7 +55,7 @@ export default function WebinarBox({ id, name, category, description, hostName, 
                 </div>
                 <div className="organizer">
                     <div className="organizerPicture">
-                        <img src={dp} />
+                        <img src={hostPicture?hostPicture:dp} />
                     </div>
                     <div className="organizerDetails">
                         <div className="detailTitle">Hosted By</div>
