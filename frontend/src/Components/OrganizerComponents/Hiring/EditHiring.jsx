@@ -94,7 +94,7 @@ export default function EditHiring({ interests }) {
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={editDetails}>
-            <div className="title">Edit Hiring: {formData.jobName}</div>
+            <div className="title">Edit Hiring Details</div>
             <div className="input">
               <label name="companyName">Company Name</label>
               <input
@@ -139,7 +139,7 @@ export default function EditHiring({ interests }) {
               />
             </div>
             <div className="input">
-              <label name="endTime">Ending Time</label>
+              <label name="endTime">Last Date For Time</label>
               <input
                 name="endTime"
                 onChange={handleChange}

@@ -450,6 +450,11 @@
 .participant {
   padding: 8px 10px;
   border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+.participant .participantDetailsContainer {
+    flex-grow: 1;
 }
 .participant .profilePicture {
   display: inline-block;
@@ -488,6 +493,53 @@
 }
 .participant .participantDetails .viewProfile:hover {
   background-color: rgba(var(--medium), 0.6);
+}
+
+.participant .participantDetailsContainer {
+  flex-grow: 1;
+}
+
+.participant .buttonContainer {
+  flex-shrink: 1;
+}
+.participant .acceptButton, 
+.participant .rejectButton {
+  color: #02590fcc;
+  background-color: #B2DEB9;
+  padding: 4px 16px;
+  border-radius: 30px;
+  margin: 8px;
+  text-align: center;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.participant .acceptButton:hover {
+  color: #02590f;
+  background-color: #73BD7E;
+}
+.participant .rejectButton {
+  color: #c62d42cc;
+  background-color: #F4CED3;
+}
+
+.participant .rejectButton:hover {
+  color: #c62d42;
+  background-color: #E9A1AA;
+}
+
+.participant .acceptButton .icon, 
+.participant .rejectButton .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+}
+
+.participant .acceptButton .text, 
+.participant .rejectButton .text {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 4px;
 }
 
 .addMaterialSpecial {

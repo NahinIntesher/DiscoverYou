@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -17,7 +17,6 @@ const SingleHiring = () => {
   });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("hiring");
-  const [hiringType, setHiringType] = useState("");
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -40,8 +39,6 @@ const SingleHiring = () => {
         setData(response.data);
         setLoading(false);
         const hiring = response.data.hiring;
-
-        setHiringType(hiring.hiring_type);
         setApplicantNo(hiring.applicant_count);
       })
       .catch((error) => {
@@ -49,49 +46,33 @@ const SingleHiring = () => {
       });
   }, [applicantNo]);
 
-  function notAvailableError() {
-    alert("Sorry, hiring is not finished!");
-  }
-
-  function applyJob() {
-    alert("An Admin can not apply here!");
-  }
-
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="mainContent">
       <Header
-        title={data.hiring.job_name}
-        semiTitle={`${data.hiring.job_category} hiring`}
+        title={data.hiring.company_name}
+        semiTitle={`${data.hiring.job_category} Hiring`}
       />
       <div className="webinarHeader">
         <div className="leftSection">
-          <div className="name">{data.hiring.company_name}</div>
+          <div className="name">{data.hiring.job_name}</div>
+          <div className="company">{data.hiring.company_name}</div>
           <Category category={data.hiring.job_category} />
-          <div className="hostContainer">
-            <div className="host">
-              <div className="hostPicture">
-                <img
-                  src={
-                    data.hiring.organizer_picture
-                      ? data.hiring.organizer_picture
-                      : dp
-                  }
-                />
-              </div>
-              <div className="hostDetails">
-                <div className="detailTitle">Organized By</div>
-                <div className="detailInfo">{data.hiring.organizer_name}</div>
-              </div>
-            </div>
-          </div>
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            <button className="joinButton inactiveButton" onClick={applyJob}>
-              Apply now
-            </button>
+            <div className="hostContainer">
+              <Link to={"/profile/"+data.hiring.organizer_picture} className="host">
+                <div className="hostPicture">                
+                  <img src={data.hiring.host_picture ? data.hiring.host_picture : dp} />
+                </div>
+                <div className="hostDetails">
+                  <div className="detailTitle">Organized By</div>
+                  <div className="detailInfo">{data.hiring.organizer_name}</div>
+                </div>
+              </Link>
+            </div>
             <div className="joinDetails">
               <b>Applicants:</b> {applicantNo}
             </div>
@@ -127,17 +108,8 @@ const SingleHiring = () => {
             />
             <ProfileField
               icon="calendar_month"
-              label="Date"
-              value={getDate(data.hiring.start_time)}
-            />
-            <ProfileField
-              icon="schedule"
-              label="Time"
-              value={
-                getPMTime(data.hiring.start_time) +
-                " - " +
-                getPMTime(data.hiring.end_time)
-              }
+              label="Last Date For Appy"
+              value={getDate(data.hiring.end_time)+" ("+getPMTime(data.hiring.end_time)+")"}
             />
           </div>
         </div>
@@ -149,7 +121,9 @@ const SingleHiring = () => {
               {data.applicants.map((applicant) => (
                 <Applicant
                   key={applicant.applicant_id}
+                  id={applicant.applicant_id}
                   name={applicant.applicant_name}
+                  picture={applicant.applicant_picture}
                 />
               ))}
             </div>
@@ -162,15 +136,17 @@ const SingleHiring = () => {
   );
 };
 
-function Applicant({ name }) {
+function Applicant({ id, name, picture }) {
   return (
     <div className="participant">
-      <div className="profilePicture">
-        <img src={dp} />
-      </div>
-      <div className="participantDetails">
-        <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+      <div className="participantDetailsContainer">
+        <div className="profilePicture">
+          <img src={picture? picture : dp} />
+        </div>
+        <div className="participantDetails">
+          <div className="name">{name}</div>
+          <Link to={"/profile/"+id} className="viewProfile">View Profile</Link>
+        </div>
       </div>
     </div>
   );

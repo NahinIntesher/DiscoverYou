@@ -64,7 +64,7 @@ export default function Student({
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/new" element={<NewHiring />} />
           <Route path="/hiring/pending" element={<PendingHirings />} />
-          <Route path="/hiring/:hiringId" element={<SingleHiring />} />
+          <Route path="/hiring/:hiringId" element={<SingleHiring ownId={user.organizer_id}/>} />
           <Route path="/hiring/edit/:hiringId" element={<EditHiring />} />
 
           <Route path="/notification" element={<Notification />} />

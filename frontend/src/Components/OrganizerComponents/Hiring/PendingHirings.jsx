@@ -38,7 +38,6 @@ export default function PendingWebinar({interests}) {
                             jobName={hiring.job_name}
                             jobCategory={hiring.job_category}
                             jobDescription={hiring.job_description}
-                            startTime={hiring.start_time}
                             endTime={hiring.end_time}
                             jobSalery={hiring.job_salary}
                             applicantsCount={hiring.applicant_count}

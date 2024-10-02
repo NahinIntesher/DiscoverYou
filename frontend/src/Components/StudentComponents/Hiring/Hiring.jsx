@@ -9,26 +9,16 @@ import { Link } from "react-router-dom";
 
 export default function Hiring({ user }) {
   const [hirings, setHirings] = useState([]);
-  const [pendingHiringsNo, setPendingHiringsNo] = useState([]);
+  const [applyPendingNo, setApplyPendingNo] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/organizer/hirings/pending")
-      .then((res) => {
-        const pendingHiringsNo = res.data?.hirings || [];
-        setPendingHiringsNo(pendingHiringsNo.length);
-      })
-      .catch((error) => {
-        console.error("Error fetching hirings:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/organizer/hirings")
+      .get("http://localhost:3000/student/hirings")
       .then((response) => {
         const hiringsData = response.data.hirings;
+        const applyPendingData = response.data.applyPending;
         setHirings(hiringsData);
+        setApplyPendingNo(applyPendingData);
       })
       .catch((error) => {
         console.error("Error fetching hirings:", error);
@@ -40,22 +30,16 @@ export default function Hiring({ user }) {
       <div className="contentTitle">
         <div className="content">
           <div className="title">Hirings</div>
-          <div className="buttonContainer">
-            <Link to="/hiring/new" className="button">
-              <MaterialSymbol className="icon" size={24} icon="add" />
-              <div className="text">Create New Hiring</div>
-            </Link>
-          </div>
         </div>
       </div>
-      {pendingHiringsNo != 0 && (
+      {applyPendingNo != 0 && (
         <div className="pendingBox">
           <MaterialSymbol className="icon" size={32} icon="error" />
           <div className="text">
-            Your {pendingHiringsNo} hirings approval are in pending.
+            You applied for {applyPendingNo} jobs are in pending.
           </div>
-          <Link to={"/hiring/pending"} className="button">
-            Pending Hirings
+          <Link to={"/hiring/applications"} className="button">
+            Pending Application
           </Link>
         </div>
       )}
@@ -72,7 +56,6 @@ export default function Hiring({ user }) {
             jobName={hiring.job_name}
             jobCategory={hiring.job_category}
             jobDescription={hiring.job_description}
-            startTime={hiring.start_time}
             endTime={hiring.end_time}
             jobSalery={hiring.job_salary}
             applicantsCount={hiring.applicant_count}

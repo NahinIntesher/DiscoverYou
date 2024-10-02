@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -8,7 +8,7 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/default.jpg";
 import NotFound from "../../CommonComponents/NotFound";
 
-const SingleHiring = () => {
+const SingleHiring = ({ownId}) => {
   const { hiringId } = useParams();
   const [applicantNo, setApplicantNo] = useState(0);
   const [data, setData] = useState({
@@ -54,12 +54,17 @@ const SingleHiring = () => {
   }
 
   function applyJob() {
-    axios.post(`http://localhost:3000/organizer/hirings/apply`).then((response) => {
+    axios.post(`http://localhost:3000/student/hirings/apply`, {
+      hiringId: data.hiring.hiring_id
+    }).then((response) => {
       console.log("Full API Response:", response.data);
-      if (response.data.status === "success") {
-        setApplicantNo(applicantNo + 1);
-      } else {
-        notAvailableError();
+      if (response.data.status === "Registered") {
+        setApplicantNo((prev)=> prev + 1);
+        setIsApplied(1);
+      } 
+      else if (response.data.status === "Unregistered") {
+        setApplicantNo((prev)=> prev - 1);
+        setIsApplied(0);
       }
     });
   }
@@ -69,28 +74,28 @@ const SingleHiring = () => {
   return (
     <div className="mainContent">
       <Header
-        title={data.hiring.job_name}
-        semiTitle={`${data.hiring.job_category} hiring`}
+        title={data.hiring.company_name}
+        semiTitle={`${data.hiring.job_category} Hiring`}
       />
       <div className="webinarHeader">
         <div className="leftSection">
-          <div className="name">{data.hiring.company_name}</div>
+          <div className="name">{data.hiring.job_name}</div>
+          <div className="company">{data.hiring.company_name}</div>
           <Category category={data.hiring.job_category} />
-          <div className="hostContainer">
-            <div className="host">
-              <div className="hostPicture">
-                <img src={data.hiring.organizer_picture?data.hiring.organizer_picture:dp} />
-              </div>
-              <div className="hostDetails">
-                <div className="detailTitle">Organized By</div>
-                <div className="detailInfo">{data.hiring.organizer_name}</div>
-              </div>
-            </div>
-          </div>
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            <button className="joinButton" onClick={applyJob}>Apply now</button>
+            <div className="hostContainer">
+              <Link to={"/profile/"+data.hiring.organizer_id} className="host">
+                <div className="hostPicture">
+                  <img src={data.hiring.host_picture?data.hiring.host_picture:dp} />
+                </div>
+                <div className="hostDetails">
+                  <div className="detailTitle">Organized By</div>
+                  <div className="detailInfo">{data.hiring.organizer_name}</div>
+                </div>
+              </Link>
+            </div>
             <div className="joinDetails">
               <b>Applicants:</b> {applicantNo}
             </div>
@@ -126,17 +131,8 @@ const SingleHiring = () => {
             />
             <ProfileField
               icon="calendar_month"
-              label="Date"
-              value={getDate(data.hiring.start_time)}
-            />
-            <ProfileField
-              icon="schedule"
-              label="Time"
-              value={
-                getPMTime(data.hiring.start_time) +
-                " - " +
-                getPMTime(data.hiring.end_time)
-              }
+              label="Last Date For Appy"
+              value={getDate(data.hiring.end_time)+" ("+getPMTime(data.hiring.end_time)+")"}
             />
           </div>
         </div>
@@ -148,7 +144,11 @@ const SingleHiring = () => {
               {data.applicants.map((applicant) => (
                 <Applicant
                   key={applicant.applicant_id}
+                  applicantId={applicant.applicant_id}
                   name={applicant.applicant_name}
+                  picture={applicant.applicant_picture ? applicant.applicant_picture : dp}
+                  permission={data.hiring.organizer_id == ownId}
+                  hiringId={data.hiring.hiring_id}
                 />
               ))}
             </div>
@@ -161,16 +161,44 @@ const SingleHiring = () => {
   );
 };
 
-function Applicant({ name }) {
+function Applicant({ applicantId, hiringId, name, picture, permission, setUpdate}) {
+  function approveApplicant() {
+    axios.defaults.withCredentials = true;
+    axios
+    .post("http://localhost:3000/organizer/hirings/accept-applicant", {
+      applicantId: applicantId,
+      hiringId: hiringId
+    })
+    .then((res) => {
+      if (res.data.status === "Success") {
+        console.log("Aprroved Success!");
+        setUpdate((prevData) => prevData+1);
+      } else {
+        alert(res.data.Error);
+      }
+    })
+    .catch((err) => console.log(err));
+  }
+
   return (
     <div className="participant">
-      <div className="profilePicture">
-        <img src={dp} />
+      <div className="participantDetailsContainer">
+        <div className="profilePicture">
+          <img src={picture} />
+        </div>
+        <div className="participantDetails">
+          <div className="name">{name}</div>
+          <Link to={"/profile/"+applicantId} className="viewProfile">View Profile</Link>
+        </div>
       </div>
-      <div className="participantDetails">
-        <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
-      </div>
+      { permission &&
+        <div className="buttonContainer">
+          <div className="acceptButton" onClick={approveApplicant}>
+            <MaterialSymbol className="icon" size={22} icon="check" />
+            <div className="text">Accept Applicant</div>
+          </div>
+        </div>
+      }
     </div>
   );
 }

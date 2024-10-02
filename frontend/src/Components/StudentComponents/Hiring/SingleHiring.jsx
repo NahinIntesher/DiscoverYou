@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -18,6 +18,7 @@ const SingleHiring = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("hiring");
   const [hiringType, setHiringType] = useState("");
+  const [isApplied, setIsApplied] = useState(false);
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -34,7 +35,7 @@ const SingleHiring = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/organizer/hirings/${hiringId}`)
+      .get(`http://localhost:3000/student/hirings/${hiringId}`)
       .then((response) => {
         console.log("Full API Response:", response.data.hiring);
         setData(response.data);
@@ -43,6 +44,7 @@ const SingleHiring = () => {
 
         setHiringType(hiring.hiring_type);
         setApplicantNo(hiring.applicant_count);
+        setIsApplied(hiring.is_applied);
       })
       .catch((error) => {
         console.error(error.message);
@@ -54,12 +56,17 @@ const SingleHiring = () => {
   }
 
   function applyJob() {
-    axios.post(`http://localhost:3000/organizer/hirings/apply`).then((response) => {
+    axios.post(`http://localhost:3000/student/hirings/apply`, {
+      hiringId: data.hiring.hiring_id
+    }).then((response) => {
       console.log("Full API Response:", response.data);
-      if (response.data.status === "success") {
-        setApplicantNo(applicantNo + 1);
-      } else {
-        notAvailableError();
+      if (response.data.status === "Registered") {
+        setApplicantNo((prev)=> prev + 1);
+        setIsApplied(1);
+      } 
+      else if (response.data.status === "Unregistered") {
+        setApplicantNo((prev)=> prev - 1);
+        setIsApplied(0);
       }
     });
   }
@@ -69,30 +76,33 @@ const SingleHiring = () => {
   return (
     <div className="mainContent">
       <Header
-        title={data.hiring.job_name}
-        semiTitle={`${data.hiring.job_category} hiring`}
+        title={data.hiring.company_name}
+        semiTitle={`${data.hiring.job_category} Hiring`}
       />
       <div className="webinarHeader">
         <div className="leftSection">
-          <div className="name">{data.hiring.company_name}</div>
+          <div className="name">{data.hiring.job_name}</div>
+          <div className="company">{data.hiring.company_name}</div>
           <Category category={data.hiring.job_category} />
           <div className="hostContainer">
-            <div className="host">
+            <Link to={"/profile/"+data.hiring.organizer_id} className="host">
               <div className="hostPicture">
-                <img src={data.hiring.organizer_picture ? data.hiring.organizer_picture : dp} />
+                <img src={data.hiring.host_picture ? data.hiring.host_picture : dp} />
               </div>
               <div className="hostDetails">
                 <div className="detailTitle">Organized By</div>
                 <div className="detailInfo">{data.hiring.organizer_name}</div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            <button className="joinButton" onClick={applyJob}>Apply now</button>
+            <button className="joinButton" onClick={applyJob}>
+              {isApplied ? "Applied" : "Apply Now"}
+            </button>
             <div className="joinDetails">
-              <b>Applicants:</b> {applicantNo}
+              <b>Applicants: </b> {applicantNo}
             </div>
           </div>
         </div>
@@ -126,17 +136,8 @@ const SingleHiring = () => {
             />
             <ProfileField
               icon="calendar_month"
-              label="Date"
-              value={getDate(data.hiring.start_time)}
-            />
-            <ProfileField
-              icon="schedule"
-              label="Time"
-              value={
-                getPMTime(data.hiring.start_time) +
-                " - " +
-                getPMTime(data.hiring.end_time)
-              }
+              label="Last Date For Appy"
+              value={getDate(data.hiring.end_time)+" ("+getPMTime(data.hiring.end_time)+")"}
             />
           </div>
         </div>
@@ -148,7 +149,9 @@ const SingleHiring = () => {
               {data.applicants.map((applicant) => (
                 <Applicant
                   key={applicant.applicant_id}
+                  id={applicant.applicant_id}
                   name={applicant.applicant_name}
+                  picture={applicant.applicant_picture ? applicant.applicant_picture : dp}
                 />
               ))}
             </div>
@@ -161,15 +164,17 @@ const SingleHiring = () => {
   );
 };
 
-function Applicant({ name }) {
+function Applicant({ name, picture, id }) {
   return (
     <div className="participant">
-      <div className="profilePicture">
-        <img src={dp} />
-      </div>
-      <div className="participantDetails">
-        <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+      <div className="participantDetailsContainer">
+        <div className="profilePicture">
+          <img src={picture} />
+        </div>
+        <div className="participantDetails">
+          <div className="name">{name}</div>
+          <Link to={"/profile/"+id} className="viewProfile">View Profile</Link>
+        </div>
       </div>
     </div>
   );

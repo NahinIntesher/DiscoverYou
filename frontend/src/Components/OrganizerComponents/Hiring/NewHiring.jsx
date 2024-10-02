@@ -26,7 +26,6 @@ export default function NewHiring({ interests }) {
     jobCategory: "",
     jobDescription: "",
     jobSalary: "",
-    startTime: "",
     endTime: "",
   });
 
@@ -62,7 +61,7 @@ export default function NewHiring({ interests }) {
   };
   return (
     <div className="mainContent">
-      <Header title={"New Webinar"} />
+      <Header title={"New Hiring"} />
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
@@ -102,16 +101,7 @@ export default function NewHiring({ interests }) {
               />
             </div>
             <div className="input">
-              <label name="startTime">Starting Time</label>
-              <input
-                name="startTime"
-                onChange={handleChange}
-                type="datetime-local"
-                placeholder="Enter webinar starting time"
-              />
-            </div>
-            <div className="input">
-              <label name="endTime">Ending Time</label>
+              <label name="endTime">Last Date For Apply</label>
               <input
                 name="endTime"
                 onChange={handleChange}

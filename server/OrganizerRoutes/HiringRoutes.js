@@ -59,6 +59,39 @@ module.exports = (router) => {
     let userId = req.userId;
 
     const query = `
+      SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
+      TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
+      organizer.organizer_name AS organizer_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture
+      FROM 
+          hirings h
+      LEFT JOIN 
+          hiring_applicants h_a
+      ON 
+          h.hiring_id = h_a.hiring_id
+      LEFT JOIN 
+          organizer
+      ON 
+          h.organizer_id = organizer.organizer_id
+      WHERE
+        NOW() <= h.end_time AND h.approval_status = 1 AND h.organizer_id = ?
+      GROUP BY 
+          h.hiring_id;
+    `;
+    connection.query(query, [userId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ hirings: result });
+    });
+  });
+
+  router.get("/hirings/profile", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
       SELECT 
         h.hiring_id, h.company_name, h.job_name, h.job_category, h.job_description, COUNT(h.hiring_id) AS total_hirings,
         o.organizer_name AS organizer_name,
@@ -118,22 +151,20 @@ module.exports = (router) => {
       jobCategory,
       jobDescription,
       jobSalary,
-      startTime,
       endTime,
     } = req.body;
 
     connection.query(
-      `INSERT INTO hirings (company_name, job_name, job_category, job_description, job_salary, start_time, end_time, organizer_id)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO hirings (company_name, job_name, job_category, job_description, job_salary, end_time, organizer_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         companyName,
         jobName,
         jobCategory,
         jobDescription,
         jobSalary,
-        startTime,
         endTime,
-        userId,
+        userId
       ],
       (err, results) => {
         if (err) throw err;
@@ -191,15 +222,11 @@ module.exports = (router) => {
     // Fetch hiring details
     const hiringQuery = `
       SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
-        CASE 
-            WHEN NOW() < h.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), h.start_time)
-            ELSE TIMESTAMPDIFF(SECOND,NOW(), h.end_time)    
-        END AS calculated_time,
+        TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
         organizer.organizer_name AS organizer_name,
         IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
         CASE 
           WHEN NOW() >= h.end_time THEN "previous"
-          WHEN NOW() <= h.start_time THEN "upcoming"
           ELSE "ongoing"  
         END AS hiring_type
         FROM 
@@ -217,7 +244,8 @@ module.exports = (router) => {
 
     // Fetch hiring applicants
     const applicantsQuery = `
-    SELECT hiring_applicants.*, student.student_name AS applicant_name
+    SELECT hiring_applicants.*, student.student_name AS applicant_name,
+    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS applicant_picture
     FROM hiring_applicants
     JOIN student ON hiring_applicants.applicant_id = student.student_id
     WHERE hiring_applicants.hiring_id = ?`;
@@ -289,5 +317,19 @@ module.exports = (router) => {
       }
     );
   });
-  
+
+
+  router.post("/hirings/accept-applicant", verifyToken, (req, res) => {
+    const { applicantId, hiringId } = req.body;
+
+    connection.query(
+      "UPDATE hiring_applicants SET req_for_join_status = 1 WHERE hiring_id = ? AND applicant_id = ?;",
+      [hiringId, applicantId],
+      function (err, results) {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });
+
 };

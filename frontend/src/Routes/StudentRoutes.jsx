@@ -20,7 +20,7 @@ import Webinar from "../Components/StudentComponents/Webinar/Webinar";
 import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar";
 
 import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
-import SingleHiring from "../../src/Components/OrganizerComponents/Hiring/SingleHiring";
+import SingleHiring from "../../src/Components/StudentComponents/Hiring/SingleHiring";
 
 
 import Notification from "../Components/StudentComponents/Notification/Notification";
@@ -46,6 +46,8 @@ import PendingProducts from "../Components/StudentComponents/Marketplace/Pending
 import Product from "../Components/StudentComponents/Marketplace/Product";
 import Material from "../Components/StudentComponents/Course/Material";
 import ChangeProfilePicture from "../Components/StudentComponents/Profile/ChangeProfilePicture";
+import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseReactors";
+import PendingApplications from "../Components/StudentComponents/Hiring/PendingApplications";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -57,6 +59,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
 
           <Route path="/showcase" element={<Showcase user={user}/>} />
           <Route path="/showcase/post/:postId" element={<Post  user={user}/>} />
+          <Route path="/showcase/reactors/:postId" element={<ShowcaseReactors user={user}/>} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
@@ -88,6 +91,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/marketplace/product/:productId" element={<Product />} />
 
           <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring/applications" element={<PendingApplications />} />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
 
           <Route path="/notification" element={<Notification />} />

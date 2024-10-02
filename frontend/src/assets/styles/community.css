@@ -445,6 +445,7 @@
     text-align: center;
     font-size: 15px;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .pendingCommunityBox .acceptButton:hover {
@@ -496,7 +497,15 @@
     margin: 4px 4px;
     text-wrap: wrap;
     line-height: 120%;
-    margin-right: 10px;
+}
+
+.pendingCommunityBox .communityDetails .semiTitle { 
+    color: rgba(var(--dark),0.8);
+    font-weight: 500;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px 8px;
+    font-size: 18px;
 }
 .pendingCommunityBox .communityDetails .category {
     display: inline-block;
@@ -506,7 +515,7 @@
     border-radius: 20px;
     display: inline-block;
     color: rgb(var(--dark));
-    margin-left: 4px;
+    margin-left: 12px;
 }
 .pendingCommunityBox .communityDetails .category .icon {
     display: inline-block;

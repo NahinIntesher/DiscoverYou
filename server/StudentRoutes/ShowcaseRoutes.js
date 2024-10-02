@@ -386,6 +386,51 @@ module.exports = (router, multer) => {
       return res.json({ posts: results });
     });
   });
+
+
+  router.get("/showcase/reactor", verifyToken, function (req, res) {
+    const userId = req.userId;
+    const  { postId } = req.query;
+    console.log(postId);
+    const query = `
+        SELECT 
+          COALESCE(
+              s.student_name, 
+              o.organizer_name, 
+              a.admin_name
+          ) AS reactor_name,
+
+          COALESCE(
+              s_p_r.reactor_student_id, 
+              s_p_r.reactor_organizer_id,
+              s_p_r.reactor_admin_id
+          ) AS reactor_id,
+
+          COALESCE(
+            IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL),
+            IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL),
+            IF(a.admin_picture IS NOT NULL, CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), NULL)
+          ) AS reactor_picture
+
+          FROM 
+              showcase_post_reactions AS s_p_r
+          LEFT JOIN 
+              student AS s
+              ON s_p_r.reactor_student_id = s.student_id
+          LEFT JOIN 
+              organizer AS o
+              ON s_p_r.reactor_organizer_id = o.organizer_id
+          LEFT JOIN 
+              admin AS a
+              ON s_p_r.reactor_admin_id = a.admin_id
+          WHERE
+              s_p_r.post_id = ?;`;
+
+    connection.query(query, [postId], function (error, result) {
+      if (error) throw error;
+      return res.json({ status: "Success", reactors: result });
+    });
+  });
 };
 
 

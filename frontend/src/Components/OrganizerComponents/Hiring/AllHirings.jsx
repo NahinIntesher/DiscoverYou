@@ -3,11 +3,9 @@ import axios from "axios";
 import "../../../assets/styles/dashboard.css";
 import "react-material-symbols/rounded";
 import HiringBox from "./HiringBox";
-import { MaterialSymbol } from "react-material-symbols";
-// import MyWebinars from "./MyHirings";
-import { Link } from "react-router-dom";
+import NotFound from "../../CommonComponents/NotFound";
 
-export default function BrowseHiring() {
+export default function AllHiring() {
   const [hirings, setHirings] = useState([]);
 
   useEffect(() => {
@@ -23,8 +21,10 @@ export default function BrowseHiring() {
   }, []);
 
   return (
-    <div className="hiringBoxContainer">  
-      {hirings.map((hiring) => (
+    <div className="hiringBoxContainer">
+      {
+      hirings.length ?
+      hirings.map((hiring) => (
         <HiringBox
           key={hiring.hiring_id}
           hiringId={hiring.hiring_id}
@@ -40,7 +40,10 @@ export default function BrowseHiring() {
           applicantsCount={hiring.applicant_count}
           calculatedTime={hiring.calculated_time}
         />
-      ))}
+      ))
+      :
+      <NotFound message="No Hiring Found!"/>
+    }
     </div>
   );
 }

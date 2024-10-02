@@ -3,7 +3,7 @@ import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import ContestTimeRemaining from "../../CommonComponents/ContestTimeRemaining";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function HiringBox({
   hiringId,
@@ -15,7 +15,6 @@ export default function HiringBox({
   jobCategory,
   jobDescription,
   jobSalery,
-  startTime,
   endTime,
   applicantsCount,
   calculatedTime,
@@ -101,7 +100,7 @@ export default function HiringBox({
       </div>
       <div className="bottomContainer">
         <div className="hostContainer">
-          <div className="host">
+          <Link to={"/profile/"+organizerId} className="host">
             <div className="hostPicture">
               <img src={organizerPicture?organizerPicture:dp} />
             </div>
@@ -109,7 +108,7 @@ export default function HiringBox({
               <div className="detailTitle">Organized By</div>
               <div className="detailInfo">{organizerName}</div>
             </div>
-          </div>
+          </Link>
         </div>
         <div className="joinButtonContainer">
           <button className="joinButton" onClick={seeDetails}>

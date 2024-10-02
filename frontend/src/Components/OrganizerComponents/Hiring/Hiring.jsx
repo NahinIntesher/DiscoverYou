@@ -6,10 +6,15 @@ import HiringBox from "./HiringBox";
 import { MaterialSymbol } from "react-material-symbols";
 // import MyWebinars from "./MyHirings";
 import { Link } from "react-router-dom";
+import AllHiring from "./AllHirings";
+import MyHirings from "./MyHirings";
 
 export default function Hiring({ user }) {
   const [hirings, setHirings] = useState([]);
   const [pendingHiringsNo, setPendingHiringsNo] = useState([]);
+
+  
+  const [activeTab, setActiveTab] = useState(["allHirings"]);
 
   useEffect(() => {
     axios
@@ -59,27 +64,19 @@ export default function Hiring({ user }) {
           </Link>
         </div>
       )}
-      <div className="hiringBoxContainer">
-        
-        {hirings.map((hiring) => (
-          <HiringBox
-            key={hiring.hiring_id}
-            hiringId={hiring.hiring_id}
-            organizerId={hiring.organizer_id}
-            organizerName={hiring.organizer_name}
-            organizerPicture={hiring.organizer_picture}
-            companyName={hiring.company_name}
-            jobName={hiring.job_name}
-            jobCategory={hiring.job_category}
-            jobDescription={hiring.job_description}
-            startTime={hiring.start_time}
-            endTime={hiring.end_time}
-            jobSalery={hiring.job_salary}
-            applicantsCount={hiring.applicant_count}
-            calculatedTime={hiring.calculated_time}
-          />
-        ))}
+
+      <div className="tabContainer">
+        <div className={activeTab == "myHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myHirings")}}>My Posted Hirings</div>
+        <div className={activeTab == "allHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("allHirings")}}>All Hirings</div>
       </div>
+      {
+          activeTab == "allHirings" &&
+          <AllHiring />
+      }
+      {
+          activeTab == "myHirings" &&
+          <MyHirings />
+      }
     </div>
   );
 }

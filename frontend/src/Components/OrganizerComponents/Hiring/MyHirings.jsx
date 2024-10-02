@@ -1,50 +1,49 @@
-import React, { useState, useEffect } from "react";
-import "../../../assets/styles/contest.css";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../../../assets/styles/dashboard.css";
+import "react-material-symbols/rounded";
+import HiringBox from "./HiringBox";
 import NotFound from "../../CommonComponents/NotFound";
-import WebinarBox from "../../CommonComponents/WebinarBox";
-import 'react-material-symbols/rounded';
 
-export default function MyWebinar() {
-  const [webinars, setWebinars] = useState([]);
+export default function MyHirings() {
+  const [hirings, setHirings] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/organizer/webinars/my")
+      .get("http://localhost:3000/organizer/hirings/my")
       .then((response) => {
-        const webinarsData = response.data.webinars;
-        setWebinars(webinarsData);
+        const hiringsData = response.data.hirings;
+        setHirings(hiringsData);
       })
       .catch((error) => {
-        console.error("Error fetching webinars:", error);
+        console.error("Error fetching hirings:", error);
       });
   }, []);
 
-  if (webinars.length) {
-    return (
-      <div className="scrollContainer">
-        {webinars.map((webinar) => (
-          <WebinarBox
-            key={webinar.webinar_id}
-            id={webinar.webinar_id}
-            name={webinar.webinar_name}
-            details={webinar.webinar_details}
-            category={webinar.webinar_category}
-            host={webinar.host_name}
-            date={webinar.start_time}
-            startTime={webinar.start_time}
-            endTime={webinar.end_time}
-            participants={webinar.participant_count}
-            meetingLink={webinar.meeting_link}
-            calculatedTime={webinar.calculated_time}
-            description={webinar.webinar_description}
-            type={webinar.type}
-          />
-        ))}
-      </div>
-    )
-  }
-  else {
-      return <NotFound message="There are currently no Ongoing Webinar!" />
-  }
+  return (
+    <div className="hiringBoxContainer">
+      {
+      hirings.length ?
+      hirings.map((hiring) => (
+        <HiringBox
+          key={hiring.hiring_id}
+          hiringId={hiring.hiring_id}
+          organizerId={hiring.organizer_id}
+          organizerName={hiring.organizer_name}
+          organizerPicture={hiring.organizer_picture}
+          companyName={hiring.company_name}
+          jobName={hiring.job_name}
+          jobCategory={hiring.job_category}
+          jobDescription={hiring.job_description}
+          endTime={hiring.end_time}
+          jobSalery={hiring.job_salary}
+          applicantsCount={hiring.applicant_count}
+          calculatedTime={hiring.calculated_time}
+        />
+      ))
+      :
+      <NotFound message="You Don't Have Any Approved Hiring!"/>
+    }
+    </div>
+  );
 }

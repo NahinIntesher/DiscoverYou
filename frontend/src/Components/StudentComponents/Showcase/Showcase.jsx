@@ -45,6 +45,7 @@ export default function Showcase({user}) {
             params: formData
           })
           .then((res) => {
+            //console.log(res.data?.posts);
             const postsData = res.data?.posts || [];
             setPosts(postsData);
           })
@@ -96,7 +97,7 @@ export default function Showcase({user}) {
                             postId={post.post_id}
                             posterId={post.user_id} 
                             posterName={post.user_name} 
-                            posterPicture={post.student_picture} 
+                            posterPicture={post.user_picture} 
                             postContent={post.post_content}
                             postTimeAgo={post.post_time_ago}
                             postMediaArray={JSON.parse("["+post.media_array+"]")}
