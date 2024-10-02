@@ -64,7 +64,6 @@ body {
     height: 100dvh;
 }
 .sideMenu {
-    font-size: initial;
     display: inline-flex;
     vertical-align: middle;
     align-items: center;

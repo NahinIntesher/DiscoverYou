@@ -18,6 +18,8 @@ const SingleHiring = ({ownId}) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("hiring");
   const [hiringType, setHiringType] = useState("");
+  
+  const [update, setUpdate] = useState(0);
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
