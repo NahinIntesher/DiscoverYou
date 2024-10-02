@@ -66,7 +66,7 @@ export default function Hiring({ user }) {
       )}
 
       <div className="tabContainer">
-        <div className={activeTab == "myHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myHirings")}}>My Posted Hirings</div>
+        <div className={activeTab == "myHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myHirings")}}>My Hirings</div>
         <div className={activeTab == "allHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("allHirings")}}>All Hirings</div>
       </div>
       {

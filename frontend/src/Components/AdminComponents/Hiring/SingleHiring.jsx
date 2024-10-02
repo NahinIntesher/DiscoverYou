@@ -124,6 +124,7 @@ const SingleHiring = () => {
                   id={applicant.applicant_id}
                   name={applicant.applicant_name}
                   picture={applicant.applicant_picture}
+                  applicantStatus={applicant.req_for_join_status}
                 />
               ))}
             </div>
@@ -136,7 +137,7 @@ const SingleHiring = () => {
   );
 };
 
-function Applicant({ id, name, picture }) {
+function Applicant({ id, name, picture, applicantStatus }) {
   return (
     <div className="participant">
       <div className="participantDetailsContainer">
@@ -148,6 +149,9 @@ function Applicant({ id, name, picture }) {
           <Link to={"/profile/"+id} className="viewProfile">View Profile</Link>
         </div>
       </div>
+      {(applicantStatus == 1) && <div className="buttonContainer">
+        <div className="hired">Selected Applicant</div>
+      </div>}
     </div>
   );
 }

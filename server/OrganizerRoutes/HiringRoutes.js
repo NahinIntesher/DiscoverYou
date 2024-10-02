@@ -228,7 +228,16 @@ module.exports = (router) => {
         CASE 
           WHEN NOW() >= h.end_time THEN "previous"
           ELSE "ongoing"  
-        END AS hiring_type
+        END AS hiring_type,
+        CASE
+          WHEN EXISTS (
+            SELECT h_a.*
+            FROM hiring_applicants h_a
+            WHERE h_a.hiring_id = h.hiring_id AND h_a.req_for_join_status = 1
+          )
+          THEN 1
+          ELSE 0
+        END AS is_hired
         FROM 
             hirings h
         LEFT JOIN 

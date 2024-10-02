@@ -18,7 +18,7 @@ const SingleHiring = ({ownId}) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("hiring");
   const [hiringType, setHiringType] = useState("");
-  
+  const [isHired, setIsHired] = useState(false);
   const [update, setUpdate] = useState(0);
 
   function getPMTime(datetime) {
@@ -42,14 +42,15 @@ const SingleHiring = ({ownId}) => {
         setData(response.data);
         setLoading(false);
         const hiring = response.data.hiring;
-
+        
+        setIsHired(hiring.is_hired);
         setHiringType(hiring.hiring_type);
         setApplicantNo(hiring.applicant_count);
       })
       .catch((error) => {
         console.error(error.message);
       });
-  }, [applicantNo]);
+  }, [applicantNo, update]);
 
   function notAvailableError() {
     alert("Sorry, hiring is not finished!");
@@ -149,8 +150,10 @@ const SingleHiring = ({ownId}) => {
                   applicantId={applicant.applicant_id}
                   name={applicant.applicant_name}
                   picture={applicant.applicant_picture ? applicant.applicant_picture : dp}
-                  permission={data.hiring.organizer_id == ownId}
+                  permission={data.hiring.organizer_id == ownId && !isHired}
                   hiringId={data.hiring.hiring_id}
+                  applicantStatus={applicant.req_for_join_status}
+                  setUpdate={setUpdate}
                 />
               ))}
             </div>
@@ -163,7 +166,7 @@ const SingleHiring = ({ownId}) => {
   );
 };
 
-function Applicant({ applicantId, hiringId, name, picture, permission, setUpdate}) {
+function Applicant({ applicantId, hiringId, name, picture, permission, applicantStatus, setUpdate}) {
   function approveApplicant() {
     axios.defaults.withCredentials = true;
     axios
@@ -193,12 +196,15 @@ function Applicant({ applicantId, hiringId, name, picture, permission, setUpdate
           <Link to={"/profile/"+applicantId} className="viewProfile">View Profile</Link>
         </div>
       </div>
-      { permission &&
+      { permission ?
         <div className="buttonContainer">
           <div className="acceptButton" onClick={approveApplicant}>
             <MaterialSymbol className="icon" size={22} icon="check" />
             <div className="text">Accept Applicant</div>
           </div>
+        </div>
+        : (applicantStatus == 1) && <div className="buttonContainer">
+          <div className="hired">Selected Applicant</div>
         </div>
       }
     </div>
