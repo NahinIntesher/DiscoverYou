@@ -29,7 +29,7 @@ module.exports = (router) => {
       SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
       TIMESTAMPDIFF(SECOND,NOW(), h.end_time) AS calculated_time,
       organizer.organizer_name AS organizer_name,
-        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture
       FROM 
           hirings h
       LEFT JOIN 

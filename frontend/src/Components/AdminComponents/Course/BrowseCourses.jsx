@@ -8,7 +8,7 @@ export default function BrowseCourses() {
     
     useEffect(() => {
         axios
-            .get("http://localhost:3000/admin/course")
+            .get("http://localhost:3000/student/course")
             .then((res) => {
                 console.log("Success");
                 const coursesData = res.data?.courses || [];
@@ -28,6 +28,7 @@ export default function BrowseCourses() {
                         key={course.course_id}
                         id={course.course_id}
                         name={course.course_name}
+                        mentorPicture={course.mentor_picture}
                         category={course.course_category}
                         description={course.course_description}
                         mentorName={course.course_mentor_name}

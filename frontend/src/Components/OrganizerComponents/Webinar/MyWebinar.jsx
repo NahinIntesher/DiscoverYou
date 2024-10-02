@@ -3,14 +3,14 @@ import "../../../assets/styles/contest.css";
 import axios from "axios";
 import NotFound from "../../CommonComponents/NotFound";
 import WebinarBox from "../../CommonComponents/WebinarBox";
-import 'react-material-symbols/rounded';
+import "react-material-symbols/rounded";
 
 export default function MyWebinar() {
   const [webinars, setWebinars] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/organizer/webinars/my")
+      .get("http://localhost:3000/organizer/webinars/myCreated")
       .then((response) => {
         const webinarsData = response.data.webinars;
         setWebinars(webinarsData);
@@ -31,7 +31,7 @@ export default function MyWebinar() {
             details={webinar.webinar_details}
             category={webinar.webinar_category}
             host={webinar.host_name}
-            date={webinar.start_time}
+            hostPicture={webinar.host_picture}
             startTime={webinar.start_time}
             endTime={webinar.end_time}
             participants={webinar.participant_count}
@@ -42,9 +42,8 @@ export default function MyWebinar() {
           />
         ))}
       </div>
-    )
-  }
-  else {
-      return <NotFound message="There are currently no Ongoing Webinar!" />
+    );
+  } else {
+    return <NotFound message="There are currently no Ongoing Webinar!" />;
   }
 }

@@ -127,6 +127,38 @@ module.exports = (router) => {
       return res.json({ webinars: result });
     });
   });
+  router.get("/webinars/myCreated", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
+      TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
+      organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
+      FROM 
+          webinars w
+      LEFT JOIN 
+          webinar_participants w_p
+      ON 
+          w.webinar_id = w_p.webinar_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.host_id = organizer.organizer_id
+      WHERE
+        NOW() >= w.end_time AND w.approval_status = 1
+      GROUP BY 
+          w.webinar_id AND w.host_id = ?; 
+    `;
+    connection.query(query, [userId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ webinars: result });
+    });
+  });
 
 
   router.get("/webinars/my", verifyToken, (req, res) => {

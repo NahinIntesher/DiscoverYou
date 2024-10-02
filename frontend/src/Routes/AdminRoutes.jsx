@@ -28,6 +28,7 @@ import Post from "../Components/AdminComponents/Showcase/Post";
 import SingleWebinar from "../Components/AdminComponents/Webinar/SingleWebinar";
 import Product from "../Components/AdminComponents/Marketplace/Product";
 import ChangeProfilePicture from "../Components/AdminComponents/Profile/ChangeProfilePicture";
+import SingleHiring from "../Components/AdminComponents/Hiring/SingleHiring";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -61,7 +62,13 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           
           
           <Route path="/marketplace/cart" element={<Marketplace />} />
+          
+          
           <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring/:hiringId" element={<SingleHiring />} />
+
+
+
           <Route path="/notification" element={<Notification />} />
           
           <Route path="/profile" element={<Profile user={user} />} />

@@ -37,6 +37,7 @@ export default function PendingWebinar({interests}) {
                             category={webinar.webinar_category}
                             description={webinar.webinar_description}
                             hostName={webinar.host_name}
+                            hostPicture={webinar.host_picture}
                             hostId={webinar.host_id}
                             setUpdate={setUpdate}
                             meetingLink={webinar.meeting_link}

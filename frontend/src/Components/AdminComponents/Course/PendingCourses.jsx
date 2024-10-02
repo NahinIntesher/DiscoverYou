@@ -33,6 +33,7 @@ export default function PendingCourses() {
                         category={course.course_category}
                         description={course.course_description}
                         mentorName={course.course_mentor_name}
+                        mentorPicture={course.mentor_picture}
                         mentorId={course.course_mentor_id}
                         setUpdate={setUpdate}
                         totalMember={course.total_member}

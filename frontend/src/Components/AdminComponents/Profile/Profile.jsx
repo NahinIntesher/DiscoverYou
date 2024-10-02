@@ -50,25 +50,30 @@ export default function Profile({ user }) {
         <div className="profileDetails">
           <div className="contributionSectionContainer">
             <ContributionBox
-              count={93}
-              title="Contests Participation"
               icon="rewarded_ads"
-              secondaryCount={6}
-              secondaryTitle="Contest Winner"
             />
             <ContributionBox
-              count={13}
-              title="Courses Enrolled"
               icon="auto_stories"
-              secondaryCount={6}
-              secondaryTitle="Course Completed"
             />
             <ContributionBox
-              count={132}
-              title="Showcase Posts"
               icon="gallery_thumbnail"
-              secondaryCount={1340}
-              secondaryTitle="Post Reactions"
+            />
+            <ContributionBox
+              icon="group_add"
+            />
+          </div>
+          <div className="contributionSectionContainer">
+            <ContributionBox
+              icon="work"
+            />
+            <ContributionBox
+              icon="workspace_premium "
+            />
+            <ContributionBox
+              icon="store"
+            />
+            <ContributionBox
+              icon="notifications"
             />
           </div>
           <div className="profileDetailsSectionContainer">
@@ -125,24 +130,12 @@ function ProfileField({ icon, label, value }) {
 }
 
 function ContributionBox({
-  count,
-  title,
-  secondaryCount,
-  secondaryTitle,
   icon,
 }) {
   return (
     <div className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
-      <div className="texts">
-        <div className="count">{count}</div>
-        <div className="title">{title}</div>
-      </div>
-      <div className="secondDetail">
-        <span className="count">{secondaryCount}</span>{" "}
-        <span className="title">{secondaryTitle}</span>
-      </div>
     </div>
   );
 }

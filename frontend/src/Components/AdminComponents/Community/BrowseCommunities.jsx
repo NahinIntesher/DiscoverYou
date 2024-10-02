@@ -3,7 +3,7 @@ import axios from "axios";
 import CommunityBox from "./CommunityBox";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function BrowseCommunities() {
+export default function BrowseHirings() {
     const [communities, setCommunities] = useState([]);
     
     useEffect(() => {

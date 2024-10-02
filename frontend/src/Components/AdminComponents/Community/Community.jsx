@@ -16,7 +16,6 @@ export default function Community() {
       <div className="contentTitle">
         <div className="content">
           <div className="title">Community</div>
-          
         </div>
       </div>
       <div className="tabContainer">

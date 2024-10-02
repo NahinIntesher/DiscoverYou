@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
 export default function CommunityBox({

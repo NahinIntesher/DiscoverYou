@@ -1,34 +1,32 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-export default function PendingCourseBox({
-  id,
-  name,
-  category,
-  description,
-  mentorName,
-  mentor_picture,
-  mentorId,
+
+export default function PendingCommunityBox({
+  hiringId,
+  companyName,
+  jobName,
+  jobCategory,
+  jobDescription,
+  organizerName,
+  organizerPicture,
+  organizerId,
+  jobSalery,
   setUpdate,
 }) {
-  const navigate = useNavigate();
-  function seeDetails(){
-    navigate('/course/'+id);
-  }
-  function approveMember() {
+  function approve() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/admin/course/approve", {
-        mentorId: mentorId,
-        courseId: id,
+      .post("http://localhost:3000/admin/hiring/approve", {
+        organizerId: organizerId,
+        hiringId: hiringId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Course "' + name + '" successfully approved!');
+          alert('Hiring for "' + jobName + '" job successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -37,15 +35,15 @@ export default function PendingCourseBox({
       .catch((err) => console.log(err));
   }
 
-  function rejectMember() {
+  function reject() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/admin/course/reject", {
-        courseId: id,
+      .post("http://localhost:3000/admin/hiring/reject", {
+        hiringId: hiringId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Course "' + name + '" has been rejected.');
+          alert('Hiring for "' + jobName + '" job has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -59,69 +57,71 @@ export default function PendingCourseBox({
       <div className="communityDetails">
         <div className="informationContainer">
           <div className="information">
-            <div className="title">{name}</div>
+          <div className="title">{jobName}</div>
+          {/* <div className="semiTitle">{companyName}</div> */}
             <div className="category">
-              {category === "Competitive Programming" && (
+              {jobCategory === "Competitive Programming" && (
                 <MaterialSymbol className="icon" size={24} icon="code" />
               )}
-              {category === "Singing" && (
+              {jobCategory === "Singing" && (
                 <MaterialSymbol className="icon" size={24} icon="queue_music" />
               )}
-              {category === "Graphics Designing" && (
+              {jobCategory === "Graphics Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
-              {category === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+              {jobCategory === "Photography" && (
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
-              {category === "Web/App Designing" && (
+              {jobCategory === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
               )}
-              {category === "Writing" && (
+              {jobCategory === "Writing" && (
                 <MaterialSymbol className="icon" size={24} icon="edit_note" />
               )}
-              {category === "Art & Craft" && (
+              {jobCategory === "Art & Craft" && (
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
-              {category === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+              {jobCategory === "Debating" && (
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
-              {category === "Gaming" && (
+              {jobCategory === "Gaming" && (
                 <MaterialSymbol
                   className="icon"
                   size={24}
                   icon="sports_esports"
                 />
               )}
-              <div className="text">{category}</div>
+              <div className="text">{jobCategory}</div>
             </div>
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
+          <Link to={"/profile/" + organizerId} className="organizer">
             <div className="organizerPicture">
-              <img src={mentor_picture?mentor_picture:dp} />
+              <img src={organizerPicture ? organizerPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Requested By</div>
-              <div className="detailInfo">{mentorName}</div>
+              <div className="detailInfo">{organizerName}</div>
             </div>
-          </div>
-          <div className="detail">
-            {description}
-          </div>
+          </Link>
+          <div className="detail">{jobDescription}</div>
         </div>
       </div>
       <div className="buttonContainer">
-        {/* <Link to={"/course/"+id} className="acceptButton joinButton">See Details</Link> */}
-        <div className="acceptButton" onClick={seeDetails}>
-          <MaterialSymbol className="icon" size={22} icon="info" />
-          <div className="text">See Details</div>
-        </div>
-        <div className="acceptButton" onClick={approveMember}>
+        <div className="acceptButton" onClick={approve}>
           <MaterialSymbol className="icon" size={22} icon="check" />
           <div className="text">Approve</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton" onClick={reject}>
           <MaterialSymbol className="icon" size={22} icon="close" />
           <div className="text">Reject</div>
         </div>

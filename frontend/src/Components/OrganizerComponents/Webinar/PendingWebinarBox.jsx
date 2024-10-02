@@ -10,6 +10,7 @@ export default function PendingWebinarBox({
   category,
   description,
   hostName,
+  hostPicture,
   hostId,
   setUpdate,
   meetingLink,

@@ -31,7 +31,7 @@ export default function OngoingWebinar() {
             details={webinar.webinar_details}
             category={webinar.webinar_category}
             host={webinar.host_name}
-            date={webinar.start_time}
+            hostPicture={webinar.host_picture}
             startTime={webinar.start_time}
             endTime={webinar.end_time}
             participants={webinar.participant_count}

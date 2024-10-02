@@ -9,18 +9,17 @@ import { useNavigate } from "react-router-dom";
 export default function WebinarBox({
   id,
   name,
-  hostPicture,
   description,
   category,
   recordedLink,
   meetingLink,
+  hostPicture,
   host,
-  date,
   startTime,
   endTime,
   participants,
   calculatedTime,
-  type
+  type,
 }) {
   // const [isRegistered, setIsRegistered] = useState(isJoined);
   // const [participantNo, setParticipantNo] = useState(participants);
@@ -115,7 +114,7 @@ export default function WebinarBox({
               />
               <div className="text">
                 <div className="detailTitle">Date</div>
-                <div className="detailInfo">{getDate(date)}</div>
+                <div className="detailInfo">{getDate(startTime)}</div>
               </div>
             </div>
             <div className="detail">

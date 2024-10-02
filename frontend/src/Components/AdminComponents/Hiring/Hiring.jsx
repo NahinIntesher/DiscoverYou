@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../../assets/styles/dashboard.css";
+import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
+import { Link } from "react-router-dom";
+import "../../../assets/styles/community.css";
+import BrowseHirings from "./BrowseHirings";
+import PendingHirings from "./PendingHirings";
 
-export default function Showcase({ user }) {
-  const [hirings, sethirings] = useState([]);
-
-  // useEffect(() => {
-  //     axios
-  //       .get("http://localhost:3000/organizer/hirings")
-  //       .then((res) => {
-  //         const hirings = res.data?.hirings || [];
-  //         sethirings(hirings);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching hirings:", error);
-  //       });
-  // }, [updatePost]);
+export default function Hiring() {
+  const [activeTab, setActiveTab] = useState(["browseHirings"]);
 
   return (
     <div className="mainContent">
@@ -25,6 +18,26 @@ export default function Showcase({ user }) {
           <div className="title">Hirings</div>
         </div>
       </div>
+      <div className="tabContainer">
+        <div
+          className={activeTab == "pendingHirings" ? "activeTab" : "tab"}
+          onClick={function () {
+            setActiveTab("pendingHirings");
+          }}
+        >
+          Pending Hirings
+        </div>
+        <div
+          className={activeTab == "browseHirings" ? "activeTab" : "tab"}
+          onClick={function () {
+            setActiveTab("browseHirings");
+          }}
+        >
+          Approved Hirings
+        </div>
+      </div>
+      {activeTab == "pendingHirings" && <PendingHirings />}
+      {activeTab == "browseHirings" && <BrowseHirings />}
     </div>
   );
 }
