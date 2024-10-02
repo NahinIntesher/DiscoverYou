@@ -22,6 +22,10 @@ import Profile from "../Components/OrganizerComponents/Profile/Profile";
 import UpdateProfile from "../Components/OrganizerComponents/Profile/UpdateProfile";
 import Settings from "../Components/OrganizerComponents/Profile/Settings";
 import ChangePassword from "../Components/OrganizerComponents/Profile/ChangePassword";
+import WebinarHosted from "../Components/OrganizerComponents/Profile/Details/WebinarHosted";
+import ContestOrganized from "../Components/OrganizerComponents/Profile/Details/ContestOrganized";
+import HigingOrganized from "../Components/OrganizerComponents/Profile/Details/HiringOrganized";
+
 
 import Post from "../Components/OrganizerComponents/Showcase/Post";
 import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNewWebinar";
@@ -81,6 +85,11 @@ export default function Student({
             element={<ChangePassword />}
           />
           <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
+          <Route path="/profile/webinarResults" element={<WebinarHosted user={user} />} />
+          <Route path="/profile/contestResults" element={<ContestOrganized user={user} />} />
+          <Route path="/profile/hiringResults" element={<HigingOrganized user={user} />} />
+        
+        
         </Routes>
       </div>
     </BrowserRouter>

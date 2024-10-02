@@ -133,40 +133,20 @@ module.exports = (router) => {
     let userId = req.userId;
 
     const query = `
-      SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
-      CASE 
-          WHEN NOW() <= w.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), w.start_time)
-          ELSE TIMESTAMPDIFF(SECOND,NOW(), w.end_time)    
-      END AS calculated_time,
-      organizer.organizer_name AS host_name,
-      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
-      CASE 
-          WHEN NOW() >= w.end_time THEN "previous"
-          WHEN NOW() <= w.start_time THEN "upcoming"
-          ELSE "ongoing"  
-      END AS type
-      FROM 
-          webinars w
-      LEFT JOIN 
-          webinar_participants w_p
-      ON 
-          w.webinar_id = w_p.webinar_id
-      LEFT JOIN 
-        organizer
-      ON 
-        w.host_id = organizer.organizer_id
-      WHERE
-        w.host_id = '${userId}' AND w.approval_status = 1
-      GROUP BY 
-        w.webinar_id;
-    `;
-    connection.query(query, (err, result) => {
+      SELECT 
+        w.webinar_id, w.webinar_name, w.webinar_category, w.webinar_description, COUNT(w.webinar_id) AS total_webinars,
+        o.organizer_name AS host_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS host_picture
+        FROM webinars w
+        JOIN organizer o ON o.organizer_id = w.host_id
+        WHERE w.host_id = ?`;
+    connection.query(query, [userId], (err, result) => {
       if (err) {
         console.log(err);
         return res.json({ message: "Failed" });
       }
 
-      return res.json({ webinars: result });
+      return res.json({ webinarResults: result });
     });
   });
 

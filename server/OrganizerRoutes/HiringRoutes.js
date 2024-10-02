@@ -59,40 +59,20 @@ module.exports = (router) => {
     let userId = req.userId;
 
     const query = `
-      SELECT h.*, COUNT(h_a.hiring_id) AS applicant_count,
-      CASE 
-          WHEN NOW() <= h.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), h.start_time)
-          ELSE TIMESTAMPDIFF(SECOND,NOW(), h.end_time)    
-      END AS calculated_time,
-      organizer.organizer_name AS organizer_name,
-        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
-      CASE 
-          WHEN NOW() >= h.end_time THEN "previous"
-          WHEN NOW() <= h.start_time THEN "upcoming"
-          ELSE "ongoing"  
-      END AS type
-      FROM 
-          hirings h
-      LEFT JOIN 
-          hiring_applicants h_a
-      ON 
-          h.hiring_id = h_a.hiring_id
-      LEFT JOIN 
-          organizer
-      ON 
-          h.organizer_id = organizer.organizer_id
-      WHERE
-        h.organizer_id = '${userId}' AND h.approval_status = 1
-      GROUP BY 
-        h.hiring_id;
-    `;
-    connection.query(query, (err, result) => {
+      SELECT 
+        h.hiring_id, h.company_name, h.job_name, h.job_category, h.job_description, COUNT(h.hiring_id) AS total_hirings,
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+        FROM hirings h
+        JOIN organizer o ON o.organizer_id = h.organizer_id
+        WHERE h.organizer_id = ?`;
+    connection.query(query, [userId], (err, result) => {
       if (err) {
         console.log(err);
         return res.json({ message: "Failed" });
       }
 
-      return res.json({ hirings: result });
+      return res.json({ hiringResults: result });
     });
   });
 

@@ -1,11 +1,32 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../../assets/images/default.jpg";
 import "../../../assets/styles/Profile.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile({ user }) {
+  const [contestResults, setContestResults] = useState({});
+  const [webinarResults, setWebinarResults] = useState({});
+  const [hiringResults, setHiringResults] = useState({});
+
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+    axios
+      .get("http://localhost:3000/organizer/profile")
+      .then((res) => {
+        console.log(res.data);
+        setContestResults(res.data.contestResults);
+        setWebinarResults(res.data.webinarResults);
+        setHiringResults(res.data.hiringResults);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const extractDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
@@ -39,36 +60,28 @@ export default function Profile({ user }) {
           </div>
           <div className="details">
             <div className="name">{user.organizer_name}</div>
-            {/* <div className="userPoints">
-              <MaterialSymbol className="icon" size={22} icon="star" fill />
-              <div className="text">POINTS</div>
-              <div className="point">No Points</div>
-            </div> */}
           </div>
         </div>
 
         <div className="profileDetails">
           <div className="contributionSectionContainer">
             <ContributionBox
-              count={93}
-              title="Contests Participation"
+              count={contestResults.total_contests}
+              title="Contests Organized"
               icon="rewarded_ads"
-              secondaryCount={6}
-              secondaryTitle="Contest Winner"
+              linkToRoute='contestResults'
             />
             <ContributionBox
-              count={13}
-              title="Courses Enrolled"
-              icon="auto_stories"
-              secondaryCount={6}
-              secondaryTitle="Course Completed"
-            />
-            <ContributionBox
-              count={132}
-              title="Showcase Posts"
+              count={hiringResults.total_hirings}
+              title="Hirings Organized"
               icon="gallery_thumbnail"
-              secondaryCount={1340}
-              secondaryTitle="Post Reactions"
+              linkToRoute='hiringResults'
+            />
+            <ContributionBox
+              count={webinarResults.total_webinars}
+              title="Webinars Organized"
+              icon="patient_list"
+              linkToRoute='webinarResults'
             />
           </div>
           <div className="profileDetailsSectionContainer">
@@ -124,25 +137,60 @@ function ProfileField({ icon, label, value }) {
   );
 }
 
+function Interest({ category }) {
+  return (
+    <div className="userInterest">
+      {category === "Competitive Programming" && (
+        <MaterialSymbol className="icon" size={24} icon="code" />
+      )}
+      {category === "Singing" && (
+        <MaterialSymbol className="icon" size={24} icon="queue_music" />
+      )}
+      {category === "Graphics Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="polyline" />
+      )}
+      {category === "Photography" && (
+        <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+      )}
+      {category === "Web/App Designing" && (
+        <MaterialSymbol className="icon" size={24} icon="web" />
+      )}
+      {category === "Writing" && (
+        <MaterialSymbol className="icon" size={24} icon="edit_note" />
+      )}
+      {category === "Art & Craft" && (
+        <MaterialSymbol className="icon" size={24} icon="draw" />
+      )}
+      {category === "Debating" && (
+        <MaterialSymbol className="icon" size={24} icon="communication" />
+      )}
+      {category === "Gaming" && (
+        <MaterialSymbol className="icon" size={24} icon="sports_esports" />
+      )}
+      <div className="text">{category}</div>
+    </div>
+  );
+}
+
 function ContributionBox({
   count,
   title,
-  secondaryCount,
-  secondaryTitle,
   icon,
-}) {
+  linkToRoute,
+}) {  
+  const navigate = useNavigate();
+  const handleClick  = () => {
+    alert('clicked');
+    // navigate(`/${linkToRoute}`)
+  }
   return (
-    <div className="contributionBox">
+    <Link to={`/profile/${linkToRoute}`}  className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
       <div className="texts">
-        <div className="count">{count}</div>
+        <div className="count text-center">{count}</div>
         <div className="title">{title}</div>
       </div>
-      <div className="secondDetail">
-        <span className="count">{secondaryCount}</span>{" "}
-        <span className="title">{secondaryTitle}</span>
-      </div>
-    </div>
+    </Link>
   );
 }

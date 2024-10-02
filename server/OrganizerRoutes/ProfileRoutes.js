@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
+const { promisify } = require("util");
 
 module.exports = (router, multer, bcrypt) => {
   const storage = multer.memoryStorage();
@@ -186,5 +187,63 @@ module.exports = (router, multer, bcrypt) => {
         message: "Account deleted successfully.",
       });
     });
+  });
+
+
+  router.get("/profile", verifyToken, async (req, res) => {
+    const id = req.userId;
+
+    // SQL queries
+    const contestQuery = `
+        SELECT 
+        c.contest_name, c.contest_category, c.contest_details, COUNT(c.contest_id) AS total_contests,
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+        FROM contests c
+        JOIN organizer o ON o.organizer_id = c.organizer_id
+        WHERE c.organizer_id = ?`;
+
+    const webinarQuery = `
+        SELECT 
+        w.webinar_name, w.webinar_category, w.webinar_description, COUNT(w.webinar_id) AS total_webinars,
+        o.organizer_name AS host_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS host_picture
+        FROM webinars w
+        JOIN organizer o ON o.organizer_id = w.host_id
+        WHERE w.host_id = ?`;
+    
+    const hiringQuery = `
+        SELECT 
+        h.company_name, h.job_name, h.job_category, h.job_description, COUNT(h.hiring_id) AS total_hirings,
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+        FROM hirings h
+        JOIN organizer o ON o.organizer_id = h.organizer_id
+        WHERE h.organizer_id = ?`;
+
+    try {
+      // Use promisified version of connection.query for cleaner async/await handling
+      const queryAsync = promisify(connection.query).bind(connection);
+
+      // Execute the queries concurrently
+      const [contestResults, webinarResults, hiringResults] =
+        await Promise.all([
+          queryAsync(contestQuery, [id]),
+          queryAsync(webinarQuery, [id]),
+          queryAsync(hiringQuery, [id]),
+        ]);
+
+      // Respond with all the results
+      res.json({
+        status: "Success",
+        contestResults: contestResults[0],
+        webinarResults: webinarResults[0],
+        hiringResults: hiringResults[0],
+      });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ status: "Error fetching data", error: err.message });
+    }
   });
 };

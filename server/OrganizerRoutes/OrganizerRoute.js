@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 // require("./ContestRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./WebinarRoutes")(router);
+require("./ContestRoutes")(router);
 require("./HiringRoutes")(router);
 require("./MarketplaceRoutes")(router, multer);
 require("./NotificationRoutes")(router);
