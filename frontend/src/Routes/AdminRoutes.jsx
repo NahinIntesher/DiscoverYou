@@ -30,6 +30,8 @@ import Product from "../Components/AdminComponents/Marketplace/Product";
 import ChangeProfilePicture from "../Components/AdminComponents/Profile/ChangeProfilePicture";
 import SingleHiring from "../Components/AdminComponents/Hiring/SingleHiring";
 
+import UserManagement from "../Components/AdminComponents/UserManagement/UserManagement";
+
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
     <BrowserRouter>
@@ -76,6 +78,9 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
           <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
           <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
+
+
+          <Route path="/user-management" element={<UserManagement user={user} setUser={setUser}/>} />
         </Routes>
       </div>
     </BrowserRouter>

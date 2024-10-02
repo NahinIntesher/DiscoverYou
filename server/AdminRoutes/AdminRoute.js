@@ -13,5 +13,6 @@ require("./MarketplaceRoutes")(router, multer);
 require("./HiringRoutes")(router);
 require("./NotificationRoutes")(router);
 require("./ProfileRoutes")(router, multer, bcrypt);
+require("./UserManagementRoutes")(router);
 
 module.exports = router;
