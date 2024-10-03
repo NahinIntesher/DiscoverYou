@@ -61,6 +61,28 @@ module.exports = (router, multer) => {
     });
   });
 
+  
+  router.get("/marketplace/products/my", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const query = `SELECT
+     p.*, 
+    CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+     FROM 
+        products as p
+     JOIN
+        product_images as p_i
+      ON
+        p.product_id = p_i.product_id
+      WHERE
+        p.approval_status = 1 AND p.seller_id = ?
+      GROUP BY p.product_id`;
+      
+    connection.query(query, [userId], (err, results) => {
+      if (err) throw err;
+      res.json({ products: results });
+    });
+  });
+
   router.get("/marketplace/products/image/:id", (req, res) => {
     const mediaId = req.params.id;
 
@@ -144,7 +166,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     p.*, 
     s.student_name as seller_name,
-    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS seller_picture,
+    IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS seller_picture,
     CONCAT("http://localhost:3000/student/marketplace/products/image/", 
         (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
     FROM 
@@ -215,5 +237,66 @@ module.exports = (router, multer) => {
     });
   });
 
+
+  router.get("/marketplace/cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    connection.query(
+      `SELECT p.*, 
+      CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+      FROM marketplace_cart AS m_c
+      JOIN products AS p
+      ON m_c.product_id = p. product_id
+      WHERE m_c.buyer_student_id = ?`,
+      [userId],
+      (err, results) => {
+        if (err) throw err;
+        
+        return res.json({ products: results });
+      }
+    );
+  });
+
+  router.post("/marketplace/add-to-cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const { productId } = req.body;
+
+    console.log(productId);
+
+    connection.query(
+      "SELECT * FROM marketplace_cart WHERE product_id = ? AND buyer_student_id = ?",
+      [productId, userId],
+      (err, results) => {
+        if (err) throw err;
+        if (results.length > 0) {
+          return res.json({ status: "AlreadyAdded" });
+        } else {
+          connection.query(
+            "INSERT INTO marketplace_cart(product_id, buyer_student_id) VALUES (?, ?);",
+            [productId, userId],
+            function (err, results) {
+              if (err) throw err;
+              return res.json({ status: "Success" });
+            }
+          );
+        }
+      }
+    );
+  });
+
+  router.post("/marketplace/remove-from-cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const { productId } = req.body;
+
+    connection.query(
+      "DELETE FROM marketplace_cart WHERE product_id = ? AND buyer_student_id = ?",
+      [productId, userId],
+      (err, results) => {
+        if (err) throw err; 
+        return res.json({ status: "Success" });
+      }
+    );
+  });
 
 };

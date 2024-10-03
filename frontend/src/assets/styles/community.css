@@ -130,6 +130,10 @@
     border-radius: 46px;
     border: 3px #ffffff solid;
     overflow: hidden;
+    object-fit: cover;
+}
+.communityBox .organizer .organizerPicture img {
+    object-fit: cover;
 }
 .communityBox .organizer .organizerDetails {
     display: inline-block;
@@ -563,11 +567,14 @@
 .pendingCommunityBox .communityDetails .organizer .organizerPicture {
     display: inline-block;
     vertical-align: middle;
-    width: 30px;
-    height: 30px;
     border-radius: 46px;
     border: 2.5px #ffffff solid;
     overflow: hidden;
+}
+.pendingCommunityBox .communityDetails .organizer .organizerPicture img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
 }
 .pendingCommunityBox .communityDetails .organizer .organizerDetails {
     display: inline-block;

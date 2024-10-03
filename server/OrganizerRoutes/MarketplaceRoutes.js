@@ -67,4 +67,66 @@ module.exports = (router, multer) => {
   router.get("/marketplace", verifyToken, (req, res) => {
     res.json({ messege: "Organizer Market Place" });
   });
+
+
+  router.get("/marketplace/cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    connection.query(
+      `SELECT p.*, 
+      CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+      FROM marketplace_cart AS m_c
+      JOIN products AS p
+      ON m_c.product_id = p. product_id
+      WHERE m_c.buyer_organizer_id = ?`,
+      [userId],
+      (err, results) => {
+        if (err) throw err;
+        
+        return res.json({ products: results });
+      }
+    );
+  });
+
+  router.post("/marketplace/add-to-cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const { productId } = req.body;
+
+    console.log(productId);
+
+    connection.query(
+      "SELECT * FROM marketplace_cart WHERE product_id = ? AND buyer_organizer_id = ?",
+      [productId, userId],
+      (err, results) => {
+        if (err) throw err;
+        if (results.length > 0) {
+          return res.json({ status: "AlreadyAdded" });
+        } else {
+          connection.query(
+            "INSERT INTO marketplace_cart(product_id, buyer_organizer_id) VALUES (?, ?);",
+            [productId, userId],
+            function (err, results) {
+              if (err) throw err;
+              return res.json({ status: "Success" });
+            }
+          );
+        }
+      }
+    );
+  });
+
+  router.post("/marketplace/remove-from-cart", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    const { productId } = req.body;
+
+    connection.query(
+      "DELETE FROM marketplace_cart WHERE product_id = ? AND buyer_organizer_id = ?",
+      [productId, userId],
+      (err, results) => {
+        if (err) throw err; 
+        return res.json({ status: "Success" });
+      }
+    );
+  });
 };

@@ -48,6 +48,7 @@ import Material from "../Components/StudentComponents/Course/Material";
 import ChangeProfilePicture from "../Components/StudentComponents/Profile/ChangeProfilePicture";
 import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseReactors";
 import PendingApplications from "../Components/StudentComponents/Hiring/PendingApplications";
+import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 
 export default function Student({ handleLogout, user, setUser, setAuthorized }) {
   return (
@@ -89,6 +90,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
           />
           <Route path="/marketplace/pending-products" element={<PendingProducts />} />
           <Route path="/marketplace/product/:productId" element={<Product />} />
+          <Route path="/marketplace/checkout/:productId" element={<Checkout />} />
 
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/applications" element={<PendingApplications />} />

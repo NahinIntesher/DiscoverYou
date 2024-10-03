@@ -3,6 +3,7 @@ import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingProductBox({
   productId,
@@ -13,6 +14,7 @@ export default function PendingProductBox({
   productPrice,
   productDetails,
   productSeller,
+  productSellerId,
   productType,
   setUpdate
 }) {
@@ -107,7 +109,7 @@ export default function PendingProductBox({
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
+          <Link to={"/profile/"+productSellerId} className="organizer">
             <div className="organizerPicture">
               <img src={productSellerPicture ? productSellerPicture : dp} />
             </div>
@@ -115,7 +117,7 @@ export default function PendingProductBox({
               <div className="detailTitle">Requested By</div>
               <div className="detailInfo">{productSeller}</div>
             </div>
-          </div>
+          </Link>
           <div className="detail">
             <table>
               <tr><th>Price</th><td>{productPrice}৳</td></tr>

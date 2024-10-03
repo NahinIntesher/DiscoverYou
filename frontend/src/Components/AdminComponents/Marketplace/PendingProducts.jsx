@@ -46,6 +46,7 @@ export default function PendingProducts() {
                             productType={product.product_type}
                             productDetails={product.product_details}
                             productSeller={product.seller_name}
+                            productSellerId={product.seller_id}
                             setUpdate={setUpdate} 
                         />
                     ))}

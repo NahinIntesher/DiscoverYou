@@ -3,12 +3,12 @@ import axios from "axios";
 import ProductBox from "./ProductBox";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function BrowseProducts() {
+export default function MyProducts() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/student/marketplace/products")
+            .get("http://localhost:3000/student/marketplace/products/my")
             .then((res) => {
                 console.log("Success");
                 const productsData = res.data?.products || [];
@@ -37,7 +37,7 @@ export default function BrowseProducts() {
                     )
                 })
                 :
-                <NotFound message="No Product Found"/>
+                <NotFound message="You don't have any approved product!"/>
             }
         </div>
     );

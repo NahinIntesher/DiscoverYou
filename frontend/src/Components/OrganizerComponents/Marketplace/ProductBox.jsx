@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ProductBox({
   productId,
@@ -11,7 +12,25 @@ export default function ProductBox({
   productCategory
 }) {
  
-  const showCart = () => {};
+
+  function addToCart() {
+
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/organizer/marketplace/add-to-cart", {
+        productId: productId
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          alert("Product successfully added to the cart!");
+        } else if (res.data.status === "AlreadyAdded") {
+          alert("Sorry, this product is already added in the cart!");
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="productBox">
@@ -28,7 +47,7 @@ export default function ProductBox({
           <Link to={"/marketplace/product/"+productId} className="button">
             Details
           </Link>
-          <div className="buttonAlt" onClick={showCart}>
+          <div className="buttonAlt" onClick={addToCart}>
             Add To Cart
           </div>
         </div>

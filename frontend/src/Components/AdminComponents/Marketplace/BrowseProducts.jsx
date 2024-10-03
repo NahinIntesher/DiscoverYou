@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ProductBox from "../../CommonComponents/ProductBox";
+import ProductBox from "./ProductBox";
 
 export default function BrowseProducts() {
     const [products, setProducts] = useState([]);

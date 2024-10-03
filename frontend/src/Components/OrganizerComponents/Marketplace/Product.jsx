@@ -4,7 +4,7 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function Product() {
     const {productId} = useParams();
@@ -29,6 +29,24 @@ export default function Product() {
             setActiveImage(productImages.length-1)
         }
     }
+
+    function addToCart() {
+        axios.defaults.withCredentials = true;
+        axios
+            .post("http://localhost:3000/organizer/marketplace/add-to-cart", {
+                productId: product.product_id
+            })
+            .then((res) => {
+                if (res.data.status === "Success") {
+                    alert("Product successfully added to the cart!");
+                } else if (res.data.status === "AlreadyAdded") {
+                    alert("Sorry, this product is already added in the cart!");
+                } else {
+                    alert(res.data.Error);
+                }
+            })
+            .catch((err) => console.log(err));
+    };
     
     useEffect(() => {
         console.log("useEffect Cholled")
@@ -78,7 +96,7 @@ export default function Product() {
                     <div className="productDetailsBox">
                         <div className="title">{product.product_name}</div>
                         <Category category={product.product_category}/>
-                        <div className="organizer">
+                        <Link to={"/profile/"+product.seller_id} className="organizer">
                             <div className="organizerPicture">
                             <img src={product.seller_picture ? product.seller_picture : dp} />
                             </div>
@@ -86,7 +104,7 @@ export default function Product() {
                             <div className="detailTitle">Selling By</div>
                             <div className="detailInfo">{product.seller_name}</div>
                             </div>
-                        </div>
+                        </Link>
                         <div className="description">
                             {product.product_details}
                         </div>
@@ -100,7 +118,7 @@ export default function Product() {
                             </div>
                         </div>
                         <div className="buttonContainer">
-                            <div className="button">
+                            <div onClick={addToCart} className="button">
                                 Add To Cart
                             </div>
                             <div className="buttonAlt">
