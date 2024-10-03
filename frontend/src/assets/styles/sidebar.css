@@ -214,17 +214,30 @@ body {
     padding: 10px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
+.notificationBox .profilePicture {
+    display: inline-block;
+    vertical-align: middle;
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+    padding: 4px;
+    border-radius: 80px;
+    margin: 10px;
+    flex-shrink: 1;
+}
 .notificationBox img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
     border-radius: 50%;
-    flex-shrink: 1;
-    margin: 10px;
+    border: 3px solid #ffffff;
 }
 .notificationBox .texts {
     flex-grow: 1;
     margin: 8px;
+}
+.notificationBox .dateTimeContainer {
+    flex-shrink: 1;
+    margin: 18px;
+    text-align: center;
 }
 .notificationBox .title {
     font-size: 14px;
@@ -234,12 +247,15 @@ body {
 .notificationBox .message {
     margin: 2px 4px;
 }
+.notificationBox .timeAgo {
+    font-size: 14px;
+    margin: 2px 4px;
+    font-weight: 600;
+    color: rgba(var(--dark), 0.8);
+}
 .notificationBox .dateTime {
     font-size: 14px;
     margin: 2px 4px;
-    display: flex;
-    align-items: center;                                                                                                                                                                
-    justify-content: space-between;
     text-align: center;
 }
 

@@ -38,7 +38,7 @@ module.exports = (router) => {
     const userId = req.userId;
 
     connection.query(
-      "SELECT * FROM notifications WHERE recipient_student_id = ? ORDER BY notification_id DESC",
+      "SELECT *, TIMESTAMPDIFF(SECOND, sent_time, NOW()) AS notification_time_ago FROM notifications WHERE recipient_student_id = ? ORDER BY notification_id DESC",
       [userId],
       (err, results) => {
         if (err) {

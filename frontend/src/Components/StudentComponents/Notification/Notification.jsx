@@ -27,7 +27,7 @@ export default function Notifications({ user }) {
           <div className="title">Notifications</div>
         </div>
       </div>
-      <div className="content">
+      <div className="content center">
         {notifications.length ? (
           <div className="participantList">
             {notifications.map(function (notification) {
@@ -38,6 +38,7 @@ export default function Notifications({ user }) {
                   notificationLink={notification.notification_link}
                   notificationPicture={notification.notification_picture}
                   notificationTime={notification.sent_time}
+                  notificationTimeAgo={notification.notification_time_ago}
                 />
               );
             })}
