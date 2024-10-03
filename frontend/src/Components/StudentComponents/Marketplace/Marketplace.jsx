@@ -76,6 +76,10 @@ export default function Marketplace() {
                 <div className="content">
                     <div className="title">Marketplace</div>
                     <div className="buttonContainer">
+                        <Link to="/marketplace/order-history" className="button">
+                            <MaterialSymbol className="icon" size={24} icon="history" />
+                            <div className="text">Order History</div>
+                        </Link>
                         <Link to="/marketplace/add-product" className="button">
                             <MaterialSymbol className="icon" size={24} icon="add" />
                             <div className="text">Add New Product</div>

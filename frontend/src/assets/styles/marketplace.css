@@ -503,6 +503,122 @@
     font-size: 17px;
 }
 
+
+.formBox .productList {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 12px;
+}
+
+.formBox .productList .title {
+    margin: 6px 14px;
+}
+.formBox .productList table {
+    width: calc(100% - 12px);
+    margin: 6px;
+    text-align: center;
+    border-collapse: separate; 
+    border-spacing: 6px;
+}
+
+.formBox .productList table thead {
+    font-weight: 600;
+    margin: 20px;
+    font-size: 17px;
+}
+.formBox .productList table thead td {
+    padding: 12px 6px;
+    background-color: rgba(0,0,0,0.1);
+}
+.formBox .productList table td {
+    padding: 4px;
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 10px;
+}
+.formBox .productList table td input {
+    width: 100%;
+    margin: 0;
+    border-radius: 8px;
+}
+.formBox .productList table td input[type=number]::-webkit-inner-spin-button,
+.formBox .productList table td input[type=number]::-webkit-outer-spin-button {  
+    opacity: 1; 
+}
+
+.formBox .productList .fixedWidth {
+    width: 100px;
+}
+.formBox .productList table tfoot td {
+    padding: 12px;
+    font-weight: 600;
+}
+
+.orderBox {
+    padding: 8px 10px;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+.orderBox img {
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100px;
+    height: 100px;
+    margin: 8px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 1;
+}
+.orderBox .prodcutDetails {
+    flex-grow: 1;
+    padding: 8px;
+
+}
+
+.orderBox .prodcutDetails table {
+    font-size: 15px;
+}
+.orderBox .prodcutDetails table th {
+    font-weight: 600;
+    padding: 2px 4px;
+}
+.orderBox .prodcutDetails table td {
+    padding: 2px 4px;
+}
+
+.orderBox .prodcutDetails .name {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 4px;
+}
+.orderBox .deliveryStatus {
+    flex-shrink: 1;
+    padding: 8px;
+    text-align: center;
+}
+
+.orderBox .deliveryStatus .name {
+    font-size: 14px;
+    font-weight: 450;
+}
+
+.orderBox .deliveryStatus .delivery {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 6px 20px;
+    text-align: center;
+    border-radius: 30px;
+    width: max-content;
+    margin: 4px;
+    font-weight: 500;
+}
+
+
+.orderBox .deliveryStatus .complete { 
+    background-color: rgb(11, 161, 11);
+    font-weight: 600;
+    color: #ffffff;
+}
+
 @media screen and (min-width: 1600px) {
     .productBox {
         width: 40%;
