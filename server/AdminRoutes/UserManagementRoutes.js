@@ -70,4 +70,32 @@ module.exports = (router) => {
       return res.json({ admins: result });
     });
   });
+  router.delete("/user-management/delete/:id", verifyToken, (req, res) => {
+    const deletedId = req.params.id;
+    console.log("Deleting user with ID:", deletedId);
+    let query;
+    if (deletedId[0] === "S") {
+      query = `DELETE FROM student WHERE student_id = ?`;
+    } else if (deletedId[0] === "O") {
+      query = `DELETE FROM organizer WHERE organizer_id = ?`;
+    } else if (deletedId[0] === "A") {
+      query = `DELETE FROM admin WHERE admin_id = ?`;
+    } else {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+    console.log("Query:", query);
+    connection.query(query, [deletedId], (err, result) => {
+      if (err) {
+        console.error("Delete error:", err);
+        return res.status(500).json({ message: "Failed to delete user" });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      return res.json({
+        status: "Success",
+        message: "User deleted successfully",
+      });
+    });
+  });
 };

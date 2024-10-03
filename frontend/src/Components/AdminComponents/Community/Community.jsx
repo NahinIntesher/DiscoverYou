@@ -21,6 +21,7 @@ export default function Community() {
       <div className="tabContainer">
         <div
           className={activeTab == "pendingCommunities" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("pendingCommunities");
           }}
@@ -29,6 +30,7 @@ export default function Community() {
         </div>
         <div
           className={activeTab == "browseCommunities" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseCommunities");
           }}

@@ -35,7 +35,10 @@ export default function Profile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img src={user.admin_picture ? user.admin_picture : dp} alt="Profile" />
+            <img
+              src={user.admin_picture ? user.admin_picture : dp}
+              alt="Profile"
+            />
           </div>
           <div className="details">
             <div className="name">{user.admin_name}</div>
@@ -48,7 +51,7 @@ export default function Profile({ user }) {
         </div>
 
         <div className="profileDetails">
-          <div className="contributionSectionContainer">
+          {/* <div className="contributionSectionContainer">
             <ContributionBox
               icon="rewarded_ads"
             />
@@ -75,7 +78,7 @@ export default function Profile({ user }) {
             <ContributionBox
               icon="notifications"
             />
-          </div>
+          </div> */}
           <div className="profileDetailsSectionContainer">
             <ProfileSection title="Personal Information">
               <ProfileField
@@ -129,9 +132,7 @@ function ProfileField({ icon, label, value }) {
   );
 }
 
-function ContributionBox({
-  icon,
-}) {
+function ContributionBox({ icon }) {
   return (
     <div className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />

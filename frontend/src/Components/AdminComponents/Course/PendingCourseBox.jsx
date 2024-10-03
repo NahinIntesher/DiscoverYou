@@ -1,5 +1,5 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
@@ -11,7 +11,7 @@ export default function PendingCourseBox({
   category,
   description,
   mentorName,
-  mentor_picture,
+  mentorPicture,
   mentorId,
   setUpdate,
 }) {
@@ -99,7 +99,7 @@ export default function PendingCourseBox({
         <div className="description">
           <div className="organizer">
             <div className="organizerPicture">
-              <img src={mentor_picture?mentor_picture:dp} />
+              <img src={mentorPicture ? mentorPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Requested By</div>

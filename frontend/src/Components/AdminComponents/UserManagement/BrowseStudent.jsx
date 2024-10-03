@@ -1,41 +1,43 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserBox from "./UserBox";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function BrowseStudent() {
-  const [students, setStudents] = React.useState([]);
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    axios.defaults.withCredentials = true;
+    fetchStudents();
+  }, []);
+
+  function fetchStudents() {
     axios
-      .get("http://localhost:3000/student/user-management/students")
+      .get("http://localhost:3000/admin/user-management/students")
       .then((response) => {
-        console.log(response.data);
         setStudents(response.data.students);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
   return (
     <div className="tabContent">
       {students.length > 0 ? (
-        students.map(function (student) {
-          return (
-            <UserBox
-              key={student.student_id}
-              id={student.student_id}
-              name={student.student_name}
-              student_email={student.student_email}
-              picture={student.student_picture}
-              mobileNo={student.student_mobile_no}
-              address={student.student_address}
-              gender={student.student_gender}
-              date_of_birth={student.student_date_of_birth}
-            />
-          );
-        })
+        students.map((student) => (
+          <UserBox
+            key={student.student_id}
+            id={student.student_id}
+            name={student.student_name}
+            email={student.student_email}
+            picture={student.student_picture}
+            mobileNo={student.student_mobile_no}
+            address={student.student_address}
+            gender={student.student_gender}
+            date_of_birth={student.student_date_of_birth}
+            refreshUsers={fetchStudents}
+          />
+        ))
       ) : (
         <NotFound message="No student Found" />
       )}

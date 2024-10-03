@@ -21,6 +21,7 @@ export default function Hiring() {
       <div className="tabContainer">
         <div
           className={activeTab == "pendingHirings" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("pendingHirings");
           }}
@@ -29,6 +30,7 @@ export default function Hiring() {
         </div>
         <div
           className={activeTab == "browseHirings" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseHirings");
           }}

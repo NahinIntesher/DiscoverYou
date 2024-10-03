@@ -63,9 +63,16 @@ const SingleHiring = () => {
         <div className="rightSection">
           <div className="joinButtonContainer">
             <div className="hostContainer">
-              <Link to={"/profile/"+data.hiring.organizer_picture} className="host">
-                <div className="hostPicture">                
-                  <img src={data.hiring.host_picture ? data.hiring.host_picture : dp} />
+              <Link
+                to={"/profile/" + data.hiring.organizer_picture}
+                className="host"
+              >
+                <div className="hostPicture">
+                  <img
+                    src={
+                      data.hiring.host_picture ? data.hiring.host_picture : dp
+                    }
+                  />
                 </div>
                 <div className="hostDetails">
                   <div className="detailTitle">Organized By</div>
@@ -82,6 +89,7 @@ const SingleHiring = () => {
       <div className="tabContainer">
         <div
           className={activeTab == "hiring" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("hiring");
           }}
@@ -90,6 +98,7 @@ const SingleHiring = () => {
         </div>
         <div
           className={activeTab == "applicants" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("applicants");
           }}
@@ -109,7 +118,12 @@ const SingleHiring = () => {
             <ProfileField
               icon="calendar_month"
               label="Last Date For Appy"
-              value={getDate(data.hiring.end_time)+" ("+getPMTime(data.hiring.end_time)+")"}
+              value={
+                getDate(data.hiring.end_time) +
+                " (" +
+                getPMTime(data.hiring.end_time) +
+                ")"
+              }
             />
           </div>
         </div>
@@ -142,16 +156,20 @@ function Applicant({ id, name, picture, applicantStatus }) {
     <div className="participant">
       <div className="participantDetailsContainer">
         <div className="profilePicture">
-          <img src={picture? picture : dp} />
+          <img src={picture ? picture : dp} />
         </div>
         <div className="participantDetails">
           <div className="name">{name}</div>
-          <Link to={"/profile/"+id} className="viewProfile">View Profile</Link>
+          <Link to={"/profile/" + id} className="viewProfile">
+            View Profile
+          </Link>
         </div>
       </div>
-      {(applicantStatus == 1) && <div className="buttonContainer">
-        <div className="hired">Selected Applicant</div>
-      </div>}
+      {applicantStatus == 1 && (
+        <div className="buttonContainer">
+          <div className="hired">Selected Applicant</div>
+        </div>
+      )}
     </div>
   );
 }

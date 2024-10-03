@@ -8,7 +8,6 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/default.jpg";
 import NotFound from "../../CommonComponents/NotFound";
 
-
 const SingleWebinar = () => {
   const { webinarId } = useParams();
   const [participantNo, setParticipantNo] = useState(0);
@@ -19,7 +18,6 @@ const SingleWebinar = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("webinar");
   const [webinarType, setWebinarType] = useState("");
-
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -42,7 +40,7 @@ const SingleWebinar = () => {
         setData(response.data);
         setLoading(false);
         const webinar = response.data.webinar;
-        
+
         setWebinarType(webinar.webinar_type);
         setParticipantNo(webinar.participant_count);
       })
@@ -70,7 +68,11 @@ const SingleWebinar = () => {
           <div className="hostContainer">
             <div className="host">
               <div className="hostPicture">
-                <img src={data.webinar.host_picture ? data.webinar.host_picture : dp} />
+                <img
+                  src={
+                    data.webinar.host_picture ? data.webinar.host_picture : dp
+                  }
+                />
               </div>
               <div className="hostDetails">
                 <div className="detailTitle">Organized By</div>
@@ -84,9 +86,12 @@ const SingleWebinar = () => {
             {webinarType === "previous" ? (
               <a href={data.webinar.recorded_link} className="joinButton">
                 Watch Record
-              </a>            
+              </a>
             ) : (
-              <a onClick={notAvailableError} className="joinButton inactiveButton">
+              <a
+                onClick={notAvailableError}
+                className="joinButton inactiveButton"
+              >
                 Watch Record
               </a>
             )}
@@ -97,8 +102,24 @@ const SingleWebinar = () => {
         </div>
       </div>
       <div className="tabContainer">
-        <div className={activeTab == "webinar" ? "activeTab" : "tab"} onClick={function () { setActiveTab("webinar") }}>Webinar Details</div>
-        <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>Webinar Participants</div>
+        <div
+          className={activeTab == "webinar" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("webinar");
+          }}
+        >
+          Webinar Details
+        </div>
+        <div
+          className={activeTab == "participants" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("participants");
+          }}
+        >
+          Webinar Participants
+        </div>
       </div>
 
       {activeTab === "webinar" && (
@@ -117,7 +138,11 @@ const SingleWebinar = () => {
             <ProfileField
               icon="schedule"
               label="Time"
-              value={getPMTime(data.webinar.start_time) + " - " + getPMTime(data.webinar.end_time)}
+              value={
+                getPMTime(data.webinar.start_time) +
+                " - " +
+                getPMTime(data.webinar.end_time)
+              }
             />
           </div>
         </div>
@@ -126,9 +151,12 @@ const SingleWebinar = () => {
         <div className="content center">
           {data.participants.length > 0 ? (
             <div className="participantList">
-              {data.participants.map((participant) =>
-                <Participant key={participant.participant_id} name={participant.participant_name} />
-              )}
+              {data.participants.map((participant) => (
+                <Participant
+                  key={participant.participant_id}
+                  name={participant.participant_name}
+                />
+              ))}
             </div>
           ) : (
             <NotFound message={"No participant found!"} />
@@ -152,7 +180,6 @@ function Participant({ name }) {
     </div>
   );
 }
-
 
 function ProfileField({ icon, label, value }) {
   return (

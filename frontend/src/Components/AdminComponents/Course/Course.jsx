@@ -16,12 +16,12 @@ export default function Course() {
       <div className="contentTitle">
         <div className="content">
           <div className="title">Course</div>
-          
         </div>
       </div>
       <div className="tabContainer">
         <div
           className={activeTab == "pendingCourses" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("pendingCourses");
           }}
@@ -30,6 +30,7 @@ export default function Course() {
         </div>
         <div
           className={activeTab == "browseCourses" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseCourses");
           }}

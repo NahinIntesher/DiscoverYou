@@ -48,6 +48,7 @@ export default function Webinar() {
       <div className="tabContainer">
         <div
           className={activeTab == "pendingWebinars" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("pendingWebinars");
           }}
@@ -56,6 +57,7 @@ export default function Webinar() {
         </div>
         <div
           className={activeTab == "approvedWebinars" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("approvedWebinars");
           }}

@@ -24,8 +24,8 @@ export default function Sidebar({logoutAction, user}) {
                 <SidebarOption name="Marketplace" href="/marketplace" icon="shopping_cart"/>
                 <SidebarOption name="Hiring" href="/hiring" icon="person_search"/>
                 <SidebarOption name="Notifcation" href="/notification" icon="notifications_active"/>
-                <SidebarOption name="Profile" href="/profile" icon="person"/>
                 <SidebarOption name="User Mangement" href="/user-management" icon="manage_accounts"/>
+                <SidebarOption name="Profile" href="/profile" icon="person"/>
             </div>
             <div className="dynamicGap"></div>
             <div className="profile">

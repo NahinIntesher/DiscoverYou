@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../../assets/styles/dashboard.css";
+import "../../../assets/styles/usermanagement.css";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ export default function UserManagement() {
       <div className="tabContainer">
         <div
           className={activeTab == "browseStudents" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseStudents");
           }}
@@ -30,6 +31,7 @@ export default function UserManagement() {
         </div>
         <div
           className={activeTab == "browseOrganizers" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseOrganizers");
           }}
@@ -38,6 +40,7 @@ export default function UserManagement() {
         </div>
         <div
           className={activeTab == "browseAdmins" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("browseAdmins");
           }}
