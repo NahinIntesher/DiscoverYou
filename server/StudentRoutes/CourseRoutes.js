@@ -187,7 +187,7 @@ module.exports = (router, multer) => {
       ON c.course_id = c_p.course_id
     LEFT JOIN student
       ON c.mentor_id = student.student_id
-    WHERE c.course_id = ?;  -- Reference courseId correctly
+    WHERE c.course_id = ?;
   `;
 
     // Fetch course participants query
