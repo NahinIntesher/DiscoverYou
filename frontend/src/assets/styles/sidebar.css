@@ -210,6 +210,7 @@ body {
 .notificationBox {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
@@ -232,6 +233,14 @@ body {
 }
 .notificationBox .message {
     margin: 2px 4px;
+}
+.notificationBox .dateTime {
+    font-size: 14px;
+    margin: 2px 4px;
+    display: flex;
+    align-items: center;                                                                                                                                                                
+    justify-content: space-between;
+    text-align: center;
 }
 
 @media screen and (min-width: 1600px) {

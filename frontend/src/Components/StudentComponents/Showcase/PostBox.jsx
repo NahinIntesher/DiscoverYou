@@ -68,7 +68,7 @@ export default function PostBox({
               notificationPicture: user.student_picture,
               notificationTitle: "Showcase Post Like", 
               notificationMessage: `${user.student_name} liked your post in showcase!`, 
-              notificationLink: `/showcase/post/${postId}` 
+              notificationLink: `/showcase/post/${postId}`,
             })
             .then((res) => {
               if (res.data.status === "Success") {
