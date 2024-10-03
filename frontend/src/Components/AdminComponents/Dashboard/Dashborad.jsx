@@ -41,8 +41,10 @@ export default function Dashborad({ user }) {
           </div>
         </div>
       </div>
-      <div className="flex justify-between" style={{ background: "#dcdcdc" }}>
-        <Graphs />
+      <div className="flex bg-gray-800">
+        <div className="flex justify-center w-full">
+          <Graphs />
+        </div>
         <Leaderboard />
       </div>
     </div>
