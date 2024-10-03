@@ -13,7 +13,6 @@ export default function Hiring({ user }) {
   const [hirings, setHirings] = useState([]);
   const [pendingHiringsNo, setPendingHiringsNo] = useState([]);
 
-  
   const [activeTab, setActiveTab] = useState(["allHirings"]);
 
   useEffect(() => {
@@ -66,17 +65,27 @@ export default function Hiring({ user }) {
       )}
 
       <div className="tabContainer">
-        <div className={activeTab == "myHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myHirings")}}>My Hirings</div>
-        <div className={activeTab == "allHirings" ? "activeTab" : "tab"} onClick={function(){setActiveTab("allHirings")}}>All Hirings</div>
+        <div
+          className={activeTab == "myHirings" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("myHirings");
+          }}
+        >
+          My Hirings
+        </div>
+        <div
+          className={activeTab == "allHirings" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("allHirings");
+          }}
+        >
+          All Hirings
+        </div>
       </div>
-      {
-          activeTab == "allHirings" &&
-          <AllHiring />
-      }
-      {
-          activeTab == "myHirings" &&
-          <MyHirings />
-      }
+      {activeTab == "allHirings" && <AllHiring />}
+      {activeTab == "myHirings" && <MyHirings />}
     </div>
   );
 }

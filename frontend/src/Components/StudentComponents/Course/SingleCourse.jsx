@@ -8,7 +8,6 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/desert4.jpg";
 import NotFound from "../../CommonComponents/NotFound";
 
-
 const Singlecourse = () => {
   const { courseId } = useParams();
   const [isRegistered, setIsRegistered] = useState(false);
@@ -16,11 +15,10 @@ const Singlecourse = () => {
   const [data, setData] = useState({
     course: null,
     participants: [],
-    materials: []
+    materials: [],
   });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("materials");
-
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -56,7 +54,7 @@ const Singlecourse = () => {
   }
 
   if (loading) return <p>Loading...</p>;
-  
+
   return (
     <div className="mainContent">
       <Header
@@ -69,7 +67,7 @@ const Singlecourse = () => {
           <Category category={data.course.course_category} />
         </div>
         <div className="rightSection">
-        <div className="hostContainer">
+          <div className="hostContainer">
             <div className="host">
               <div className="hostPicture">
                 <img src={dp} />
@@ -83,9 +81,33 @@ const Singlecourse = () => {
         </div>
       </div>
       <div className="tabContainer">
-        <div className={activeTab == "materials" ? "activeTab" : "tab"} onClick={function () { setActiveTab("materials") }}>Course Materials</div>
-        <div className={activeTab == "course" ? "activeTab" : "tab"} onClick={function () { setActiveTab("course") }}>Course Details</div>
-        <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>Course Participants</div>
+        <div
+          className={activeTab == "materials" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("materials");
+          }}
+        >
+          Course Materials
+        </div>
+        <div
+          className={activeTab == "course" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("course");
+          }}
+        >
+          Course Details
+        </div>
+        <div
+          className={activeTab == "participants" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
+          onClick={function () {
+            setActiveTab("participants");
+          }}
+        >
+          Course Participants
+        </div>
       </div>
 
       {activeTab === "course" && (
@@ -101,25 +123,28 @@ const Singlecourse = () => {
       )}
       {activeTab === "materials" && (
         <div className="content center">
-            {data.materials.length > 0 ? (
-              <div className="materialList">
-                {data.materials.map((material) =>
-                  <Material key={material.material_id} material={material} />
-                )}
-              </div>
-            ) :
-              <NotFound message={"This course have no material!"} />
-            }
-        </div>)
-      }
+          {data.materials.length > 0 ? (
+            <div className="materialList">
+              {data.materials.map((material) => (
+                <Material key={material.material_id} material={material} />
+              ))}
+            </div>
+          ) : (
+            <NotFound message={"This course have no material!"} />
+          )}
+        </div>
+      )}
 
       {activeTab === "participants" && (
         <div className="content center">
           {data.participants.length > 0 ? (
             <div className="participantList">
-              {data.participants.map((participant) =>
-                <Participant key={participant.participant_id} name={participant.participant_name} />
-              )}
+              {data.participants.map((participant) => (
+                <Participant
+                  key={participant.participant_id}
+                  name={participant.participant_name}
+                />
+              ))}
             </div>
           ) : (
             <NotFound message={"No participant found!"} />
@@ -144,46 +169,44 @@ function Participant({ name }) {
   );
 }
 
-function Material({material}) {
+function Material({ material }) {
   const navigate = useNavigate();
 
   function goToMaterial() {
     axios.defaults.withCredentials = true;
     axios
-    .post("http://localhost:3000/student/courses/material/complete/", {
-        materialId: material.material_id
-    })
-    .then((res) => {
-      if (res.data.status === "Success") {
-        navigate("/course/material/"+material.material_id);
-      } else {
-        alert(res.data.Error);
-      }
-    })
-    .catch((err) => console.log(err));
-  };
+      .post("http://localhost:3000/student/courses/material/complete/", {
+        materialId: material.material_id,
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          navigate("/course/material/" + material.material_id);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   if (material.material_type.split("/")[0] == "image") {
     return (
       <div className="materialBox">
         <div className="media">
-          <MaterialSymbol
-            className="icon"
-            size={42}
-            icon="image"
-          />
+          <MaterialSymbol className="icon" size={42} icon="image" />
         </div>
         <div className="textContainer">
           <div className="name">{material.material_name}</div>
           <div className="format">Image</div>
         </div>
         <div className="buttonContainer">
-          <div className="button" onClick={goToMaterial}>View Image</div>
-          {material.is_completed ? 
+          <div className="button" onClick={goToMaterial}>
+            View Image
+          </div>
+          {material.is_completed ? (
             <div className="completed">Completed</div>
-            : 
+          ) : (
             <div className="incomplete">Not completed</div>
-          }
+          )}
         </div>
       </div>
     );
@@ -198,12 +221,14 @@ function Material({material}) {
           <div className="format">Audio</div>
         </div>
         <div className="buttonContainer">
-          <div className="button" onClick={goToMaterial}>Listen Audio</div>
-          {material.is_completed ? 
+          <div className="button" onClick={goToMaterial}>
+            Listen Audio
+          </div>
+          {material.is_completed ? (
             <div className="completed">Completed</div>
-            : 
+          ) : (
             <div className="incomplete">Not completed</div>
-          }
+          )}
         </div>
       </div>
     );
@@ -211,23 +236,21 @@ function Material({material}) {
     return (
       <div className="materialBox">
         <div className="media">
-          <MaterialSymbol
-            className="icon"
-            size={42}
-            icon="movie"
-          />
+          <MaterialSymbol className="icon" size={42} icon="movie" />
         </div>
         <div className="textContainer">
           <div className="name">{material.material_name}</div>
           <div className="format">Video</div>
         </div>
         <div className="buttonContainer">
-          <div className="button" onClick={goToMaterial}>Watch Video</div>
-          {material.is_completed ? 
+          <div className="button" onClick={goToMaterial}>
+            Watch Video
+          </div>
+          {material.is_completed ? (
             <div className="completed">Completed</div>
-            : 
+          ) : (
             <div className="incomplete">Not completed</div>
-          }
+          )}
         </div>
       </div>
     );
@@ -235,29 +258,26 @@ function Material({material}) {
     return (
       <div className="materialBox">
         <div className="media">
-          <MaterialSymbol
-            className="icon"
-            size={42}
-            icon="description"
-          />
+          <MaterialSymbol className="icon" size={42} icon="description" />
         </div>
         <div className="textContainer">
           <div className="name">{material.material_name}</div>
           <div className="format">PDF Document</div>
         </div>
         <div className="buttonContainer">
-          <div className="button" onClick={goToMaterial}>Read Document</div>
-          {material.is_completed ? 
+          <div className="button" onClick={goToMaterial}>
+            Read Document
+          </div>
+          {material.is_completed ? (
             <div className="completed">Completed</div>
-            : 
+          ) : (
             <div className="incomplete">Not completed</div>
-          }
+          )}
         </div>
       </div>
     );
   }
 }
-
 
 function ProfileField({ icon, label, value }) {
   return (

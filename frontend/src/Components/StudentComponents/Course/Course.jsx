@@ -78,8 +78,8 @@ export default function Course({user}) {
                 </div>
             }
             <div className="tabContainer">
-                <div className={activeTab == "myCourses" ? "activeTab" : "tab"} onClick={function(){setActiveTab("myCourses")}}>My Courses</div>
-                <div className={activeTab == "browseCourses" ? "activeTab" : "tab"} onClick={function(){setActiveTab("browseCourses")}}>Browse Courses</div>
+                <div className={activeTab == "myCourses" ? "activeTab" : "tab"} style={{ cursor: "pointer" }} onClick={function(){setActiveTab("myCourses")}}>My Courses</div>
+                <div className={activeTab == "browseCourses" ? "activeTab" : "tab"} style={{ cursor: "pointer" }} onClick={function(){setActiveTab("browseCourses")}}>Browse Courses</div>
             </div>
             {
                 activeTab == "myCourses" &&

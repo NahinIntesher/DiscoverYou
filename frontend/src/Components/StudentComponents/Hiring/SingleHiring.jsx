@@ -56,19 +56,20 @@ const SingleHiring = () => {
   }
 
   function applyJob() {
-    axios.post(`http://localhost:3000/student/hirings/apply`, {
-      hiringId: data.hiring.hiring_id
-    }).then((response) => {
-      console.log("Full API Response:", response.data);
-      if (response.data.status === "Registered") {
-        setApplicantNo((prev)=> prev + 1);
-        setIsApplied(1);
-      } 
-      else if (response.data.status === "Unregistered") {
-        setApplicantNo((prev)=> prev - 1);
-        setIsApplied(0);
-      }
-    });
+    axios
+      .post(`http://localhost:3000/student/hirings/apply`, {
+        hiringId: data.hiring.hiring_id,
+      })
+      .then((response) => {
+        console.log("Full API Response:", response.data);
+        if (response.data.status === "Registered") {
+          setApplicantNo((prev) => prev + 1);
+          setIsApplied(1);
+        } else if (response.data.status === "Unregistered") {
+          setApplicantNo((prev) => prev - 1);
+          setIsApplied(0);
+        }
+      });
   }
 
   if (loading) return <p>Loading...</p>;
@@ -85,9 +86,11 @@ const SingleHiring = () => {
           <div className="company">{data.hiring.company_name}</div>
           <Category category={data.hiring.job_category} />
           <div className="hostContainer">
-            <Link to={"/profile/"+data.hiring.organizer_id} className="host">
+            <Link to={"/profile/" + data.hiring.organizer_id} className="host">
               <div className="hostPicture">
-                <img src={data.hiring.host_picture ? data.hiring.host_picture : dp} />
+                <img
+                  src={data.hiring.host_picture ? data.hiring.host_picture : dp}
+                />
               </div>
               <div className="hostDetails">
                 <div className="detailTitle">Organized By</div>
@@ -110,6 +113,7 @@ const SingleHiring = () => {
       <div className="tabContainer">
         <div
           className={activeTab == "hiring" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("hiring");
           }}
@@ -118,6 +122,7 @@ const SingleHiring = () => {
         </div>
         <div
           className={activeTab == "applicants" ? "activeTab" : "tab"}
+          style={{ cursor: "pointer" }}
           onClick={function () {
             setActiveTab("applicants");
           }}
@@ -137,7 +142,12 @@ const SingleHiring = () => {
             <ProfileField
               icon="calendar_month"
               label="Last Date For Appy"
-              value={getDate(data.hiring.end_time)+" ("+getPMTime(data.hiring.end_time)+")"}
+              value={
+                getDate(data.hiring.end_time) +
+                " (" +
+                getPMTime(data.hiring.end_time) +
+                ")"
+              }
             />
           </div>
         </div>
@@ -151,7 +161,11 @@ const SingleHiring = () => {
                   key={applicant.applicant_id}
                   id={applicant.applicant_id}
                   name={applicant.applicant_name}
-                  picture={applicant.applicant_picture ? applicant.applicant_picture : dp}
+                  picture={
+                    applicant.applicant_picture
+                      ? applicant.applicant_picture
+                      : dp
+                  }
                   applicantStatus={applicant.req_for_join_status}
                 />
               ))}
@@ -165,7 +179,7 @@ const SingleHiring = () => {
   );
 };
 
-function Applicant({ name, picture, id, applicantStatus}) {
+function Applicant({ name, picture, id, applicantStatus }) {
   return (
     <div className="participant">
       <div className="participantDetailsContainer">
@@ -174,12 +188,16 @@ function Applicant({ name, picture, id, applicantStatus}) {
         </div>
         <div className="participantDetails">
           <div className="name">{name}</div>
-          <Link to={"/profile/"+id} className="viewProfile">View Profile</Link>
+          <Link to={"/profile/" + id} className="viewProfile">
+            View Profile
+          </Link>
         </div>
       </div>
-      {(applicantStatus == 1) && <div className="buttonContainer">
-        <div className="hired">Selected Applicant</div>
-      </div>}
+      {applicantStatus == 1 && (
+        <div className="buttonContainer">
+          <div className="hired">Selected Applicant</div>
+        </div>
+      )}
     </div>
   );
 }
