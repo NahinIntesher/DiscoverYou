@@ -19,12 +19,13 @@ const Leaderboard = () => {
 
   return (
     <div style={styles.leaderboardContainer}>
+      <h2 className="text-sm font-semibold text-blac">Student</h2>
       <h2 style={styles.title}>Leaderboard</h2>
       <table style={styles.table}>
         <thead>
           <tr>
             <th style={styles.header}>Rank</th>
-            <th style={styles.header}>Student Name</th>
+            <th style={styles.header}>Name</th>
             <th style={styles.header}>Points</th>
           </tr>
         </thead>
@@ -47,15 +48,17 @@ const styles = {
   leaderboardContainer: {
     backgroundColor: "white",
     borderRadius: "8px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    boxShadow: "4px 4px 6px rgba(0, 0, 0, 0.1)",
     padding: "20px",
-    marginTop: "10px",
-    marginRight: "10px",
+    marginTop: "5px",
+    marginRight: "5px",
+    borderBottom: "5px solid #rgb(var(--dark))",
   },
   title: {
     fontSize: "24px",
     fontWeight: "600",
     marginBottom: "10px",
+    borderBottom: "5px solid #2a2a2a",
   },
   table: {
     width: "100%",

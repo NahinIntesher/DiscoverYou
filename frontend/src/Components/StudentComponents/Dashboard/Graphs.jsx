@@ -11,7 +11,13 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
-import { FaChartBar, FaChartPie, FaChartLine, FaGraduationCap, FaTrophy } from 'react-icons/fa';
+import {
+  FaChartBar,
+  FaChartPie,
+  FaChartLine,
+  FaGraduationCap,
+  FaTrophy,
+} from "react-icons/fa";
 
 ChartJS.register(
   CategoryScale,
@@ -20,7 +26,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
 const chartColors = {
@@ -133,12 +139,32 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 p-2">
-      <ChartCard title="Participation in last 10 Contests" icon={<FaTrophy />} chart={<Bar data={chartData.contests} options={barChartOptions} />} />
-      <ChartCard title="Showcase Posts" icon={<FaChartBar />} chart={<Bar data={chartData.showcases} options={barChartOptions} />} />
-      <ChartCard title="Webinar Participation" icon={<FaChartLine />} chart={<Bar data={chartData.webinars} options={barChartOptions} />} />
-      <ChartCard title="Courses Overview" icon={<FaGraduationCap />} chart={<Bar data={chartData.courses} options={barChartOptions} />} />
-      <ChartCard title="Course Completion" icon={<FaChartPie />} chart={<Pie data={chartData.pieData} options={pieChartOptions} />} />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 p-1">
+      <ChartCard
+        title="Participation in last 10 Contests"
+        icon={<FaTrophy />}
+        chart={<Bar data={chartData.contests} options={barChartOptions} />}
+      />
+      <ChartCard
+        title="Showcase Posts"
+        icon={<FaChartBar />}
+        chart={<Bar data={chartData.showcases} options={barChartOptions} />}
+      />
+      <ChartCard
+        title="Webinar Participation"
+        icon={<FaChartLine />}
+        chart={<Bar data={chartData.webinars} options={barChartOptions} />}
+      />
+      <ChartCard
+        title="Courses Overview"
+        icon={<FaGraduationCap />}
+        chart={<Bar data={chartData.courses} options={barChartOptions} />}
+      />
+      <ChartCard
+        title="Course Completion"
+        icon={<FaChartPie />}
+        chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
+      />
     </div>
   );
 }
@@ -150,14 +176,12 @@ const LoadingSpinner = () => (
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-xl overflow-hidden">
-    <div className="px-6 py-4 border-b border-gray-200 flex items-center">
-      <span className="text-2xl text-gray-600">{icon}</span>
-      <h3 className="ml-3 text-xl font-semibold text-gray-800">{title}</h3>
+  <div className="bg-white rounded-md shadow-lg overflow-hidden">
+    <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
+      <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
+      <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">{title}</h3>
     </div>
-    <div className="p-2 flex justify-center items-center" style={{ height: '200px' }}>
-      {chart}
-    </div>
+    <div className="p-4 flex justify-center items-center h-64">{chart}</div>
   </div>
 );
 
@@ -199,11 +223,11 @@ const pieChartOptions = {
     ...chartOptions.plugins,
     legend: {
       position: "bottom",
-      labels: { 
-        boxWidth: 15, 
-        font: { 
-          size: 14 
-        } 
+      labels: {
+        boxWidth: 15,
+        font: {
+          size: 14,
+        },
       },
     },
   },

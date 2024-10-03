@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 
 // Import the routes from Contest.js
 // require("./ContestRoutes")(router);
+require("./DashboardRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./WebinarRoutes")(router);
 require("./ContestRoutes")(router);

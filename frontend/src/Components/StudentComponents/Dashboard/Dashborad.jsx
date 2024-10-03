@@ -14,7 +14,7 @@ export default function Dashborad({ user }) {
         </div>
       </div>
       <Overview />
-      <div className="flex bg-gray-800">
+      <div className="flex">
         <div className="flex justify-center w-full">
           <Graphs />
         </div>

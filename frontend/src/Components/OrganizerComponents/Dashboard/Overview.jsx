@@ -39,57 +39,24 @@ export default function Overview() {
     <div className="contributionSectionContainer">
       <ContributionBox
         count={contestResults.total_contests}
-        title="Contests "
+        title="Contests Organized"
         icon="rewarded_ads"
-        secondaryCount={contestResults.rank_1_count}
-        tertiaryCount={contestResults.rank_2_count}
-        secondaryTitle="Winner"
-        tertiaryTitle="Runner-up"
-        linkToRoute="contestResults"
       />
       <ContributionBox
         count={courseResults.course_count}
-        title="Courses Enrolled"
+        title="Hirings Organized"
         icon="auto_stories"
-        secondaryCount={1}
-        secondaryTitle="Completed"
-        linkToRoute="courseResults"
-      />
-      <ContributionBox
-        count={showcaseResults.total_posts}
-        title="Posts"
-        icon="gallery_thumbnail"
-        secondaryCount={showcaseResults.total_reactions}
-        secondaryTitle="Reactions"
-        linkToRoute="showcaseResults"
       />
       <ContributionBox
         count={webinarResults.webinar_count}
-        title="Webinars "
+        title="Webinars Hosted"
         icon="patient_list"
-        // secondaryCount={showcaseResults.total_reactions}
-        secondaryTitle="No talks"
-        linkToRoute="webinarResults"
       />
     </div>
   );
 }
 
-function ContributionBox({
-  count,
-  title,
-  secondaryCount,
-  tertiaryCount,
-  secondaryTitle,
-  tertiaryTitle,
-  icon,
-  linkToRoute,
-}) {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    alert("clicked");
-    // navigate(`/${linkToRoute}`)
-  };
+function ContributionBox({ count, title, icon }) {
   return (
     <div className="overviewBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
@@ -97,17 +64,6 @@ function ContributionBox({
       <div className="texts">
         <div className="count">{count}</div>
         <div className="title">{title}</div>
-      </div>
-      <div className="secondDetail">
-        <div className="spanContainer">
-          <span className="count">{secondaryCount}</span>
-          <span className="title">{secondaryTitle}</span>
-        </div>
-
-        <div className="spanContainer">
-          <span className="count">{tertiaryCount}</span>
-          <span className="title">{tertiaryTitle}</span>
-        </div>
       </div>
     </div>
   );
