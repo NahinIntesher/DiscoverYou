@@ -49,7 +49,8 @@ const styles = {
     borderRadius: "8px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     padding: "20px",
-    margin: "10px",
+    marginTop: "10px",
+    marginRight: "10px",
   },
   title: {
     fontSize: "24px",

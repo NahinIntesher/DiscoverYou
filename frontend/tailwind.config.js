@@ -8,6 +8,7 @@ module.exports = {
     "./src/**/Webinar.{js,jsx,ts,tsx}",
     "./src/**/WebinarBox.{js,jsx,ts,tsx}",
     "./src/**/Graphs.{js,jsx,ts,tsx}",
+    "./src/**/Dashboard.{js,jsx,ts,tsx}",
     
   ],
   theme: {
