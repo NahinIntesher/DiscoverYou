@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function PostBox({
+  user,
   postId,
   posterId,
   posterName,
@@ -60,6 +61,24 @@ export default function PostBox({
           if (res.data.message == "Liked") {
             setIsReacted(true);
             setReactionCount((prevCount) => prevCount + 1);
+
+            axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: posterId, 
+              notificationPicture: user.student_picture,
+              notificationTitle: "Showcase Post Like", 
+              notificationMessage: `${user.student_name} liked your post in showcase!`, 
+              notificationLink: `/showcase/post/${postId}` 
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send")
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
+
           } else {
             setIsReacted(false);
             setReactionCount((prevCount) => prevCount - 1);

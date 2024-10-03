@@ -93,6 +93,7 @@ export default function Showcase({user}) {
                 posts.map(function(post){
                     return (
                         <PostBox 
+                            user={user}
                             key={post.post_id}
                             postId={post.post_id}
                             posterId={post.user_id} 

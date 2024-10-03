@@ -12,7 +12,7 @@ require("./CourseRoutes")(router, multer);
 require("./WebinarRoutes")(router);
 require("./HiringRoutes")(router);
 require("./MarketplaceRoutes")(router, multer);
-require("./NotificationRoutes")(router, multer);
+require("./NotificationRoutes")(router);
 require("./ProfileRoutes")(router, multer, bcrypt);
 
 module.exports = router;

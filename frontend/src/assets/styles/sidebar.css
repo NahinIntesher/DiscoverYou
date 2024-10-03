@@ -206,6 +206,34 @@ body {
     display: none;
 }
 
+
+.notificationBox {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+.notificationBox img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 1;
+    margin: 10px;
+}
+.notificationBox .texts {
+    flex-grow: 1;
+    margin: 8px;
+}
+.notificationBox .title {
+    font-size: 14px;
+    margin: 2px 4px;
+    font-weight: 600;
+}
+.notificationBox .message {
+    margin: 2px 4px;
+}
+
 @media screen and (min-width: 1600px) {
     .sideMenu {
         width: 330px;
