@@ -23,6 +23,7 @@ export default function BrowseStudent() {
 
   return (
     <div className="tabContent">
+      <div className="participantList">
       {students.length > 0 ? (
         students.map((student) => (
           <UserBox
@@ -41,6 +42,7 @@ export default function BrowseStudent() {
       ) : (
         <NotFound message="No student Found" />
       )}
+      </div>
     </div>
   );
 }

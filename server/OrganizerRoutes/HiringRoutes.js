@@ -337,7 +337,16 @@ module.exports = (router) => {
       function (err, results) {
         if (err) throw err;
         return res.json({ status: "Success" });
-      }
+        // `INSERT INTO 
+        // notification (name, description, toLink, receiver_id)
+        // VALUE(
+        //   "Your Hiring Application Has been Approved!",
+        //   "${organizerName} Accepted your job application for ${job_name} job at ${company_name}"
+        //   "/hirings/${hiring_id}",
+        //   ${applicantId}
+        // )
+        // `
+      } 
     );
   });
 

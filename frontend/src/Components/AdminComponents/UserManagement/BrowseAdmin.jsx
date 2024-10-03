@@ -23,6 +23,7 @@ export default function BrowseAdmin() {
 
   return (
     <div className="tabContent">
+      <div className="participantList">
       {admins.length > 0 ? (
         admins.map((admin) => (
           <UserBox
@@ -41,6 +42,7 @@ export default function BrowseAdmin() {
       ) : (
         <NotFound message="No admin Found" />
       )}
+      </div>
     </div>
   );
 }

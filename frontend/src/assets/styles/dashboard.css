@@ -12,6 +12,7 @@
   margin: auto;
   position: relative;
 }
+
 .mainContent .miniBreak {
   height: 12px;
 }
@@ -455,6 +456,8 @@
 }
 .participant .participantDetailsContainer {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
 }
 .participant .profilePicture {
   display: inline-block;
@@ -463,6 +466,12 @@
   padding: 3px;
   border-radius: 80px;
   margin: 10px;
+  flex-shrink: 1;
+}
+
+.participant .profilePictureBig {
+  padding: 4px;
+  margin: 10px 14px;
 }
 .participant .profilePicture img {
   border-radius: 60px;
@@ -472,10 +481,16 @@
   height: 50px;
   object-fit: cover;
 }
+.participant .profilePictureBig img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
 .participant .participantDetails {
   display: inline-block;
   vertical-align: middle;
   margin: 8px;
+  flex: 1;
 }
 .participant .participantDetails .name {
   font-weight: 600;
@@ -501,6 +516,8 @@
 
 .participant .buttonContainer {
   flex-shrink: 1;
+  margin: 8px;
+  margin-left: 40px;
 }
 .participant .buttonContainer .hired {
   width: max-content;
@@ -515,12 +532,15 @@
 .participant .rejectButton {
   color: #02590fcc;
   background-color: #B2DEB9;
-  padding: 4px 16px;
+  padding: 6px 16px;
   border-radius: 30px;
   margin: 8px;
   text-align: center;
   font-size: 15px;
   cursor: pointer;
+  display: block;
+  font-weight: 500;
+  width: max-content;
 }
 
 .participant .acceptButton:hover {
@@ -541,7 +561,7 @@
 .participant .rejectButton .icon {
   display: inline-block;
   vertical-align: middle;
-  margin: 2px;
+  margin: 2px 4px;
 }
 
 .participant .acceptButton .text, 

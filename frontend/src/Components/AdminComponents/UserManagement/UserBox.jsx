@@ -41,37 +41,31 @@ export default function UserBox({
   return (
     <div className="participant">
       <div className="participantDetailsContainer">
-        <div>
-          <div className="profilePicture">
+          <div className="profilePicture profilePictureBig">
             <img src={picture ? picture : dp} alt="Profile" />
           </div>
-        </div>
-        <div className="participantDetailsSmallContainer">
-          <div className="participantDetails">
+          <div className="participantDetails center">
             <div className="name">Name: {name}</div>
             <div>Gender: {gender}</div>
             <div>Date of birth: {getDate(date_of_birth)}</div>
           </div>
-          <div className="participantDetails">
+          <div className="participantDetails center">
             <div>Email: {email}</div>
             <div>Mobile no: {mobileNo}</div>
             <div>Address: {address}</div>
           </div>
-          <div className="participantDetails">
-            <div>
-              <Link to={`/profile/${id}`} className="acceptButton">
-                <MaterialSymbol className="icon" size={22} icon="person" />
-                View Profile
-              </Link>
-            </div>
-            {id[0] !== "A" && (
-              <div onClick={handleDeleteProfile} className="rejectButton">
-                <MaterialSymbol className="icon" size={22} icon="close" />
-                Delete User
-              </div>
-            )}
+      </div>
+      <div className="buttonContainer">
+        <Link to={`/profile/${id}`} className="acceptButton">
+          <MaterialSymbol className="icon" size={22} icon="person" />
+          View Profile
+        </Link>
+        {id[0] !== "A" && (
+          <div onClick={handleDeleteProfile} className="rejectButton">
+            <MaterialSymbol className="icon" size={22} icon="close" />
+            Delete User
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

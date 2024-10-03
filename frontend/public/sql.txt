@@ -1,1 +1,1 @@
-ALTER TABLE `course_materials` ADD `material_type` VARCHAR(30) NOT NULL AFTER `material_blob`;
+ALTER TABLE `hiring_applicants` CHANGE `req_for_join_status` `req_for_join_status` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0';

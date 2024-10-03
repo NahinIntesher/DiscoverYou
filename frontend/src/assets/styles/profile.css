@@ -216,8 +216,8 @@
 }
 
 .dialogBoxBackground {
-  background-color: rgba(0,0,0,0.4);
-  position: absolute;
+  background-color: rgba(0,0,0,0.5);
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -225,6 +225,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 .none {
   display: none;

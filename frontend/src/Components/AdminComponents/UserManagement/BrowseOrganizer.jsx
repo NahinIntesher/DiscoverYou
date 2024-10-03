@@ -23,6 +23,7 @@ export default function BrowseOrganizer() {
 
   return (
     <div className="tabContent">
+      <div className="participantList">
       {organizers.length > 0 ? (
         organizers.map((organizer) => (
           <UserBox
@@ -41,6 +42,7 @@ export default function BrowseOrganizer() {
       ) : (
         <NotFound message="No organizer Found" />
       )}
+      </div>
     </div>
   );
 }
