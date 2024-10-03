@@ -38,7 +38,7 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
       <div className="container" data-theme={user.type}>
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard user={user} />} />
 
           <Route path="/showcase" element={<Showcase user={user}/>} />
           <Route path="/showcase/post/:postId" element={<Post user={user}/>} />
