@@ -78,6 +78,7 @@ export default function SingleCommunity({ interests }) {
         {messages.map(function (message) {
           return (
             <MessageBox
+              key={message.message_id}
               message={message.message_content}
               ownMessage={message.own_message}
               messengerName={message.messenger_name}

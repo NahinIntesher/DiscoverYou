@@ -69,9 +69,9 @@ const Singlecourse = () => {
         <div className="rightSection">
           <div className="hostContainer">
             <div className="host">
-              <div className="hostPicture">
-                <img src={dp} />
-              </div>
+              <Link to={'/profile/' + data.course.mentor_id} className="hostPicture">
+                <img src={data.course.mentor_picture ? data.course.mentor_picture : dp} />
+              </Link>
               <div className="hostDetails">
                 <div className="detailTitle">Created By</div>
                 <div className="detailInfo">{data.course.mentor_name}</div>
