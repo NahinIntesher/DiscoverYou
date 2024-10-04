@@ -17,9 +17,8 @@ import {
   FaChartLine,
   FaGraduationCap,
   FaTrophy,
-  FaBriefcase, // Add this import for the hiring icon
+  FaBriefcase,
 } from "react-icons/fa";
-import BottomPart from "./RecentActivity";
 import RecentActivity from "./RecentActivity";
 
 ChartJS.register(
@@ -34,29 +33,21 @@ ChartJS.register(
 
 const chartColors = {
   contests: ["rgba(59, 130, 246, 0.8)", "rgb(255, 125, 32)"],
-  showcases: ["rgba(16, 185, 129, 0.8)", "rgba(107, 114, 128, 0.8)"],
-  courses: ["rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"],
   webinars: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)"],
-  hirings: ["rgba(255, 206, 86, 0.8)", "rgba(54, 162, 235, 0.8)"], // Add color for hirings
-  pie: ["rgba(54, 162, 235, 0.8)", "rgba(255, 206, 86, 0.8)"],
+  hirings: ["rgba(255, 206, 86, 0.8)", "rgba(54, 162, 235, 0.8)"],
 };
 
 const initialChartData = {
   contests: { labels: [], datasets: [] },
-  showcases: { labels: [], datasets: [] },
-  courses: { labels: [], datasets: [] },
   webinars: { labels: [], datasets: [] },
-  hirings: { labels: [], datasets: [] }, // Add initial data for hirings
-  pieData: { labels: [], datasets: [] },
+  hirings: { labels: [], datasets: [] },
 };
 
 export default function Graphs() {
   const [data, setData] = useState({
     contests: {},
-    showcases: {},
-    courses: {},
     webinars: {},
-    hirings: {}, // Add hirings to the state
+    hirings: {},
   });
   const [chartData, setChartData] = useState(initialChartData);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +78,7 @@ export default function Graphs() {
       contests: createChartData(
         ["User Organized", "Total Contests"],
         [
-          fetchedData.contestResults.contests_organized, // Update as needed
+          fetchedData.contestResults.contests_organized,
           fetchedData.contestResults.total_contests,
         ],
         "Contests",
@@ -126,40 +117,33 @@ export default function Graphs() {
   }
 
   return (
-    <div style={{ padding: "0.25rem" }}>
+    <div style={{ padding: "5px" }}>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: "0.25rem",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 2fr))",
+          gap: "5px",
         }}
       >
-        <div className="semi-container">
-          <div>
-            <ChartCard
-              title="Contests Overview"
-              icon={<FaTrophy />}
-              chart={
-                <Bar data={chartData.contests} options={barChartOptions} />
-              }
-            />
-          </div>
-          <div>
-            <ChartCard
-              title="Webinars Overview"
-              icon={<FaChartLine />}
-              chart={
-                <Bar data={chartData.webinars} options={barChartOptions} />
-              }
-            />
-            <ChartCard
-              title="Hirings Overview"
-              icon={<FaBriefcase />} // Icon for hirings
-              chart={<Bar data={chartData.hirings} options={barChartOptions} />}
-            />
-          </div>
-        </div>
+        <ChartCard
+          title="Contests Overview"
+          icon={<FaTrophy />}
+          chart={<Bar data={chartData.contests} options={barChartOptions} />}
+        />
+
+        <ChartCard
+          title="Webinars Overview"
+          icon={<FaChartLine />}
+          chart={<Bar data={chartData.webinars} options={barChartOptions} />}
+        />
+
+        <ChartCard
+          title="Hirings Overview"
+          icon={<FaBriefcase />}
+          chart={<Bar data={chartData.hirings} options={barChartOptions} />}
+        />
       </div>
+
       <RecentActivity />
     </div>
   );
@@ -171,7 +155,7 @@ const LoadingSpinner = () => (
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      // height: "100vh"
+      height: "100vh",
     }}
   >
     <div
@@ -198,7 +182,7 @@ const ChartCard = ({ title, icon, chart }) => (
   >
     <div
       style={{
-        padding: "1rem 1.5rem",
+        padding: "1rem 1rem",
         borderBottom: "1px solid rgba(209, 213, 219, 1)",
         display: "flex",
         background:
@@ -215,7 +199,7 @@ const ChartCard = ({ title, icon, chart }) => (
       </span>
       <h3
         style={{
-          marginLeft: "0.5rem",
+          // marginLeft: "0.5rem",
           fontSize: "0.875rem",
           fontWeight: "600",
           color: "rgb(var(--extradark))",
@@ -226,11 +210,10 @@ const ChartCard = ({ title, icon, chart }) => (
     </div>
     <div
       style={{
-        padding: "1rem",
+        padding: "5px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "12rem",
       }}
     >
       {chart}
@@ -249,16 +232,12 @@ const chartOptions = {
     y: {
       beginAtZero: true,
       ticks: {
-        font: {
-          size: 14,
-        },
+        font: { size: 14 },
       },
     },
     x: {
       ticks: {
-        font: {
-          size: 14,
-        },
+        font: { size: 14 },
       },
     },
   },
@@ -268,20 +247,4 @@ const barChartOptions = {
   ...chartOptions,
   barPercentage: 0.6,
   categoryPercentage: 0.7,
-};
-
-const pieChartOptions = {
-  ...chartOptions,
-  plugins: {
-    ...chartOptions.plugins,
-    legend: {
-      position: "bottom",
-      labels: {
-        boxWidth: 15,
-        font: {
-          size: 14,
-        },
-      },
-    },
-  },
 };
