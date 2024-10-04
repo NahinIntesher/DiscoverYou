@@ -129,4 +129,39 @@ module.exports = (router, multer) => {
       }
     );
   });
+
+
+  router.post("/marketplace/checkout", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { fromCart, deliveryAddress, customerMobileNo, customerEmail, paymentMethod, products} = req.body;
+
+    console.log(req.body);
+
+    products.forEach(product => {
+      connection.query(
+        "INSERT INTO marketplace_orders(product_id, product_quantity, buyer_organizer_id, delivery_address, delivery_mobile_no, delivery_email, payment_method) VALUES(?, ?, ?, ?, ?, ?, ?);",
+        [product.productId, product.productQuantity, userId, deliveryAddress, customerMobileNo, customerEmail, paymentMethod],
+        (err, results) => {
+          if(err) {
+            console.log(err);
+          }
+        }
+      );
+    });
+
+    if(fromCart) {
+      connection.query(
+        "DELETE FROM marketplace_cart WHERE buyer_organizer_id = ?",
+        [userId],
+        (err, results) => {
+          if (err) throw err; 
+          return res.json({ status: "Success" });
+        }
+      );
+    }
+    else {
+      return res.json({ status: "Success" });
+    }
+  });
+
 };

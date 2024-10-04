@@ -4,10 +4,11 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Product() {
     const { productId } = useParams();
+    const navigate = useNavigate();
 
     const [product, setProduct] = useState([]);
     const [productImages, setProductImages] = useState([]);
@@ -31,22 +32,36 @@ export default function Product() {
     }
 
     function addToCart() {
-        axios.defaults.withCredentials = true;
-        axios
-            .post("http://localhost:3000/student/marketplace/add-to-cart", {
-                productId: product.product_id
-            })
-            .then((res) => {
-                if (res.data.status === "Success") {
-                    alert("Product successfully added to the cart!");
-                } else if (res.data.status === "AlreadyAdded") {
-                    alert("Sorry, this product is already added in the cart!");
-                } else {
-                    alert(res.data.Error);
-                }
-            })
-            .catch((err) => console.log(err));
+        if(product.product_type != "digital" &&  product.product_in_stock <= 0) {
+            alert("Sorry, the product is out of stock!")
+        }
+        else {
+            axios.defaults.withCredentials = true;
+            axios
+                .post("http://localhost:3000/student/marketplace/add-to-cart", {
+                    productId: product.product_id
+                })
+                .then((res) => {
+                    if (res.data.status === "Success") {
+                        alert("Product successfully added to the cart!");
+                    } else if (res.data.status === "AlreadyAdded") {
+                        alert("Sorry, this product is already added in the cart!");
+                    } else {
+                        alert(res.data.Error);
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
     };
+
+    function buyNow() {
+        if(product.product_type != "digital" &&  product.product_in_stock <= 0) {
+            alert("Sorry, the product is out of stock!")
+        }
+        else {
+            navigate("/marketplace/checkout/"+product.product_id);
+        }
+    }
 
     useEffect(() => {
         console.log("useEffect Cholled")
@@ -121,9 +136,9 @@ export default function Product() {
                             <div onClick={addToCart} className="button">
                                 Add To Cart
                             </div>
-                            <Link to={"/marketplace/checkout/"+product.product_id} className="buttonAlt">
+                            <div onClick={buyNow} className="buttonAlt">
                                 Buy Now
-                            </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

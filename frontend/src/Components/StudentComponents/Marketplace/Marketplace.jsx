@@ -18,6 +18,8 @@ export default function Marketplace() {
     const [isCartActive, setCartActive] = useState(false);
     const [update, setUpdate] = useState(0);
     const [cartProducts, setCartProducts] = useState([]);
+    const [pendingDeliveryNo, setPendingDeliveryNo] = useState(0);
+    const [pendingProductOrderNo, setPendingProductOrderNo] = useState(0);
 
     useEffect(() => {
         axios
@@ -38,7 +40,12 @@ export default function Marketplace() {
             .then((res) => {
                 console.log("Success");
                 const pendingProductsNo = res.data?.pendingProductsNo || [];
+                const pendingDeliveryNo = res.data?.pendingDeliveryNo || [];
+                const pendingProductOrderNo = res.data?.pendingProductOrderNo || [];
+
                 setPendingProductNo(pendingProductsNo);
+                setPendingProductOrderNo(pendingProductOrderNo);
+                setPendingDeliveryNo(pendingDeliveryNo);
             })
             .catch((error) => {
                 console.error("Error fetching contests:", error);
@@ -91,6 +98,17 @@ export default function Marketplace() {
                     </div>
                 </div>
             </div>
+            {pendingProductOrderNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        Please deliver your {pendingProductOrderNo} products to the customer.
+                    </div>
+                    <Link to={"/marketplace/order-history?tab=2"} className="button">
+                        Pending Delivery
+                    </Link>
+                </div>
+            }
             {pendingProductNo != 0 &&
                 <div className="pendingBox">
                     <MaterialSymbol className="icon" size={32} icon="error" />
@@ -99,6 +117,17 @@ export default function Marketplace() {
                     </div>
                     <Link to={"/marketplace/pending-products"} className="button">
                         Pending Products
+                    </Link>
+                </div>
+            }
+            {pendingDeliveryNo != 0 &&
+                <div className="pendingBox">
+                    <MaterialSymbol className="icon" size={32} icon="error" />
+                    <div className="text">
+                        Delivery of your {pendingDeliveryNo} orders are in process.
+                    </div>
+                    <Link to={"/marketplace/order-history"} className="button">
+                        Pending Orders
                     </Link>
                 </div>
             }

@@ -64,9 +64,9 @@ export default function Marketplace() {
               : <NotFound message="No product added in cart!" />
           }
         </div>
-        <div className="checkoutButton">
+        <Link to={"/marketplace/checkout/cart"} className="checkoutButton">
           Checkout
-        </div>
+        </Link>
       </div>
       <div className="contentTitle">
         <div className="content">

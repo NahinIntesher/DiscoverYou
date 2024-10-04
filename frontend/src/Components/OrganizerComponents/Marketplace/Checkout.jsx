@@ -10,9 +10,9 @@ export default function Checkout({ user }) {
 
   const [formData, setFormData] = useState({
     fromCart: productId == "cart",
-    deliveryAddress: user.student_address,
-    customerMobileNo: user.student_mobile_no,
-    customerEmail: user.student_email,
+    deliveryAddress: user.organizer_address,
+    customerMobileNo: user.organizer_mobile_no,
+    customerEmail: user.organizer_email,
     paymentMethod: "Cash On Delivary",
     products: [],
   });
@@ -25,7 +25,7 @@ export default function Checkout({ user }) {
     }
     else if (value > formData.products[index].productStock){
       alert("Only "+formData.products[index].productStock+" of this product is in stock!");
-    } 
+    }  
     else {
       setFormData((prev) => {
         const updatedProducts = [...prev.products];
@@ -68,7 +68,7 @@ export default function Checkout({ user }) {
     try {
       axios.defaults.withCredentials = true;
       const checkoutResponse = await axios.post(
-        "http://localhost:3000/student/marketplace/checkout",
+        "http://localhost:3000/organizer/marketplace/checkout",
         formData
       );
 
@@ -79,10 +79,13 @@ export default function Checkout({ user }) {
         const notificationPromises = formData.products.map((product) =>
           axios.post("http://localhost:3000/student/notifications", {
             recipientId: product.productSellerId,
-            notificationPicture: user.student_picture,
+            notificationPicture: user.organizer_picture,
             notificationTitle: "Product Order",
-            notificationMessage: `${user.student_name} ordered your product "${product.productName}" in marketplace.`,
-            notificationLink: `/marketplace/order-history/tab=2`
+            notificationMessage: `${user.organizer_name} ordered your product "${product.productName}" in marketplace.`,
+            notificationLink: `/marketplace/order-history/tab=2`,
+          })
+          .catch((error) => {
+            console.error("Error fetching contests:", error);
           })
         );
 
@@ -104,7 +107,7 @@ export default function Checkout({ user }) {
   useEffect(() => {
     if (productId == "cart") {
       axios
-        .get("http://localhost:3000/student/marketplace/cart")
+        .get("http://localhost:3000/organizer/marketplace/cart")
         .then((res) => {
           console.log("Success");
           const cartProducts = res.data?.products || [];
@@ -156,7 +159,7 @@ export default function Checkout({ user }) {
                   productSellerId: cartProduct.seller_id,
                   productName: cartProduct.product_name,
                   productPrice: cartProduct.product_price,
-                  productQuantity: 1
+                  productQuantity: 1,
                 },
               ],
             };

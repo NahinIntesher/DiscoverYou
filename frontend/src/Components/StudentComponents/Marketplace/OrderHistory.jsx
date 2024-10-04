@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import MyOrders from "./MyOrders";
+import OrderOfMyProducts from "./OrderOfMyProducts";
+import { useLocation } from "react-router-dom";
 
 export default function OrderHistory({interests}) {
-    const [activeTab, setActiveTab] = useState(["myOrders"]);
-    const [update, setUpdate] = useState(0);
+    let location = useLocation();
+    let queryParams = new URLSearchParams(location.search);
+    let tab = queryParams.get('tab')
+
+    const [activeTab, setActiveTab] = useState(tab == 2 ? "ordersOfMyProducts" : "myOrders");
 
     return (
         <div className="mainContent">
@@ -15,6 +20,7 @@ export default function OrderHistory({interests}) {
                 <div className={activeTab == "ordersOfMyProducts" ? "activeTab" : "tab"} onClick={function(){setActiveTab("ordersOfMyProducts")}}>Orders Of My Products</div>
             </div>
             {activeTab == "myOrders" && <MyOrders/>}
+            {activeTab == "ordersOfMyProducts" && <OrderOfMyProducts />}
         </div>
     )
 }

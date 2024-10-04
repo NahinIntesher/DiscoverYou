@@ -152,10 +152,36 @@ module.exports = (router, multer) => {
         p.approval_status = 0 AND p.seller_id = '${userId}'
       GROUP BY p.product_id`;
 
-    connection.query(query, (err, results) => {
+    connection.query(query, (err, pendingProductsResult) => {
       if (err) throw err;
 
-      return res.json({ pendingProductsNo: results.length });
+      connection.query(
+        `SELECT m_o.*
+        FROM marketplace_orders AS m_o
+        WHERE m_o.buyer_student_id = ? AND is_delivered = 0
+        `,
+        [userId],
+        (err, pendingDeliveryResult) => {
+          if (err) throw err;
+          connection.query(
+            `SELECT m_o.*, p.seller_id
+            FROM marketplace_orders AS m_o
+            JOIN products AS p
+            ON m_o.product_id = p.product_id
+            WHERE p.seller_id = ? AND is_delivered = 0;
+            `,
+            [userId],
+            (err, pendingProductOrderResult) => {
+              if (err) throw err;
+              return res.json({ 
+                pendingProductsNo: pendingProductsResult.length, 
+                pendingDeliveryNo: pendingDeliveryResult.length, 
+                pendingProductOrderNo: pendingProductOrderResult.length 
+              }); 
+            }
+          );
+        }
+      );
     });
   });
 
@@ -332,18 +358,16 @@ module.exports = (router, multer) => {
       return res.json({ status: "Success" });
     }
   });
-
-
   
   router.get("/marketplace/my-order", verifyToken, (req, res) => {
     const userId = req.userId;
 
     connection.query(
-      `SELECT m_o.*, p.*, 
+      `SELECT m_o.*, p.product_name, p.product_price,
       CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
       FROM marketplace_orders AS m_o
       JOIN products AS p
-      ON m_o.product_id = p. product_id
+      ON m_o.product_id = p.product_id
       WHERE m_o.buyer_student_id = ?
       ORDER BY m_o.order_id DESC
       `,
@@ -355,5 +379,55 @@ module.exports = (router, multer) => {
       }
     );
   });
+
+  router.get("/marketplace/order-of-my-products", verifyToken, (req, res) => {
+    const userId = req.userId;
+
+    console.log(userId);
+
+    connection.query(
+      `SELECT m_o.*, p.product_name, p.product_price, p.seller_id,
+      CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url,
+      CASE 
+        WHEN m_o.buyer_student_id IS NOT NULL THEN s.student_name
+        WHEN m_o.buyer_organizer_id IS NOT NULL THEN o.organizer_name
+        WHEN m_o.buyer_admin_id IS NOT NULL THEN a.admin_name
+        ELSE NULL
+      END AS buyer_name
+      FROM marketplace_orders AS m_o
+      JOIN products AS p
+      ON m_o.product_id = p.product_id
+      LEFT JOIN admin AS a
+      ON m_o.buyer_admin_id = a.admin_id
+      LEFT JOIN organizer AS o
+      ON m_o.buyer_organizer_id = o.organizer_id
+      LEFT JOIN student AS s
+      ON m_o.buyer_student_id = s.student_id
+      WHERE p.seller_id = ?
+      ORDER BY m_o.order_id DESC
+      `,
+      [userId],
+      (err, results) => {
+        if (err) throw err;
+        
+        return res.json({ orders: results });
+      }
+    );
+  });
+
+  router.post("/marketplace/complete-delivery", verifyToken, (req, res) => {    
+    const { orderId } = req.body;
+
+    connection.query(
+      `UPDATE marketplace_orders 
+      SET is_delivered = 1, delivery_date = NOW()
+      WHERE order_id = ?`,
+      [orderId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });  
 
 };
