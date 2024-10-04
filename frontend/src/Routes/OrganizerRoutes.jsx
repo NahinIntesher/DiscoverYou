@@ -33,6 +33,7 @@ import SingleWebinar from "../Components/OrganizerComponents/Webinar/SingleWebin
 import Product from "../Components/OrganizerComponents/Marketplace/Product";
 import ChangeProfilePicture from "../Components/OrganizerComponents/Profile/ChangeProfilePicture";
 import Checkout from "../Components/OrganizerComponents/Marketplace/Checkout";
+import OrderHistory from "../Components/OrganizerComponents/Marketplace/OrderHistory";
 
 export default function Student({
   handleLogout,
@@ -65,6 +66,7 @@ export default function Student({
             path="/marketplace/checkout/:productId"
             element={<Checkout user={user} />}
           />
+          <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/new" element={<NewHiring />} />

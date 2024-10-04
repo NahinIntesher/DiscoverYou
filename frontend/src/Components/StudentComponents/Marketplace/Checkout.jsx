@@ -84,6 +84,9 @@ export default function Checkout({ user }) {
             notificationMessage: `${user.student_name} ordered your product "${product.productName}" in marketplace.`,
             notificationLink: `/marketplace/order-history/tab=2`
           })
+          .catch((error) => {
+            console.error("Error fetching contests:", error);
+          })
         );
 
         await Promise.all(notificationPromises);

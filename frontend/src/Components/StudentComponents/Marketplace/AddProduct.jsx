@@ -11,7 +11,7 @@ export default function AddProduct({ interests }) {
   const [formData, setFormData] = useState({
     productName: "",
     productCategory: interests[0],
-    productType: "digital",
+    productType: "physical",
     productDetails: "",
     productPrice: "",
     productOnStock: 0,
@@ -147,8 +147,8 @@ export default function AddProduct({ interests }) {
                 Product Type <span className="required">*</span>
               </label>
               <select name="productType" onChange={handleChange} required>
-                <option value="digital">Digital</option>
                 <option value="physical">Physical</option>
+                <option value="digital">Digital</option>
               </select>
             </div>
 

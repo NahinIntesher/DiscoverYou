@@ -41,6 +41,24 @@ export default function PendingProductBox({
         if (res.data.status === "Success") {
           alert('Product "' + productName + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
+
+          axios
+          .post(`http://localhost:3000/student/notifications`, {
+            recipientId: productSellerId,
+            notificationPicture: productImage,
+            notificationTitle: "Product Approved",
+            notificationMessage: `Product "${productName}" you submitted for approval is accepted.`,
+            notificationLink: `/marketplace?tab=1` ,
+          })
+          .then((res) => {
+            if (res.data.status === "Success") {
+              console.log("Successfully notification send")
+            } else {
+              alert(res.data.Error);
+            }
+          })
+          .catch((err) => console.log(err));
+
         } else {
           alert(res.data.Error);
         }
@@ -58,6 +76,24 @@ export default function PendingProductBox({
         if (res.data.status === "Success") {
           alert('Product "' + productName + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
+
+          axios
+          .post(`http://localhost:3000/student/notifications`, {
+            recipientId: productSellerId,
+            notificationPicture: "http://localhost:5173/images/admin.jpg",
+            notificationTitle: "Product Rejected",
+            notificationMessage: `Product "${productName}" you submitted for approval is rejected.`,
+            notificationLink: `/marketplace` ,
+          })
+          .then((res) => {
+            if (res.data.status === "Success") {
+              console.log("Successfully notification send")
+            } else {
+              alert(res.data.Error);
+            }
+          })
+          .catch((err) => console.log(err));
+
         } else {
           alert(res.data.Error);
         }

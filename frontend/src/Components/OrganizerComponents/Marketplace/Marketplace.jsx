@@ -11,6 +11,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import CartProductBox from "./CartProductBox";
 
 export default function Marketplace() {
+  const [pendingDeliveryNo, setPendingDeliveryNo] = useState(0);
   const [products, setProducts] = useState([]);
   const [isCartActive, setCartActive] = useState(false);
   const [update, setUpdate] = useState(0);
@@ -36,6 +37,20 @@ export default function Marketplace() {
         console.log("Success");
         const productsData = res.data?.products || [];
         setProducts(productsData);
+      })
+      .catch((error) => {
+        console.error("Error fetching contests:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/organizer/marketplace/pending-details")
+      .then((res) => {
+        console.log("Success");
+        const pendingDeliveryNo = res.data?.pendingDeliveryNo || [];
+
+        setPendingDeliveryNo(pendingDeliveryNo);
       })
       .catch((error) => {
         console.error("Error fetching contests:", error);
@@ -72,13 +87,28 @@ export default function Marketplace() {
         <div className="content">
           <div className="title">Marketplace</div>
           <div className="buttonContainer">
-            <div onClick={()=> setCartActive(true)} to="/marketplace/cart" className="button">
+            <Link to="/marketplace/order-history" className="button">
+              <MaterialSymbol className="icon" size={24} icon="history" />
+              <div className="text">Order History</div>
+            </Link>
+            <div onClick={() => setCartActive(true)} to="/marketplace/cart" className="button">
               <MaterialSymbol className="icon" size={24} icon="shopping_cart" />
               <div className="text">Cart</div>
             </div>
           </div>
         </div>
       </div>
+      {pendingDeliveryNo != 0 &&
+        <div className="pendingBox">
+          <MaterialSymbol className="icon" size={32} icon="error" />
+          <div className="text">
+            Delivery of your {pendingDeliveryNo} orders are in process.
+          </div>
+          <Link to={"/marketplace/order-history"} className="button">
+            Pending Orders
+          </Link>
+        </div>
+      }
       <div className="productBoxContainer">
         {products.map(function (product) {
           return (

@@ -8,51 +8,52 @@ import "react-material-symbols/rounded";
 
 
 export default function OrderOfMyProducts() {
-  const [orders, setOrders] = useState([]);
-  const [update, setUpdate] = useState(0);
+    const [orders, setOrders] = useState([]);
+    const [update, setUpdate] = useState(0);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/student/marketplace/order-of-my-products")
-      .then((response) => {
-        const ordersData = response.data.orders;
-        setOrders(ordersData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, [update]);
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/student/marketplace/order-of-my-products")
+            .then((response) => {
+                const ordersData = response.data.orders;
+                setOrders(ordersData);
+            })
+            .catch((error) => {
+                console.error("Error fetching webinars:", error);
+            });
+    }, [update]);
 
-  return (
-    <div className="productBoxContainer">
-        {orders.length ?
-            <div className="participantList">
-                {
-                    orders.map(function(order){
-                        return (
-                            <OrderBox
-                                orderId={order.order_id}
-                                productImage={order.image_url}
-                                productName={order.product_name}
-                                productPrice={order.product_price}
-                                productQuantity={order.product_quantity}
-                                deliveryStatus={order.is_delivered}
-                                deliveryAddress={order.delivery_address}
-                                contactNumber={order.delivery_mobile_no}
-                                deliveryEmail={order.delivery_email}
-                                deliveryDate={order.delivery_date}
-                                orderDate={order.order_date}
-                                buyerName={order.buyer_name}
-                                setUpdate={setUpdate}
-                            />
-                        )
-                    })
-                }
-            </div> :
-            <NotFound message="Nobody ordered your any product!"/>
-        }
-    </div>
-  )
+    return (
+        <div className="productBoxContainer">
+            {orders.length ?
+                <div className="participantList">
+                    {
+                        orders.map(function (order) {
+                            return (
+                                <OrderBox
+                                    orderId={order.order_id}
+                                    productImage={order.image_url}
+                                    productName={order.product_name}
+                                    productPrice={order.product_price}
+                                    productQuantity={order.product_quantity}
+                                    deliveryStatus={order.is_delivered}
+                                    deliveryAddress={order.delivery_address}
+                                    contactNumber={order.delivery_mobile_no}
+                                    deliveryEmail={order.delivery_email}
+                                    deliveryDate={order.delivery_date}
+                                    orderDate={order.order_date}
+                                    buyerName={order.buyer_name}
+                                    buyerId={order.buyer_id}
+                                    setUpdate={setUpdate}
+                                />
+                            )
+                        })
+                    }
+                </div> :
+                <NotFound message="Nobody ordered your any product!" />
+            }
+        </div>
+    )
 }
 
 function OrderBox({
@@ -66,6 +67,7 @@ function OrderBox({
     deliveryStatus,
     deliveryEmail,
     deliveryDate,
+    buyerId,
     buyerName,
     orderDate,
     setUpdate
@@ -78,24 +80,43 @@ function OrderBox({
     function completeOrder() {
         axios.defaults.withCredentials = true;
         axios
-          .post("http://localhost:3000/student/marketplace/complete-delivery", {
-            orderId: orderId
-          })
-          .then((res) => {
-            if (res.data.status === "Success") {
-              alert("You confirmed that Order#0000\""+orderId+"\" successfully delivered!");
-              setUpdate((prevData) => prevData + 1);
-            } else {
-              alert(res.data.Error);
-            }
-          })
-          .catch((err) => console.log(err));
-      };
+            .post("http://localhost:3000/student/marketplace/complete-delivery", {
+                orderId: orderId
+            })
+            .then((res) => {
+                if (res.data.status === "Success") {
+                    alert("You confirmed that \"Order#0000" + orderId + "\" successfully delivered!");
+                   
 
-      
+                    axios
+                    .post(`http://localhost:3000/${buyerId.charAt(0) == "O" ? "organizer" : "student"}/notifications`, {
+                      recipientId: buyerId,
+                      notificationPicture: productImage,
+                      notificationTitle: "Product Delivery Successfull",
+                      notificationMessage: `Product "${productName}", that you ordered is delivered to your address!`,
+                      notificationLink: `/marketplace/order-history/` ,
+                    })
+                    .then((res) => {
+                      if (res.data.status === "Success") {
+                        console.log("Successfully notification send")
+                      } else {
+                        alert(res.data.Error);
+                      }
+                    })
+                    .catch((err) => console.log(err));
+                
+                    setUpdate((prevData) => prevData + 1);
+                } else {
+                    alert(res.data.Error);
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+
+
     return (
         <div className="orderBox">
-            <img src={productImage}/>
+            <img src={productImage} />
             <div className="prodcutDetails">
                 <div className="name">Order#0000{orderId}</div>
                 <table>
@@ -109,7 +130,7 @@ function OrderBox({
                     </tr>
                     <tr>
                         <th>Total Ammount: </th>
-                        <td>{productQuantity*productPrice}৳</td>
+                        <td>{productQuantity * productPrice}৳</td>
                     </tr>
                     <tr>
                         <th>Order By: </th>
@@ -135,23 +156,23 @@ function OrderBox({
                     <tr>
                         <th>Contact Number: </th>
                         <td>{contactNumber}</td>
-                    </tr>                     
+                    </tr>
                     <tr>
                         <th>Delivery Date: </th>
                         <td>{deliveryStatus ? getDate(deliveryDate) : "Delivery in progress"}</td>
                     </tr>
-            
+
                 </table>
             </div>
             <div className="deliveryStatus">
                 <div className="name">Delivery Status</div>
-                {deliveryStatus ? 
-                <div className="delivery complete">Completed</div>
-                :
-                <div className="acceptButton" onClick={completeOrder}>
-                    <MaterialSymbol className="icon" size={22} icon="check" />
-                    <div className="text">Complete</div>
-                </div>
+                {deliveryStatus ?
+                    <div className="delivery complete">Completed</div>
+                    :
+                    <div className="acceptButton" onClick={completeOrder}>
+                        <MaterialSymbol className="icon" size={22} icon="check" />
+                        <div className="text">Complete</div>
+                    </div>
                 }
             </div>
         </div>

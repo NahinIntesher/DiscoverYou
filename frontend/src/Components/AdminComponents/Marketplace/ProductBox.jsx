@@ -11,26 +11,6 @@ export default function ProductBox({
   productPrice,
   productCategory
 }) {
- 
-
-  function addToCart() {
-
-    axios.defaults.withCredentials = true;
-    axios
-      .post("http://localhost:3000/admin/marketplace/add-to-cart", {
-        productId: productId
-      })
-      .then((res) => {
-        if (res.data.status === "Success") {
-          alert("Product successfully added to the cart!");
-        } else if (res.data.status === "AlreadyAdded") {
-          alert("Sorry, this product is already added in the cart!");
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div className="productBox">
@@ -45,11 +25,8 @@ export default function ProductBox({
         </div>
         <div className="buttonContainer">
           <Link to={"/marketplace/product/"+productId} className="button">
-            Details
+            Product Details
           </Link>
-          <div className="buttonAlt" onClick={addToCart}>
-            Add To Cart
-          </div>
         </div>
       </div>
     </div>

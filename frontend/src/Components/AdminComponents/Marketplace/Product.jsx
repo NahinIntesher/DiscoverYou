@@ -30,24 +30,6 @@ export default function Product() {
         }
     }
 
-    function addToCart() {
-        axios.defaults.withCredentials = true;
-        axios
-            .post("http://localhost:3000/admin/marketplace/add-to-cart", {
-                productId: product.product_id
-            })
-            .then((res) => {
-                if (res.data.status === "Success") {
-                    alert("Product successfully added to the cart!");
-                } else if (res.data.status === "AlreadyAdded") {
-                    alert("Sorry, this product is already added in the cart!");
-                } else {
-                    alert(res.data.Error);
-                }
-            })
-            .catch((err) => console.log(err));
-    };
-
     useEffect(() => {
         console.log("useEffect Cholled")
         axios
@@ -115,14 +97,6 @@ export default function Product() {
                             </div>
                             <div className="price">
                                 {product.product_price}৳
-                            </div>
-                        </div>
-                        <div className="buttonContainer">
-                            <div onClick={addToCart} className="button">
-                                Add To Cart
-                            </div>
-                            <div className="buttonAlt">
-                                Buy Now
                             </div>
                         </div>
                     </div>

@@ -164,4 +164,45 @@ module.exports = (router, multer) => {
     }
   });
 
+
+
+  router.get("/marketplace/pending-details", verifyToken, (req, res) => {
+    const userId = req.userId;
+    
+    connection.query(
+      `SELECT m_o.*
+      FROM marketplace_orders AS m_o
+      WHERE m_o.buyer_organizer_id = ? AND is_delivered = 0
+      `,
+      [userId],
+      (err, pendingDeliveryResult) => {
+        if (err) throw err;
+        return res.json({ 
+          pendingDeliveryNo: pendingDeliveryResult.length
+        }); 
+      }
+    );
+  });
+
+  router.get("/marketplace/my-order", verifyToken, (req, res) => {
+    const userId = req.userId;
+
+    connection.query(
+      `SELECT m_o.*, p.product_name, p.product_price,
+      CONCAT("http://localhost:3000/student/marketplace/products/image/", (SELECT media_id FROM product_images WHERE product_id = p.product_id LIMIT 1)) AS image_url
+      FROM marketplace_orders AS m_o
+      JOIN products AS p
+      ON m_o.product_id = p.product_id
+      WHERE m_o.buyer_organizer_id = ?
+      ORDER BY m_o.order_id DESC
+      `,
+      [userId],
+      (err, results) => {
+        if (err) throw err;
+        
+        return res.json({ orders: results });
+      }
+    );
+  });
+
 };

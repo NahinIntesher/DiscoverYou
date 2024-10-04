@@ -393,7 +393,13 @@ module.exports = (router, multer) => {
         WHEN m_o.buyer_organizer_id IS NOT NULL THEN o.organizer_name
         WHEN m_o.buyer_admin_id IS NOT NULL THEN a.admin_name
         ELSE NULL
-      END AS buyer_name
+      END AS buyer_name,
+      CASE 
+        WHEN m_o.buyer_student_id IS NOT NULL THEN s.student_id
+        WHEN m_o.buyer_organizer_id IS NOT NULL THEN o.organizer_id
+        WHEN m_o.buyer_admin_id IS NOT NULL THEN a.admin_id
+        ELSE NULL
+      END AS buyer_id
       FROM marketplace_orders AS m_o
       JOIN products AS p
       ON m_o.product_id = p.product_id
