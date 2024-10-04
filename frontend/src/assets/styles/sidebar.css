@@ -104,18 +104,18 @@ body {
 .sideMenu .option .badge {
     position: absolute;
     vertical-align: middle;
-    top: -6px;
+    top: -4px;
     left: -2px;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
     border-radius: 50%;
     background-color: rgb(var(--extralight));
-    box-shadow: 2px 2px 6px rgba(var(--extradark), 0.3);
+    box-shadow: 2px 2px 8px rgba(var(--extradark), 0.3);
     color: rgb(var(--dark));
     text-align: center;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     text-shadow: none;
     margin-left: 20px;
 }

@@ -4,37 +4,111 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
 module.exports = (router) => {
-  router.get("/contest", verifyToken, (req, res) => {
+  router.get("/contests/ongoing", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
-      SELECT contests.*,
-      CASE 
-        WHEN NOW() < contests.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), contests.start_time)
-        ELSE TIMESTAMPDIFF(SECOND, NOW(), contests.end_time)    
-          END AS calculated_time,
-          organizer.organizer_name AS organizer, 
-          COUNT(contest_participants.contest_id) AS participant_count,
-      CASE
-        WHEN EXISTS (
-          SELECT * FROM contest_participants
-          WHERE contest_participants.contest_id = contests.contest_id
-          AND contest_participants.participant_id = ?
-        )
-        THEN true
-        ELSE false
-      END AS is_joined
-      
+      SELECT 
+        contests.*,
+        TIMESTAMPDIFF(SECOND, NOW(), contests.end_time) AS calculated_time,
+        organizer.organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
+        COUNT(contest_participants.contest_id) AS participant_count,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_participants
+            WHERE contest_participants.contest_id = contests.contest_id
+            AND contest_participants.participant_id = ?
+          )
+          THEN true
+          ELSE false
+        END AS is_joined
       FROM 
-          contests 
+        contests 
       JOIN 
-          organizer ON contests.organizer_id = organizer.organizer_id 
+        organizer ON contests.organizer_id = organizer.organizer_id 
       LEFT JOIN 
-          contest_participants ON contests.contest_id = contest_participants.contest_id 
+        contest_participants ON contests.contest_id = contest_participants.contest_id 
       WHERE 
-          contests.approval_status = 1
+        (NOW() >= contests.start_time) AND (NOW() <= contests.end_time) AND contests.approval_status = 1
       GROUP BY 
-          contests.contest_id, 
-          organizer.organizer_name
+        contests.contest_id
+      `;
+
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching contests:", err);
+        return res.json({ Error: "Error fetching contests" });
+      }
+      return res.json({ contests: results });
+    });
+  });
+
+  router.get("/contests/upcoming", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const query = `
+      SELECT 
+        contests.*,
+        TIMESTAMPDIFF(SECOND, NOW(), contests.start_time) AS calculated_time, 
+        organizer.organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
+        COUNT(contest_participants.contest_id) AS participant_count,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_participants
+            WHERE contest_participants.contest_id = contests.contest_id
+            AND contest_participants.participant_id = ?
+          )
+          THEN true
+          ELSE false
+        END AS is_joined
+      FROM 
+        contests 
+      JOIN 
+        organizer ON contests.organizer_id = organizer.organizer_id 
+      LEFT JOIN 
+        contest_participants ON contests.contest_id = contest_participants.contest_id 
+      WHERE 
+        NOW() < contests.start_time AND contests.approval_status = 1
+      GROUP BY 
+        contests.contest_id
+      `;
+
+    connection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching contests:", err);
+        return res.json({ Error: "Error fetching contests" });
+      }
+      return res.json({ contests: results });
+    });
+  });
+
+  router.get("/contests/previous", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const query = `
+      SELECT 
+        contests.*,
+        organizer.organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
+        COUNT(contest_participants.contest_id) AS participant_count,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_participants
+            WHERE contest_participants.contest_id = contests.contest_id
+            AND contest_participants.participant_id = ?
+          )
+          THEN true
+          ELSE false
+        END AS is_joined
+      FROM 
+        contests 
+      JOIN 
+        organizer ON contests.organizer_id = organizer.organizer_id 
+      LEFT JOIN 
+        contest_participants ON contests.contest_id = contest_participants.contest_id 
+      WHERE 
+        NOW() > contests.end_time AND contests.approval_status = 1
+      GROUP BY 
+        contests.contest_id
       `;
 
     connection.query(query, [userId], (err, results) => {
@@ -55,7 +129,7 @@ module.exports = (router) => {
     });
   };
 
-  router.get("/contest/:contestId", verifyToken, async (req, res) => {
+  router.get("/contests/:contestId", verifyToken, async (req, res) => {
     const { contestId } = req.params;
     const userId = req.userId;
 
@@ -66,8 +140,16 @@ module.exports = (router) => {
         WHEN NOW() < contests.start_time THEN TIMESTAMPDIFF(SECOND, NOW(), contests.start_time)
         ELSE TIMESTAMPDIFF(SECOND, NOW(), contests.end_time)    
           END AS calculated_time,
-          organizer.organizer_name AS organizer_name, 
-          COUNT(contest_participants.contest_id) AS participant_count,
+      organizer.organizer_name AS organizer_name, 
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
+      COUNT(contest_participants.contest_id) AS participant_count,
+      CASE
+        WHEN (NOW() >= contests.start_time) AND (NOW() <= contests.end_time)
+        THEN "ongoing"
+        WHEN NOW() < contests.start_time 
+        THEN "upcoming"
+        ELSE "previous"
+      END AS contest_type,
       CASE
         WHEN EXISTS (
           SELECT * FROM contest_participants
@@ -77,7 +159,6 @@ module.exports = (router) => {
         THEN 1
         ELSE 0
       END AS is_joined
-      
       FROM 
           contests 
       LEFT JOIN 
@@ -96,7 +177,8 @@ module.exports = (router) => {
       WHERE contest_id = ?`;
 
     const participantsQuery = `
-      SELECT cp.participant_id, cp.result_position, st.student_name AS participant_name
+      SELECT cp.participant_id, cp.result_position, st.student_name AS participant_name,
+      IF(st.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", st.student_id), NULL) AS participant_picture
       FROM contest_participants cp
       JOIN student st ON cp.participant_id = st.student_id
       WHERE cp.contest_id = ?`;

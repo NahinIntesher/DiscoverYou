@@ -1,11 +1,12 @@
 .contentTitle {
-    background-image: 
+    background-image:
         radial-gradient(400px 80px at right top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         radial-gradient(400px 80px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         radial-gradient(400px 80px at left bottom, rgb(var(--medium)), rgba(var(--medium), 0.8), rgba(var(--medium), 0.6), transparent),
-        linear-gradient(rgb(var(--medium)),rgb(var(--light)));
+        linear-gradient(rgb(var(--medium)), rgb(var(--light)));
     position: relative;
 }
+
 .contentTitle .title {
     display: inline-block;
     vertical-align: middle;
@@ -13,22 +14,24 @@
     padding: 10px 16px;
     font-weight: 600;
     color: #ffffff;
-    text-shadow: 
+    text-shadow:
         -4px -4px 12px rgba(var(--dark), 0.6),
         -4px -4px 42px rgba(var(--dark), 0.6),
         4px 4px 12px rgba(var(--dark), 0.6),
         4px 4px 42px rgba(var(--dark), 0.6);
 }
+
 .contentTitle .buttonContainer {
     position: absolute;
     right: 24px;
     top: 50%;
     transform: translateY(-50%);
 }
+
 .contentTitle .button {
-    background-image: 
-    radial-gradient(120px 40px at left top, rgb(var(--medium)), rgba(var(--medium), 0.8), rgba(var(--medium), 0.6), transparent),
-    linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+    background-image:
+        radial-gradient(120px 40px at left top, rgb(var(--medium)), rgba(var(--medium), 0.8), rgba(var(--medium), 0.6), transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 16px 16px;
     color: #ffffff;
     font-weight: 500;
@@ -45,9 +48,9 @@
     opacity: 0.6;
 }
 
-.contentTitle .button:hover{
+.contentTitle .button:hover {
     box-shadow:
-        4px 4px 12px rgba(0,0,0,0.2),
+        4px 4px 12px rgba(0, 0, 0, 0.2),
         -8px -8px 16px rgba(var(--light), 0.8),
         8px 8px 16px rgba(var(--light), 0.8);
 }
@@ -57,6 +60,7 @@
     vertical-align: middle;
     margin: 4px;
 }
+
 .contentTitle .button .text {
     display: inline-block;
     vertical-align: middle;
@@ -78,28 +82,31 @@
     position: relative;
     scrollbar-width: none;
 }
+
 .scrollContainer:hover {
-    padding-bottom: 6px;  
+    padding-bottom: 6px;
     scrollbar-width: auto;
 }
+
 .scrollContainer:hover::-webkit-scrollbar {
     display: block;
     width: 8px;
     height: 8px;
 }
+
 .scrollContainer:hover::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
-   
+
 
 .scrollContainer:hover::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2); 
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 }
 
 .scrollContainer:hover::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4); 
+    background: rgba(0, 0, 0, 0.4);
 }
 
 
@@ -109,11 +116,12 @@
     background-color: #ffffff;
     flex: 0 0 450px;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
     padding: 8px;
     flex-direction: column;
 }
+
 .contestBox:hover {
     transform: translateY(-4px);
 }
@@ -126,6 +134,7 @@
     line-height: 120%;
     margin-right: 10px;
 }
+
 .contestBox .category {
     background-color: rgba(var(--medium), 0.4);
     color: rgba(var(--dark), 0.8);
@@ -134,11 +143,13 @@
     display: inline-block;
     margin-top: 8px;
 }
+
 .contestBox .category .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
 }
+
 .contestBox .category .text {
     display: inline-block;
     vertical-align: middle;
@@ -146,6 +157,7 @@
     font-size: 14px;
     margin: 2px 4px;
 }
+
 .contestBox .detailsContainer {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.08);
@@ -156,19 +168,23 @@
     flex-direction: column;
     justify-content: center;
 }
+
 .contestBox .details {
     display: flex;
     margin: 4px;
 }
+
 .contestBox .detail {
     flex: auto;
     text-align: center;
- }
+}
+
 .contestBox .detail .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 4px 6px;
 }
+
 .contestBox .detail .text {
     display: inline-block;
     vertical-align: middle;
@@ -176,11 +192,13 @@
     margin: 2px;
     text-align: left;
 }
-.contestBox .detail .detailTitle {   
+
+.contestBox .detail .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.contestBox .detail .detailInfo { 
+
+.contestBox .detail .detailInfo {
     font-weight: 600;
     font-size: 15px;
     white-space: nowrap;
@@ -196,12 +214,14 @@
     margin: 6px;
     margin-top: 12px;
 }
+
 .contestBox .timeRemaining .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
     margin-right: 0;
 }
+
 .contestBox .timeRemaining .text {
     display: inline-block;
     vertical-align: middle;
@@ -209,10 +229,12 @@
     font-size: 14px;
     margin: 2px 14px;
 }
+
 .contestBox .informationContainer {
     padding: 8px 10px;
     display: flex;
 }
+
 .contestBox .information {
     flex: auto;
     display: inline-block;
@@ -220,17 +242,19 @@
     flex-grow: 1;
     overflow: hidden;
 }
+
 .contestBox .joinButtonContainer {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: inline-flex;
     flex-direction: column;
     vertical-align: middle;
     justify-content: center;
     text-align: center;
 }
+
 .contestBox .joinButtonContainer .joinButton {
     display: inline-block;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -240,10 +264,12 @@
     margin: 2px;
     cursor: pointer;
 }
+
 .contestBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
-    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+    box-shadow: 4px 4px 12px rgba(var(--dark), 0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark), 0.8);
 }
+
 .contestBox .joinButtonContainer .joinDetails {
     font-size: 13px;
     font-weight: 450;
@@ -255,7 +281,8 @@
 
 
 .contestBox .organizer {
-    background-color: rgba(0,0,0,0.12);
+    display: block;
+    background-color: rgba(0, 0, 0, 0.12);
     margin: 6px auto;
     border-radius: 40px;
     padding: 6px;
@@ -263,6 +290,7 @@
     text-align: left;
     margin-bottom: 12px;
 }
+
 .contestBox .organizer .organizerPicture {
     display: inline-block;
     vertical-align: middle;
@@ -272,6 +300,7 @@
     border: 3px #ffffff solid;
     overflow: hidden;
 }
+
 .contestBox .organizer .organizerDetails {
     display: inline-block;
     vertical-align: middle;
@@ -281,11 +310,12 @@
     margin-right: 16px;
 }
 
-.contestBox .organizer .organizerDetails .detailTitle {   
+.contestBox .organizer .organizerDetails .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.contestBox .organizer .organizerDetails .detailInfo { 
+
+.contestBox .organizer .organizerDetails .detailInfo {
     font-weight: 600;
     font-size: 15px;
 }
@@ -311,11 +341,12 @@
     background-color: #ffffff;
     flex: 0 0 460px;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
     padding: 8px;
     flex-direction: column;
 }
+
 .webinarBox:hover {
     transform: translateY(-4px);
 }
@@ -323,6 +354,7 @@
 .webinarBox .titleContainer {
     padding: 8px 10px;
 }
+
 .webinarBox .title {
     font-size: 20px;
     font-weight: 600;
@@ -331,6 +363,7 @@
     line-height: 120%;
     margin-right: 10px;
 }
+
 .webinarBox .category {
     background-color: rgba(var(--medium), 0.4);
     color: rgba(var(--dark), 0.8);
@@ -339,11 +372,13 @@
     display: inline-block;
     margin-top: 8px;
 }
+
 .webinarBox .category .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
 }
+
 .webinarBox .category .text {
     display: inline-block;
     vertical-align: middle;
@@ -351,6 +386,7 @@
     font-size: 14px;
     margin: 2px 4px;
 }
+
 .webinarBox .detailsContainer {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.08);
@@ -359,8 +395,9 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content:space-evenly
+    justify-content: space-evenly
 }
+
 .webinarBox .description {
     display: flex;
     text-wrap: wrap;
@@ -369,10 +406,12 @@
     line-height: 140%;
     margin: 6px 8px;
 }
+
 .webinarBox .details {
     display: flex;
     margin: 4px;
 }
+
 .webinarBox .detailsContainer hr {
     height: 2px;
     width: 80%;
@@ -380,15 +419,18 @@
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
 }
+
 .webinarBox .detail {
     flex: auto;
     text-align: center;
- }
+}
+
 .webinarBox .detail .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 4px 6px;
 }
+
 .webinarBox .detail .text {
     display: inline-block;
     vertical-align: middle;
@@ -396,11 +438,13 @@
     margin: 2px;
     text-align: left;
 }
-.webinarBox .detail .detailTitle {   
+
+.webinarBox .detail .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.webinarBox .detail .detailInfo { 
+
+.webinarBox .detail .detailInfo {
     font-weight: 600;
     font-size: 15px;
     white-space: nowrap;
@@ -416,12 +460,14 @@
     margin: 6px;
     margin-top: 12px;
 }
+
 .webinarBox .timeRemaining .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
     margin-right: 0;
 }
+
 .webinarBox .timeRemaining .text {
     display: inline-block;
     vertical-align: middle;
@@ -429,27 +475,31 @@
     font-size: 14px;
     margin: 2px 14px;
 }
+
 .webinarBox .bottomContainer {
     padding: 4px 10px;
     display: flex;
 }
+
 .webinarBox .hostContainer {
     display: inline-block;
     vertical-align: middle;
     flex-grow: 1;
     overflow: hidden;
 }
+
 .webinarBox .joinButtonContainer {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: inline-flex;
     flex-direction: column;
     vertical-align: middle;
     justify-content: center;
     text-align: center;
 }
+
 .webinarBox .joinButtonContainer .joinButton {
     display: inline-block;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -459,10 +509,12 @@
     margin: 2px;
     cursor: pointer;
 }
+
 .webinarBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
-    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+    box-shadow: 4px 4px 12px rgba(var(--dark), 0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark), 0.8);
 }
+
 .webinarBox .joinButtonContainer .joinDetails {
     font-size: 13px;
     font-weight: 450;
@@ -474,7 +526,7 @@
 
 
 .webinarBox .host {
-    background-color: rgba(0,0,0,0.16);
+    background-color: rgba(0, 0, 0, 0.16);
     margin: 6px;
     border-radius: 40px;
     padding: 6px;
@@ -482,6 +534,7 @@
     text-align: left;
     margin-bottom: 12px;
 }
+
 .webinarBox .host .hostPicture {
     display: inline-block;
     vertical-align: middle;
@@ -491,6 +544,7 @@
     border: 3px #ffffff solid;
     overflow: hidden;
 }
+
 .webinarBox .host .hostDetails {
     display: inline-block;
     vertical-align: middle;
@@ -500,11 +554,12 @@
     margin-right: 16px;
 }
 
-.webinarBox .host .hostDetails .detailTitle {   
+.webinarBox .host .hostDetails .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.webinarBox .host .hostDetails .detailInfo { 
+
+.webinarBox .host .hostDetails .detailInfo {
     font-weight: 600;
     font-size: 15px;
 }
@@ -537,26 +592,30 @@
     display: inline-block;
     vertical-align: middle;
 }
+
 .webinarHeader .leftSection .company {
     display: inline-block;
     vertical-align: middle;
-    color: rgba(var(--dark),0.8);
+    color: rgba(var(--dark), 0.8);
     font-weight: 550;
     font-size: 20px;
     margin: 2px;
 }
+
 .webinarHeader .leftSection .userInterest {
     display: block;
     width: max-content;
 }
+
 .webinarHeader .host {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     margin: 10px 4px;
     border-radius: 40px;
     padding: 6px;
     width: fit-content;
     text-align: left;
 }
+
 .webinarHeader .host .hostPicture {
     display: inline-block;
     vertical-align: middle;
@@ -566,6 +625,7 @@
     border: 3px #ffffff solid;
     overflow: hidden;
 }
+
 .webinarHeader .host .hostDetails {
     display: inline-block;
     vertical-align: middle;
@@ -575,11 +635,12 @@
     margin-right: 16px;
 }
 
-.webinarHeader .host .hostDetails .detailTitle {   
+.webinarHeader .host .hostDetails .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.webinarHeader .host .hostDetails .detailInfo { 
+
+.webinarHeader .host .hostDetails .detailInfo {
     font-weight: 600;
     font-size: 15px;
 }
@@ -589,9 +650,10 @@
     padding: 10px;
     text-align: center;
 }
+
 .webinarHeader .rightSection .joinButtonContainer .joinButton {
     display: inline-block;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -602,17 +664,20 @@
     cursor: pointer;
     font-size: 17px;
 }
+
 .webinarHeader .rightSection .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
-    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+    box-shadow: 4px 4px 12px rgba(var(--dark), 0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark), 0.8);
 }
+
 .webinarHeader .rightSection .joinButtonContainer .joinDetails {
     font-weight: 450;
     margin: 8px;
     font-size: 15px;
 }
+
 .webinarHeader .rightSection .joinButtonContainer .joinDetails b {
-    font-weight: 600; 
+    font-weight: 600;
 }
 
 
@@ -630,7 +695,7 @@
     width: calc(100% - 20px);
     max-width: 1300px;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
     padding: 8px;
     flex-direction: column;
@@ -641,10 +706,11 @@
     display: flex;
 }
 
-.hiringBox .titleContainer .information {   
+.hiringBox .titleContainer .information {
     flex-grow: 1;
 }
-.hiringBox .titleContainer .salaryContainer {   
+
+.hiringBox .titleContainer .salaryContainer {
     flex-shrink: 1;
     text-align: center;
     padding: 8px;
@@ -655,12 +721,13 @@
     line-height: 120%;
     padding: 2px;
 }
-.hiringBox .titleContainer .salaryContainer .count{
+
+.hiringBox .titleContainer .salaryContainer .count {
     font-size: 26px;
     line-height: 120%;
     font-weight: 600;
-    padding: 4px;   
-    color: rgba(var(--dark),0.8);
+    padding: 4px;
+    color: rgba(var(--dark), 0.8);
 }
 
 .hiringBox .title {
@@ -673,6 +740,7 @@
     line-height: 120%;
     margin-right: 10px;
 }
+
 .hiringBox .semiTitle {
     display: inline-block;
     vertical-align: middle;
@@ -680,6 +748,7 @@
     font-weight: 500;
     padding: 0 4px;
 }
+
 .hiringBox .category {
     background-color: rgba(var(--medium), 0.4);
     color: rgba(var(--dark), 0.8);
@@ -688,11 +757,13 @@
     width: fit-content;
     margin-top: 8px;
 }
+
 .hiringBox .category .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
 }
+
 .hiringBox .category .text {
     display: inline-block;
     vertical-align: middle;
@@ -700,6 +771,7 @@
     font-size: 14px;
     margin: 2px 4px;
 }
+
 .hiringBox .detailsContainer {
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.08);
@@ -709,6 +781,7 @@
     display: flex;
     align-items: center;
 }
+
 .hiringBox .description {
     flex-grow: 1;
     text-wrap: wrap;
@@ -717,17 +790,20 @@
     line-height: 140%;
     margin: 6px 8px;
 }
+
 .hiringBox .description .name {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 4px;
 }
+
 .hiringBox .details {
     width: max-content;
     flex-shrink: 1;
     margin: 4px;
     text-align: center;
 }
+
 .hiringBox .detail {
     flex: auto;
     text-align: center;
@@ -735,11 +811,12 @@
     margin: 6px;
 }
 
-.hiringBox .detail .detailTitle {   
+.hiringBox .detail .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.hiringBox .detail .detailInfo { 
+
+.hiringBox .detail .detailInfo {
     font-weight: 600;
     font-size: 15px;
     white-space: nowrap;
@@ -755,12 +832,14 @@
     width: max-content;
     margin: 6px;
 }
+
 .hiringBox .timeRemaining .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
     margin-right: 0;
 }
+
 .hiringBox .timeRemaining .text {
     display: inline-block;
     vertical-align: middle;
@@ -768,27 +847,31 @@
     font-size: 14px;
     margin: 2px 14px;
 }
+
 .hiringBox .bottomContainer {
     padding: 4px 10px;
     display: flex;
 }
+
 .hiringBox .hostContainer {
     display: inline-block;
     vertical-align: middle;
     flex-grow: 1;
     overflow: hidden;
 }
+
 .hiringBox .joinButtonContainer {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: inline-flex;
     flex-direction: column;
     vertical-align: middle;
     justify-content: center;
     text-align: center;
 }
+
 .hiringBox .joinButtonContainer .joinButton {
     display: inline-block;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -798,10 +881,12 @@
     margin: 2px;
     cursor: pointer;
 }
+
 .hiringBox .joinButtonContainer .joinButton:hover {
-    box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
-    text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+    box-shadow: 4px 4px 12px rgba(var(--dark), 0.4);
+    text-shadow: 2px 2px 8px rgba(var(--dark), 0.8);
 }
+
 .hiringBox .joinButtonContainer .joinDetails {
     font-size: 13px;
     font-weight: 450;
@@ -809,7 +894,7 @@
 }
 
 .hiringBox .host {
-    background-color: rgba(0,0,0,0.16);
+    background-color: rgba(0, 0, 0, 0.16);
     margin: 6px;
     border-radius: 40px;
     padding: 6px;
@@ -817,6 +902,7 @@
     text-align: left;
     margin-bottom: 12px;
 }
+
 .hiringBox .host .hostPicture {
     display: inline-block;
     vertical-align: middle;
@@ -826,6 +912,7 @@
     border: 3px #ffffff solid;
     overflow: hidden;
 }
+
 .hiringBox .host .hostDetails {
     display: inline-block;
     vertical-align: middle;
@@ -835,17 +922,179 @@
     margin-right: 16px;
 }
 
-.hiringBox .host .hostDetails .detailTitle {   
+.hiringBox .host .hostDetails .detailTitle {
     font-size: 13px;
     line-height: 120%;
 }
-.hiringBox .host .hostDetails .detailInfo { 
+
+.hiringBox .host .hostDetails .detailInfo {
     font-weight: 600;
     font-size: 15px;
 }
 
+
+
+
+.submissionContainer {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 8px;
+    padding: 12px;
+    text-align: left;
+}
+
+.submissionContainer .title {
+    font-weight: 600;
+    font-size: 22px;
+    margin: 10px 16px;
+}
+
+.submissionContainer label {
+    font-weight: 450;
+    margin: 4px 8px;
+    font-size: 15px;
+}
+
+.submissionContainer .label {
+    margin: 6px 8px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.submissionContainer .input {
+    margin: 8px 12px;
+    position: relative;
+}
+
+.submissionContainer input[type="text"],
+.submissionContainer input[type="password"],
+.submissionContainer input[type="email"],
+.submissionContainer input[type="number"],
+.submissionContainer input[type="tel"],
+.submissionContainer input[type="date"],
+.submissionContainer input[type="file"],
+.submissionContainer input[type="datetime-local"],
+.submissionContainer textarea,
+.submissionContainer select {
+    border-radius: 12px;
+    border: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    padding: 12px 16px;
+    margin: 4px;
+    width: calc(100% - 8px);
+    resize: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+}
+
+.submissionContainer input[type="text"]:focus,
+.submissionContainer input[type="password"]:focus,
+.submissionContainer input[type="email"]:focus,
+.submissionContainer input[type="number"]:focus,
+.submissionContainer input[type="tel"]:focus,
+.submissionContainer input[type="date"]:focus,
+.submissionContainer input[type="file"]:focus,
+.submissionContainer input[type="datetime-local"]:focus,
+.submissionContainer textarea:focus,
+.submissionContainer select:focus {
+    border: 2px solid rgb(var(--medium));
+    outline: rgb(var(--medium)) 1px solid;
+}
+
+.submissionContainer .longInput {
+    height: 200px;
+}
+
+.submissionContainer button {
+    display: inline-block;
+    background-image: radial-gradient(420px 40px at left top,
+            rgba(var(--light), 0.8),
+            rgba(var(--light), 0.6),
+            transparent),
+        linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
+    color: #ffffff;
+    padding: 14px 24px;
+    border-radius: 60px;
+    font-weight: 600;
+    margin: 10px;
+    cursor: pointer;
+    width: calc(100% - 20px);
+}
+
+.submissionContainer .uploadMedia {
+    background-color: rgba(var(--medium), 0.4);
+    padding: 10px 24px;
+    border-radius: 40px;
+    width: fit-content;
+    color: rgb(var(--dark));
+    font-weight: 500;
+    margin: 10px auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.submissionContainer .uploadMedia:hover {
+    background-color: rgba(var(--medium), 0.6);
+}
+
+.submissionContainer .uploadMedia input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.submissionContainer .currentMedia {
+    background-color: rgb(0,0,0,0.1);
+    margin: 16px;
+    border-radius: 10px;
+    text-align: center;
+}
+.submissionContainer .currentMedia .noMedia {
+    padding: 40px 10px;
+}
+.submissionContainer .currentMedia img {
+    display: inline-block;
+    max-height: 400px;
+    border-radius: 10px;
+    margin: 10px;
+}
+.submissionContainer .audioPadding {
+    padding: 40px 10px;
+}
+.submissionContainer .currentMedia audio {
+    margin: auto;
+}
+.submissionContainer .onlineMeeting {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.submissionContainer .joinButton {
+    background-color: rgba(var(--medium), 0.4);
+    padding: 10px 24px;
+    border-radius: 40px;
+    width: fit-content;
+    color: rgb(var(--dark));
+    font-weight: 500;
+    margin: 10px auto;
+    margin-top: 30px;
+    position: relative;
+    cursor: pointer;
+}
+
+.submissionContainer .joinButton:hover {
+    background-color: rgba(var(--medium), 0.6);
+}
+
 @media screen and (max-width: 820px) {
-    .contestBox {  
+    .contestBox {
         width: calc(100% - 20px);
-    } 
+    }
 }

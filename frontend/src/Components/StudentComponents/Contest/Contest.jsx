@@ -3,6 +3,9 @@ import "../../../assets/styles/contest.css";
 import ContestBox from "./ContestBox";
 import axios from "axios";
 import NotFound from "../../CommonComponents/NotFound";
+import OngoingContest from "./OngoingContest";
+import UpcomingContest from "./UpcomingContest";
+import PreviousContest from "./PreviousContest";
 
 export default function Contest() {
   const [previousContests, setPreviousContests] = useState([]);
@@ -45,80 +48,16 @@ export default function Contest() {
         </div>
       </div>
       <div className="content">
-      <h3 className="contentSemiTitle">Ongoing Contests</h3>
-        {ongoingContests.length ? (
-          <div className="scrollContainer">
-            {ongoingContests.map((contest) => (
-              <ContestBox
-                key={contest.contest_id}
-                id={contest.contest_id}
-                name={contest.contest_name}
-                details={contest.contest_details}
-                category={contest.contest_category}
-                organizer={contest.organizer}
-                date={contest.start_time}
-                startTime={contest.start_time}
-                endTime={contest.end_time}
-                participants={contest.participant_count}
-                calculatedTime={contest.calculated_time}
-                isJoined={contest.is_joined}
-                type="ongoing"
-              />
-            ))}
-          </div>
-        ) : (
-          <NotFound message="There are currently no Ongoing Contest!" />
-        )}
-
+        <h3 className="contentSemiTitle">Ongoing Contests</h3>
+        <OngoingContest/>
         <div className="miniBreak"></div>
+
         <h3 className="contentSemiTitle">Upcoming Contests</h3>
-          {upcomingContests.length ? (
-            <div className="scrollContainer">
-              {upcomingContests.map((contest) => (
-                <ContestBox
-                  key={contest.contest_id}
-                  id={contest.contest_id}
-                  name={contest.contest_name}
-                  details={contest.contest_details}
-                  category={contest.contest_category}
-                  organizer={contest.organizer}
-                  date={contest.start_time}
-                  startTime={contest.start_time}
-                  endTime={contest.end_time}
-                  participants={contest.participant_count}
-                  calculatedTime={contest.calculated_time}
-                  type="upcoming"
-                />
-              ))}
-            </div>
-          ) : (
-            <NotFound message="There are currently no Upcoming Contest!" />
-          )}
-
+        <UpcomingContest/>
         <div className="miniBreak"></div>
+
         <h3 className="contentSemiTitle">Previous Contests</h3>
-        {previousContests.length ? (
-            <div className="scrollContainer">
-              {previousContests.map((contest) => (
-                <ContestBox
-                  key={contest.contest_id}
-                  id={contest.contest_id}
-                  name={contest.contest_name}
-                  details={contest.contest_details}
-                  category={contest.contest_category}
-                  organizer={contest.organizer}
-                  date={contest.start_time}
-                  startTime={contest.start_time}
-                  endTime={contest.end_time}
-                  participants={contest.participant_count}
-                  calculatedTime={contest.calculated_time}
-                  type="previous"
-                />
-              ))}
-            </div>
-          ) : (
-            <NotFound message="There are currently no Previous Contest!" />
-          )}
+        <PreviousContest/>
       </div>
     </div>
   );

@@ -6,33 +6,6 @@ import UpcomingWebinar from "./UpcomingWebinar";
 import PreviousWebinar from "./PreviousWebinar";
 
 export default function Webinar() {
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3000/student/webinars")
-  //     .then((response) => {
-  //       const webinars = response.data.webinars;
-  //       const now = new Date();
-
-  //       const previous = webinars.filter(
-  //         (webinar) => new Date(webinar.end_time) < now
-  //       );
-  //       const ongoing = webinars.filter(
-  //         (webinar) =>
-  //           new Date(webinar.start_time) <= now &&
-  //           new Date(webinar.end_time) >= now
-  //       );
-  //       const upcoming = webinars.filter(
-  //         (webinar) => new Date(webinar.start_time) > now
-  //       );
-
-  //       setPreviousWebinars(previous);
-  //       setOngoingWebinars(ongoing);
-  //       setUpcomingWebinars(upcoming);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching webinars:", error);
-  //     });
-  // }, []);
 
   return (
     <div className="mainContent">

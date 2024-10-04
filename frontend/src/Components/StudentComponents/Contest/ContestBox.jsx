@@ -2,9 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import ContestTimeRemaining from "../../CommonComponents/contestTimeRemaining";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function ContestBox({
@@ -12,7 +12,9 @@ export default function ContestBox({
   name,
   details,
   category,
-  organizer,
+  organizerId,
+  organizerName,
+  organizerPicture,
   date,
   startTime,
   endTime,
@@ -144,15 +146,15 @@ export default function ContestBox({
       </div>
       <div className="detailsContainer">
         <div className="detailsContent">
-          <div className="organizer">
+          <Link to={"/profile/"+organizerId} className="organizer">
             <div className="organizerPicture">
-              <img src={dp} />
+              <img src={organizerPicture ? organizerPicture : dp} />
             </div>
             <div className="organizerDetails">
               <div className="detailTitle">Organized By</div>
-              <div className="detailInfo">{organizer}</div>
+              <div className="detailInfo">{organizerName}</div>
             </div>
-          </div>
+          </Link>
           <div className="details">
             <div className="detail">
               <MaterialSymbol

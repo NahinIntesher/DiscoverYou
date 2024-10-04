@@ -38,7 +38,7 @@ export default function MyWebinar() {
             meetingLink={webinar.meeting_link}
             calculatedTime={webinar.calculated_time}
             description={webinar.webinar_description}
-            type={webinar.type}
+            type={webinar.webinar_type}
           />
         ))}
       </div>

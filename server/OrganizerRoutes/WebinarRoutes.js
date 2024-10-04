@@ -134,7 +134,14 @@ module.exports = (router) => {
       SELECT w.*, COUNT(w_p.webinar_id) AS participant_count,
       TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
       organizer.organizer_name AS host_name,
-      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
+      CASE
+        WHEN (NOW() >= w.start_time) AND (NOW() <= w.end_time)
+        THEN "ongoing"
+        WHEN NOW() < w.start_time 
+        THEN "upcoming"
+        ELSE "previous"
+      END AS webinar_type
       FROM 
           webinars w
       LEFT JOIN 
@@ -146,9 +153,9 @@ module.exports = (router) => {
       ON 
           w.host_id = organizer.organizer_id
       WHERE
-        NOW() >= w.end_time AND w.approval_status = 1
+        NOW() >= w.end_time AND w.approval_status = 1 AND w.host_id = ?
       GROUP BY 
-          w.webinar_id AND w.host_id = ?; 
+          w.webinar_id; 
     `;
     connection.query(query, [userId], (err, result) => {
       if (err) {
