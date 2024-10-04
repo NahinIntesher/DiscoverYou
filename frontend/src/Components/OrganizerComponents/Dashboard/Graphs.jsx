@@ -126,44 +126,115 @@ export default function Graphs() {
   }
 
   return (
-    <div className="">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
-        <ChartCard
-          title="Contests Overview"
-          icon={<FaTrophy />}
-          chart={<Bar data={chartData.contests} options={barChartOptions} />}
-        />
-        <ChartCard
-          title="Webinars Overview"
-          icon={<FaChartLine />}
-          chart={<Bar data={chartData.webinars} options={barChartOptions} />}
-        />
-        <ChartCard // Add a new chart card for hirings
-          title="Hirings Overview"
-          icon={<FaBriefcase />} // Icon for hirings
-          chart={<Bar data={chartData.hirings} options={barChartOptions} />}
-        />
+    <div style={{ padding: "0.25rem" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+          gap: "0.25rem",
+        }}
+      >
+        <div className="semi-container">
+          <div>
+            <ChartCard
+              title="Contests Overview"
+              icon={<FaTrophy />}
+              chart={
+                <Bar data={chartData.contests} options={barChartOptions} />
+              }
+            />
+          </div>
+          <div>
+            <ChartCard
+              title="Webinars Overview"
+              icon={<FaChartLine />}
+              chart={
+                <Bar data={chartData.webinars} options={barChartOptions} />
+              }
+            />
+            <ChartCard
+              title="Hirings Overview"
+              icon={<FaBriefcase />} // Icon for hirings
+              chart={<Bar data={chartData.hirings} options={barChartOptions} />}
+            />
+          </div>
+        </div>
       </div>
-        <RecentActivity />
+      <RecentActivity />
     </div>
   );
 }
 
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      // height: "100vh"
+    }}
+  >
+    <div
+      style={{
+        width: "4rem",
+        height: "4rem",
+        border: "4px solid rgba(59, 130, 246, 1)",
+        borderTopColor: "transparent",
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+      }}
+    ></div>
   </div>
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-lg overflow-hidden">
-    <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
-      <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
-      <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">
+  <div
+    style={{
+      backgroundColor: "white",
+      borderRadius: "0.375rem",
+      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        padding: "1rem 1.5rem",
+        borderBottom: "1px solid rgba(209, 213, 219, 1)",
+        display: "flex",
+        background:
+          "linear-gradient(to right, rgb(var(--light)), rgb(var(--light)))",
+      }}
+    >
+      <span
+        style={{
+          fontSize: "1.125rem",
+          color: "rgb(var(--extradark))",
+        }}
+      >
+        {icon}
+      </span>
+      <h3
+        style={{
+          marginLeft: "0.5rem",
+          fontSize: "0.875rem",
+          fontWeight: "600",
+          color: "rgb(var(--extradark))",
+        }}
+      >
         {title}
       </h3>
     </div>
-    <div className="p-4 flex justify-center items-center h-48">{chart}</div>
+    <div
+      style={{
+        padding: "1rem",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "12rem",
+      }}
+    >
+      {chart}
+    </div>
   </div>
 );
 
