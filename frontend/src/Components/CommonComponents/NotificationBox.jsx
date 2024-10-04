@@ -66,14 +66,13 @@ export default function NotificationBox({
   return (
     <div
       onClick={handleClick}
-      className="notificationBox"
+      className={isRead ? "notificationBox" : "notificationBox readed"}
       style={{ cursor: "pointer" }}
     >
       <div className="profilePicture">
         <img src={notificationPicture ? notificationPicture : dp} />
       </div>
       <div className="texts">
-        {isRead ? <div>Readed</div> : <div>Not Readed</div>}
         <div className="title">{notificationTitle}</div>
         <div className="message">{notificationMessage}</div>
         <div className="timeAgo">

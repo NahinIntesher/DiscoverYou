@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sidebar from "../../src/Components/StudentComponents/Sidebar";
@@ -57,10 +57,12 @@ export default function Student({
   setUser,
   setAuthorized,
 }) {
+  const [notificationUpdate, setNotificationUpdate] = useState(0);
+
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} />
+        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate}/>
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
@@ -132,7 +134,7 @@ export default function Student({
           />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
 
-          <Route path="/notification" element={<Notification />} />
+          <Route path="/notification" element={<Notification notificationUpdate={notificationUpdate} setNotificationUpdate={setNotificationUpdate}/>} />
 
           <Route path="/profile" element={<Profile user={user} />} />
           <Route

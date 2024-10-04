@@ -12,10 +12,8 @@ export default function SidebarOption(props) {
     >
       <MaterialSymbol className="icon" size={22} icon={props.icon} />
       <div className="text">
-        <div style={{ display: "flex" }}>
-          <div>{props.name}</div>
-          {props.badge && <div className="badge text">{props.badge}</div>}
-        </div>
+        {props.name}
+        {props.badge && <div className="badge">{props.badge}</div>}  
       </div>
     </NavLink>
   );

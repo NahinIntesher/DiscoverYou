@@ -452,6 +452,7 @@
   margin: 4px 10px;
   text-align: left;
   max-width: 1040px;
+  overflow: hidden;
 }
 .participant {
   padding: 8px 10px;
