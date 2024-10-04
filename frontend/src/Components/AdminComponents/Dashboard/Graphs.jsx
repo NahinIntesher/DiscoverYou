@@ -1,236 +1,287 @@
 import React, { useEffect, useState } from "react";
-import { Bar, Pie } from "react-chartjs-2";
+import axios from "axios";
+import { Bar, Pie, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
-  ArcElement,
   Title,
   Tooltip,
   Legend,
+  ArcElement,
+  PointElement,
+  LineElement,
 } from "chart.js";
-import axios from "axios";
-import {
-  FaChartBar,
-  FaChartPie,
-  FaChartLine,
-  FaGraduationCap,
-  FaTrophy,
-} from "react-icons/fa";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  ArcElement,
   Title,
   Tooltip,
-  Legend
-);
-
-const chartColors = {
-  contests: ["rgba(59, 130, 246, 0.8)", "rgb(255, 125, 32)"],
-  showcases: ["rgba(16, 185, 129, 0.8)", "rgba(107, 114, 128, 0.8)"],
-  courses: ["rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"],
-  webinars: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)"],
-  pie: ["rgba(54, 162, 235, 0.8)", "rgba(255, 206, 86, 0.8)"],
-};
-
-const initialChartData = {
-  contests: { labels: [], datasets: [] },
-  showcases: { labels: [], datasets: [] },
-  courses: { labels: [], datasets: [] },
-  webinars: { labels: [], datasets: [] },
-  pieData: { labels: [], datasets: [] },
-};
-
-export default function Graphs() {
-  const [data, setData] = useState({
-    contests: {},
-    showcases: {},
-    courses: {},
-    webinars: {},
-  });
-  const [chartData, setChartData] = useState(initialChartData);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/student/dashboard",
-        { withCredentials: true }
-      );
-      const profileData = response.data;
-      setData(profileData);
-      prepareChartData(profileData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const prepareChartData = (fetchedData) => {
-    const newChartData = {
-      contests: createChartData(
-        ["User Participation", "Total Contest Participants"],
-        [
-          fetchedData.contestResults.user_participation_last_10_contests,
-          fetchedData.contestResults.total_contest_participants,
-        ],
-        "Contests",
-        chartColors.contests
-      ),
-      showcases: createChartData(
-        ["User Posts", "Total Showcase Posts"],
-        [
-          fetchedData.showcaseResults.user_posts,
-          fetchedData.showcaseResults.total_showcase_posts,
-        ],
-        "Showcases",
-        chartColors.showcases
-      ),
-      courses: createChartData(
-        ["Enrolled Courses", "Total Courses"],
-        [
-          fetchedData.courseResults.enrolled_courses,
-          fetchedData.courseResults.total_courses,
-        ],
-        "Courses",
-        chartColors.courses
-      ),
-      pieData: createChartData(
-        ["Completed Courses", "Remaining Courses"],
-        [
-          fetchedData.courseResults.completed_courses,
-          fetchedData.courseResults.total_courses -
-            fetchedData.courseResults.completed_courses,
-        ],
-        "Course Completion",
-        chartColors.pie
-      ),
-      webinars: createChartData(
-        ["User Participation", "Total Webinars Last 10"],
-        [
-          fetchedData.webinarResults.user_participation_last_10_webinars,
-          fetchedData.webinarResults.total_webinars_last_10,
-        ],
-        "Webinars",
-        chartColors.webinars
-      ),
-    };
-
-    setChartData(newChartData);
-  };
-
-  const createChartData = (labels, data, label, backgroundColor) => ({
-    labels,
-    datasets: [{ label, data, backgroundColor }],
-  });
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
-      <ChartCard
-        title="Last 10 Contests"
-        icon={<FaTrophy />}
-        chart={<Bar data={chartData.contests} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Showcase Posts"
-        icon={<FaChartBar />}
-        chart={<Bar data={chartData.showcases} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Webinar Participation"
-        icon={<FaChartLine />}
-        chart={<Bar data={chartData.webinars} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Courses Overview"
-        icon={<FaGraduationCap />}
-        chart={<Bar data={chartData.courses} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Course Completion"
-        icon={<FaChartPie />}
-        chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
-      />
-    </div>
-  );
-}
-
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-  </div>
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-lg overflow-hidden">
-    <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
-      <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
-      <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">
+  <div
+    style={{
+      backgroundColor: "white",
+      borderRadius: "0.375rem",
+      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+      overflow: "hidden",
+      gap: "1rem",
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+    }}
+  >
+    <div
+      style={{
+        padding: "1rem 1.5rem",
+        borderBottom: "1px solid rgba(209, 213, 219, 1)",
+        display: "flex",
+        backgroundColor: "rgb(var(--light))",
+      }}
+    >
+      <span
+        style={{
+          fontSize: "1.125rem",
+          color: "rgb(var(--extradark))",
+        }}
+      >
+        {icon}
+      </span>
+      <h3
+        style={{
+          marginLeft: "0.5rem",
+          fontSize: "0.875rem",
+          fontWeight: "600",
+          color: "rgb(var(--extradark))",
+        }}
+      >
         {title}
       </h3>
     </div>
-    <div className="p-4 flex justify-center items-center h-64">{chart}</div>
+    <div
+      style={{
+        padding: "1rem",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "18rem",
+        width: "100%",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {chart}
+      </div>{" "}
+      {/* Allow full height and width */}
+    </div>
   </div>
 );
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { position: "top" },
-    title: { display: false },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      ticks: {
-        font: {
-          size: 14,
-        },
+const Graphs = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/admin/dashboard/"
+        );
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError("Error fetching data");
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  const contestResults = data.contestResults;
+  const courseResults = data.courseResults;
+  const webinarResults = data.webinarResults;
+  const productResults = data.productResults;
+  const hiringResults = data.hiringResults;
+
+  // Bar chart for contest participation
+  const contestData = {
+    labels: contestResults.map((contest) => contest.contestName),
+    datasets: [
+      {
+        label: "Participation Count",
+        data: contestResults.map((contest) => contest.participant_count),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // Allow chart to fill its container
     },
-    x: {
-      ticks: {
-        font: {
-          size: 14,
-        },
+  };
+
+  // Pie chart for course participation percentages
+  const courseData = {
+    labels: courseResults.map((course) => course.courseName),
+    datasets: [
+      {
+        label: "Participation Percentage",
+        data: courseResults.map((course) => course.participation_percentage),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+        ],
       },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
     },
-  },
+  };
+
+  // Line chart for webinar participation trends
+  const webinarData = {
+    labels: webinarResults.map((webinar) => webinar.webinarName),
+    datasets: [
+      {
+        label: "Webinar Participation",
+        data: webinarResults.map((webinar) => webinar.participant_count),
+        fill: false,
+        backgroundColor: "#742774",
+        borderColor: "#742774",
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
+
+  // Bar chart for product sales
+  const productData = {
+    labels: productResults.map((product) => product.productName),
+    datasets: [
+      {
+        label: "Total Sold",
+        data: productResults.map((product) => product.total_sold),
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
+
+  // Bar chart for hiring job participation
+  const hiringData = {
+    labels: hiringResults.map((job) => job.jobName),
+    datasets: [
+      {
+        label: "Participant Count",
+        data: hiringResults.map((job) => job.participant_count),
+        backgroundColor: "rgba(153, 102, 255, 0.6)",
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
+
+  // Pie chart for job application distribution
+  const hiringPieData = {
+    labels: hiringResults.map((job) => job.jobName),
+    datasets: [
+      {
+        label: "Job Application Distribution",
+        data: hiringResults.map((job) => job.participant_count),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+        ],
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "5px",
+        flexGrow: "1",
+        overflowY: "auto",
+        padding: "5px",
+      }}
+    >
+      <div style={{ display: "flex", gap: "5px" }}>
+        <ChartCard
+          title="Contest Participation"
+          icon="🏆"
+          chart={<Bar data={contestData} />}
+        />
+        <ChartCard
+          title="Product Sales"
+          icon="🛒"
+          chart={<Bar data={productData} />}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: "5px" }}>
+        <ChartCard
+          title="Hiring Distribution"
+          icon="💼"
+          chart={<Pie data={hiringPieData} />}
+        />
+        <ChartCard
+          title="Course Participation"
+          icon="📚"
+          chart={<Pie data={courseData} />}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: "5px" }}>
+        <ChartCard
+          title="Webinar Participation"
+          icon="🎤"
+          chart={<Line data={webinarData} />}
+        />
+        <ChartCard
+          title="Job Hiring Participation"
+          icon="🔍"
+          chart={<Bar data={hiringData} />}
+        />
+      </div>
+    </div>
+  );
 };
 
-const barChartOptions = {
-  ...chartOptions,
-  barPercentage: 0.6,
-  categoryPercentage: 0.7,
-};
-
-const pieChartOptions = {
-  ...chartOptions,
-  plugins: {
-    ...chartOptions.plugins,
-    legend: {
-      position: "bottom",
-      labels: {
-        boxWidth: 15,
-        font: {
-          size: 14,
-        },
-      },
-    },
-  },
-};
+export default Graphs;
