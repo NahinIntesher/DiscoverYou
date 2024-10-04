@@ -100,8 +100,8 @@ export default function Community({ user }) {
           Browse Communities
         </div>
       </div>
-      {activeTab == "myCommunities" && <MyCommunities />}
-      {activeTab == "browseCommunities" && <BrowseCommunities />}
+      {activeTab == "myCommunities" && <MyCommunities user={user} />}
+      {activeTab == "browseCommunities" && <BrowseCommunities user={user} />}
     </div>
   );
 }

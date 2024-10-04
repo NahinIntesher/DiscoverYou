@@ -5,8 +5,26 @@ import dp from "../../assets/images/default.jpg";
 import logo from "../../assets/images/logo.svg";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Sidebar({logoutAction, user}) {
+    const [newNotifications, setNewNotifications] = useState(0);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/student/notifications/new")
+            .then((res) => {
+                console.log("newNotifications:", res.data.new_notifications);
+                const notificationsData = res.data?.new_notifications || 0;
+                setNewNotifications(notificationsData);
+            })
+            .catch((error) => {
+                console.error("Error fetching notifications:", error);
+            });
+    }, []);
+
+
     return (
     <div className="sideMenu">
         <div className="content">
@@ -23,7 +41,13 @@ export default function Sidebar({logoutAction, user}) {
                 <SidebarOption name="Webinar" href="/webinar" icon="patient_list"/>
                 <SidebarOption name="Marketplace" href="/marketplace" icon="shopping_cart"/>
                 <SidebarOption name="Hiring" href="/hiring" icon="person_search"/>
-                <SidebarOption name="Notifcation" href="/notification" icon="notifications_active"/>
+                
+                {newNotifications ? (
+                    <SidebarOption name="Notification" href="/notification" icon="notifications_active" badge={newNotifications}/>
+                ) : (
+                    <SidebarOption name="Notification" href="/notification" icon="notifications_active" />
+                )}
+
                 <SidebarOption name="Profile" href="/profile" icon="person"/>
             </div>
             <div className="dynamicGap"></div>

@@ -390,22 +390,18 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 
-
 // Get any user data by user ID
 app.get("/profile/:userId", verifyToken, (req, res) => {
   const userId = req.params.userId; // Get userId from the route parameters
   console.log(userId);
   let userType;
-  if(userId.startsWith("St")){
+  if (userId.startsWith("St")) {
     userType = "student";
-  }
-  else if(userId.startsWith("Or")){
+  } else if (userId.startsWith("Or")) {
     userType = "organizer";
-  }
-  else if(userId.startsWith("Ad")){
+  } else if (userId.startsWith("Ad")) {
     userType = "admin";
   }
-
 
   let query;
 
@@ -491,10 +487,34 @@ app.get("/profile/:userId", verifyToken, (req, res) => {
   });
 });
 
-
 app.get("/logout", (req, res) => {
   res.clearCookie("userRegistered");
   res.json({ status: "Success" });
+});
+
+app.get("/admins", verifyToken, (req, res) => {
+  const query = `
+      SELECT
+        a.admin_id,
+        a.admin_name,
+        a.admin_email,
+        a.admin_mobile_no,
+        a.admin_address,
+        a.admin_gender,
+        a.admin_date_of_birth,
+        IF(a.admin_picture IS NOT NULL, CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), NULL) AS admin_picture
+      FROM admin a
+    `;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching admins:", err);
+      return res.status(500).json({ Error: "Error fetching admins" });
+    }
+    return res.json({
+      status: "Success",
+      admins: results,
+    });
+  });
 });
 
 // Start the server
@@ -502,4 +522,3 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-

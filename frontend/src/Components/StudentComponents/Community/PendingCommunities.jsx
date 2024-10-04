@@ -5,7 +5,7 @@ import PendingMemberBox from "../../CommonComponents/PendingMemberBox";
 import NotFoundAlt from "../../CommonComponents/NotFoundAlt";
 import PendingCommunityBox from "./PendingCommunityBox";
 
-export default function PendingCommunities({interests}) {
+export default function PendingCommunities({user, interests}) {
     const [pendingCommunities, setPendingCommunities] = useState([]);
 
     const [update, setUpdate] = useState(0);

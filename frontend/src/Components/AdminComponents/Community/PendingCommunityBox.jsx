@@ -1,5 +1,6 @@
 import React from "react";
 import dp from "../../../assets/images/default.jpg";
+// import adminPicture from "../../../assets/images/admin.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
@@ -13,42 +14,74 @@ export default function PendingCommunityBox({
   adminName,
   adminPicture,
   adminId,
-  setUpdate
+  setUpdate,
 }) {
   function approve() {
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/admin/community/approve", {
         adminId: adminId,
-        communityId: id
+        communityId: id,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert("Community \""+name+"\" successfully approved!");
+          axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: adminId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Community Creation",
+              notificationMessage: `Admin have approved your created community!`,
+              notificationLink: `/community/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
+          alert('Community "' + name + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
         }
       })
       .catch((err) => console.log(err));
-  };
+  }
 
   function reject() {
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/admin/community/reject", {
-        communityId: id
+        communityId: id,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert("Community \""+name+"\" has been rejected.");
+          axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: adminId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Community Rejection",
+              notificationMessage: `Admin have rejected your pending created community!`,
+              notificationLink: `/community/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
+          alert('Community "' + name + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
         }
       })
       .catch((err) => console.log(err));
-  };
+  }
 
   return (
     <div className="pendingCommunityBox">
@@ -67,7 +100,11 @@ export default function PendingCommunityBox({
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
               {category === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
               {category === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
@@ -79,7 +116,11 @@ export default function PendingCommunityBox({
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
               {category === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
               {category === "Gaming" && (
                 <MaterialSymbol
@@ -93,7 +134,7 @@ export default function PendingCommunityBox({
           </div>
         </div>
         <div className="description">
-          <Link to={"/profile/"+adminId} className="organizer">
+          <Link to={"/profile/" + adminId} className="organizer">
             <div className="organizerPicture">
               <img src={adminPicture ? adminPicture : dp} />
             </div>
@@ -102,9 +143,7 @@ export default function PendingCommunityBox({
               <div className="detailInfo">{adminName}</div>
             </div>
           </Link>
-          <div className="detail">
-            {description}
-          </div>
+          <div className="detail">{description}</div>
         </div>
       </div>
       <div className="buttonContainer">
@@ -118,5 +157,5 @@ export default function PendingCommunityBox({
         </div>
       </div>
     </div>
-  )
+  );
 }

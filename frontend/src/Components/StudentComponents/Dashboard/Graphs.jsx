@@ -45,7 +45,7 @@ const initialChartData = {
   pieData: { labels: [], datasets: [] },
 };
 
-export default function Dashboard() {
+export default function Graphs() {
   const [data, setData] = useState({
     contests: {},
     showcases: {},
@@ -139,9 +139,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 p-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
       <ChartCard
-        title="Participation in last 10 Contests"
+        title="Last 10 Contests"
         icon={<FaTrophy />}
         chart={<Bar data={chartData.contests} options={barChartOptions} />}
       />

@@ -4,7 +4,7 @@ import CommunityBox from "../../CommonComponents/CommunityBox";
 import NotFound from "../../CommonComponents/NotFound";
 import PendingCommunityBox from "./PendingCommunityBox";
 
-export default function PendingCommunities() {
+export default function PendingCommunities({user}) {
     const [communities, setCommunities] = useState([]);
     const [update, setUpdate] = useState([]);
     

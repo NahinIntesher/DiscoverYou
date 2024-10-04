@@ -9,7 +9,7 @@ import BrowseCommunities from "./BrowseCommunities";
 import PendingCommunities from "./PendingCommunities";
 
 export default function Community() {
-  const [activeTab, setActiveTab] = useState(["browseCommunities"]);
+  const [activeTab, setActiveTab] = useState(["pendingCommunities"]);
 
   return (
     <div className="mainContent">

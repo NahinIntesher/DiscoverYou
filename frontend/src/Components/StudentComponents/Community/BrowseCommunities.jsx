@@ -3,7 +3,7 @@ import axios from "axios";
 import CommunityBox from "../../CommonComponents/CommunityBox";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function BrowseCommunities() {
+export default function BrowseCommunities({ user }) {
     const [communities, setCommunities] = useState([]);
     
     useEffect(() => {
@@ -35,6 +35,7 @@ export default function BrowseCommunities() {
                         adminPicture={community.community_admin_picture}
                         isJoined={community.is_joined}
                         totalMember={community.total_member}
+                        user={user}
                     />
                 )
             })

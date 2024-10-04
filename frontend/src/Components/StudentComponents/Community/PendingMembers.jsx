@@ -4,7 +4,7 @@ import Header from "../../CommonComponents/Header";
 import PendingMemberBox from "../../CommonComponents/PendingMemberBox";
 import NotFoundAlt from "../../CommonComponents/NotFoundAlt";
 
-export default function PendingMembers({interests}) {
+export default function PendingMembers({user, interests}) {
     const [pendingMembers, setPendingMembers] = useState([]);
 
     const [update, setUpdate] = useState(0);
@@ -37,6 +37,7 @@ export default function PendingMembers({interests}) {
                                 memberName={pendingMember.member_name}
                                 memberPicture={pendingMember.member_picture}
                                 communityName={pendingMember.community_name}
+                                user={user}
                                 setUpdate={setUpdate}
                             />
                         )

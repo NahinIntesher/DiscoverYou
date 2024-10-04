@@ -61,7 +61,7 @@ export default function PostBox({
           if (res.data.message == "Liked") {
             setIsReacted(true);
             setReactionCount((prevCount) => prevCount + 1);
-
+            // Send notification to the post owner
             axios
             .post("http://localhost:3000/student/notifications", {
               recipientId: posterId, 

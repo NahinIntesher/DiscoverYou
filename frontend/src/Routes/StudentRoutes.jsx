@@ -22,7 +22,6 @@ import SingleWebinar from "../Components/StudentComponents/Webinar/SingleWebinar
 import Hiring from "../../src/Components/StudentComponents/Hiring/Hiring";
 import SingleHiring from "../../src/Components/StudentComponents/Hiring/SingleHiring";
 
-
 import Notification from "../Components/StudentComponents/Notification/Notification";
 import Profile from "../Components/StudentComponents/Profile/Profile";
 import CourseParticipated from "../Components/StudentComponents/Profile/Details/CourseParticipated";
@@ -51,36 +50,62 @@ import PendingApplications from "../Components/StudentComponents/Hiring/PendingA
 import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/StudentComponents/Marketplace/OrderHistory";
 
-export default function Student({ handleLogout, user, setUser, setAuthorized }) {
+export default function Student({
+  handleLogout,
+  user,
+  admins,
+  setUser,
+  setAuthorized,
+}) {
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
         <Sidebar logoutAction={handleLogout} user={user} />
         <Routes>
-          <Route path="/" element={<Dashboard user={user}/>} />
+          <Route path="/" element={<Dashboard user={user} />} />
 
-          <Route path="/showcase" element={<Showcase user={user}/>} />
-          <Route path="/showcase/post/:postId" element={<Post  user={user}/>} />
-          <Route path="/showcase/reactors/:postId" element={<ShowcaseReactors user={user}/>} />
+          <Route path="/showcase" element={<Showcase user={user} />} />
+          <Route path="/showcase/post/:postId" element={<Post user={user} />} />
+          <Route
+            path="/showcase/reactors/:postId"
+            element={<ShowcaseReactors user={user} />}
+          />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
-          <Route path="/community" element={<Community user={user}/>} />
-          <Route path="/community/new" element={<CreateNewCommunity interests={user.interests} />} />
-          <Route path="/community/members/pending" element={<PendingMembers />} />
-          <Route path="/community/pending" element={<PendingCommunities />} />
+          <Route path="/community" element={<Community user={user} />} />
+          <Route
+            path="/community/new"
+            element={
+              <CreateNewCommunity interests={user.interests} user={user} admins={admins} />
+            }
+          />
+          <Route
+            path="/community/members/pending"
+            element={<PendingMembers user={user} />}
+          />
+          <Route
+            path="/community/pending"
+            element={<PendingCommunities user={user} />}
+          />
           <Route path="/community/:communityId" element={<SingleCommunity />} />
 
-          <Route path="/course" element={<Course user={user}/>} />
-          <Route path="/course/material/:materialId" element={<Material/>} />
+          <Route path="/course" element={<Course user={user} />} />
+          <Route path="/course/material/:materialId" element={<Material />} />
 
-          <Route path="/course/new" element={<CreateNewCourses interests={user.interests} />} />
-          <Route path="/course/participants/pending" element={<PendingParticipants />} />
+          <Route
+            path="/course/new"
+            element={<CreateNewCourses interests={user.interests} />}
+          />
+          <Route
+            path="/course/participants/pending"
+            element={<PendingParticipants />}
+          />
           <Route path="/course/pending" element={<PendingCourse />} />
           <Route path="/course/:courseId" element={<SingleCourse />} />
           {/* <Route path="/course/:courseId/add-material" element={<AddMaterial />} /> */}
-          
+
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
@@ -89,30 +114,65 @@ export default function Student({ handleLogout, user, setUser, setAuthorized }) 
             path="/marketplace/add-product"
             element={<AddProduct interests={user.interests} />}
           />
-          <Route path="/marketplace/pending-products" element={<PendingProducts />} />
+          <Route
+            path="/marketplace/pending-products"
+            element={<PendingProducts />}
+          />
           <Route path="/marketplace/product/:productId" element={<Product />} />
-          <Route path="/marketplace/checkout/:productId" element={<Checkout user={user}/>} />
+          <Route
+            path="/marketplace/checkout/:productId"
+            element={<Checkout user={user} />}
+          />
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
           <Route path="/hiring" element={<Hiring />} />
-          <Route path="/hiring/applications" element={<PendingApplications />} />
+          <Route
+            path="/hiring/applications"
+            element={<PendingApplications />}
+          />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
 
           <Route path="/notification" element={<Notification />} />
-          
-          
-          <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/profile/settings" element={<Settings setUser={setUser} setAuthorized={setAuthorized}/>} />
-          <Route path="/update-profile" element={<UpdateProfile user={user} setUser={setUser}/>} />
-          <Route path="/profile/settings/change-password" element={<ChangePassword/>} />
-          <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
-          <Route path="/profile/settings/change-interests" element={<ChangeInterest user={user} setUser={setUser}/>} />
-          <Route path="/profile/courseResults" element={<CourseParticipated user={user} />} />
-          <Route path="/profile/webinarResults" element={<WebinarParticipated user={user} />} />
-          <Route path="/profile/contestResults" element={<ContestParticipated user={user} />} />
-          <Route path="/profile/showcaseResults" element={<ShowcasePosts user={user} />} />
-          
 
+          <Route path="/profile" element={<Profile user={user} />} />
+          <Route
+            path="/profile/settings"
+            element={
+              <Settings setUser={setUser} setAuthorized={setAuthorized} />
+            }
+          />
+          <Route
+            path="/update-profile"
+            element={<UpdateProfile user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/profile/settings/change-password"
+            element={<ChangePassword />}
+          />
+          <Route
+            path="/profile/settings/change-profile-picture"
+            element={<ChangeProfilePicture user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/profile/settings/change-interests"
+            element={<ChangeInterest user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/profile/courseResults"
+            element={<CourseParticipated user={user} />}
+          />
+          <Route
+            path="/profile/webinarResults"
+            element={<WebinarParticipated user={user} />}
+          />
+          <Route
+            path="/profile/contestResults"
+            element={<ContestParticipated user={user} />}
+          />
+          <Route
+            path="/profile/showcaseResults"
+            element={<ShowcasePosts user={user} />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

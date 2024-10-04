@@ -45,7 +45,7 @@ const initialChartData = {
   pieData: { labels: [], datasets: [] },
 };
 
-export default function Dashboard() {
+export default function Graphs() {
   const [data, setData] = useState({
     contests: {},
     showcases: {},
@@ -139,9 +139,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1 p-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
       <ChartCard
-        title="Participation in last 10 Contests"
+        title="Last 10 Contests"
         icon={<FaTrophy />}
         chart={<Bar data={chartData.contests} options={barChartOptions} />}
       />
@@ -179,7 +179,9 @@ const ChartCard = ({ title, icon, chart }) => (
   <div className="bg-white rounded-md shadow-lg overflow-hidden">
     <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
       <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
-      <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">{title}</h3>
+      <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">
+        {title}
+      </h3>
     </div>
     <div className="p-4 flex justify-center items-center h-64">{chart}</div>
   </div>

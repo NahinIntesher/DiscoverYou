@@ -13,6 +13,7 @@ function App() {
   const [user, setUser] = useState({});
   const [interests, setInterests] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [admins, setAdmins] = useState([]);
 
   axios.defaults.withCredentials = true;
 
@@ -37,6 +38,21 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/admins")
+      .then((res) => {
+        if (res.data.status === "Success") {
+          setAdmins(res.data.admins);
+        } else {
+          console.error("Error fetching admins:", res.data.Error);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching admins:", err);
+      });
+  }, [authorized]);
+
   const handleLogout = () => {
     axios
       .get("http://localhost:3000/logout")
@@ -55,11 +71,11 @@ function App() {
   if (loaded) {
     if (authorized) {
       if (user.type == "student") {
-        return <StudentRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
+        return <StudentRoutes handleLogout={handleLogout} user={user} admins={admins} setUser={setUser} setAuthorized={setAuthorized}/>;
       } else if (user.type == "organizer") {
-        return <OrganizerRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
+        return <OrganizerRoutes handleLogout={handleLogout} user={user} admins={admins} setUser={setUser} setAuthorized={setAuthorized}/>;
       } else if (user.type == "admin") {
-        return <AdminRoutes handleLogout={handleLogout} user={user} setUser={setUser} setAuthorized={setAuthorized}/>;
+        return <AdminRoutes handleLogout={handleLogout} user={user} admins={admins} setUser={setUser} setAuthorized={setAuthorized}/>;
       }
     } else {
       return (

@@ -26,7 +26,6 @@ import WebinarHosted from "../Components/OrganizerComponents/Profile/Details/Web
 import ContestOrganized from "../Components/OrganizerComponents/Profile/Details/ContestOrganized";
 import HigingOrganized from "../Components/OrganizerComponents/Profile/Details/HiringOrganized";
 
-
 import Post from "../Components/OrganizerComponents/Showcase/Post";
 import CreateNewWebinar from "../Components/OrganizerComponents/Webinar/CreateNewWebinar";
 import PendingWebinar from "../Components/OrganizerComponents/Webinar/PendingWebinar";
@@ -37,6 +36,7 @@ import ChangeProfilePicture from "../Components/OrganizerComponents/Profile/Chan
 export default function Student({
   handleLogout,
   user,
+  admins,
   setUser,
   setAuthorized,
 }) {
@@ -47,8 +47,8 @@ export default function Student({
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
-          <Route path="/showcase" element={<Showcase user={user}/>} />
-          <Route path="/showcase/post/:postId" element={<Post  user={user}/>} />
+          <Route path="/showcase" element={<Showcase user={user} />} />
+          <Route path="/showcase/post/:postId" element={<Post user={user} />} />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
@@ -64,7 +64,10 @@ export default function Student({
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/new" element={<NewHiring />} />
           <Route path="/hiring/pending" element={<PendingHirings />} />
-          <Route path="/hiring/:hiringId" element={<SingleHiring ownId={user.organizer_id}/>} />
+          <Route
+            path="/hiring/:hiringId"
+            element={<SingleHiring ownId={user.organizer_id} />}
+          />
           <Route path="/hiring/edit/:hiringId" element={<EditHiring />} />
 
           <Route path="/notification" element={<Notification />} />
@@ -84,12 +87,22 @@ export default function Student({
             path="/profile/settings/change-password"
             element={<ChangePassword />}
           />
-          <Route path="/profile/settings/change-profile-picture" element={<ChangeProfilePicture user={user} setUser={setUser}/>} />
-          <Route path="/profile/webinarResults" element={<WebinarHosted user={user} />} />
-          <Route path="/profile/contestResults" element={<ContestOrganized user={user} />} />
-          <Route path="/profile/hiringResults" element={<HigingOrganized user={user} />} />
-        
-        
+          <Route
+            path="/profile/settings/change-profile-picture"
+            element={<ChangeProfilePicture user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/profile/webinarResults"
+            element={<WebinarHosted user={user} />}
+          />
+          <Route
+            path="/profile/contestResults"
+            element={<ContestOrganized user={user} />}
+          />
+          <Route
+            path="/profile/hiringResults"
+            element={<HigingOrganized user={user} />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

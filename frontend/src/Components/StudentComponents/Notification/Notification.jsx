@@ -7,7 +7,7 @@ import NotificationBox from "../../CommonComponents/NotificationBox";
 
 export default function Notifications({ user }) {
   const [notifications, setNotifications] = useState([]);
-
+  const [update, setUpdate] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:3000/student/notifications")
@@ -18,7 +18,7 @@ export default function Notifications({ user }) {
       .catch((error) => {
         console.error("Error fetching hirings:", error);
       });
-  }, []);
+  }, [update]);
 
   return (
     <div className="mainContent">
@@ -33,12 +33,16 @@ export default function Notifications({ user }) {
             {notifications.map(function (notification) {
               return (
                 <NotificationBox
+                  key={notification.notification_id}
+                  notificationId={notification.notification_id}
                   notificationTitle={notification.notification_title}
                   notificationMessage={notification.notification_message}
                   notificationLink={notification.notification_link}
                   notificationPicture={notification.notification_picture}
                   notificationTime={notification.sent_time}
                   notificationTimeAgo={notification.notification_time_ago}
+                  notificationRead={notification.is_seen}
+                  setUpdate={setUpdate}
                 />
               );
             })}
