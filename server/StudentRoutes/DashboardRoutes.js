@@ -10,22 +10,11 @@ module.exports = (router, multer, bcrypt) => {
 
     // SQL queries
     const contestQuery = `
-        WITH last_10_contests AS (
-            SELECT contest_id 
-            FROM contests 
-            ORDER BY start_time DESC 
-            LIMIT 10
-        )
-        SELECT 
-            COUNT(cp.contest_id) AS user_participation_last_10_contests, 
-            (SELECT COUNT(*) FROM contest_participants) AS total_contest_participants,
-            (SELECT COUNT(*) 
-            FROM last_10_contests) AS total_contests_last_10,
-            SUM(CASE WHEN cp.result_position = 1 THEN 1 ELSE 0 END) AS rank_1_count
-        FROM contest_participants cp
-        JOIN contests c ON cp.contest_id = c.contest_id
-        WHERE cp.participant_id = ?
-        AND c.contest_id IN (SELECT contest_id FROM last_10_contests);`;
+      SELECT 
+      (SELECT COUNT(*) FROM contests) AS total_contests,
+      (SELECT COUNT(DISTINCT contest_id) 
+      FROM contest_participants 
+      WHERE participant_id = 'St0000001') AS participation_by_user;`;
 
     const showcasePostQuery = `
         SELECT 
@@ -46,33 +35,31 @@ module.exports = (router, multer, bcrypt) => {
             cp.participant_id = ?;`;
 
     const webinarQuery = `
-        WITH last_10_webinars AS (
-            SELECT webinar_id 
-            FROM webinars 
-            ORDER BY start_time DESC 
-            LIMIT 10
-        )
-        SELECT 
-            (SELECT COUNT(*) FROM last_10_webinars) AS total_webinars_last_10,
-            COUNT(wp.webinar_id) AS user_participation_last_10_webinars
-        FROM 
-            last_10_webinars lw
-        LEFT JOIN 
-            webinar_participants wp ON lw.webinar_id = wp.webinar_id
-        WHERE 
-            wp.participant_id = ?;`;
+      SELECT 
+      (SELECT COUNT(*) FROM webinars) AS total_webinars,
+      (SELECT COUNT(DISTINCT webinar_id) 
+      FROM webinar_participants 
+      WHERE participant_id = ?) AS participation_by_user;`;
+
+    const productQuery = `
+      SELECT 
+        (SELECT COUNT(*) FROM products) AS total_products,
+        (SELECT COUNT(DISTINCT product_id) 
+        FROM products 
+        WHERE seller_id = 'St0000001') AS posted_by_user;`;
 
     try {
       // Use promisified version of connection.query for cleaner async/await handling
       const queryAsync = promisify(connection.query).bind(connection);
 
       // Execute the queries concurrently
-      const [contestResults, showcaseResults, courseResults, webinarResults] =
+      const [contestResults, showcaseResults, courseResults, webinarResults, productResults] =
         await Promise.all([
           queryAsync(contestQuery, [id]),
           queryAsync(showcasePostQuery, [id]),
           queryAsync(courseQuery, [id]),
           queryAsync(webinarQuery, [id]),
+          queryAsync(productQuery, [id]),
         ]);
 
       // Respond with all the results
@@ -82,6 +69,7 @@ module.exports = (router, multer, bcrypt) => {
         showcaseResults: showcaseResults[0],
         courseResults: courseResults[0],
         webinarResults: webinarResults[0],
+        productResults: productResults[0],
       });
     } catch (err) {
       res

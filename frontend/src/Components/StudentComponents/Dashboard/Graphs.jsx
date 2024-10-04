@@ -17,6 +17,7 @@ import {
   FaChartLine,
   FaGraduationCap,
   FaTrophy,
+  FaShoppingCart,
 } from "react-icons/fa";
 
 ChartJS.register(
@@ -32,28 +33,25 @@ ChartJS.register(
 const chartColors = {
   contests: ["rgba(59, 130, 246, 0.8)", "rgb(255, 125, 32)"],
   showcases: ["rgba(16, 185, 129, 0.8)", "rgba(107, 114, 128, 0.8)"],
-  courses: ["rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"],
+  courses: ["rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)", "rgba(255, 206, 86, 0.8)"],
   webinars: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)"],
+  products: ["rgba(255, 99, 132, 0.8)", "rgba(54, 162, 235, 0.8)"],
   pie: ["rgba(54, 162, 235, 0.8)", "rgba(255, 206, 86, 0.8)"],
 };
 
 const initialChartData = {
-  contests: { labels: [], datasets: [] },
-  showcases: { labels: [], datasets: [] },
-  courses: { labels: [], datasets: [] },
-  webinars: { labels: [], datasets: [] },
-  pieData: { labels: [], datasets: [] },
+  contests: null,
+  showcases: null,
+  courses: null,
+  webinars: null,
+  products: null,
+  pieData: null,
 };
 
 export default function Graphs() {
-  const [data, setData] = useState({
-    contests: {},
-    showcases: {},
-    courses: {},
-    webinars: {},
-  });
   const [chartData, setChartData] = useState(initialChartData);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -61,16 +59,17 @@ export default function Graphs() {
 
   const fetchData = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.get(
         "http://localhost:3000/student/dashboard",
         { withCredentials: true }
       );
       const profileData = response.data;
-      setData(profileData);
       prepareChartData(profileData);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setError("Failed to fetch data. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -79,10 +78,10 @@ export default function Graphs() {
   const prepareChartData = (fetchedData) => {
     const newChartData = {
       contests: createChartData(
-        ["User Participation", "Total Contest Participants"],
+        ["User Participation", "Total Contests"],
         [
-          fetchedData.contestResults.user_participation_last_10_contests,
-          fetchedData.contestResults.total_contest_participants,
+          fetchedData.contestResults.participation_by_user,
+          fetchedData.contestResults.total_contests,
         ],
         "Contests",
         chartColors.contests
@@ -97,9 +96,10 @@ export default function Graphs() {
         chartColors.showcases
       ),
       courses: createChartData(
-        ["Enrolled Courses", "Total Courses"],
+        ["Enrolled Courses", "Completed Courses", "Total Courses"],
         [
           fetchedData.courseResults.enrolled_courses,
+          fetchedData.courseResults.completed_courses,
           fetchedData.courseResults.total_courses,
         ],
         "Courses",
@@ -109,20 +109,28 @@ export default function Graphs() {
         ["Completed Courses", "Remaining Courses"],
         [
           fetchedData.courseResults.completed_courses,
-          fetchedData.courseResults.total_courses -
-            fetchedData.courseResults.completed_courses,
+          fetchedData.courseResults.enrolled_courses - fetchedData.courseResults.completed_courses,
         ],
         "Course Completion",
         chartColors.pie
       ),
       webinars: createChartData(
-        ["User Participation", "Total Webinars Last 10"],
+        ["User Participation", "Total Webinars"],
         [
-          fetchedData.webinarResults.user_participation_last_10_webinars,
-          fetchedData.webinarResults.total_webinars_last_10,
+          fetchedData.webinarResults.participation_by_user,
+          fetchedData.webinarResults.total_webinars,
         ],
         "Webinars",
         chartColors.webinars
+      ),
+      products: createChartData(
+        ["Posted by User", "Total Products"],
+        [
+          fetchedData.productResults.posted_by_user,
+          fetchedData.productResults.total_products,
+        ],
+        "Products",
+        chartColors.products
       ),
     };
 
@@ -138,33 +146,54 @@ export default function Graphs() {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
-      <ChartCard
-        title="Last 10 Contests"
-        icon={<FaTrophy />}
-        chart={<Bar data={chartData.contests} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Showcase Posts"
-        icon={<FaChartBar />}
-        chart={<Bar data={chartData.showcases} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Webinar Participation"
-        icon={<FaChartLine />}
-        chart={<Bar data={chartData.webinars} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Courses Overview"
-        icon={<FaGraduationCap />}
-        chart={<Bar data={chartData.courses} options={barChartOptions} />}
-      />
-      <ChartCard
-        title="Course Completion"
-        icon={<FaChartPie />}
-        chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
-      />
+      {chartData.contests && (
+        <ChartCard
+          title="Contests Overview"
+          icon={<FaTrophy />}
+          chart={<Bar data={chartData.contests} options={barChartOptions} />}
+        />
+      )}
+      {chartData.showcases && (
+        <ChartCard
+          title="Showcase Posts"
+          icon={<FaChartBar />}
+          chart={<Bar data={chartData.showcases} options={barChartOptions} />}
+        />
+      )}
+      {chartData.webinars && (
+        <ChartCard
+          title="Webinar Participation"
+          icon={<FaChartLine />}
+          chart={<Bar data={chartData.webinars} options={barChartOptions} />}
+        />
+      )}
+      {chartData.courses && (
+        <ChartCard
+          title="Courses Overview"
+          icon={<FaGraduationCap />}
+          chart={<Bar data={chartData.courses} options={barChartOptions} />}
+        />
+      )}
+      {chartData.pieData && (
+        <ChartCard
+          title="Course Completion"
+          icon={<FaChartPie />}
+          chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
+        />
+      )}
+      {chartData.products && (
+        <ChartCard
+          title="Products Overview"
+          icon={<FaShoppingCart />}
+          chart={<Bar data={chartData.products} options={barChartOptions} />}
+        />
+      )}
     </div>
   );
 }
@@ -172,6 +201,12 @@ export default function Graphs() {
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
+
+const ErrorMessage = ({ message }) => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="text-red-500 text-xl">{message}</div>
   </div>
 );
 
