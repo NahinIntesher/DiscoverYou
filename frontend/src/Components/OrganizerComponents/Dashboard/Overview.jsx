@@ -1,26 +1,25 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
+import dp from "../../../assets/images/default.jpg";
+import "../../../assets/styles/Profile.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
-export default function Overview() {
+export default function Profile({ user }) {
   const [contestResults, setContestResults] = useState({});
-  const [showcaseResults, setShowcaseResults] = useState({});
-  const [courseResults, setCourseResults] = useState({});
   const [webinarResults, setWebinarResults] = useState({});
+  const [hiringResults, setHiringResults] = useState({});
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/student/profile")
+      .get("http://localhost:3000/organizer/profile")
       .then((res) => {
         console.log(res.data);
         setContestResults(res.data.contestResults);
-        setShowcaseResults(res.data.showcaseResults);
-        setCourseResults(res.data.courseResults);
         setWebinarResults(res.data.webinarResults);
+        setHiringResults(res.data.hiringResults);
       })
       .catch((err) => {
         console.log(err);
@@ -35,22 +34,26 @@ export default function Overview() {
       year: "numeric",
     });
   };
+
   return (
     <div className="contributionSectionContainer">
       <ContributionBox
         count={contestResults.total_contests}
         title="Contests Organized"
         icon="rewarded_ads"
+        linkToRoute="contestResults"
       />
       <ContributionBox
-        count={courseResults.course_count}
+        count={hiringResults.total_hirings}
         title="Hirings Organized"
-        icon="auto_stories"
+        icon="gallery_thumbnail"
+        linkToRoute="hiringResults"
       />
       <ContributionBox
-        count={webinarResults.webinar_count}
-        title="Webinars Hosted"
+        count={webinarResults.total_webinars}
+        title="Webinars Organized"
         icon="patient_list"
+        linkToRoute="webinarResults"
       />
     </div>
   );

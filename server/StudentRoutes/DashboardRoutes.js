@@ -53,14 +53,19 @@ module.exports = (router, multer, bcrypt) => {
       const queryAsync = promisify(connection.query).bind(connection);
 
       // Execute the queries concurrently
-      const [contestResults, showcaseResults, courseResults, webinarResults, productResults] =
-        await Promise.all([
-          queryAsync(contestQuery, [id]),
-          queryAsync(showcasePostQuery, [id]),
-          queryAsync(courseQuery, [id]),
-          queryAsync(webinarQuery, [id]),
-          queryAsync(productQuery, [id]),
-        ]);
+      const [
+        contestResults,
+        showcaseResults,
+        courseResults,
+        webinarResults,
+        productResults,
+      ] = await Promise.all([
+        queryAsync(contestQuery, [id]),
+        queryAsync(showcasePostQuery, [id]),
+        queryAsync(courseQuery, [id]),
+        queryAsync(webinarQuery, [id]),
+        queryAsync(productQuery, [id]),
+      ]);
 
       // Respond with all the results
       res.json({
@@ -105,4 +110,6 @@ module.exports = (router, multer, bcrypt) => {
         .json({ status: "Error fetching leaderboard", error: err.message });
     }
   });
+
+  
 };
