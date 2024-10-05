@@ -13,7 +13,9 @@ export default function Dashborad({ user }) {
           <div className="title">Organizer Dashboard</div>
         </div>
       </div>
-      <Overview />
+      <div className="mt-2 mb-2">
+        <Overview />
+      </div>
       <div className="flex">
         <div className="flex justify-center w-full">
           <Graphs />

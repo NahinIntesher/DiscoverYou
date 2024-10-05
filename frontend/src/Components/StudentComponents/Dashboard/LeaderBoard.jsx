@@ -49,11 +49,11 @@ const Leaderboard = () => {
 const styles = {
   leaderboardContainer: {
     backgroundColor: "rgb(var(--extralight))",
-    borderRadius: "8px",
-    // boxShadow: "4px 4px 12px rgba(0, 0, 0, 0.2)",
+    borderRadius: "16px",
+    boxShadow: "4px 4px 12px rgba(0, 0, 0, 0.15)",
     padding: "20px",
-    marginTop: "5px",
-    marginRight: "5px",
+    marginTop: "25px",
+    marginRight: "18px",
   },
   title: {
     fontSize: "24px",

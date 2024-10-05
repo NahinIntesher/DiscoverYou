@@ -10,8 +10,8 @@ export default function RecentActivityBox({ recentActivity }) {
     <div className="">
       <table
         style={{
-          color: "rgb(var(--dark))",
-          borderShadow: "4px 4px 12px rgba(0, 0, 0, 0.5)",
+          color: "black",
+          borderShadow: "4px 4px 12px rgba(0, 0, 0, 0.15)",
           padding: "20px",
         }}
       >
@@ -20,7 +20,7 @@ export default function RecentActivityBox({ recentActivity }) {
             textAlign: "center",
             marginBottom: "10px",
             fontSize: "24px",
-            fontWeight: "bold",
+            fontWeight: "extra-bold",
             color: "rgb(var(--dark))",
             padding: "18px",
           }}

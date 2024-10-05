@@ -155,27 +155,27 @@ const Graphs = () => {
         padding: "6px",
       }}
     >
-      <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+      <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
         <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
           Contest Participations
         </h2>
         <Bar data={contestData} />
       </div>
 
-      <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+      <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
         <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
           Product Sales
         </h2>
         <Bar data={productData} />
       </div>
 
-      <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+      <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
         <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
           Webinar Participation Trends
         </h2>
         <Line data={webinarData} />
       </div>
-      <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+      <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
         <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
           Job Hiring Participation
         </h2>
@@ -183,14 +183,14 @@ const Graphs = () => {
       </div>
 
       <div className="flex gap-1">
-        <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+        <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
           <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
             Hiring Distributions
           </h2>
           <Pie data={hiringPieData} />
         </div>
 
-        <div className="bg-white p-5 text-sm rounded-lg shadow-2xl w-auto flex-1  flex flex-col text-center">
+        <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
           <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
             Course Participations
           </h2>

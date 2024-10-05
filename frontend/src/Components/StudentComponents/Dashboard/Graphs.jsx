@@ -156,7 +156,7 @@ export default function Graphs() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 p-5">
       {chartData.contests && (
         <ChartCard
           title="Contests Overview"
@@ -216,8 +216,8 @@ const ErrorMessage = ({ message }) => (
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-lg overflow-hidden">
-    <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
+  <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+    <div className="px-6 py-4 border-b border-gray-200 flex bg-[rgb(var(--extralight))]">
       <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
       <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">
         {title}

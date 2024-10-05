@@ -56,7 +56,7 @@ export default function Overview() {
 
 function ContributionBox({ count, title, icon }) {
   return (
-    <div className="overviewBox">
+    <div className="overviewBox" style={{padding: "25px"}}>
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
       <div className="texts">

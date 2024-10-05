@@ -708,10 +708,10 @@
 .overviewBox {
   position: relative;
   flex: 1;
-  background: rgb(var(--light));
-  border-radius: 7px;
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
-  margin: 3px;
+  background: rgb(var(--extralight));
+  border-radius: 16px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 10px;
   text-align: left;
   color: #000000;
   padding: 10px;
@@ -755,9 +755,9 @@
 .overviewBox .secondDetail {
   font-weight: 500;
   opacity: 0.9;
-  background-color: rgba(var(--extralight), 0.5);
+  background-color: rgba(var(--light), 0.5);
   display: flex;
-  margin: 0;
+  margin: 10px;
   padding: 10px;
   border-radius: 10px;
   justify-content: center;

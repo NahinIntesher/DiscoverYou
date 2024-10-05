@@ -127,7 +127,7 @@ export default function Graphs() {
 
   return (
     <div className="">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 p-5">
         <ChartCard
           title="Contests Overview"
           icon={<FaTrophy />}
@@ -143,8 +143,13 @@ export default function Graphs() {
           icon={<FaBriefcase />} // Icon for hirings
           chart={<Bar data={chartData.hirings} options={barChartOptions} />}
         />
+        <ChartCard // Add a new chart card for hirings
+          title="Product Overview"
+          icon={<FaBriefcase />} // Icon for hirings
+          chart={<Bar data={chartData.hirings} options={barChartOptions} />}
+        />
       </div>
-        <RecentActivity />
+      <RecentActivity />
     </div>
   );
 }
@@ -156,14 +161,14 @@ const LoadingSpinner = () => (
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-xl overflow-hidden">
-    <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
+  <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+    <div className="px-6 py-4 border-b border-gray-200 flex bg-[rgb(var(--extralight))]">
       <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
       <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">
         {title}
       </h3>
     </div>
-    <div className="p-4 flex justify-center items-center h-48">{chart}</div>
+    <div className="p-4 flex justify-center items-center h-64">{chart}</div>
   </div>
 );
 
