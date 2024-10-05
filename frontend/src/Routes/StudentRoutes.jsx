@@ -49,8 +49,8 @@ import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseR
 import PendingApplications from "../Components/StudentComponents/Hiring/PendingApplications";
 import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/StudentComponents/Marketplace/OrderHistory";
-import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview";
+import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 
 export default function Student({
   handleLogout,

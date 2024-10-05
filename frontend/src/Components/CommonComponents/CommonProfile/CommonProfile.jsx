@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import StudentProfile from "./StudentProfile";
-import OrganizerProfile from "./OrganizerProfile";
-import AdminProfile from "./AdminProfile";
+import StudentProfile from "./Student/StudentProfile";
+import OrganizerProfile from "./Organizer/OrganizerProfile";
+import AdminProfile from "./Admin/AdminProfile";
 
 export default function CommonProfile() {
   const { paramId } = useParams();

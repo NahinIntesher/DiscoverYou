@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/default.jpg";
-import "../../../assets/styles/Profile.css";
+import dp from "../../../../assets/images/default.jpg";
+import "../../../../assets/styles/Profile.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
