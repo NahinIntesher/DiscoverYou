@@ -43,10 +43,10 @@ module.exports = (router, multer, bcrypt) => {
 
     const productQuery = `
       SELECT 
-        (SELECT COUNT(*) FROM products) AS total_products,
+        SUM(p.product_in_stock) AS total_products,
         (SELECT COUNT(DISTINCT product_id) 
         FROM products 
-        WHERE seller_id = 'St0000001') AS posted_by_user;`;
+        WHERE seller_id = ?) AS posted_by_user;`;
 
     try {
       // Use promisified version of connection.query for cleaner async/await handling
