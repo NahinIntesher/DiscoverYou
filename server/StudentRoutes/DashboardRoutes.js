@@ -14,7 +14,7 @@ module.exports = (router, multer, bcrypt) => {
       (SELECT COUNT(*) FROM contests) AS total_contests,
       (SELECT COUNT(DISTINCT contest_id) 
       FROM contest_participants 
-      WHERE participant_id = 'St0000001') AS participation_by_user;`;
+      WHERE participant_id = ?) AS participation_by_user;`;
 
     const showcasePostQuery = `
         SELECT 
@@ -43,10 +43,10 @@ module.exports = (router, multer, bcrypt) => {
 
     const productQuery = `
       SELECT 
-        SUM(p.product_in_stock) AS total_products,
-        (SELECT COUNT(DISTINCT product_id) 
-        FROM products 
-        WHERE seller_id = ?) AS posted_by_user;`;
+          SUM(products.product_in_stock) AS total_products,
+          COUNT(DISTINCT products.product_id) AS posted_by_user
+      FROM products
+      WHERE products.seller_id = ?;`;
 
     try {
       // Use promisified version of connection.query for cleaner async/await handling
@@ -110,6 +110,4 @@ module.exports = (router, multer, bcrypt) => {
         .json({ status: "Error fetching leaderboard", error: err.message });
     }
   });
-
-  
 };

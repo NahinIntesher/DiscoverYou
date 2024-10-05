@@ -49,6 +49,7 @@ import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseR
 import PendingApplications from "../Components/StudentComponents/Hiring/PendingApplications";
 import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/StudentComponents/Marketplace/OrderHistory";
+import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 
 export default function Student({
   handleLogout,
@@ -62,7 +63,11 @@ export default function Student({
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate} />
+        <Sidebar
+          logoutAction={handleLogout}
+          user={user}
+          notificationUpdate={notificationUpdate}
+        />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
@@ -80,7 +85,11 @@ export default function Student({
           <Route
             path="/community/new"
             element={
-              <CreateNewCommunity interests={user.interests} user={user} admins={admins} />
+              <CreateNewCommunity
+                interests={user.interests}
+                user={user}
+                admins={admins}
+              />
             }
           />
           <Route
@@ -98,7 +107,13 @@ export default function Student({
 
           <Route
             path="/course/new"
-            element={<CreateNewCourses interests={user.interests} user={user} admins={admins} />}
+            element={
+              <CreateNewCourses
+                interests={user.interests}
+                user={user}
+                admins={admins}
+              />
+            }
           />
           <Route
             path="/course/participants/pending"
@@ -134,7 +149,15 @@ export default function Student({
           />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
 
-          <Route path="/notification" element={<Notification notificationUpdate={notificationUpdate} setNotificationUpdate={setNotificationUpdate}/>} />
+          <Route
+            path="/notification"
+            element={
+              <Notification
+                notificationUpdate={notificationUpdate}
+                setNotificationUpdate={setNotificationUpdate}
+              />
+            }
+          />
 
           <Route path="/profile" element={<Profile user={user} />} />
           <Route
@@ -175,6 +198,8 @@ export default function Student({
             path="/profile/showcaseResults"
             element={<ShowcasePosts user={user} />}
           />
+
+          <Route path="/profile/:paramId" element={<CommonProfile />} />
         </Routes>
       </div>
     </BrowserRouter>

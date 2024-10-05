@@ -35,6 +35,7 @@ import Product from "../Components/OrganizerComponents/Marketplace/Product";
 import ChangeProfilePicture from "../Components/OrganizerComponents/Profile/ChangeProfilePicture";
 import Checkout from "../Components/OrganizerComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/OrganizerComponents/Marketplace/OrderHistory";
+import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 
 export default function Student({
   handleLogout,
@@ -48,7 +49,11 @@ export default function Student({
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate} />
+        <Sidebar
+          logoutAction={handleLogout}
+          user={user}
+          notificationUpdate={notificationUpdate}
+        />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
@@ -113,6 +118,8 @@ export default function Student({
             path="/profile/hiringResults"
             element={<HigingOrganized user={user} />}
           />
+
+          <Route path="/profile/:paramId" element={<CommonProfile />} />
         </Routes>
       </div>
     </BrowserRouter>
