@@ -4,7 +4,6 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 const { promisify } = require("util");
 
-
 module.exports = (router, multer, bcrypt) => {
   const storage = multer.memoryStorage();
 
@@ -23,11 +22,11 @@ module.exports = (router, multer, bcrypt) => {
     },
   });
 
-
   router.get("/profile/picture/:userId", verifyToken, (req, res) => {
-    const {userId} = req.params;
+    const { userId } = req.params;
 
-    connection.query(`
+    connection.query(
+      `
       SELECT student_picture
       FROM student
       WHERE student_id = ?
@@ -46,34 +45,38 @@ module.exports = (router, multer, bcrypt) => {
     );
   });
 
-  router.post("/profile/update-profile", upload.array("images"), verifyToken, (req, res) => {
-    const userId = req.userId;
-    const files = req.files;
+  router.post(
+    "/profile/update-profile",
+    upload.array("images"),
+    verifyToken,
+    (req, res) => {
+      const userId = req.userId;
+      const files = req.files;
 
-    if (files.length != 0) {
-      const { buffer } = files[0];
-      connection.query(
-        `UPDATE student SET student_picture = ?
+      if (files.length != 0) {
+        const { buffer } = files[0];
+        connection.query(
+          `UPDATE student SET student_picture = ?
         WHERE student_id = ?`,
-        [buffer, userId],
-        (err, result) => {
-          if (err) {
-            console.error("Database insertion error:", err);
-            throw err;
+          [buffer, userId],
+          (err, result) => {
+            if (err) {
+              console.error("Database insertion error:", err);
+              throw err;
+            }
+            res.json({
+              status: "Success",
+            });
           }
-          res.json({
-            status: "Success"
-          });
-        }
-      );
+        );
+      } else {
+        res.json({
+          status: "Unsuccessful",
+          message: "No file selected",
+        });
+      }
     }
-    else {
-      res.json({
-        status: "Unsuccessful",
-        message: "No file selected",
-      });
-    }
-  });
+  );
 
   router.post("/profile/update", verifyToken, (req, res) => {
     const id = req.userId;
@@ -113,6 +116,7 @@ module.exports = (router, multer, bcrypt) => {
       }
     );
   });
+
   router.post("/profile/settings/change-password", verifyToken, (req, res) => {
     console.log(req.body);
     const id = req.userId;
@@ -224,25 +228,23 @@ module.exports = (router, multer, bcrypt) => {
     });
   });
 
-
   router.post("/profile/settings/delete", verifyToken, (req, res) => {
     console.log(req.body);
     const id = req.userId;
-    const deleteQuery = 'DELETE FROM student WHERE student_id = ?';
+    const deleteQuery = "DELETE FROM student WHERE student_id = ?";
     // const deleteQuery = 'SELECT * FROM student WHERE student_id = ?';
 
     connection.query(deleteQuery, [id], (err, response) => {
-        if (err) { 
-          throw err;
-//          return res.status(500).json({ error: "Error deleting the account" });
-        }
-        res.clearCookie("userRegistered");
-        return res.json({
-          status: "Success",
-          message: "Account deleted successfully.",
-        });
+      if (err) {
+        throw err;
+        //          return res.status(500).json({ error: "Error deleting the account" });
       }
-    );
+      res.clearCookie("userRegistered");
+      return res.json({
+        status: "Success",
+        message: "Account deleted successfully.",
+      });
+    });
   });
 
   router.get("/profile", verifyToken, async (req, res) => {
@@ -304,9 +306,9 @@ module.exports = (router, multer, bcrypt) => {
     }
   });
 
-
   router.get("/common-profile", verifyToken, async (req, res) => {
-    const id = req.query.id;
+    const userId = req.query.userId;
+    console.log("User ID:", userId);
 
     // SQL queries
     const contestQuery = `
@@ -343,10 +345,10 @@ module.exports = (router, multer, bcrypt) => {
       // Execute the queries concurrently
       const [contestResults, showcaseResults, courseResults, webinarResults] =
         await Promise.all([
-          queryAsync(contestQuery, [id]),
-          queryAsync(showcasePostQuery, [id]),
-          queryAsync(courseQuery, [id]),
-          queryAsync(webinarQuery, [id]),
+          queryAsync(contestQuery, [userId]),
+          queryAsync(showcasePostQuery, [userId]),
+          queryAsync(courseQuery, [userId]),
+          queryAsync(webinarQuery, [userId]),
         ]);
 
       // Respond with all the results

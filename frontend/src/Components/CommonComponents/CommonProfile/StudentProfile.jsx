@@ -5,7 +5,6 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/default.jpg";
 import "../../../assets/styles/Profile.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export default function StudentProfile({ user, interests }) {
   const [contestResults, setContestResults] = useState({});
@@ -16,8 +15,8 @@ export default function StudentProfile({ user, interests }) {
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/student/common-profile",{
-        id: user.id
+      .get("http://localhost:3000/student/common-profile", {
+        params: { userId: user.id },
       })
       .then((res) => {
         console.log(res.data);
@@ -29,7 +28,7 @@ export default function StudentProfile({ user, interests }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user.id]);
 
   const extractDate = (dateString) => {
     const date = new Date(dateString);
@@ -51,7 +50,7 @@ export default function StudentProfile({ user, interests }) {
         <div className="profileTopBox">
           <div className="profilePicture">
             <img
-              src={user.picture ? user.picture : dp}
+              src={user.user_picture ? user.user_picture : dp}
               alt="Profile"
             />
           </div>
@@ -80,23 +79,23 @@ export default function StudentProfile({ user, interests }) {
               tertiaryCount={contestResults.rank_2_count}
               secondaryTitle="Winner"
               tertiaryTitle="Runner-up"
-              linkToRoute="contestResults"
+              linkToRoute={`contestResults/${user.id}`}
             />
             <ContributionBox
               count={courseResults.course_count}
-              title="Courses Enrolled"
+              title="Courses Enrollement"
               icon="auto_stories"
-              secondaryCount={courseResults.course_count} 
+              secondaryCount={courseResults.course_count}
               secondaryTitle="Completed"
               linkToRoute="courseResults"
             />
             <ContributionBox
               count={showcaseResults.total_posts}
-              title="Showcase Posts"
+              title="Showcase Section Posts"
               icon="gallery_thumbnail"
               secondaryCount={showcaseResults.total_reactions}
               secondaryTitle="Reactions"
-              linkToRoute="showcaseResults"
+              linkToRoute={`showcaseResults/${user.id}`}
             />
             <ContributionBox
               count={webinarResults.webinar_count}
@@ -104,7 +103,7 @@ export default function StudentProfile({ user, interests }) {
               icon="patient_list"
               // secondaryCount={showcaseResults.total_reactions}
               secondaryTitle="No talks"
-              linkToRoute="webinarResults"
+              linkToRoute={`webinarResults/${user.id}`}
             />
           </div>
           <div className="profileDetailsSectionContainer">
@@ -114,23 +113,11 @@ export default function StudentProfile({ user, interests }) {
                 label="Date of Birth"
                 value={extractDate(user.date_of_birth)}
               />
-              <ProfileField
-                icon="group"
-                label="Gender"
-                value={user.gender}
-              />
+              <ProfileField icon="group" label="Gender" value={user.gender} />
             </ProfileSection>
             <ProfileSection title="Contact Information">
-              <ProfileField
-                icon="call"
-                label="Phone"
-                value={user.mobile_no}
-              />
-              <ProfileField
-                icon="mail"
-                label="Email"
-                value={user.email}
-              />
+              <ProfileField icon="call" label="Phone" value={user.mobile_no} />
+              <ProfileField icon="mail" label="Email" value={user.email} />
             </ProfileSection>
           </div>
         </div>
@@ -205,11 +192,6 @@ function ContributionBox({
   icon,
   linkToRoute,
 }) {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    alert("clicked");
-    // navigate(`/${linkToRoute}`)
-  };
   return (
     <div className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />

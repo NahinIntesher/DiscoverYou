@@ -15,7 +15,7 @@ export default function OrganizerProfile({ user }) {
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/organizer/profile")
+      .get("http://localhost:3000/organizer/common-profile")
       .then((res) => {
         console.log(res.data);
         setContestResults(res.data.contestResults);
@@ -46,10 +46,10 @@ export default function OrganizerProfile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img src={user.organizer_picture ? user.organizer_picture : dp} alt="Profile" />
+            <img src={user.picture ? user.picture : dp} alt="Profile" />
           </div>
           <div className="details">
-            <div className="name">{user.organizer_name}</div>
+            <div className="name">{user.name}</div>
           </div>
         </div>
 
@@ -59,19 +59,19 @@ export default function OrganizerProfile({ user }) {
               count={contestResults.total_contests}
               title="Contests Organized"
               icon="rewarded_ads"
-              linkToRoute='contestResults'
+              linkToRoute={`contestResults/${user.id}`}
             />
             <ContributionBox
               count={hiringResults.total_hirings}
               title="Hirings Organized"
               icon="gallery_thumbnail"
-              linkToRoute='hiringResults'
+              linkToRoute={`hiringResults/${user.id}`}
             />
             <ContributionBox
               count={webinarResults.total_webinars}
               title="Webinars Organized"
               icon="patient_list"
-              linkToRoute='webinarResults'
+              linkToRoute={`webinarResults${user.id}`}
             />
           </div>
           <div className="profileDetailsSectionContainer">
@@ -79,25 +79,13 @@ export default function OrganizerProfile({ user }) {
               <ProfileField
                 icon="calendar_month"
                 label="Date of Birth"
-                value={extractDate(user.organizer_date_of_birth)}
+                value={extractDate(user.date_of_birth)}
               />
-              <ProfileField
-                icon="group"
-                label="Gender"
-                value={user.organizer_gender}
-              />
+              <ProfileField icon="group" label="Gender" value={user.gender} />
             </ProfileSection>
             <ProfileSection title="Contact Information">
-              <ProfileField
-                icon="call"
-                label="Phone"
-                value={user.organizer_mobile_no}
-              />
-              <ProfileField
-                icon="mail"
-                label="Email"
-                value={user.organizer_email}
-              />
+              <ProfileField icon="call" label="Phone" value={user.mobile_no} />
+              <ProfileField icon="mail" label="Email" value={user.email} />
             </ProfileSection>
           </div>
         </div>
@@ -162,19 +150,9 @@ function Interest({ category }) {
   );
 }
 
-function ContributionBox({
-  count,
-  title,
-  icon,
-  linkToRoute,
-}) {  
-  const navigate = useNavigate();
-  const handleClick  = () => {
-    alert('clicked');
-    // navigate(`/${linkToRoute}`)
-  }
+function ContributionBox({ count, title, icon, linkToRoute }) {
   return (
-    <Link to={`/profile/${linkToRoute}`}  className="contributionBox">
+    <Link to={`/profile/${linkToRoute}`} className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
       <div className="texts">

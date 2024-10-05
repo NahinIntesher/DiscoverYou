@@ -89,7 +89,7 @@ export default function Profile({ user }) {
             />
             <ContributionBox
               count={courseResults.course_count}
-              title="Courses Enrolled"
+              title="Courses Enrollement"
               icon="auto_stories"
               secondaryCount={1}
               secondaryTitle="Completed"
@@ -97,7 +97,7 @@ export default function Profile({ user }) {
             />
             <ContributionBox
               count={showcaseResults.total_posts}
-              title="Showcase Posts"
+              title="Showcase Section Posts"
               icon="gallery_thumbnail"
               secondaryCount={showcaseResults.total_reactions}
               secondaryTitle="Reactions"

@@ -26,7 +26,7 @@ export default function AdminProfile({ user }) {
         <div className="profileTopBox">
           <div className="profilePicture">
             <img
-              src={user.picture ? user.picture : dp}
+              src={user.user_picture ? user.user_picture : dp}
               alt="Profile"
             />
           </div>
@@ -85,15 +85,6 @@ function ProfileField({ icon, label, value }) {
         <div className="label">{label}</div>
         <div className="value">{value}</div>
       </div>
-    </div>
-  );
-}
-
-function ContributionBox({ icon }) {
-  return (
-    <div className="contributionBox">
-      <MaterialSymbol className="icon" size={50} icon={icon} />
-      <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
     </div>
   );
 }
