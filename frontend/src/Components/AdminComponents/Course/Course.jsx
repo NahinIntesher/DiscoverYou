@@ -9,7 +9,7 @@ import BrowseCourses from "./BrowseCourses";
 import PendingCourses from "./PendingCourses";
 
 export default function Course() {
-  const [activeTab, setActiveTab] = useState(["browseCourses"]);
+  const [activeTab, setActiveTab] = useState(["pendingCourses"]);
 
   return (
     <div className="mainContent">

@@ -62,7 +62,7 @@ export default function Student({
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate}/>
+        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate} />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
@@ -98,7 +98,7 @@ export default function Student({
 
           <Route
             path="/course/new"
-            element={<CreateNewCourses interests={user.interests} />}
+            element={<CreateNewCourses interests={user.interests} user={user} admins={admins} />}
           />
           <Route
             path="/course/participants/pending"

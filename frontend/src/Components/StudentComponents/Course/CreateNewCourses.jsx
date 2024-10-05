@@ -5,7 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function CreateNewCourse({ interests }) {
+export default function CreateNewCourse({ user, interests, admins }) {
   const navigate = useNavigate();
   const [durations, setDurations] = useState({});
 
@@ -111,8 +111,8 @@ export default function CreateNewCourse({ interests }) {
     });
 
 
-    if (formData.courseMaterials.length < 2) {
-      alert("Add at least 5 course materials!");
+    if (formData.courseMaterials.length < 3) {
+      alert("Add at least 3 course materials!");
       return;
     }
 
@@ -125,6 +125,26 @@ export default function CreateNewCourse({ interests }) {
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          {
+            admins.map((admin) => {
+              axios
+                .post("http://localhost:3000/admin/notifications", {
+                  recipientId: admin.admin_id,
+                  notificationPicture: user.student_picture,
+                  notificationTitle: "Course Creation",
+                  notificationMessage: `${user.student_name} have created a new course are in pending!`,
+                  notificationLink: `/course`,
+                })
+                .then((res) => {
+                  if (res.data.status === "Success") {
+                    console.log("Successfully notification send");
+                  } else {
+                    alert(res.data.Error);
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+          }
           console.log("Course Creation Success!");
           navigate(-1);
           alert("Course successfully submitted for approval!");
@@ -203,7 +223,7 @@ export default function CreateNewCourse({ interests }) {
                   required
                 />
               </div>
-              <div className="addButton" onClick={addMaterial}>Add</div>              
+              <div className="addButton" onClick={addMaterial} style={{cursor: "default"}}>Add</div>              
             </div>
             {formData.courseMaterials.length ?
               <div className="materialContainer">
@@ -308,9 +328,9 @@ export default function CreateNewCourse({ interests }) {
                     );
                   }
                 })}
-                {formData.courseMaterials.length < 5 && (
+                {formData.courseMaterials.length < 3 && (
                   <p className="bottomRequired">
-                    Add at least 5 materials of you course
+                    Add at least 3 materials of you course
                   </p>
                 )}
               </div>

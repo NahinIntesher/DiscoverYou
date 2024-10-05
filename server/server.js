@@ -194,7 +194,6 @@ app.post("/login", (req, res) => {
     return res.json({ status: "Success" });
   }
   const { email, password, category } = req.body;
-  console.log(req.body);
   if (category == "student") {
     connection.query(
       "SELECT * FROM student WHERE student_email = ?",
@@ -239,8 +238,8 @@ app.post("/login", (req, res) => {
       [email],
       (err, results) => {
         if (err) {
-          throw err;
-          // return res.json({ Error: "Login error in server" });
+          // throw err;
+          return res.json({ Error: "Login error in server" });
         }
 
         if (results.length > 0) {

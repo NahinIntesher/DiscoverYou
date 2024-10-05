@@ -8,8 +8,8 @@ import "react-material-symbols/rounded";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ logoutAction, user }) {
-  const [newNotifications, setNewNotifications] = useState();
+export default function Sidebar({ logoutAction, user, notificationUpdate }) {
+  const [newNotifications, setNewNotifications] = useState(0);
 
   useEffect(() => {
     axios
@@ -21,7 +21,7 @@ export default function Sidebar({ logoutAction, user }) {
       .catch((error) => {
         console.error("Error fetching hirings:", error);
       });
-  }, []);
+  }, [notificationUpdate]);
   return (
     <div className="sideMenu">
       <div className="content">

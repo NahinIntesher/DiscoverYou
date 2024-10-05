@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "../../src/Components/AdminComponents/Sidebar";
 import Dashboard from "../Components/AdminComponents/Dashboard/Dashborad";
@@ -39,10 +40,12 @@ export default function Student({
   setUser,
   setAuthorized,
 }) {
+  const [notificationUpdate, setNotificationUpdate] = useState(0);
+
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} />
+        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate} />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 

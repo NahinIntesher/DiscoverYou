@@ -83,11 +83,11 @@ export default function Course({user}) {
             </div>
             {
                 activeTab == "myCourses" &&
-                <MyCourses />
+                <MyCourses user={user}/>
             }
             {
                 activeTab == "browseCourses" &&
-                <BrowseCourses />
+                <BrowseCourses user={user}/>
             }
         </div>
     );

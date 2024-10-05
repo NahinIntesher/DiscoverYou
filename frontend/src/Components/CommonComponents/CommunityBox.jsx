@@ -18,6 +18,7 @@ export default function CommunityBox({
   user,
 }) {
   const [joinStatus, setJoinStatus] = useState(isJoined);
+  const [joinBoxActive, setJoinBoxActive] = useState(false);
 
   function joinCommunity() {
     axios.defaults.withCredentials = true;
@@ -53,6 +54,7 @@ export default function CommunityBox({
         }
       })
       .catch((err) => console.log(err));
+      setJoinBoxActive(false);
   }
 
   return (
@@ -105,12 +107,36 @@ export default function CommunityBox({
               Requested
             </div>
           ) : (
-            <div onClick={joinCommunity} className="joinButton">
+            <div
+              onClick={() => {
+                setJoinBoxActive(true);
+              }}
+              className="joinButton"
+            >
               Join
             </div>
           )}
           <div className="joinDetails">
             Member: <b>{totalMember}</b>
+          </div>
+        </div>
+      </div>
+      <div className={joinBoxActive ? "dialogBoxBackground" : "none"}>
+        <div className="dialogBox">
+          <div className="title">Join Community</div>
+          <div className="details">Do you want to join this community?</div>
+          <div className="buttonContainer">
+            <div className="button" onClick={joinCommunity}>
+              Yes
+            </div>
+            <div
+              className="buttonAlt"
+              onClick={() => {
+                setJoinBoxActive(false);
+              }}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </div>

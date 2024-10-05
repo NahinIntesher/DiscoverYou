@@ -3,7 +3,7 @@ import axios from "axios";
 import CourseBox from "../../CommonComponents/CourseBox";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function BrowseCourses() {
+export default function BrowseCourses({user}) {
     const [courses, setCourses] = useState([]);
     
     useEffect(() => {
@@ -29,11 +29,13 @@ export default function BrowseCourses() {
                         id={course.course_id}
                         name={course.course_name}
                         mentorPicture={course.mentor_picture}
+                        mentorId={course.mentor_id}
                         category={course.course_category}
                         description={course.course_description}
                         mentorName={course.course_mentor_name}
                         isJoined={course.is_joined}
                         totalMember={course.total_member}
+                        user={user}
                     />
                 )
             })

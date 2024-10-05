@@ -19,6 +19,7 @@ const SingleHiring = () => {
   const [activeTab, setActiveTab] = useState("hiring");
   const [hiringType, setHiringType] = useState("");
   const [isApplied, setIsApplied] = useState(false);
+  const [joinBoxActive, setJoinBoxActive] = useState(false);
 
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -70,6 +71,7 @@ const SingleHiring = () => {
           setIsApplied(0);
         }
       });
+    setJoinBoxActive(false);
   }
 
   if (loading) return <p>Loading...</p>;
@@ -99,9 +101,36 @@ const SingleHiring = () => {
             </Link>
           </div>
         </div>
+
+        <div className={joinBoxActive ? "dialogBoxBackground" : "none"}>
+          <div className="dialogBox">
+            <div className="title">Apply Job</div>
+            <div className="details">Do you want to apply for this job?</div>
+            <div className="buttonContainer">
+              <div className="button" onClick={applyJob}>
+                Yes
+              </div>
+              <div
+                className="buttonAlt"
+                onClick={() => {
+                  setJoinBoxActive(false);
+                }}
+              >
+                Cancel
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            <button className="joinButton" onClick={applyJob}>
+            <button
+              className="joinButton"
+              onClick={() => {
+                {
+                  isApplied ? applyJob() : setJoinBoxActive(true);
+                }
+              }}
+            >
               {isApplied ? "Applied" : "Apply Now"}
             </button>
             <div className="joinDetails">

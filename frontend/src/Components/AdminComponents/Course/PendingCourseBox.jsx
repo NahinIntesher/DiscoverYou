@@ -16,8 +16,8 @@ export default function PendingCourseBox({
   setUpdate,
 }) {
   const navigate = useNavigate();
-  function seeDetails(){
-    navigate('/course/'+id);
+  function seeDetails() {
+    navigate("/course/" + id);
   }
   function approveMember() {
     axios.defaults.withCredentials = true;
@@ -28,6 +28,22 @@ export default function PendingCourseBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: mentorId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Course Creation",
+              notificationMessage: `Admin have approved your created course!`,
+              notificationLink: `/course/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Course "' + name + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -45,6 +61,22 @@ export default function PendingCourseBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: mentorId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Course Rejection",
+              notificationMessage: `Admin have rejected your pending created course!`,
+              notificationLink: `/course/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Course "' + name + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -71,7 +103,11 @@ export default function PendingCourseBox({
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
               {category === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
               {category === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
@@ -83,7 +119,11 @@ export default function PendingCourseBox({
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
               {category === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
               {category === "Gaming" && (
                 <MaterialSymbol
@@ -106,9 +146,7 @@ export default function PendingCourseBox({
               <div className="detailInfo">{mentorName}</div>
             </div>
           </div>
-          <div className="detail">
-            {description}
-          </div>
+          <div className="detail">{description}</div>
         </div>
       </div>
       <div className="buttonContainer">

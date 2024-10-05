@@ -11,42 +11,42 @@ export default function PendingCommunityBox({
   description,
   adminName,
   adminId,
-  setUpdate
+  setUpdate,
 }) {
-  function approveMember() {
-    axios.defaults.withCredentials = true;
-    axios
-      .post("http://localhost:3000/admin/community/approve", {
-        adminId: adminId,
-        communityId: id
-      })
-      .then((res) => {
-        if (res.data.status === "Success") {
-          alert("Community \""+name+"\" successfully approved!");
-          setUpdate((prevData) => prevData + 1);
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  function EditCommunity() {
+    // axios.defaults.withCredentials = true;
+    // axios
+    //   .post("http://localhost:3000/admin/community/approve", {
+    //     adminId: adminId,
+    //     communityId: id
+    //   })
+    //   .then((res) => {
+    //     if (res.data.status === "Success") {
+    //       alert("Community \""+name+"\" successfully approved!");
+    //       setUpdate((prevData) => prevData + 1);
+    //     } else {
+    //       alert(res.data.Error);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
+  }
 
   function rejectMember() {
-    axios.defaults.withCredentials = true;
-    axios
-      .post("http://localhost:3000/admin/community/reject", {
-        communityId: id
-      })
-      .then((res) => {
-        if (res.data.status === "Success") {
-          alert("Community \""+name+"\" has been rejected.");
-          setUpdate((prevData) => prevData + 1);
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+    // axios.defaults.withCredentials = true;
+    // axios
+    //   .post("http://localhost:3000/admin/community/reject", {
+    //     communityId: id
+    //   })
+    //   .then((res) => {
+    //     if (res.data.status === "Success") {
+    //       alert("Community \""+name+"\" has been rejected.");
+    //       setUpdate((prevData) => prevData + 1);
+    //     } else {
+    //       alert(res.data.Error);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
+  }
 
   return (
     <div className="pendingCommunityBox">
@@ -65,7 +65,11 @@ export default function PendingCommunityBox({
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
               {category === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
               {category === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
@@ -77,7 +81,11 @@ export default function PendingCommunityBox({
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
               {category === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
               {category === "Gaming" && (
                 <MaterialSymbol
@@ -91,21 +99,19 @@ export default function PendingCommunityBox({
           </div>
         </div>
         <div className="description">
-          <div className="detail">
-            {description}
-          </div>
+          <div className="detail">{description}</div>
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" onClick={approveMember}>
+        <div className="defaultButton" onClick={EditCommunity}>
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
         </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        <div className="rejectButton" onClick={DeleteCommunity}>
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>
       </div>
     </div>
-  )
+  );
 }

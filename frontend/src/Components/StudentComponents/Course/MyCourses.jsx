@@ -4,7 +4,7 @@ import CourseBox from "../../CommonComponents/CourseBox";
 import NotFound from "../../CommonComponents/NotFound";
 import EnrolledCourseBox from "../../CommonComponents/EnrolledCourseBox"
 
-export default function MyCourses() {
+export default function MyCourses({user}) {
     const [myCourses, setMyCourses] = useState([]);
     const [enrolledCourses, setEnrolledCourses] = useState([]);
 
@@ -37,11 +37,13 @@ export default function MyCourses() {
                         id={course.course_id}
                         name={course.course_name}
                         mentorPicture={course.mentor_picture}
+                        mentorId={course.mentor_id}
                         category={course.course_category}
                         description={course.course_description}
                         mentorName={course.course_mentor_name}
                         isJoined={course.is_joined}
                         totalMember={course.total_member}
+                        user={user}
                     />
                 )
             })
