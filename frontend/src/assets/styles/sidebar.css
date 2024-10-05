@@ -245,7 +245,7 @@ body {
 
 
 .notificationBox {
-    background-color: rgba(var(--light), 0.3);
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -253,7 +253,7 @@ body {
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 .readed {
-    background-color: #ffffff;
+    background-color: rgba(var(--light), 0.3);
 }
 .notificationBox .profilePicture {
     display: inline-block;
@@ -288,7 +288,6 @@ body {
 
 .readed .message {
     font-weight: 600;
-    background-color: #ffffff;
 }
 
 .readed .title {

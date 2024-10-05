@@ -12,7 +12,13 @@ import "react-material-symbols/rounded";
 
 const SingleContest = () => {
   const { contestId } = useParams();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    contestId: "",
+    contestCategory: "",
+    submissionText: "",
+    submissionMedia: "",
+    problemSolutions: []
+  });
   const [ mediaUrl, setMediaUrl] = useState(null)
   const [data, setData] = useState({
     contest: null,
@@ -37,17 +43,22 @@ const SingleContest = () => {
     return time.toLocaleString("en-US", { dateStyle: "long" });
   }
 
-  const handleChangeAlt = (e) => {
+  const handleChangeAlt = (e, index) => {
     const { name, value } = e.target;
     e.target.style.height = 'inherit';
     e.target.style.height = `${e.target.scrollHeight}px`
-    setFormData(function (oldFormData) {
+
+    setFormData((prevState) => {
+      const updatedSolutions = [...prevState.problemSolutions];  // Copy the current solutions array
+      updatedSolutions[index] = value;  // Update the solution at the specific index
+  
       return {
-        ...oldFormData,
-        [name]: value,
+        ...prevState,
+        problemSolutions: updatedSolutions  // Set the updated solutions array
       };
     });
   };
+
 
   const handleFileChange = (event) => {
     let mimetype = event.target.files[0].type;
@@ -57,7 +68,7 @@ const SingleContest = () => {
       setFormData(function (oldFormData) {
         return {
           ...oldFormData,
-          images: [...Array.from(event.target.files)],
+          submissionMedia: [...Array.from(event.target.files)],
         };
       });
     } else {
@@ -80,6 +91,29 @@ const SingleContest = () => {
       .get(`http://localhost:3000/student/contests/${contestId}`)
       .then((response) => {
         setData(response.data);
+
+        setFormData(function (oldFormData) {
+          return {
+            ...oldFormData,
+            contestId: response.data.contest.contest_id,
+            contestCategory: response.data.contest.contest_category,
+          };
+        });
+
+        if(response.data.problems.length) {
+          response.data.problems.forEach((problem,index) => {
+            setFormData((prevState) => {
+              const updatedSolutions = [...prevState.problemSolutions];  // Copy the current solutions array
+              updatedSolutions[index] = "";  // Update the solution at the specific index
+          
+              return {
+                ...prevState,
+                problemSolutions: updatedSolutions  // Set the updated solutions array
+              };
+            });            
+          });
+        }
+
         setLoading(false);
       })
       .catch((error) => {
@@ -92,8 +126,9 @@ const SingleContest = () => {
   if (error) return <p>{error}</p>;
   if (!data.contest) return <p>No contest data available</p>;
 
-  function submission() {
-
+  function submission(e) {
+    e.preventDefault();
+    console.log(formData);
   }
 
   return (
@@ -213,8 +248,7 @@ const SingleContest = () => {
                       <div className="input">
                         <label name="communityName">Problem {i + 1} Solution</label>
                         <textarea
-                          name="communityName"
-                          onChange={handleChangeAlt}
+                          onChange={(e)=>handleChangeAlt(e, i)}
                           type="text"
                           placeholder={`Write problem ${i + 1} solution`}
                         />
@@ -227,7 +261,7 @@ const SingleContest = () => {
                   <div className="input">
                     <label name="communityName">Your Literature</label>
                     <textarea
-                      name="l"
+                      name="submissionText"
                       onChange={handleChange}
                       type="text"
                       className="longInput"
@@ -236,7 +270,7 @@ const SingleContest = () => {
                   </div>
                 }
                 {
-                  (data.contest.contest_category == "Art & Craft") &&
+                  (data.contest.contest_category == "Art & Craft" || data.contest.contest_category == "Graphics Designing"  || data.contest.contest_category == "Photography" ) &&
                   <div className="center">
                     <div className="currentMedia">
                       {
@@ -253,7 +287,7 @@ const SingleContest = () => {
                     <div className="uploadMedia">
                       <input
                         type="file"
-                        name="images"
+                        name="submissionMedia"
                         onChange={handleFileChange}
                         accept="image/*"
                         multiple
@@ -283,7 +317,7 @@ const SingleContest = () => {
                     <div className="uploadMedia">
                       <input
                         type="file"
-                        name="images"
+                        name="submissionMedia"
                         onChange={handleFileChange}
                         accept="audio/*"
                         multiple

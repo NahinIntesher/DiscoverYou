@@ -65,6 +65,7 @@
     padding: 2px 12px;
     border-radius: 20px;
     display: inline-block;
+    text-wrap: nowrap;
 }
 
 .productBox .textContainer .details .category .icon {
@@ -80,6 +81,9 @@
     font-size: 14px;
     margin: 2px 4px;
     padding: 2px;
+    max-width: 160px;
+    width: fit-content;
+    overflow: hidden;
 }
 
 .productBox .textContainer .type {

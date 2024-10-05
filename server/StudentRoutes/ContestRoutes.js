@@ -3,7 +3,25 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router) => {
+module.exports = (router, multer) => {
+  const storage = multer.memoryStorage();
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+      const filetypes = /image\//; // Accept all image
+      const mimetype = filetypes.test(file.mimetype);
+
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb("Error: Images or PDF files only!");
+      }
+    },
+  });
+
+
   router.get("/contests/ongoing", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
@@ -296,4 +314,44 @@ module.exports = (router) => {
       return res.json({ myContests: result });
     });
   });
+  
+
+
+  router.post("/contests/submission", upload.array("images"), verifyToken, (req, res) => {
+    const userId = req.userId;
+
+    const { contestId, contestCategory, submissionText, submissionMedia } = req.body;
+
+    const files = req.files;
+
+    if(contestCategory == "Art & Craft" || contestCategory == "Graphics Designing" || contestCategory == "Singing" || contestCategory == "Photography") {
+      if (files.length != 0) {
+        const { buffer, mimetype} = files[0];
+        connection.query(
+          `INSERT INTO contest_submissions(contest_id, participant_id,)
+          VALUES()`,
+          [buffer, userId, mimetype],
+          (err, result) => {
+            if (err) {
+              console.error("Database insertion error:", err);
+              throw err;
+            }
+            res.json({
+              status: "Success"
+            });
+          }
+        );
+      }
+      else {
+        res.json({
+          status: "Unsuccessful",
+          message: "No file selected",
+        });
+      } 
+    }
+    else {
+      console.log("other type")
+    }
+  });
+
 };
