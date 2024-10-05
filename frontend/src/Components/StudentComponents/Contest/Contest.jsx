@@ -8,37 +8,33 @@ import UpcomingContest from "./UpcomingContest";
 import PreviousContest from "./PreviousContest";
 
 export default function Contest() {
-  const [previousContests, setPreviousContests] = useState([]);
-  const [ongoingContests, setOngoingContests] = useState([]);
-  const [upcomingContests, setUpcomingContests] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3000/student/contest")
+  //     .then((res) => {
+  //       const contests = res.data.contests;
+  //       const now = new Date();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/student/contest")
-      .then((res) => {
-        const contests = res.data.contests;
-        const now = new Date();
+  //       const previous = contests.filter(
+  //         (contest) => new Date(contest.end_time) < now
+  //       );
+  //       const ongoing = contests.filter(
+  //         (contest) =>
+  //           new Date(contest.start_time) <= now &&
+  //           new Date(contest.end_time) >= now
+  //       );
+  //       const upcoming = contests.filter(
+  //         (contest) => new Date(contest.start_time) > now
+  //       );
 
-        const previous = contests.filter(
-          (contest) => new Date(contest.end_time) < now
-        );
-        const ongoing = contests.filter(
-          (contest) =>
-            new Date(contest.start_time) <= now &&
-            new Date(contest.end_time) >= now
-        );
-        const upcoming = contests.filter(
-          (contest) => new Date(contest.start_time) > now
-        );
-
-        setPreviousContests(previous);
-        setOngoingContests(ongoing);
-        setUpcomingContests(upcoming);
-      })
-      .catch((error) => {
-        console.error("Error fetching contests:", error);
-      });
-  }, []);
+  //       setPreviousContests(previous);
+  //       setOngoingContests(ongoing);
+  //       setUpcomingContests(upcoming);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching contests:", error);
+  //     });
+  // }, []);
 
   return (
     <div className="mainContent">

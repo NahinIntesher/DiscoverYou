@@ -39,22 +39,11 @@ module.exports = (router, multer) => {
           )
           THEN true
           ELSE false
-        END AS is_joined,
-        CASE
-          WHEN EXISTS (
-            SELECT * FROM contest_participants
-            WHERE contest_participants.contest_id = contests.contest_id
-            AND contest_participants.participant_id = ?
-          )
-          THEN true
-          ELSE false
-        END AS is_submitted
+        END AS is_joined
       FROM 
         contests 
       JOIN 
         organizer ON contests.organizer_id = organizer.organizer_id 
-      LEFT JOIN 
-        contest_participants ON contests.contest_id = contest_participants.contest_id 
       LEFT JOIN 
         contest_participants ON contests.contest_id = contest_participants.contest_id 
       WHERE 
@@ -63,7 +52,7 @@ module.exports = (router, multer) => {
         contests.contest_id
       `;
 
-    connection.query(query, [userId], (err, results) => {
+    connection.query(query, [userId, userId], (err, results) => {
       if (err) {
         console.error("Error fetching contests:", err);
         return res.json({ Error: "Error fetching contests" });
@@ -187,7 +176,16 @@ module.exports = (router, multer) => {
         )
         THEN 1
         ELSE 0
-      END AS is_joined
+      END AS is_joined,
+      CASE
+        WHEN EXISTS (
+          SELECT * FROM contest_submissions
+          WHERE contest_submissions.contest_id = contests.contest_id
+          AND contest_submissions.participant_id = ?
+        )
+        THEN true
+        ELSE false
+      END AS is_submitted
       FROM 
           contests 
       LEFT JOIN 

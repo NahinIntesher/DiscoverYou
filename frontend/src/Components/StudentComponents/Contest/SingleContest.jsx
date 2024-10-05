@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ContestProblems from "./ContestProblems";
-import ContestParticipants from "./ContestParticipants";
-import ContestSubmissions from "./ContestSubmissions";
 import Header from "../../CommonComponents/Header";
 import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
@@ -26,6 +24,8 @@ const SingleContest = () => {
     participants: [],
     submissions: [],
   });
+  const [isSubmitted, setSubmitted] = useState(false);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("contest");
@@ -91,6 +91,7 @@ const SingleContest = () => {
       .get(`http://localhost:3000/student/contests/${contestId}`)
       .then((response) => {
         setData(response.data);
+        setSubmitted(response.data.contest.isSubmitted);
 
         setFormData(function (oldFormData) {
           return {
@@ -265,7 +266,13 @@ const SingleContest = () => {
                 <div className="joinButton">Join Meeting</div>
               </div>
               :
-              <form onSubmit={submission}>
+              isSubmitted ?
+              <div className="onlineMeeting">
+                <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
+                <div className="title">You already upload your submission!</div>
+                <div className="joinButton">You will be notified when contest result will be published</div>
+              </div>
+              : <form onSubmit={submission}>
                 <div className="title">Upload Your Submission</div>
                 {
                   (data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing") &&
