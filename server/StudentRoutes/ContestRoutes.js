@@ -183,8 +183,8 @@ module.exports = (router, multer) => {
           WHERE contest_submissions.contest_id = contests.contest_id
           AND contest_submissions.participant_id = ?
         )
-        THEN true
-        ELSE false
+        THEN 1
+        ELSE 0
       END AS is_submitted
       FROM 
           contests 
@@ -195,24 +195,41 @@ module.exports = (router, multer) => {
       WHERE 
           contests.approval_status = 1 && contests.contest_id = ?
       GROUP BY 
-          contests.contest_id, 
-          organizer.organizer_name`;
+          contests.contest_id;`;
 
     const problemsQuery = `
-      SELECT problem_id, contest_id, problem_description, sample_input, sample_output 
+      SELECT problem_id, contest_id, problem_description, problem_name, sample_input, sample_output 
       FROM contest_problems
       WHERE contest_id = ?`;
 
     const participantsQuery = `
-      SELECT cp.participant_id, cp.result_position, st.student_name AS participant_name,
-      IF(st.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", st.student_id), NULL) AS participant_picture
-      FROM contest_participants cp
-      JOIN student st ON cp.participant_id = st.student_id
-      WHERE cp.contest_id = ?`;
+      SELECT 
+        cp.participant_id, 
+        cp.result_position, 
+        st.student_name AS participant_name,
+        IF(st.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", st.student_id), NULL) AS participant_picture,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_submissions
+            WHERE contest_submissions.contest_id = ?
+            AND contest_submissions.participant_id = cp.participant_id
+          )
+          THEN 1
+          ELSE 0
+        END AS is_submitted
+      FROM 
+        contest_participants cp
+      JOIN 
+        student st ON cp.participant_id = st.student_id
+      WHERE 
+        cp.contest_id = ?
+      ORDER BY 
+        cp.result_position`;
 
     try {
       // Fetch contest details
       const contestResults = await queryPromise(contestQuery, [
+        userId,
         userId,
         contestId
       ]);
@@ -226,7 +243,7 @@ module.exports = (router, multer) => {
 
       // Fetch contest participants
       const participantsResults = await queryPromise(participantsQuery, [
-        contestId,
+        contestId, contestId
       ]);
 
       // Combine and return the results

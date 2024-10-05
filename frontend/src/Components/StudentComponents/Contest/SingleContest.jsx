@@ -6,6 +6,7 @@ import Header from "../../CommonComponents/Header";
 import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
+import NotFound from "../../CommonComponents/NotFound";
 
 
 const SingleContest = () => {
@@ -25,6 +26,8 @@ const SingleContest = () => {
     submissions: [],
   });
   const [isSubmitted, setSubmitted] = useState(false);
+  const [isJoined, setJoined] = useState(false);
+  const [contestType, setContestType] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -91,7 +94,9 @@ const SingleContest = () => {
       .get(`http://localhost:3000/student/contests/${contestId}`)
       .then((response) => {
         setData(response.data);
-        setSubmitted(response.data.contest.isSubmitted);
+        setSubmitted(response.data.contest.is_submitted);
+        setJoined(response.data.contest.is_joined);
+        setContestType(response.data.contest.contest_type);
 
         setFormData(function (oldFormData) {
           return {
@@ -158,219 +163,217 @@ const SingleContest = () => {
       .catch((err) => console.log(err));
   }
 
-  return (
-    <div className="mainContent">
-      <Header title={data.contest.contest_name} semiTitle={data.contest.contest_category + " Contest"} />
-      <div className="webinarHeader">
-        <div className="leftSection">
-          <div className="name">{data.contest.contest_name}</div>
-          <Category category={data.contest.contest_category} />
-        </div>
-        <div className="rightSection">
+  if(isJoined || contestType == "previous") {
+    return (
+      <div className="mainContent">
+        <Header title={data.contest.contest_name} semiTitle={data.contest.contest_category + " Contest"} />
+        <div className="webinarHeader">
+          <div className="leftSection">
+            <div className="name">{data.contest.contest_name}</div>
+            <Category category={data.contest.contest_category} />
+          </div>
+          <div className="rightSection">
 
-          <div className="joinButtonContainer">
-            <div className="hostContainer">
-              <Link to={"/profile/" + data.contest.organizer_id} className="host">
-                <div className="hostPicture">
-                  <img
-                    src={
-                      data.contest.organizer_picture ? data.contest.organizer_picture : dp
-                    }
-                  />
-                </div>
-                <div className="hostDetails">
-                  <div className="detailTitle">Organized By</div>
-                  <div className="detailInfo">{data.contest.organizer_name}</div>
-                </div>
-              </Link>
-            </div>
-            <div className="joinDetails">
-              <b>Participant:</b> {data.contest.participant_count}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="tabContainer">
-        <div className={activeTab == "contest" ? "activeTab" : "tab"} onClick={function () { setActiveTab("contest") }}>Contest Details</div>
-        {
-          (data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing") &&
-          <div className={activeTab == "problems" ? "activeTab" : "tab"} onClick={function () { setActiveTab("problems") }}>Contest Problems</div>
-        }
-        {
-          data.contest.contest_type == "ongoing" &&
-          <div className={activeTab == "submissions" ? "activeTab" : "tab"} onClick={function () { setActiveTab("submissions") }}>Contest Submissions</div>
-        }
-        <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>{data.contest.contest_type == "previous" ? "Contest Results" : "Contest Participants"}</div>
-      </div>
-      {activeTab === "contest" && (
-        <div className="content center">
-          <div className="detailsSection">
-            <ProfileField
-              icon="subject"
-              label="Description"
-              value={data.contest.contest_details}
-            />
-            <ProfileField
-              icon="calendar_month"
-              label="Date"
-              value={getDate(data.contest.start_time)}
-            />
-            <ProfileField
-              icon="schedule"
-              label="Time"
-              value={
-                getPMTime(data.contest.start_time) +
-                " - " +
-                getPMTime(data.contest.end_time)
-              }
-            />
-          </div>
-        </div>
-      )}
-      {activeTab === "problems" && (
-        <div className="container p-5">
-          <div className="tab-content">
-            <div className="content-section blue">
-              <h3 className="section-title">Contest Problems</h3>
-              <ContestProblems problems={data.problems} />
-            </div>
-          </div>
-        </div>
-      )}
-      {activeTab === "participants" && (
-        <div className="content center">
-          {data.participants.length > 0 ? (
-            <div className="participantList">
-              {data.participants.map((participant) => (
-                <Participant
-                  key={participant.participant_id}
-                  id={participant.participant_id}
-                  name={participant.participant_name}
-                  picture={participant.participant_picture}
-                />
-              ))}
-            </div>
-          ) : (
-            <NotFound message={"No participant found!"} />
-          )}
-        </div>
-      )}
-      {activeTab === "submissions" && (
-        <div className="content center">
-          <div className="submissionContainer">
-            {
-              (data.contest.contest_category == "Debating") ?
-              <div className="onlineMeeting">
-                <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
-                <div className="title">This contest is running in Online Meeting</div>
-                <div className="joinButton">Join Meeting</div>
-              </div>
-              :
-              isSubmitted ?
-              <div className="onlineMeeting">
-                <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
-                <div className="title">You already upload your submission!</div>
-                <div className="joinButton">You will be notified when contest result will be published</div>
-              </div>
-              : <form onSubmit={submission}>
-                <div className="title">Upload Your Submission</div>
-                {
-                  (data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing") &&
-                  data.problems.map(function (problem, i) {
-                    return (
-                      <div className="input">
-                        <label name="communityName">Problem {i + 1} Solution</label>
-                        <textarea
-                          onChange={(e)=>handleChangeAlt(e, i)}
-                          type="text"
-                          placeholder={`Write problem ${i + 1} solution`}
-                        />
-                      </div>
-                    )
-                  })
-                }
-                {
-                  (data.contest.contest_category == "Writing") &&
-                  <div className="input">
-                    <label name="communityName">Your Literature</label>
-                    <textarea
-                      name="submissionText"
-                      onChange={handleChange}
-                      type="text"
-                      className="longInput"
-                      placeholder={`Write problem literature here.`}
+            <div className="joinButtonContainer">
+              <div className="hostContainer">
+                <Link to={"/profile/" + data.contest.organizer_id} className="host">
+                  <div className="hostPicture">
+                    <img
+                      src={
+                        data.contest.organizer_picture ? data.contest.organizer_picture : dp
+                      }
                     />
                   </div>
-                }
-                {
-                  (data.contest.contest_category == "Art & Craft" || data.contest.contest_category == "Graphics Designing"  || data.contest.contest_category == "Photography" ) &&
-                  <div className="center">
-                    <div className="currentMedia">
-                      {
-                        mediaUrl ?
-                        <img
-                          src={mediaUrl}
-                          alt="profilePicute"
-                        />
-                        : <div className="noMedia">
-                          No image uploaded!
-                        </div>
-                      }
-                    </div>
-                    <div className="uploadMedia">
-                      <input
-                        type="file"
-                        name="submissionMedia"
-                        onChange={handleFileChange}
-                        accept="image/*"
-                        multiple
-                        required
-                      />
-                      Upload New Image
-                    </div>
+                  <div className="hostDetails">
+                    <div className="detailTitle">Organized By</div>
+                    <div className="detailInfo">{data.contest.organizer_name}</div>
                   </div>
-                }
-                {
-                  (data.contest.contest_category == "Singing") &&
-                  <div className="center">
-                    <div className="currentMedia audioPadding">
-                      {
-                        mediaUrl ?
-                        <audio controls>
-                          <source
-                            src={mediaUrl}
-                          />
-                          Your browser does not support the audio element.
-                        </audio>
-                        : <div className="noMedia">
-                          No audio uploaded!
-                        </div>
-                      }
-                    </div>
-                    <div className="uploadMedia">
-                      <input
-                        type="file"
-                        name="submissionMedia"
-                        onChange={handleFileChange}
-                        accept="audio/*"
-                        multiple
-                        required
-                      />
-                      Upload New Audio
-                    </div>
-                  </div>
-                }
-                <button>Upload Submission</button>
-              </form>
-            }
+                </Link>
+              </div>
+              <div className="joinDetails">
+                <b>Participant:</b> {data.contest.participant_count}
+              </div>
+            </div>
           </div>
         </div>
-      )}
-    </div>
-  );
+        <div className="tabContainer">
+          <div className={activeTab == "contest" ? "activeTab" : "tab"} onClick={function () { setActiveTab("contest") }}>Contest Details</div>
+          {
+            (data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing") &&
+            <div className={activeTab == "problems" ? "activeTab" : "tab"} onClick={function () { setActiveTab("problems") }}>Contest Problems</div>
+          }
+          {
+            data.contest.contest_type == "ongoing" &&
+            <div className={activeTab == "submissions" ? "activeTab" : "tab"} onClick={function () { setActiveTab("submissions") }}>Contest Submissions</div>
+          }
+          <div className={activeTab == "participants" ? "activeTab" : "tab"} onClick={function () { setActiveTab("participants") }}>{data.contest.contest_type == "previous" ? "Contest Results" : "Contest Participants"}</div>
+        </div>
+        {activeTab === "contest" && (
+          <div className="content center">
+            <div className="detailsSection">
+              <ProfileField
+                icon="subject"
+                label="Description"
+                value={data.contest.contest_details}
+              />
+              <ProfileField
+                icon="calendar_month"
+                label="Date"
+                value={getDate(data.contest.start_time)}
+              />
+              <ProfileField
+                icon="schedule"
+                label="Time"
+                value={
+                  getPMTime(data.contest.start_time) +
+                  " - " +
+                  getPMTime(data.contest.end_time)
+                }
+              />
+            </div>
+          </div>
+        )}
+        {activeTab === "problems" && (
+          <ContestProblems problems={data.problems} />
+        )}
+        {activeTab === "participants" && (
+          <div className="content center">
+            {data.participants.length ? (
+              <div className="participantList">
+                {data.participants.map((participant) => (
+                  <Participant
+                    key={participant.participant_id}
+                    id={participant.participant_id}
+                    name={participant.participant_name}
+                    position={participant.result_position}
+                    picture={participant.participant_picture}
+                    isSubmitted={participant.is_submitted}
+                    contestId={data.contest.contest_id}
+                  />
+                ))}
+              </div>
+            ) : (
+              <NotFound message={"No participant found!"} />
+            )}
+          </div>
+        )}
+        {activeTab === "submissions" && (
+          <div className="content center">
+            <div className="submissionContainer">
+              {
+                (data.contest.contest_category == "Debating") ?
+                <div className="onlineMeeting">
+                  <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
+                  <div className="title">This contest is running in Online Meeting</div>
+                  <div className="joinButton">Join Meeting</div>
+                </div>
+                :
+                isSubmitted ?
+                <div className="submissionCompleted">
+                  <MaterialSymbol className="icon" size={90} icon="check"/>
+                  <div className="title">You uploaded your submission!</div>
+                  <div className="semiTitle">You will be notified when contest result will be published</div>
+                </div>
+                : <form onSubmit={submission}>
+                  <div className="title">Upload Your Submission</div>
+                  {
+                    (data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing") &&
+                    data.problems.map(function (problem, i) {
+                      return (
+                        <div className="input">
+                          <label name="communityName">Problem {i + 1} Solution</label>
+                          <textarea
+                            onChange={(e)=>handleChangeAlt(e, i)}
+                            type="text"
+                            placeholder={`Write problem ${i + 1} solution`}
+                          />
+                        </div>
+                      )
+                    })
+                  }
+                  {
+                    (data.contest.contest_category == "Writing") &&
+                    <div className="input">
+                      <label name="communityName">Your Literature</label>
+                      <textarea
+                        name="submissionText"
+                        onChange={handleChange}
+                        type="text"
+                        className="longInput"
+                        placeholder={`Write problem literature here.`}
+                      />
+                    </div>
+                  }
+                  {
+                    (data.contest.contest_category == "Art & Craft" || data.contest.contest_category == "Graphics Designing"  || data.contest.contest_category == "Photography" ) &&
+                    <div className="center">
+                      <div className="currentMedia">
+                        {
+                          mediaUrl ?
+                          <img
+                            src={mediaUrl}
+                            alt="profilePicute"
+                          />
+                          : <div className="noMedia">
+                            No image uploaded!
+                          </div>
+                        }
+                      </div>
+                      <div className="uploadMedia">
+                        <input
+                          type="file"
+                          name="submissionMedia"
+                          onChange={handleFileChange}
+                          accept="image/*"
+                          multiple
+                          required
+                        />
+                        Upload New Image
+                      </div>
+                    </div>
+                  }
+                  {
+                    (data.contest.contest_category == "Singing") &&
+                    <div className="center">
+                      <div className="currentMedia audioPadding">
+                        {
+                          mediaUrl ?
+                          <audio controls>
+                            <source
+                              src={mediaUrl}
+                            />
+                            Your browser does not support the audio element.
+                          </audio>
+                          : <div className="noMedia">
+                            No audio uploaded!
+                          </div>
+                        }
+                      </div>
+                      <div className="uploadMedia">
+                        <input
+                          type="file"
+                          name="submissionMedia"
+                          onChange={handleFileChange}
+                          accept="audio/*"
+                          multiple
+                          required
+                        />
+                        Upload New Audio
+                      </div>
+                    </div>
+                  }
+                  <button>Upload Submission</button>
+                </form>
+              }
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 };
 
-function Participant({ id, name, picture }) {
+function Participant({ id, name, picture, position, isSubmitted, contestId }) {
   return (
     <div className="participant">
       <div className="profilePicture">
@@ -379,6 +382,19 @@ function Participant({ id, name, picture }) {
       <div className="participantDetails">
         <div className="name">{name}</div>
         <Link to={"/profile/" + id} className="viewProfile">View Profile</Link>
+      </div>
+      <div className="participantResult">
+        <div className="submission">
+          {isSubmitted ? 
+            <Link to={`/contest/submission/${contestId}/${id}`} className="viewSubmission">View Submission</Link>
+            :
+            <div className="noSubmission">No Submission</div>
+          }
+        </div>
+        <div className="position">
+          Position
+          <div className="count">{position}</div>
+        </div>
       </div>
     </div>
   );
