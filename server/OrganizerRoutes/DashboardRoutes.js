@@ -57,24 +57,35 @@ module.exports = (router) => {
       (SELECT COUNT(*) 
       FROM hirings 
       WHERE organizer_id = ?) AS hirings_organized;`;
+
+    const productQuery = `
+    SELECT 
+        SUM(p.product_in_stock) AS total_products,
+        COUNT(m_o.product_id) AS products_purchased
+    FROM 
+        products p
+    LEFT JOIN 
+        marketplace_orders m_o ON p.product_id = m_o.product_id
+        AND m_o.buyer_organizer_id = ?;`;
     try {
       // Use promisified version of connection.query for cleaner async/await handling
       const queryAsync = promisify(connection.query).bind(connection);
 
       // Execute the queries concurrently
-      const [contestResults, webinarResults, hiringResults] = await Promise.all(
-        [
+      const [contestResults, webinarResults, hiringResults, productResults] =
+        await Promise.all([
           queryAsync(contestQuery, [id]),
           queryAsync(webinarQuery, [id]),
           queryAsync(hiringQuery, [id]),
-        ]
-      );
+          queryAsync(productQuery, [id]),
+        ]);
       // Respond with all the results
       res.json({
         status: "Success",
         contestResults: contestResults[0],
         webinarResults: webinarResults[0],
         hiringResults: hiringResults[0],
+        productResults: productResults[0],
       });
     } catch (err) {
       res

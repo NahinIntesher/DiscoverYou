@@ -38,25 +38,24 @@ const chartColors = {
   courses: ["rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"],
   webinars: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)"],
   hirings: ["rgba(255, 206, 86, 0.8)", "rgba(54, 162, 235, 0.8)"], // Add color for hirings
+  products: ["rgba(130, 201, 75, 0.8)", "rgba(225, 91, 194, 0.8)"], // Add color for hirings
   pie: ["rgba(54, 162, 235, 0.8)", "rgba(255, 206, 86, 0.8)"],
 };
 
 const initialChartData = {
   contests: { labels: [], datasets: [] },
-  showcases: { labels: [], datasets: [] },
-  courses: { labels: [], datasets: [] },
   webinars: { labels: [], datasets: [] },
-  hirings: { labels: [], datasets: [] }, // Add initial data for hirings
+  hirings: { labels: [], datasets: [] },
+  products: { labels: [], datasets: [] },
   pieData: { labels: [], datasets: [] },
 };
 
 export default function Graphs() {
   const [data, setData] = useState({
     contests: {},
-    showcases: {},
-    courses: {},
     webinars: {},
-    hirings: {}, // Add hirings to the state
+    hirings: {},
+    products: {},
   });
   const [chartData, setChartData] = useState(initialChartData);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,7 +84,7 @@ export default function Graphs() {
   const prepareChartData = (fetchedData) => {
     const newChartData = {
       contests: createChartData(
-        ["User Organized", "Total Contests"],
+        ["You Organized", "Total Contests"],
         [
           fetchedData.contestResults.contests_organized, // Update as needed
           fetchedData.contestResults.total_contests,
@@ -94,7 +93,7 @@ export default function Graphs() {
         chartColors.contests
       ),
       webinars: createChartData(
-        ["User Hosted", "Total Webinars"],
+        ["You Hosted", "Total Webinars"],
         [
           fetchedData.webinarResults.webinars_hosted,
           fetchedData.webinarResults.total_webinars,
@@ -103,13 +102,22 @@ export default function Graphs() {
         chartColors.webinars
       ),
       hirings: createChartData(
-        ["User Organized", "Total Hirings"],
+        ["You Organized", "Total Hirings"],
         [
           fetchedData.hiringResults.hirings_organized,
           fetchedData.hiringResults.total_hirings,
         ],
         "Hirings",
         chartColors.hirings
+      ),
+      products: createChartData(
+        ["You Purchased", "Total Products"],
+        [
+          fetchedData.productResults.products_purchased,
+          fetchedData.productResults.total_products,
+        ],
+        "Products",
+        chartColors.products
       ),
     };
 
@@ -143,10 +151,10 @@ export default function Graphs() {
           icon={<FaBriefcase />} // Icon for hirings
           chart={<Bar data={chartData.hirings} options={barChartOptions} />}
         />
-        <ChartCard // Add a new chart card for hirings
+        <ChartCard // Add a new chart card for products
           title="Product Overview"
-          icon={<FaBriefcase />} // Icon for hirings
-          chart={<Bar data={chartData.hirings} options={barChartOptions} />}
+          icon={<FaBriefcase />} // Icon for products
+          chart={<Bar data={chartData.products} options={barChartOptions} />}
         />
       </div>
       <RecentActivity />
