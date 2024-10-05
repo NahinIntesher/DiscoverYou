@@ -389,103 +389,6 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 
-// Get any user data by user ID
-app.get("/profile/:userId", verifyToken, (req, res) => {
-  const userId = req.params.userId; // Get userId from the route parameters
-  console.log(userId);
-  let userType;
-  if (userId.startsWith("St")) {
-    userType = "student";
-  } else if (userId.startsWith("Or")) {
-    userType = "organizer";
-  } else if (userId.startsWith("Ad")) {
-    userType = "admin";
-  }
-
-  let query;
-
-  // Define the query based on user type
-  if (userType === "student") {
-    query = `
-      SELECT 
-        s.student_id AS id, 
-        s.student_name AS name,
-        s.student_email AS email,
-        s.student_points AS points,
-        s.student_address AS address,
-        s.student_mobile_no AS mobile_no,
-        s.student_date_of_birth AS date_of_birth,
-        s.student_gender AS gentder,
-        IF(s.student_picture IS NOT NULL, 
-          CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), 
-          NULL) AS user_picture,
-        GROUP_CONCAT(si.interest_name) AS interests
-      FROM student s
-      LEFT JOIN student_interests si ON s.student_id = si.student_id
-      WHERE s.student_id = ?
-      GROUP BY s.student_id
-    `;
-  } else if (userType === "organizer") {
-    query = `
-      SELECT 
-        o.organizer_id AS id,
-        o.organizer_name AS name,
-        o.organizer_email AS email,
-        o.organizer_address AS address,
-        o.organizer_mobile_no AS mobile_no,
-        o.organizer_date_of_birth AS date_of_birth,
-        o.organizer_gender AS gender,
-        IF(o.organizer_picture IS NOT NULL, 
-          CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), 
-          NULL) AS user_picture
-      FROM organizer AS o 
-      WHERE o.organizer_id = ?
-    `;
-  } else if (userType === "admin") {
-    query = `
-      SELECT 
-        a.admin_id AS id, 
-        a.admin_name AS name,
-        a.admin_email AS email,
-        a.admin_address AS address,
-        a.admin_mobile_no AS mobile_no,
-        a.admin_date_of_birth AS date_of_birth,
-        a.admin_gender AS gernder,
-        IF(a.admin_picture IS NOT NULL, 
-          CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id), 
-          NULL) AS user_picture
-      FROM admin AS a
-      WHERE a.admin_id = ?
-    `;
-  } else {
-    return res.status(400).json({ Error: "Invalid user type" });
-  }
-
-  // Execute the query
-  connection.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error("Error fetching user data:", err);
-      return res.status(500).json({ Error: "Internal server error" });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({ Error: "User not found" });
-    }
-
-    const user = results[0];
-    const interests = user.interests ? user.interests.split(",") : [];
-
-    return res.json({
-      status: "Success",
-      user: {
-        ...user,
-        interests,
-        type: userType,
-      },
-    });
-  });
-});
-
 app.get("/logout", (req, res) => {
   res.clearCookie("userRegistered");
   res.json({ status: "Success" });
@@ -512,6 +415,98 @@ app.get("/admins", verifyToken, (req, res) => {
     return res.json({
       status: "Success",
       admins: results,
+    });
+  });
+});
+
+app.get("/profiles/:userId", verifyToken, (req, res) => {
+  const userId = req.params.userId;
+  let userType;
+
+  if (userId.startsWith("St")) {
+    userType = "student";
+  } else if (userId.startsWith("Or")) {
+    userType = "organizer";
+  } else if (userId.startsWith("Ad")) {
+    userType = "admin";
+  }
+
+  let query;
+
+  if (userType === "student") {
+    query = `
+      SELECT 
+        s.student_id AS id, 
+        s.student_name AS name,
+        s.student_email AS email,
+        s.student_gender AS gender,
+        s.student_points AS points,
+        s.student_address AS address,
+        s.student_mobile_no AS mobile_no,
+        s.student_date_of_birth AS date_of_birth,
+        IF(s.student_picture IS NOT NULL,
+          CONCAT("http://localhost:3000/student/profile/picture/", s.student_id),
+          NULL) AS user_picture,
+        GROUP_CONCAT(si.interest_name) AS interests
+      FROM student s
+      LEFT JOIN student_interests si ON s.student_id = si.student_id
+      WHERE s.student_id = ?
+      GROUP BY s.student_id
+    `;
+  } else if (userType === "organizer") {
+    query = `
+      SELECT 
+        o.organizer_id AS id,
+        o.organizer_name AS name,
+        o.organizer_email AS email,
+        o.organizer_address AS address,
+        o.organizer_mobile_no AS mobile_no,
+        o.organizer_gender AS gender
+        o.organizer_date_of_birth AS date_of_birth,
+        IF(o.organizer_picture IS NOT NULL,
+          CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id),
+          NULL) AS user_picture
+      FROM organizer AS o
+      WHERE o.organizer_id = ?
+    `;
+  } else if (userType === "admin") {
+    query = `
+      SELECT 
+        a.admin_id AS id, 
+        a.admin_name AS name,
+        a.admin_email AS email,
+        a.admin_address AS address,
+        a.admin_gender AS gender,
+        a.admin_mobile_no AS mobile_no,
+        a.admin_date_of_birth AS date_of_birth,
+        IF(a.admin_picture IS NOT NULL,
+          CONCAT("http://localhost:3000/admin/profile/picture/", a.admin_id),
+          NULL) AS user_picture
+      FROM admin AS a
+      WHERE a.admin_id = ?
+    `;
+  }
+
+  connection.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching user data:", err);
+      return res.status(500).json({ Error: "Error fetching user data" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ Error: "User not found" });
+    }
+
+    const user = results[0];
+    const interests = user.interests ? user.interests.split(",") : [];
+
+    return res.json({
+      status: "Success",
+      user: {
+        ...user,
+        interests,
+        type: userType,
+      },
     });
   });
 });

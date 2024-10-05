@@ -32,6 +32,7 @@ import ChangeProfilePicture from "../Components/AdminComponents/Profile/ChangePr
 import SingleHiring from "../Components/AdminComponents/Hiring/SingleHiring";
 
 import UserManagement from "../Components/AdminComponents/UserManagement/UserManagement";
+import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 
 export default function Student({
   handleLogout,
@@ -45,7 +46,11 @@ export default function Student({
   return (
     <BrowserRouter>
       <div className="container" data-theme={user.type}>
-        <Sidebar logoutAction={handleLogout} user={user} notificationUpdate={notificationUpdate} />
+        <Sidebar
+          logoutAction={handleLogout}
+          user={user}
+          notificationUpdate={notificationUpdate}
+        />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
@@ -102,6 +107,8 @@ export default function Student({
             path="/user-management"
             element={<UserManagement user={user} setUser={setUser} />}
           />
+
+          <Route path="/profile/:paramId" element={<CommonProfile />} />
         </Routes>
       </div>
     </BrowserRouter>

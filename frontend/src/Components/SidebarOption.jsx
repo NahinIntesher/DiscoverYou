@@ -4,7 +4,6 @@ import "react-material-symbols/rounded";
 import { NavLink } from "react-router-dom";
 
 export default function SidebarOption(props) {
-  console.log(props.badge);
   return (
     <NavLink
       to={props.href}
@@ -13,7 +12,7 @@ export default function SidebarOption(props) {
       <MaterialSymbol className="icon" size={22} icon={props.icon} />
       <div className="text">
         {props.name}
-        {props.badge && <div className="badge">{props.badge}</div>}  
+        {props.badge && <div className="badge">{props.badge}</div>}
       </div>
     </NavLink>
   );

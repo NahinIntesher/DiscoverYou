@@ -65,9 +65,9 @@ export default function Graphs() {
     setIsLoading(true);
     setError(null);
     try {
+      axios.defaults.withCredentials = true;
       const response = await axios.get(
-        "http://localhost:3000/student/dashboard",
-        { withCredentials: true }
+        "http://localhost:3000/student/dashboard"
       );
       const profileData = response.data;
       prepareChartData(profileData);
