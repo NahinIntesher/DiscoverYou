@@ -181,4 +181,32 @@ module.exports = (router) => {
         .json({ status: "Error fetching data", error: err.message });
     }
   });
+
+
+  router.get("/dashboard/leaderboard", verifyToken, async (req, res) => {
+    const id = req.userId;
+
+    const leaderboardQuery = `
+        SELECT 
+            s.student_id AS id, 
+            CONCAT(s.student_name) AS name,
+            SUM(CASE WHEN s.student_points IS NULL THEN 0 ELSE s.student_points END) AS points
+        FROM 
+            student s
+        GROUP BY 
+            s.student_id
+        ORDER BY 
+            points DESC`;
+
+    try {
+      const queryAsync = promisify(connection.query).bind(connection);
+      const students = await queryAsync(leaderboardQuery);
+
+      res.json({ status: "Success", students });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ status: "Error fetching leaderboard", error: err.message });
+    }
+  });
 };

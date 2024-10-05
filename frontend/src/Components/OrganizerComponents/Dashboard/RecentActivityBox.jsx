@@ -11,6 +11,7 @@ export default function RecentActivityBox({ recentActivity }) {
       <div className="participantDetailsContainer">
         <table
           style={{
+            color: "rgb(var(--dark))",
           }}
         >
           <caption
@@ -19,7 +20,7 @@ export default function RecentActivityBox({ recentActivity }) {
               marginBottom: "10px",
               fontSize: "24px",
               fontWeight: "bold",
-              color: "#333",
+              color: "rgb(var(--dark))",
               padding: "18px",
             }}
           >
@@ -33,6 +34,7 @@ export default function RecentActivityBox({ recentActivity }) {
                   border: "1px solid #ddd",
                   padding: "12px",
                   backgroundColor: "rgb(var(--light))",
+                  color: "rgb(var(--extradark))",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -45,6 +47,7 @@ export default function RecentActivityBox({ recentActivity }) {
                   border: "1px solid #ddd",
                   padding: "12px",
                   backgroundColor: "rgb(var(--light))",
+                  color: "rgb(var(--extradark))",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -57,6 +60,7 @@ export default function RecentActivityBox({ recentActivity }) {
                   border: "1px solid #ddd",
                   padding: "12px",
                   backgroundColor: "rgb(var(--light))",
+                  color: "rgb(var(--extradark))",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -69,6 +73,7 @@ export default function RecentActivityBox({ recentActivity }) {
                   border: "1px solid #ddd",
                   padding: "12px",
                   backgroundColor: "rgb(var(--light))",
+                  color: "rgb(var(--extradark))",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -81,6 +86,7 @@ export default function RecentActivityBox({ recentActivity }) {
                   border: "1px solid #ddd",
                   padding: "12px",
                   backgroundColor: "rgb(var(--light))",
+                  color: "rgb(var(--extradark))",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}

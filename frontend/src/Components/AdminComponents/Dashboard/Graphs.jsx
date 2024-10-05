@@ -26,69 +26,6 @@ ChartJS.register(
   LineElement
 );
 
-const ChartCard = ({ title, icon, chart }) => (
-  <div
-    style={{
-      backgroundColor: "white",
-      borderRadius: "0.375rem",
-      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
-      overflow: "hidden",
-      gap: "1rem",
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-    }}
-  >
-    <div
-      style={{
-        padding: "1rem 1.5rem",
-        borderBottom: "1px solid rgba(209, 213, 219, 1)",
-        display: "flex",
-        backgroundColor: "rgb(var(--light))",
-      }}
-    >
-      <span
-        style={{
-          fontSize: "1.125rem",
-          color: "rgb(var(--extradark))",
-        }}
-      >
-        {icon}
-      </span>
-      <h3
-        style={{
-          marginLeft: "0.5rem",
-          fontSize: "0.875rem",
-          fontWeight: "600",
-          color: "rgb(var(--extradark))",
-        }}
-      >
-        {title}
-      </h3>
-    </div>
-    <div
-      style={{
-        padding: "1rem",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "18rem",
-        width: "100%",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {chart}
-      </div>{" "}
-      {/* Allow full height and width */}
-    </div>
-  </div>
-);
-
 const Graphs = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -130,10 +67,6 @@ const Graphs = () => {
         backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false, // Allow chart to fill its container
-    },
   };
 
   // Pie chart for course participation percentages
@@ -152,10 +85,6 @@ const Graphs = () => {
         ],
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   };
 
   // Line chart for webinar participation trends
@@ -170,10 +99,6 @@ const Graphs = () => {
         borderColor: "#742774",
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   };
 
   // Bar chart for product sales
@@ -186,10 +111,6 @@ const Graphs = () => {
         backgroundColor: "rgba(255, 99, 132, 0.6)",
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   };
 
   // Bar chart for hiring job participation
@@ -202,13 +123,8 @@ const Graphs = () => {
         backgroundColor: "rgba(153, 102, 255, 0.6)",
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   };
 
-  // Pie chart for job application distribution
   const hiringPieData = {
     labels: hiringResults.map((job) => job.jobName),
     datasets: [
@@ -225,60 +141,49 @@ const Graphs = () => {
         ],
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   };
 
   return (
     <div
+      className="graphs-container "
       style={{
         display: "flex",
         flexDirection: "column",
         gap: "5px",
         flexGrow: "1",
         overflowY: "auto",
-        padding: "5px",
+        padding: "6px",
       }}
     >
-      <div style={{ display: "flex", gap: "5px" }}>
-        <ChartCard
-          title="Contest Participation"
-          icon="🏆"
-          chart={<Bar data={contestData} />}
-        />
-        <ChartCard
-          title="Product Sales"
-          icon="🛒"
-          chart={<Bar data={productData} />}
-        />
+      <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+        <h2 className="text-lg font-bold mb-5">Contest Participations</h2>
+        <Bar data={contestData} />
       </div>
 
-      <div style={{ display: "flex", gap: "5px" }}>
-        <ChartCard
-          title="Hiring Distribution"
-          icon="💼"
-          chart={<Pie data={hiringPieData} />}
-        />
-        <ChartCard
-          title="Course Participation"
-          icon="📚"
-          chart={<Pie data={courseData} />}
-        />
+      <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+        <h2 className="text-lg font-bold mb-5">Product Sales</h2>
+        <Bar data={productData} />
       </div>
 
-      <div style={{ display: "flex", gap: "5px" }}>
-        <ChartCard
-          title="Webinar Participation"
-          icon="🎤"
-          chart={<Line data={webinarData} />}
-        />
-        <ChartCard
-          title="Job Hiring Participation"
-          icon="🔍"
-          chart={<Bar data={hiringData} />}
-        />
+      <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+        <h2 className="text-lg font-bold mb-5">Webinar Participation Trends</h2>
+        <Line data={webinarData} />
+      </div>
+      <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+        <h2 className="text-lg font-bold mb-5">Job Hiring Participation</h2>
+        <Bar data={hiringData} />
+      </div>
+
+      <div className="flex gap-1">
+        <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+          <h2 className="text-lg font-bold mb-5">Hiring Distributions</h2>
+          <Pie data={hiringPieData} />
+        </div>
+
+        <div className="bg-white p-5 text-sm rounded-lg shadow-lg w-auto flex-1  flex flex-col text-center">
+          <h2 className="text-lg font-bold mb-5">Course Participations</h2>
+          <Pie data={courseData} />
+        </div>
       </div>
     </div>
   );

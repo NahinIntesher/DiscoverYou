@@ -8,7 +8,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/student/dashboard/leaderboard")
+      .get("http://localhost:3000/admin/dashboard/leaderboard")
       .then((response) => {
         setStudents(response.data.students);
       })
