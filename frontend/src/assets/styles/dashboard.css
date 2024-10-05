@@ -757,18 +757,18 @@
   opacity: 0.9;
   background-color: rgba(var(--light), 0.5);
   display: flex;
-  margin: 10px;
+  margin: 4px;
   padding: 10px;
   border-radius: 10px;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   text-align: center;
-  cursor: pointer;
+  cursor: default;
 }
 
 .overviewBox .secondDetail .spanContainer {
+  gap: 4px;
   display: flex;
-  gap: 5px;
   justify-content: center;
   align-items: center;
   text-align: center;

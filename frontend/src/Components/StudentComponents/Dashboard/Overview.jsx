@@ -99,7 +99,7 @@ function ContributionBox({
         <div className="title">{title}</div>
       </div>
       <div className="secondDetail">
-        <div className="spanContainer">
+        <div className="spanContainer p-0" >
           <span className="count">{secondaryCount}</span>
           <span className="title">{secondaryTitle}</span>
         </div>
