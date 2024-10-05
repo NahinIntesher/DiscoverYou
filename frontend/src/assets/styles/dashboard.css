@@ -709,11 +709,8 @@
   position: relative;
   flex: 1;
   background: rgb(var(--light));
-  /* background-image: 
-  radial-gradient(240px 80px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
-  linear-gradient(rgb(var(--dark)), rgb(var(--medium))); */
   border-radius: 7px;
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
   margin: 3px;
   text-align: left;
   color: #000000;

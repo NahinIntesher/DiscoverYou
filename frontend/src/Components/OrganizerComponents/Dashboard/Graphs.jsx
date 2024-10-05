@@ -156,7 +156,7 @@ const LoadingSpinner = () => (
 );
 
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white rounded-md shadow-lg overflow-hidden">
+  <div className="bg-white rounded-md shadow-xl overflow-hidden">
     <div className="px-6 py-4 border-b border-gray-200 flex bg-gradient-to-r from-[rgb(var(--light))] to-[rgb(var(--light))]">
       <span className="text-lg text-[rgb(var(--extradark))]">{icon}</span>
       <h3 className="ml-2 text-sm font-semibold text-[rgb(var(--extradark))]">

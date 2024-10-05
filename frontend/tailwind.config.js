@@ -8,7 +8,9 @@ module.exports = {
     "./src/**/Webinar.{js,jsx,ts,tsx}",
     "./src/**/WebinarBox.{js,jsx,ts,tsx}",
     "./src/**/Graphs.{js,jsx,ts,tsx}",
-    "./src/**/Overbiew.{js,jsx,ts,tsx}",
+    "./src/**/RecentActivity.{js,jsx,ts,tsx}",
+    "./src/**/Overview.{js,jsx,ts,tsx}",
+    "./src/**/LeaderBoard.{js,jsx,ts,tsx}",
     "./src/**/Dashboard.{js,jsx,ts,tsx}",
   ],
   theme: {

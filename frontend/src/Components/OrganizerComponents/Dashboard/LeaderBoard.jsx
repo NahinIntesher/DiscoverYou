@@ -18,10 +18,12 @@ const Leaderboard = () => {
   }, []);
 
   return (
-    <div style={styles.leaderboardContainer}>
-      <h2 className="text-sm font-semibold text-blac">Student</h2>
-      <h2 style={styles.title}>Leaderboard</h2>
-      <table style={styles.table}>
+    <div style={styles.leaderboardContainer} className="shadow-2xl">
+      <h2 className="text-sm font-semibold text-black">Student</h2>
+      <h2 className="text-sm font-semibold text-black" style={styles.title}>
+        Leaderboard
+      </h2>
+      <table className="text-sm  text-black">
         <thead>
           <tr>
             <th style={styles.header}>Rank</th>
@@ -46,13 +48,12 @@ const Leaderboard = () => {
 // Styles for the leaderboard
 const styles = {
   leaderboardContainer: {
-    backgroundColor: "white",
+    backgroundColor: "rgb(var(--extralight))",
     borderRadius: "8px",
-    boxShadow: "4px 4px 6px rgba(0, 0, 0, 0.1)",
+    boxShadow: "4px 4px 6px rgba(0, 0, 0, 0.5)",
     padding: "20px",
     marginTop: "5px",
     marginRight: "5px",
-    borderBottom: "5px solid #rgb(var(--dark))",
   },
   title: {
     fontSize: "24px",
@@ -65,13 +66,13 @@ const styles = {
     borderCollapse: "collapse",
   },
   header: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "rgb(var(--light))",
     padding: "10px",
     textAlign: "left",
   },
   cell: {
     padding: "10px",
-    borderBottom: "1px solid #e5e7eb",
+    borderBottom: "1px solid #000000",
   },
 };
 

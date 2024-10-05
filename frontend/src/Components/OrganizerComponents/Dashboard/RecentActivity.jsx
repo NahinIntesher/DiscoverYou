@@ -26,8 +26,9 @@ export default function RecentActivity() {
         style={{
           backgroundColor: "#ffffff",
           borderRadius: "10px",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-          margin: "5px 2px",
+          boxShadow: "4px 4px 12px rgba(0, 0, 0, 0.2)",
+          margin: "2px 5px",
+          padding: "20px",
           textAlign: "left",
           overflow: "hidden",
         }}
