@@ -327,7 +327,28 @@ module.exports = (router, multer) => {
     });
   });
   
+  router.get("/courses/material/:id", (req, res) => {
+    const materialId = req.params.id;
 
+    connection.query(
+      `
+    SELECT c_m.material_name, c_m.material_type, c.course_name as course_name,
+    CONCAT('http://localhost:3000/student/courses/material/cdn/', c_m.material_id) AS material_link
+    FROM course_materials AS c_m 
+    JOIN courses AS c
+    ON c_m.course_id = c.course_id
+    WHERE material_id = ?
+  `,
+      [materialId],
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({
+          material: results[0]
+        });
+      }
+    );
+  });
 
   router.post("/contests/submission", upload.array("submissionMedia"), verifyToken, (req, res) => {
     const userId = req.userId;
@@ -377,6 +398,59 @@ module.exports = (router, multer) => {
         }
       );
     }
+  });
+
+  router.get("/contests/submission/cdn/:contestId/:participantId", (req, res) => {
+    const {contestId, participantId} = req.params;
+
+    connection.query(
+      `
+    SELECT *
+    FROM contest_submissions 
+    WHERE contest_id = ? AND participant_id = ?
+  `,
+      [contestId, participantId],
+      (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+          return res.status(404).send("Material not found.");
+        }
+
+        const media = results[0];
+        const mediaType = media.submission_type;
+        const mediaData = media.submission_blob;
+
+        res.setHeader("Content-Type", mediaType);
+
+        res.send(mediaData);
+      }
+    );
+  });
+
+  router.get("/contests/submission/:contestId/:participantId", (req, res) => {
+    const {contestId, participantId} = req.params;
+
+    connection.query(
+      `
+    SELECT c_c.submission_type, c_c.submission_text, c.contest_name, s.student_name AS participant_name,
+    CONCAT('http://localhost:3000/student/contests/submission/cdn/', c_c.contest_id, '/', c_c.participant_id) AS submission_link
+    FROM contest_submissions AS c_c 
+    JOIN contests AS c
+    ON c_c.contest_id = c.contest_id
+    JOIN student AS s
+    ON c_c.participant_id = s.student_id
+    WHERE c_c.contest_id = ? AND c_c.participant_id = ?
+  `,
+      [contestId, participantId],
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({
+          material: results[0]
+        });
+      }
+    );
   });
 
 };

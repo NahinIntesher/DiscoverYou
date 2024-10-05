@@ -50,6 +50,7 @@ import PendingApplications from "../Components/StudentComponents/Hiring/PendingA
 import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/StudentComponents/Marketplace/OrderHistory";
 import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
+import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview";
 
 export default function Student({
   handleLogout,
@@ -79,6 +80,7 @@ export default function Student({
           />
 
           <Route path="/contest" element={<Contest />} />
+          <Route path="/contest/submission/:contestId/:participantId" element={<SubmissionPreview />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community user={user} />} />

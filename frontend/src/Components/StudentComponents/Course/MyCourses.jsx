@@ -64,7 +64,7 @@ export default function MyCourses({user}) {
                         mentorName={course.course_mentor_name}
                         isJoined={course.is_joined}
                         totalMember={course.total_member}
-                        completedPercentage={course.completed_percentage}
+                        completedPercentage={parseInt(course.completed_percentage)}
                     />
                 )
             })
