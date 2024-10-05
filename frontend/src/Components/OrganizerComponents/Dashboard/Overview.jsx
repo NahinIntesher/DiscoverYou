@@ -36,7 +36,7 @@ export default function Profile({ user }) {
   };
 
   return (
-    <div className="contributionSectionContainer">
+    <div className="contributionSectionContainer px-4">
       <ContributionBox
         count={contestResults.total_contests}
         title="Contests Organized"

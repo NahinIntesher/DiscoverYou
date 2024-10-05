@@ -10,7 +10,7 @@ module.exports = (router, multer) => {
     storage: storage,
     limits: { fileSize: 50000000 }, // 10 MB
     fileFilter: (req, file, cb) => {
-      const filetypes = /image\//; // Accept all image
+      const filetypes = /image\/|audio\/|video\/|\application\//; // Accept all image
       const mimetype = filetypes.test(file.mimetype);
 
       if (mimetype) {
@@ -39,11 +39,22 @@ module.exports = (router, multer) => {
           )
           THEN true
           ELSE false
-        END AS is_joined
+        END AS is_joined,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_participants
+            WHERE contest_participants.contest_id = contests.contest_id
+            AND contest_participants.participant_id = ?
+          )
+          THEN true
+          ELSE false
+        END AS is_submitted
       FROM 
         contests 
       JOIN 
         organizer ON contests.organizer_id = organizer.organizer_id 
+      LEFT JOIN 
+        contest_participants ON contests.contest_id = contest_participants.contest_id 
       LEFT JOIN 
         contest_participants ON contests.contest_id = contest_participants.contest_id 
       WHERE 
@@ -201,14 +212,6 @@ module.exports = (router, multer) => {
       JOIN student st ON cp.participant_id = st.student_id
       WHERE cp.contest_id = ?`;
 
-    const submissionsQuery = `
-      SELECT cs.*, 
-             p.problem_description AS problem_name, st.student_name AS participant_name
-      FROM contest_submissions cs
-      JOIN contest_problems p ON cs.problem_id = p.problem_id
-      JOIN student st ON cs.participant_id = st.student_id
-      WHERE p.contest_id = ?`;
-
     try {
       // Fetch contest details
       const contestResults = await queryPromise(contestQuery, [
@@ -228,17 +231,11 @@ module.exports = (router, multer) => {
         contestId,
       ]);
 
-      // Fetch contest submissions
-      const submissionsResults = await queryPromise(submissionsQuery, [
-        contestId,
-      ]);
-
       // Combine and return the results
       return res.json({
         contest,
         problems: problemsResults,
-        participants: participantsResults,
-        submissions: submissionsResults,
+        participants: participantsResults
       });
     } catch (error) {
       console.error("Error fetching contest data:", error);
@@ -317,10 +314,10 @@ module.exports = (router, multer) => {
   
 
 
-  router.post("/contests/submission", upload.array("images"), verifyToken, (req, res) => {
+  router.post("/contests/submission", upload.array("submissionMedia"), verifyToken, (req, res) => {
     const userId = req.userId;
 
-    const { contestId, contestCategory, submissionText, submissionMedia } = req.body;
+    const { contestId, contestCategory, submissionText } = req.body;
 
     const files = req.files;
 
@@ -328,9 +325,9 @@ module.exports = (router, multer) => {
       if (files.length != 0) {
         const { buffer, mimetype} = files[0];
         connection.query(
-          `INSERT INTO contest_submissions(contest_id, participant_id,)
-          VALUES()`,
-          [buffer, userId, mimetype],
+          `INSERT INTO contest_submissions(contest_id, participant_id, submission_blob, submission_type)
+          VALUES(?, ?, ?, ?)`,
+          [contestId, userId, buffer, mimetype],
           (err, result) => {
             if (err) {
               console.error("Database insertion error:", err);
@@ -350,7 +347,20 @@ module.exports = (router, multer) => {
       } 
     }
     else {
-      console.log("other type")
+      connection.query(
+        `INSERT INTO contest_submissions(contest_id, participant_id, submission_text, submission_type)
+        VALUES(?, ?, ?, 'text')`,
+        [contestId, userId, submissionText],
+        (err, result) => {
+          if (err) {
+            console.error("Database insertion error:", err);
+            throw err;
+          }
+          res.json({
+            status: "Success"
+          });
+        }
+      );
     }
   });
 

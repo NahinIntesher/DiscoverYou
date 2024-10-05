@@ -182,15 +182,15 @@ const Graphs = () => {
         <Bar data={hiringData} />
       </div>
 
-      <div className="flex gap-1">
-        <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
+      <div className="flex gap-1 justify-center">
+        <div className="bg-white px-2 py-5 m-2 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
           <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
             Hiring Distributions
           </h2>
           <Pie data={hiringPieData} />
         </div>
 
-        <div className="bg-white p-5 m-5 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
+        <div className="bg-white px-2 py-5 m-2 text-sm rounded-xl shadow-xl w-auto flex flex-col text-center">
           <h2 className="text-lg font-bold mb-5 text-[rgb(var(--medium))]">
             Course Participations
           </h2>

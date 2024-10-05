@@ -34,7 +34,7 @@ export default function Overview() {
     });
   };
   return (
-    <div className="contributionSectionContainer">
+    <div className="contributionSectionContainer px-4">
       <ContributionBox
         title="Students"
         count={studentResults.total_students}

@@ -17,9 +17,7 @@ export default function Dashborad({ user }) {
         <Overview />
       </div>
       <div className="flex">
-        <div className="flex justify-center w-full">
-          <Graphs />
-        </div>
+        <Graphs />
         <Leaderboard />
       </div>
     </div>

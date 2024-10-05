@@ -16,7 +16,7 @@ const SingleContest = () => {
     contestId: "",
     contestCategory: "",
     submissionText: "",
-    submissionMedia: "",
+    submissionMedia: [],
     problemSolutions: []
   });
   const [ mediaUrl, setMediaUrl] = useState(null)
@@ -129,6 +129,32 @@ const SingleContest = () => {
   function submission(e) {
     e.preventDefault();
     console.log(formData);
+
+    const finalData = new FormData();
+
+    finalData.append("contestId", formData.contestId);
+    finalData.append("contestCategory", formData.contestCategory);
+    finalData.append("submissionText", formData.submissionText);
+    formData.submissionMedia.forEach((file, index) => {
+      finalData.append(`submissionMedia`, file);
+    });
+
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/contests/submission", finalData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          alert("You submission is successfully uploaded!");
+          // setUpdatePost((prevData) => prevData + 1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
