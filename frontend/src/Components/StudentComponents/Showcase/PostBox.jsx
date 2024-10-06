@@ -132,6 +132,28 @@ export default function PostBox({
 
   return (
     <div className="postBox">
+      {
+        posterId == user.student_id ?
+          <div
+            className="reportButton"
+            onClick={() => {
+              setReportBoxActive(true);
+            }}
+          >
+            <MaterialSymbol className="icon" size={20} icon="delete" />
+            <div className="text">Delete</div>
+          </div>
+          :
+          <div
+            className="reportButton"
+            onClick={() => {
+              setReportBoxActive(true);
+            }}
+          >
+            <MaterialSymbol className="icon" size={20} icon="report" />
+            <div className="text">Report</div>
+          </div>
+      }
       <div className="profile">
         <Link to={"/profile/" + posterId} className="profilePicture">
           <img src={posterPicture ? posterPicture : dp} />
@@ -141,22 +163,6 @@ export default function PostBox({
             {posterName}
           </Link>
           <div className="detail">{calculatePostAgoTime(postTimeAgo)}</div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setReportBoxActive(true);
-            }}
-          >
-            <MaterialSymbol className="icon" size={40} icon="report" />
-          </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setReportBoxActive(true);
-            }}
-          >
-            <MaterialSymbol className="icon" size={40} icon="delete" />
-          </div>
         </div>
       </div>
 

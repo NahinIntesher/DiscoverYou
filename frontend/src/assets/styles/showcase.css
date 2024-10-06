@@ -3,6 +3,7 @@
     text-align: center;
     padding: 10px;
 }
+
 .givePostBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
@@ -11,6 +12,7 @@
     border-radius: 80px;
     margin: 8px;
 }
+
 .givePostBox .profilePicture img {
     border-radius: 60px;
     border: 5px solid #ffffff;
@@ -19,6 +21,7 @@
     height: 80px;
     object-fit: cover;
 }
+
 .givePostBox .textBox {
     display: inline-block;
     vertical-align: middle;
@@ -26,14 +29,16 @@
     max-width: 860px;
     margin: 8px;
     background-color: #ffffff;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
 }
+
 .givePostBox .textBox .textareaContainer {
     display: inline-block;
     vertical-align: middle;
     width: calc(100% - 120px);
 }
+
 .givePostBox .textBox textarea {
     display: inline-block;
     vertical-align: middle;
@@ -44,6 +49,7 @@
     outline: 0;
     width: 100%;
 }
+
 .givePostBox .addMediaContainer {
     background-color: rgba(255, 169, 82, 0.4);
     display: flex;
@@ -52,6 +58,7 @@
     cursor: default;
     margin-top: 0;
 }
+
 .givePostBox .addMedia {
     flex: 1;
     color: #ef5a5acc;
@@ -61,6 +68,7 @@
     border-left: 2px #ef5d5d66 solid;
     cursor: pointer;
 }
+
 .givePostBox .changeCategory {
     flex: 2;
     color: #ef5a5acc;
@@ -69,32 +77,38 @@
     position: relative;
     text-align: left;
 }
+
 .givePostBox .changeCategory .dropdownIcon {
     position: absolute;
     right: 8px;
     top: 12px;
 }
+
 .givePostBox .changeCategory .categoryContainer {
     background-color: #ffffff;
     position: absolute;
     padding: 8px;
     border-radius: 16px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .givePostBox .changeCategory .categoryContainer .category {
-    color: rgba(0,0,0,0.6);
+    color: rgba(0, 0, 0, 0.6);
     padding: 10px 14px;
     font-size: 14px;
 }
+
 .givePostBox .changeCategory .categoryContainer .category:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 12px;
 }
+
 .givePostBox .addMedia .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 2px;
 }
+
 .givePostBox .addMedia .text {
     display: inline-block;
     vertical-align: middle;
@@ -108,6 +122,7 @@
     vertical-align: middle;
     margin: 2px 6px;
 }
+
 .givePostBox .changeCategory .text {
     display: inline-block;
     vertical-align: middle;
@@ -115,6 +130,7 @@
     font-weight: 500;
     margin: 4px;
 }
+
 .givePostBox .addMedia input[type="file"] {
     position: absolute;
     height: 100%;
@@ -124,11 +140,13 @@
     opacity: 0;
     cursor: pointer;
 }
+
 .givePostBox .mediaContainer {
     text-align: left;
     padding: 10px 12px;
     padding-top: 0;
 }
+
 .givePostBox .mediaContainer .media {
     display: inline-block;
     vertical-align: middle;
@@ -138,46 +156,53 @@
     position: relative;
     overflow: hidden;
     margin: 4px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
 .givePostBox .mediaContainer .media .audio {
     display: block;
     margin-top: 8px;
 }
+
 .givePostBox .mediaContainer .media audio {
     display: none;
 }
+
 .givePostBox .mediaContainer .media video {
     display: none;
 }
+
 .givePostBox .mediaContainer .duration {
     display: inline-block;
     font-size: 12px;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     color: #ffffff;
     padding: 1px 10px;
     border-radius: 20px;
 }
+
 .givePostBox .mediaContainer .media img {
     width: 80px;
     height: 80px;
     object-fit: cover;
 }
+
 .givePostBox .mediaContainer .media .remove {
     position: absolute;
-    right: 6px; 
+    right: 6px;
     top: 6px;
     width: 20px;
     height: 20px;
     border-radius: 20px;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     color: #ffffff;
 }
+
 .givePostBox .postButton {
     display: inline-block;
     vertical-align: middle;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -202,17 +227,42 @@
     display: inline-block;
     background-color: #ffffff;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
     width: calc(100% - 20px);
     max-width: 940px;
     text-align: left;
+    position: relative;
+}
+
+.postBox .reportButton {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    color: #c62d42cc;
+    background-color: #f4ced3;
+    border-radius: 30px;
+    font-size: 15px;
+    padding: 6px 20px;
+    cursor: pointer;
+}
+.postBox .reportButton:hover {
+    color: #c62d42;
+    background-color: #e9a1aa;
+  }
+.postBox .reportButton .icon, .postBox .reportButton .text {
+
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
+    font-weight: 500;
 }
 
 .postBox .profile {
     padding: 14px;
     padding-bottom: 0;
 }
+
 .postBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
@@ -221,6 +271,7 @@
     border-radius: 80px;
     margin: 4px 6px;
 }
+
 .postBox .profilePicture img {
     border-radius: 50px;
     border: 3px solid #ffffff;
@@ -239,17 +290,19 @@
 .postBox .profileDetail .name {
     font-weight: 600;
 }
+
 .postBox .profileDetail .detail {
     font-size: 14px;
 }
+
 .postBox .postContent {
     padding: 12px 20px;
-    color: rgba(0,0,0,0.6);
+    color: rgba(0, 0, 0, 0.6);
     white-space: pre;
 }
 
 .postBox .mediaContainer {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
     padding: 6px;
     text-align: center;
@@ -260,6 +313,7 @@
     margin-top: 4px;
     /*scrollbar-width: none;*/
 }
+
 .postBox .mediaContainer img {
     display: inline-block;
     vertical-align: middle;
@@ -281,69 +335,82 @@
     vertical-align: middle;
     width: 70%;
     border-radius: 8px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 6px;
     margin: 6px;
 }
+
 .postBox .mediaContainer .audioContainer .icon {
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
     margin: 12px;
 }
+
 .postBox .mediaContainer audio {
     width: calc(100% - 12px);
     margin: 6px;
     border-radius: 50px;
 }
+
 .postBox .postActionBoxContainer {
     display: flex;
     border-radius: 0 0 18px 18px;
     padding: 8px;
     padding-top: 0;
 }
+
 .postBox .postActionBox {
     flex: 1;
     text-align: center;
     padding: 6px;
-    background-color: rgba(0,0,0,0.09);
+    background-color: rgba(0, 0, 0, 0.09);
     margin: 4px;
     border-radius: 50px;
     cursor: pointer;
     color: rgba(0, 0, 0, 0.8);
 }
+
 .postBox .postActionBox:hover {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
 }
+
 .postBox .postActionBox .icon {
     display: inline-block;
     vertical-align: middle;
     margin: 4px;
 }
+
 .postBox .postActionBox .text {
     display: inline-block;
     vertical-align: middle;
     margin: 4px;
     font-size: 15px;
 }
+
 .postBox .active {
     background-color: rgba(var(--medium), 0.4);
     color: rgb(var(--dark));
 }
+
 .postBox .active .text {
     font-weight: 600;
 }
+
 .postBox .active:hover {
     background-color: rgba(var(--medium), 0.5);
 }
+
 .postBox .postDetails {
     font-size: 14px;
     margin: 2px 16px;
 }
+
 .postBox .postDetails .detail {
     font-size: 14px;
     display: inline-block;
     vertical-align: middle;
     margin: 4px;
 }
+
 .postBox .postDetails .divider {
     width: 4px;
     height: 4px;
@@ -351,20 +418,21 @@
     display: inline-block;
     vertical-align: middle;
     margin: 4px;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .giveCommentBox {
     display: inline-block;
     background-color: #ffffff;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     margin: 10px;
     width: calc(100% - 20px);
     max-width: 940px;
-    text-align: center;  
-    padding: 6px;  
+    text-align: center;
+    padding: 6px;
 }
+
 .giveCommentBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
@@ -373,6 +441,7 @@
     border-radius: 80px;
     margin: 8px;
 }
+
 .giveCommentBox .profilePicture img {
     border-radius: 60px;
     border: 3px solid #ffffff;
@@ -381,13 +450,14 @@
     height: 50px;
     object-fit: cover;
 }
+
 .giveCommentBox textarea {
     display: inline-block;
     vertical-align: middle;
     resize: none;
     border-radius: 16px;
     padding: 14px 18px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     margin: 8px;
     outline: 0;
     width: calc(100% - 250px);
@@ -396,7 +466,7 @@
 .giveCommentBox .postButton {
     display: inline-block;
     vertical-align: middle;
-    background-image: 
+    background-image:
         radial-gradient(80px 30px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
         linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     color: #ffffff;
@@ -413,9 +483,9 @@
     margin: 10px;
     width: calc(100% - 20px);
     max-width: 940px;
-    text-align: center;  
-    background-color: rgba(0,0,0,0.1);
-    padding: 12px;  
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 12px;
 }
 
 
@@ -439,6 +509,7 @@
     border-radius: 80px;
     margin: 6px;
 }
+
 .commentBox .profilePicture img {
     border-radius: 60px;
     border: 3px solid #ffffff;
@@ -447,6 +518,7 @@
     height: 50px;
     object-fit: cover;
 }
+
 .commentBox .commentContentBox {
     margin: 6px;
     display: inline-block;
@@ -454,7 +526,7 @@
     background-color: #ffffff;
     padding: 10px 16px;
     border-radius: 18px;
-    box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .commentBox .commentContentBox .name {
@@ -462,15 +534,17 @@
     font-weight: 600;
     margin: 2px;
 }
+
 .commentBox .commentContentBox .text {
     margin: 2px;
 }
+
 .commentBox .commentContentBox .details {
     margin: 2px;
     font-size: 12px;
     margin-top: 4px;
     font-weight: 500;
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
 }
 
 
@@ -483,25 +557,29 @@
         justify-content: center;
         padding: 20px;
     }
-    .givePostBox .profilePicture, .postBox .profilePicture {
+
+    .givePostBox .profilePicture,
+    .postBox .profilePicture {
         margin-bottom: 10px;
     }
-    
-    .givePostBox .textBox, .postBox .postContent {
+
+    .givePostBox .textBox,
+    .postBox .postContent {
         width: 100%;
         margin: 0;
     }
-    
-    .givePostBox .addMedia, .givePostBox .changeCategory {
+
+    .givePostBox .addMedia,
+    .givePostBox .changeCategory {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .givePostBox .textBox textarea {
         width: 100%;
         padding: 12px;
     }
-    
+
     .givePostBox .postButton {
         /* width: 80%; */
         margin-top: 10px;
@@ -516,16 +594,20 @@
         justify-content: center;
         padding: 20px;
     }
-    .givePostBox, .postBox {
+
+    .givePostBox,
+    .postBox {
         max-width: 90%;
         padding: 12px;
     }
 
-    .givePostBox .textBox, .postBox .postContent {
+    .givePostBox .textBox,
+    .postBox .postContent {
         width: 100%;
     }
 
-    .givePostBox .profilePicture img, .postBox .profilePicture img {
+    .givePostBox .profilePicture img,
+    .postBox .profilePicture img {
         width: 60px;
         height: 60px;
     }
@@ -535,13 +617,15 @@
         width: calc(100% - 40px);
     }
 
-    .givePostBox .addMedia, .givePostBox .changeCategory {
+    .givePostBox .addMedia,
+    .givePostBox .changeCategory {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
 
-    .givePostBox .addMedia .text, .givePostBox .changeCategory .text {
+    .givePostBox .addMedia .text,
+    .givePostBox .changeCategory .text {
         font-size: 12px;
     }
 
