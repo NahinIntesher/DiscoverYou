@@ -9,6 +9,7 @@ require("./DashboardRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./CommunityRoutes")(router);
 require("./CourseRoutes")(router);
+require("./ContestRoutes")(router);
 require("./WebinarRoutes")(router);
 require("./MarketplaceRoutes")(router, multer);
 require("./HiringRoutes")(router);

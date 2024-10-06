@@ -1,5 +1,4 @@
 import React from 'react';
-import './SingleContest.css'; // Adjust the path as necessary
 import NotFound from '../../CommonComponents/NotFound';
 
 export default function ContestProblems({ problems }) {

@@ -1,1 +1,5 @@
-ALTER TABLE `hiring_applicants` CHANGE `req_for_join_status` `req_for_join_status` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0';
+ALTER TABLE `contests` ADD `result_given` TINYINT NOT NULL DEFAULT '0' AFTER `approver_id`;
+
+UPDATE contests SET result_given = 1 WHERE end_time < NOW();
+
+ALTER TABLE `contests` CHANGE `approver_id` `approver_id` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;

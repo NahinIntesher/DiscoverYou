@@ -46,9 +46,9 @@ export default function CreateNewWebinar({interests}) {
         .post("http://localhost:3000/organizer/webinar/new", formData)
         .then((res) => {
           if (res.data.status === "Success") {
-            console.log("Community Creation Success!");
+            console.log("Webinar Creation Success!");
             navigate(-1);
-            alert("Community successfully submitted for approval!");
+            alert("Webinar successfully submitted for approval!");
 //            setUpdatePost((prevData) => prevData+1);
           } else {
             alert(res.data.Error);

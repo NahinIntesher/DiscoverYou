@@ -11,6 +11,24 @@ import MyContest from "./MyContest";
 
 
 export default function Contest() {
+  const [contestPendingNo, setContestPendingNo] = useState(0);
+  const [resultPending, setResultPending] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/organizer/contests/pending-details")
+      .then((res) => {
+        console.log("Success");
+        const contestPendingNoData = res.data?.contestPendingNo || [];
+        const resultPendingData = res.data?.resultPending || [];
+
+        setContestPendingNo(contestPendingNoData);
+        setResultPending(resultPendingData);
+      })
+      .catch((error) => {
+        console.error("Error fetching contests:", error);
+      });
+  }, []);
 
   return (
     <div className="mainContent">
@@ -18,28 +36,57 @@ export default function Contest() {
         <div className="content">
           <div className="title">Contest</div>
           <div className="buttonContainer">
-            <Link to="/community/new" className="button">
-                <MaterialSymbol className="icon" size={24} icon="add" />
-                <div className="text">Create New Contest</div>
+            <Link to="/contest/new" className="button">
+              <MaterialSymbol className="icon" size={24} icon="add" />
+              <div className="text">Create New Contest</div>
             </Link>
           </div>
         </div>
       </div>
+
+      {contestPendingNo != 0 && (
+        <div className="pendingBox">
+          <MaterialSymbol className="icon" size={32} icon="error" />
+          <div className="text">
+            Your {contestPendingNo} new contests approval are in pending.
+          </div>
+          <Link to={"/contest/pending"} className="button">
+            Pending Contests
+          </Link>
+        </div>
+      )}
+
+      {resultPending.length &&
+        resultPending.map(function (contest) {
+          return (
+            <div className="pendingBox">
+              <MaterialSymbol className="icon" size={32} icon="error" />
+              <div className="text">
+                Your "{contest.contest_name}" contest time is over.
+              </div>
+              <Link to={"/contest/"+contest.contest_id} className="button">
+                Give Result
+              </Link>
+            </div>
+          )
+        })
+      }
+
       <div className="content">
         <h3 className="contentSemiTitle">My Contests</h3>
-        <MyContest/>
+        <MyContest />
         <div className="miniBreak"></div>
-        
+
         <h3 className="contentSemiTitle">Ongoing Contests</h3>
-        <OngoingContest/>
+        <OngoingContest />
         <div className="miniBreak"></div>
 
         <h3 className="contentSemiTitle">Upcoming Contests</h3>
-        <UpcomingContest/>
+        <UpcomingContest />
         <div className="miniBreak"></div>
 
         <h3 className="contentSemiTitle">Previous Contests</h3>
-        <PreviousContest/>
+        <PreviousContest />
       </div>
     </div>
   );

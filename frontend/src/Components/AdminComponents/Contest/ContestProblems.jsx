@@ -1,38 +1,38 @@
 import React from 'react';
-import './SingleContest.css'; // Adjust the path as necessary
+import NotFound from '../../CommonComponents/NotFound';
 
 export default function ContestProblems({ problems }) {
   return (
-    <div className="contest-section">
-      
-      <div className="section-content">
-        {problems.length > 0 ? (
-          <ul className="list">
-            {problems.map((problem, index) => (
-              <li key={problem.problem_id} className="list-item ">
-                <div className="item-header mb-2">
-                  <span className="item-name text-lg mb-2">
-                    <strong>{index+1}. Problem Name:</strong> {problem.problem_name}
-                  </span>
-                  <p className="item-description mb-2">
-                    <strong>Description:</strong> {problem.problem_description || 'No description available'}
-                  </p>
+    <div className="content center">
+      {problems.length > 0 ? (
+        <div className="participantList">
+          {problems.map((problem, index) => (
+            <div className="problemBox" key={problem.problem_id}>
+                <div className="number">
+                 Problem {index+1}
                 </div>
-                <div className="item-sample mb-2">
-                  <p><strong>Sample Input:</strong></p>
-                  <pre className="sample-input">{problem.sample_input}</pre>
+                <div className="name">
+                 {problem.problem_name}
                 </div>
-                <div className="item-sample mb-2">
-                  <p><strong>Sample Output:</strong></p>
-                  <pre className="sample-output">{problem.sample_output}</pre>
+                <div className="description">
+                  {problem.problem_description}
                 </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-data">No problems available.</p>
-        )}
-      </div>
+                <div className="sampleContainer">
+                  <div className="sampleBox">
+                    <div className="title">Sample Input</div>
+                    <pre className="code">{problem.sample_input}</pre>
+                  </div>
+                  <div className="sampleBox">
+                    <div className="title">Sample Output</div>
+                    <pre className="code">{problem.sample_output}</pre>
+                  </div>
+                </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <NotFound message="No problem found for this contest!"/>
+      )}
     </div>
   );
 }

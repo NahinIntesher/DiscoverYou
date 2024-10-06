@@ -249,6 +249,8 @@ const SingleContest = () => {
                     picture={participant.participant_picture}
                     isSubmitted={participant.is_submitted}
                     contestId={data.contest.contest_id}
+                    resultGiven={data.contest.result_given}
+                    contestType={data.contest.contest_type}
                   />
                 ))}
               </div>
@@ -261,7 +263,7 @@ const SingleContest = () => {
           <div className="content center">
             <div className="submissionContainer">
               {
-                (data.contest.contest_category == "Debating") ?
+                (data.contest.contest_category == "Debating" || data.contest.contest_category == "Gaming") ?
                 <div className="onlineMeeting">
                   <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
                   <div className="title">This contest is running in Online Meeting</div>
@@ -373,7 +375,7 @@ const SingleContest = () => {
   }
 };
 
-function Participant({ id, name, picture, position, isSubmitted, contestId }) {
+function Participant({ id, name, contestType, picture, position, isSubmitted, contestId, resultGiven }) {
   return (
     <div className="participant">
       <div className="profilePicture">
@@ -391,10 +393,17 @@ function Participant({ id, name, picture, position, isSubmitted, contestId }) {
             <div className="noSubmission">No Submission</div>
           }
         </div>
-        <div className="position">
-          Position
-          <div className="count">{position}</div>
-        </div>
+        {resultGiven ? 
+          <div className="position">
+            Position
+            <div className="count">{position}</div>
+          </div>
+          :
+          contestType == "previous" && <div className="position">
+            Result Not<br/>
+            Published
+          </div>
+        }
       </div>
     </div>
   );

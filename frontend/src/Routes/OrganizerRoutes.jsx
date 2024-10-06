@@ -36,6 +36,8 @@ import ChangeProfilePicture from "../Components/OrganizerComponents/Profile/Chan
 import Checkout from "../Components/OrganizerComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/OrganizerComponents/Marketplace/OrderHistory";
 import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
+import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview";
+import CreateNewContest from "../Components/OrganizerComponents/Contest/CreateNewContest";
 
 export default function Student({
   handleLogout,
@@ -61,7 +63,9 @@ export default function Student({
           <Route path="/showcase/post/:postId" element={<Post user={user} />} />
 
           <Route path="/contest" element={<Contest />} />
+          <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
+          <Route path="/contest/submission/:contestId/:participantId" element={<SubmissionPreview />} />
 
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/new" element={<CreateNewWebinar />} />
