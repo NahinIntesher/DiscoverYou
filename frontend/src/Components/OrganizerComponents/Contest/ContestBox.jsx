@@ -1,7 +1,7 @@
 import React from "react";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import ContestTimeRemaining from "../../CommonComponents/contestTimeRemaining";
 import { Link, useNavigate } from 'react-router-dom';
 export default function ContestBox({

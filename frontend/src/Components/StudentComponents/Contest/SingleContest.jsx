@@ -126,7 +126,7 @@ const SingleContest = () => {
         setError(error.message);
         setLoading(false);
       });
-  }, [contestId]);
+  }, [isSubmitted]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -155,6 +155,7 @@ const SingleContest = () => {
       .then((res) => {
         if (res.data.status === "Success") {
           alert("You submission is successfully uploaded!");
+          setSubmitted(true);
           // setUpdatePost((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -267,7 +268,7 @@ const SingleContest = () => {
                 <div className="onlineMeeting">
                   <MaterialSymbol className="icon" size={120} icon="interpreter_mode" />
                   <div className="title">This contest is running in Online Meeting</div>
-                  <div className="joinButton">Join Meeting</div>
+                  <Link to={data.contest.meeting_link} className="joinButton">Join Meeting</Link>
                 </div>
                 :
                 isSubmitted ?

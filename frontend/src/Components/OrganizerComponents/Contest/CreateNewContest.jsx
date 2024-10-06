@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import NotFound from "../../CommonComponents/NotFound";
+import { MaterialSymbol } from "react-material-symbols";
+
 
 export default function CreateNewContest({ interests }) {
     const navigate = useNavigate();
@@ -25,6 +27,10 @@ export default function CreateNewContest({ interests }) {
         contestCategory: allInterests[0],
         startTime: "",
         endTime: "",
+        problemNameTemp: "",
+        problemDescriptionTemp: "",
+        sampleInputTemp: "",
+        sampleOutputTemp: "",
         problems: [],
     });
 
@@ -39,25 +45,42 @@ export default function CreateNewContest({ interests }) {
         });
     };
 
-    const addMaterial = () => {
-        if (formData.tempMaterial != "" && formData.tempMaterialName != "") {
+    const addProblem = () => {
+        if (formData.problemNameTemp != "" && formData.problemDescriptionTemp != "") {
             setFormData(function (oldFormData) {
                 return {
                     ...oldFormData,
-                    courseMaterials: [
-                        ...oldFormData.courseMaterials,
-                        ...Array.from(oldFormData.tempMaterial),
-                    ],
-                    courseMaterialNames: [
-                        ...oldFormData.courseMaterialNames,
-                        oldFormData.tempMaterialName
+                    problemNameTemp: "",
+                    problemNameTemp: "",
+                    sampleInputTemp: "",
+                    sampleOutputTemp: "",
+                    problems: [
+                        ...oldFormData.problems,
+                        {
+                            problemName: oldFormData.problemNameTemp,
+                            problemDescription: oldFormData.problemDescriptionTemp,
+                            sampleInput: oldFormData.sampleInputTemp,
+                            sampleOutput: oldFormData.sampleOutputTemp
+                        }
                     ]
                 };
             });
         }
         else {
-            alert("You did not add any material!")
+            alert("You did not add problem informations!")
         }
+    }
+
+
+    function removeMedia(index) {
+        setFormData(function (oldFormData) {
+            return {
+                ...oldFormData,
+                problems: oldFormData.problems.filter(
+                    (_, i) => i !== index
+                )
+            };
+        });
     }
 
     const handleSubmit = (e) => {
@@ -135,76 +158,99 @@ export default function CreateNewContest({ interests }) {
                             />
                         </div>
 
-                        <div className="smallBreak"></div>
-                        <div className="title">Add Problems</div>
-                        {/* Course Materials */}
+                        {
+                            (formData.contestCategory == "Competitive Programming" || formData.contestCategory == "Web/App Designing") &&
+                            <>
+                                <div className="smallBreak"></div>
+                                <div className="title">Add Problems</div>
 
-                        <div className="addMaterialSpecial">
-                            <div className="input">
-                                <label name="problemNameTemp">Problem Name</label>
-                                <input
-                                    name="problemNameTemp"
-                                    onChange={handleChange}
-                                    type="text"
-                                    placeholder="Enter problme name"
-                                />
-                            </div>
-                            <div className="input">
-                                <label name="problemDescriptionTemp">Problem Description</label>
-                                <input
-                                    name="problemDescriptionTemp"
-                                    onChange={handleChange}
-                                    type="text"
-                                    placeholder="Enter problem description"
-                                />
-                            </div>
-                            <div className="input">
-                                <label name="sampleInputTemp">Sample Input</label>
-                                <textarea
-                                    name="sampleInputTemp"
-                                    onChange={handleChange}
-                                    type="text"
-                                    placeholder="Enter sample input"
-                                />
-                            </div>
-                            <div className="input">
-                                <label name="sampleOutputTemp">Sample Output</label>
-                                <textarea
-                                    name="sampleOutputTemp"
-                                    // onChange={handleChange}
-                                    type="text"
-                                    placeholder="Enter sample output"
-                                />
-                            </div>
-                            <div className="addButton" onClick={addMaterial} style={{ cursor: "default" }}>Add</div>
-                        </div>
-                        {formData.problems.length ?
-                            <div className="materialContainer">
-                                {formData.problems.map(function (file, index) {
-                                    return (
-                                        <div className="materialBox" key={index}>
-                                            <div className="textContainer">
-                                                <div className="name">{formData.problems[index]}</div>
-                                                <div className="format">Image</div>
-                                            </div>
-                                            <div className="rejectButton" onClick={() => removeMedia(index)}>
-                                                <MaterialSymbol className="icon" size={22} icon="delete" />
-                                                <div className="text">Delete</div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                                {formData.problems.length < 3 && (
-                                    <p className="bottomRequired">
-                                        Add at least 1 problems of you course
-                                    </p>
-                                )}
-                            </div>
-                            : <div className="materialContainer">
-                                <NotFound message="You did not add any problems!" />
-                            </div>
+                                <div className="addMaterialSpecial">
+                                    <div className="input">
+                                        <label name="problemNameTemp">Problem Name</label>
+                                        <input
+                                            name="problemNameTemp"
+                                            onChange={handleChange}
+                                            value={formData.problemNameTemp}
+                                            type="text"
+                                            placeholder="Enter problem name"
+                                        />
+                                    </div>
+                                    <div className="input">
+                                        <label name="problemDescriptionTemp">Problem Description</label>
+                                        <input
+                                            name="problemDescriptionTemp"
+                                            onChange={handleChange}
+                                            value={formData.problemDescriptionTemp}
+                                            type="text"
+                                            placeholder="Enter problem description"
+                                        />
+                                    </div>
+                                    <div className="input">
+                                        <label name="sampleInputTemp">Sample Input</label>
+                                        <textarea
+                                            name="sampleInputTemp"
+                                            onChange={handleChange}
+                                            value={formData.sampleInputTemp}
+                                            type="text"
+                                            placeholder="Enter sample input"
+                                        />
+                                    </div>
+                                    <div className="input">
+                                        <label name="sampleOutputTemp">Sample Output</label>
+                                        <textarea
+                                            name="sampleOutputTemp"
+                                            value={formData.sampleOutputTemp}
+                                            onChange={handleChange}
+                                            type="text"
+                                            placeholder="Enter sample output"
+                                        />
+                                    </div>
+                                    <div className="addButton" onClick={addProblem}>Add</div>
+                                </div>
+                                {formData.problems.length ?
+                                    <div className="problemListFormBox">
+                                        {formData.problems.map(function (problem, index) {
+                                            return (
+                                                <div className="problemBox" key={problem.problem_id}>
+                                                    <div className="rejectButton" onClick={() => removeMedia(index)}>
+                                                        <MaterialSymbol className="icon" size={22} icon="delete" />
+                                                        <div className="text">Delete</div>
+                                                    </div>
+                                                    <div className="number">
+                                                        Problem {index + 1}
+                                                    </div>
+                                                    <div className="name">
+                                                        {problem.problemName}
+                                                    </div>
+                                                    <div className="description">
+                                                        {problem.problemDescription}
+                                                    </div>
+                                                    <div className="sampleContainer">
+                                                        <div className="sampleBox">
+                                                            <div className="titleAlt">Sample Input</div>
+                                                            <pre className="code">{problem.sampleInput}</pre>
+                                                        </div>
+                                                        <div className="sampleBox">
+                                                            <div className="titleAlt">Sample Output</div>
+                                                            <pre className="code">{problem.sampleOutput}</pre>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                        {formData.problems.length < 1 && (
+                                            <p className="bottomRequired">
+                                                Add at least 1 problems of you course
+                                            </p>
+                                        )}
+                                    </div>
+                                    : <div className="materialContainer">
+                                        <NotFound message="You did not add any problems!" />
+                                    </div>
+
+                                }
+                            </>
                         }
-
                         <button>Submit For Approval</button>
                     </form>
                 </div>

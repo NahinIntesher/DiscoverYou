@@ -38,6 +38,7 @@ import OrderHistory from "../Components/OrganizerComponents/Marketplace/OrderHis
 import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview";
 import CreateNewContest from "../Components/OrganizerComponents/Contest/CreateNewContest";
+import PendingContest from "../Components/OrganizerComponents/Contest/PendingContest";
 
 export default function Student({
   handleLogout,
@@ -63,6 +64,7 @@ export default function Student({
           <Route path="/showcase/post/:postId" element={<Post user={user} />} />
 
           <Route path="/contest" element={<Contest />} />
+          <Route path="/contest/pending" element={<PendingContest />} />
           <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
           <Route path="/contest/submission/:contestId/:participantId" element={<SubmissionPreview />} />

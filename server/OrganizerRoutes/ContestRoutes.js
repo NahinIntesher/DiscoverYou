@@ -207,6 +207,48 @@ module.exports = (router) => {
     });
   });
 
+  router.get("/contests/pending", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT w.*, COUNT(w_p.contest_id) AS participant_count,
+      TIMESTAMPDIFF(SECOND,NOW(), w.end_time) AS calculated_time,
+      organizer.organizer_name AS host_name,
+      IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture,
+      CASE
+        WHEN EXISTS (
+          SELECT *
+          FROM contest_participants
+          WHERE contest_participants.contest_id = w.contest_id
+        )
+        THEN true
+        ELSE false
+      END AS is_joined
+      FROM 
+          contests w
+      LEFT JOIN 
+          contest_participants w_p
+      ON 
+          w.contest_id = w_p.contest_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.organizer_id = organizer.organizer_id
+      WHERE
+        w.organizer_id = '${userId}' AND w.approval_status = 0
+      GROUP BY 
+          w.contest_id;
+    `;
+    connection.query(query, [userId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ contests: result });
+    });
+  });
+
   router.get("/contests/:contestId", verifyToken, async (req, res) => {
     const { contestId } = req.params;
     const userId = req.userId;
@@ -345,7 +387,7 @@ module.exports = (router) => {
     (req, res) => {
         const userId = req.userId;
 
-        const { contestName, contestCategory, contestDescription, startTime, endTime } = req.body;
+        const { contestName, contestCategory, contestDescription, startTime, endTime, problems } = req.body;
   
         connection.query(
           `INSERT INTO contests (contest_name, contest_category, contest_details, start_time, end_time, organizer_id)
@@ -353,7 +395,25 @@ module.exports = (router) => {
           [contestName, contestCategory, contestDescription, startTime, endTime, userId],
           (err, results) => {
             if (err) throw err;
-            return res.json({ status: "Success" });
+            if(contestCategory == "Competitive Programming" || contestCategory == "Web/App Designing") {
+              let contestId = results.insertId;
+
+              problems.forEach(problem => {
+                connection.query(
+                  `INSERT INTO contest_problems (contest_id, problem_name, problem_description, sample_input, sample_output)
+                  VALUES(?,?,?,?,?);`,
+                  [contestId, problem.problemName, problem.problemDescription, problem.sampleInput, problem.sampleOutput],
+                  (err, results) => {
+                    if (err) throw err;
+                  }
+                );
+              });
+
+              return res.json({ status: "Success" });
+            }
+            else {
+              return res.json({ status: "Success" });
+            }
           }
         );
     }
