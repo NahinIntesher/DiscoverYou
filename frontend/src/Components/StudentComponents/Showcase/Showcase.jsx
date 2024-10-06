@@ -8,7 +8,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 
-export default function Showcase({user}) {    
+export default function Showcase({user, admins}) {    
     const [posts, setPosts] = useState([]);
     const [updatePost, setUpdatePost] = useState(0);
 
@@ -107,6 +107,7 @@ export default function Showcase({user}) {
                             postCommentCount={post.comment_count}
                             postTime={post.post_date_time}
                             postCategory={post.post_category}
+                            admins={admins}
                         />
                     );
                 })

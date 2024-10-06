@@ -7,7 +7,7 @@ import CommentBox from "../../CommonComponents/CommentBox";
 import NotFound from "../../CommonComponents/NotFound";
 import Header from "../../CommonComponents/Header";
 
-export default function Post({user}) {
+export default function Post({user, admins}) {
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState([]);
@@ -83,6 +83,8 @@ export default function Post({user}) {
                         postReactionCount={post.reaction_count}
                         postCommentCount={post.comment_count}
                         postTime={post.post_date_time}
+                        user={user}
+                        admins={admins}
                     />
                 }
                 <div className="giveCommentBox">

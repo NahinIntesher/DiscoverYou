@@ -431,6 +431,31 @@ module.exports = (router, multer) => {
       return res.json({ status: "Success", reactors: result });
     });
   });
+
+  router.post('/showcase/post-report', verifyToken, (req, res) => {
+    const { postId } = req.body;
+    const userId = req.userId;
+
+    console.log(postId);
+    let query;
+
+    if(userId[0] === 'S'){
+      query = `INSERT INTO showcase_reports (reported_post_id, reporter_student_id) VALUES (?, ?)`;
+
+    } else if(userId[0] === 'O'){
+      `INSERT INTO showcase_reports (reported_post_id, reporter_organizer_id) VALUES (?, ?)`;
+
+    }
+
+    connection.query(
+      query, [postId, userId], (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+
+  });
+
 };
 
 

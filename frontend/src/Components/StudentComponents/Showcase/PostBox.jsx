@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function PostBox({
-  user,
   postId,
   posterId,
   posterName,
@@ -20,9 +19,13 @@ export default function PostBox({
   isPostReacted,
   postReactionCount,
   postCommentCount,
+  user,
+  admins,
 }) {
   const [isReacted, setIsReacted] = useState(isPostReacted);
   const [reactionCount, setReactionCount] = useState(postReactionCount);
+  const [reportBoxActive, setReportBoxActive] = useState(false);
+
   const navigate = useNavigate();
 
   function calculatePostAgoTime(timeDifference) {
@@ -63,26 +66,63 @@ export default function PostBox({
             setReactionCount((prevCount) => prevCount + 1);
             // Send notification to the post owner
             axios
-            .post("http://localhost:3000/student/notifications", {
-              recipientId: posterId, 
-              notificationPicture: user.student_picture,
-              notificationTitle: "Showcase Post Like", 
-              notificationMessage: `${user.student_name} liked your post in showcase!`, 
-              notificationLink: `/showcase/post/${postId}`,
-            })
-            .then((res) => {
-              if (res.data.status === "Success") {
-                console.log("Successfully notification send")
-              } else {
-                alert(res.data.Error);
-              }
-            })
-            .catch((err) => console.log(err));
-
+              .post("http://localhost:3000/student/notifications", {
+                recipientId: posterId,
+                notificationPicture: user.student_picture,
+                notificationTitle: "Showcase Post Like",
+                notificationMessage: `${user.student_name} liked your post in showcase!`,
+                notificationLink: `/showcase/post/${postId}`,
+              })
+              .then((res) => {
+                if (res.data.status === "Success") {
+                  console.log("Successfully notification send");
+                } else {
+                  alert(res.data.Error);
+                }
+              })
+              .catch((err) => console.log(err));
           } else {
             setIsReacted(false);
             setReactionCount((prevCount) => prevCount - 1);
           }
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function reportPost() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/showcase/post-report", {
+        postId: postId,
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          {
+            admins.map((admin) => {
+              axios
+                .post("http://localhost:3000/admin/notifications", {
+                  recipientId: admin.admin_id,
+                  notificationPicture: user.student_picture,
+                  notificationTitle: "Post Report",
+                  notificationMessage: `${user.student_name} reported in ${posterName}'s post. Please check the details!`,
+                  notificationLink: `/showcase/post/${postId}`,
+                })
+                .then((res) => {
+                  if (res.data.status === "Success") {
+                    console.log("Successfully notification send");
+                  } else {
+                    alert(res.data.Error);
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+          }
+
+          setReportBoxActive(false);
+          alert("Post reported successfully!");
         } else {
           alert(res.data.Error);
         }
@@ -101,8 +141,45 @@ export default function PostBox({
             {posterName}
           </Link>
           <div className="detail">{calculatePostAgoTime(postTimeAgo)}</div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setReportBoxActive(true);
+            }}
+          >
+            <MaterialSymbol className="icon" size={40} icon="report" />
+          </div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setReportBoxActive(true);
+            }}
+          >
+            <MaterialSymbol className="icon" size={40} icon="delete" />
+          </div>
         </div>
       </div>
+
+      <div className={reportBoxActive ? "dialogBoxBackground" : "none"}>
+        <div className="dialogBox">
+          <div className="title">Report Post</div>
+          <div className="details">Do you want to report this post?</div>
+          <div className="buttonContainer">
+            <div className="button" onClick={reportPost}>
+              Yes
+            </div>
+            <div
+              className="buttonAlt"
+              onClick={() => {
+                setReportBoxActive(false);
+              }}
+            >
+              Cancel
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="postContent">{postContent}</div>
       {postMediaArray[0] != null && (
         <div className="mediaContainer">

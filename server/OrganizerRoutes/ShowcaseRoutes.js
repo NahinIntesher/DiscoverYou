@@ -24,45 +24,45 @@ module.exports = (router, multer) => {
     upload.array("media"),
     verifyToken,
     (req, res) => {
-        const id = req.userId;
-        const { content, category } = req.body;
-        const files = req.files;
+      const id = req.userId;
+      const { content, category } = req.body;
+      const files = req.files;
 
-        connection.query(
-          `INSERT INTO showcase_posts (post_content, user_id, post_category)
+      connection.query(
+        `INSERT INTO showcase_posts (post_content, user_id, post_category)
       VALUES (?, ?, ?)`,
-          [content, id, category],
-          (err, results) => {
-            if (err) throw err;
-            let postId = results.insertId;
+        [content, id, category],
+        (err, results) => {
+          if (err) throw err;
+          let postId = results.insertId;
 
-            if (files.length != 0) {
-              for (const file of files) {
-                const { mimetype, buffer } = file;
-                connection.query(
-                  `INSERT INTO showcase_post_media (post_id, media_blob, media_type)
+          if (files.length != 0) {
+            for (const file of files) {
+              const { mimetype, buffer } = file;
+              connection.query(
+                `INSERT INTO showcase_post_media (post_id, media_blob, media_type)
               VALUES (?, ?, ?)`,
-                  [postId, buffer, mimetype],
-                  (err, result) => {
-                    if (err) {
-                      console.error("Database insertion error:", err);
-                      throw err;
-                    }
+                [postId, buffer, mimetype],
+                (err, result) => {
+                  if (err) {
+                    console.error("Database insertion error:", err);
+                    throw err;
                   }
-                );
-              }
+                }
+              );
             }
-
-            return res.json({ status: "Success" });
           }
-        );
+
+          return res.json({ status: "Success" });
+        }
+      );
     }
   );
 
   //showcase_post_media.post_media,
 
   router.get("/showcase/post", verifyToken, (req, res) => {
-    const {sort, category} = req.query;
+    const { sort, category } = req.query;
 
     const userId = req.userId;
 
@@ -183,7 +183,8 @@ module.exports = (router, multer) => {
     connection.query(query, (err, results) => {
       if (err) throw err;
 
-      connection.query(`
+      connection.query(
+        `
         SELECT 
           s_p_c.*,
           TIMESTAMPDIFF(SECOND, s_p_c.comment_date_time, NOW()) AS comment_time_ago,
@@ -227,7 +228,7 @@ module.exports = (router, multer) => {
         [postId],
         (err, nestedResult) => {
           if (err) throw err;
-  
+
           return res.json({ post: results[0], comments: nestedResult });
         }
       );
@@ -272,7 +273,7 @@ module.exports = (router, multer) => {
       console.log(userId);
 
       connection.query(
-      `SELECT * 
+        `SELECT * 
       FROM showcase_post_reactions 
       WHERE post_id = ? AND reactor_organizer_id = ?`,
         [postId, userId],
@@ -304,25 +305,35 @@ module.exports = (router, multer) => {
     }
   });
 
-  router.post(
-    "/showcase/comment",
-    verifyToken,
-    (req, res) => {
-        const userId = req.userId;
-        const { postId, commentContent } = req.body;
-  
-        connection.query(
-          `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_organizer_id)
+  router.post("/showcase/comment", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { postId, commentContent } = req.body;
+
+    connection.query(
+      `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_organizer_id)
           VALUES (?, ?, ?)`,
-          [commentContent, postId, userId],
-          (err, results) => {
-            if (err) throw err;
-        
-            return res.json({ status: "Success" });
-          }
-        );
+      [commentContent, postId, userId],
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({ status: "Success" });
+      }
+    );
+  });
+
+  router.post("/showcase/post-delete", verifyToken, (req, res) => {
+    const { postId, reporterId } = req.body;
+
+    let query;
+    if (reporterId[0] === "S") {
+      query = `DELETE FROM showcase_posts WHERE post_id = ? AND reported_student_id = ?`;
+    } else if (reporterId[0] === "O") {
+      query = `DELETE FROM showcase_posts WHERE post_id = ? AND reported_organizer_id = ?`;
     }
-  );
+
+    connection.query(query, [postId, reporterId], (err, results) => {
+      if (err) throw err;
+      return res.json({ status: "Success" });
+    });
+  });
 };
-
-

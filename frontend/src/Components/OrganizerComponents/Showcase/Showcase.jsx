@@ -7,7 +7,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 
-export default function Showcase({user}) {    
+export default function Showcase({user, admins}) {    
     const [posts, setPosts] = useState([]);
 
     const allInterests = [
@@ -100,6 +100,8 @@ export default function Showcase({user}) {
                             postReactionCount={post.reaction_count}
                             postCommentCount={post.comment_count}
                             postTime={post.post_date_time}
+                            user={user}
+                            admins={admins}
                         />
                     );
                 })

@@ -8,7 +8,7 @@ import 'react-material-symbols/rounded';
 import Header from "../../../CommonComponents/Header";
 import PostBox from "../../../StudentComponents/Showcase/PostBox"
 
-export default function Showcase({user}) {    
+export default function Showcase({user, admins}) {    
     const [posts, setPosts] = useState([]);
     const [updatePost, setUpdatePost] = useState(0);
 
