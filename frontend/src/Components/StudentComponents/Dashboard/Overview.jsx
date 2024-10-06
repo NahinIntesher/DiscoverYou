@@ -39,7 +39,7 @@ export default function Overview() {
     <div className="contributionSectionContainer px-4">
       <ContributionBox
         count={contestResults.total_contests}
-        title="Contests "
+        title="Contests Participation"
         icon="rewarded_ads"
         secondaryCount={contestResults.rank_1_count}
         tertiaryCount={contestResults.rank_2_count}
@@ -48,16 +48,16 @@ export default function Overview() {
         linkToRoute="contestResults"
       />
       <ContributionBox
-        count={courseResults.course_count}
+        count={courseResults.enrolled_courses}
         title="Courses Enrolled"
         icon="auto_stories"
-        secondaryCount={1}
+        secondaryCount={courseResults.completed_courses}
         secondaryTitle="Completed"
         linkToRoute="courseResults"
       />
       <ContributionBox
         count={showcaseResults.total_posts}
-        title="Posts"
+        title="Showcase Section Posts"
         icon="gallery_thumbnail"
         secondaryCount={showcaseResults.total_reactions}
         secondaryTitle="Reactions"
@@ -65,10 +65,10 @@ export default function Overview() {
       />
       <ContributionBox
         count={webinarResults.webinar_count}
-        title="Webinars "
+        title="Webinars Attended"
         icon="patient_list"
         // secondaryCount={showcaseResults.total_reactions}
-        secondaryTitle="No talks"
+        secondaryTitle="Since Joining"
         linkToRoute="webinarResults"
       />
     </div>

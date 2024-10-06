@@ -100,10 +100,10 @@ export default function Graphs() {
         chartColors.showcases
       ),
       courses: createChartData(
-        ["Enrolled Courses", "Completed Courses", "Total Courses"],
+        ["Completed Courses", "Enrolled Courses", "Total Courses"],
         [
-          fetchedData.courseResults.enrolled_courses,
           fetchedData.courseResults.completed_courses,
+          fetchedData.courseResults.enrolled_courses,
           fetchedData.courseResults.total_courses,
         ],
         "Courses",
@@ -131,7 +131,7 @@ export default function Graphs() {
       products: createChartData(
         ["Posted by User", "Total Products"],
         [
-          fetchedData.productResults.posted_by_user,
+          fetchedData.productResults.seller_products_in_stock,
           fetchedData.productResults.total_products,
         ],
         "Products",

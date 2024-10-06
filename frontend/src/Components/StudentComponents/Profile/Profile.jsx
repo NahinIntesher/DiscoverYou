@@ -88,10 +88,10 @@ export default function Profile({ user }) {
               linkToRoute='contestResults'
             />
             <ContributionBox
-              count={courseResults.course_count}
+              count={courseResults.enrolled_courses}
               title="Courses Enrollement"
               icon="auto_stories"
-              secondaryCount={1}
+              secondaryCount={courseResults.completed_courses}
               secondaryTitle="Completed"
               linkToRoute='courseResults'
             />
@@ -108,7 +108,7 @@ export default function Profile({ user }) {
               title="Webinars Attended"
               icon="patient_list"
               // secondaryCount={showcaseResults.total_reactions}
-              secondaryTitle="No talks"
+              secondaryTitle="Since Joining"
               linkToRoute='webinarResults'
             />
           </div>

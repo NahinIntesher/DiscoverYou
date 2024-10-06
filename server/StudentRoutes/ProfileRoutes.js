@@ -262,16 +262,37 @@ module.exports = (router, multer, bcrypt) => {
 
     const showcasePostQuery = `
         SELECT 
-            COUNT(sp.post_id) AS total_posts, 
-            COUNT(spr.reaction_id) AS total_reactions
+            COUNT(DISTINCT sp.post_id) AS total_posts, 
+            COUNT(DISTINCT spr.reaction_id) AS total_reactions
         FROM showcase_posts sp
         LEFT JOIN showcase_post_reactions spr ON sp.post_id = spr.post_id
-        WHERE sp.user_id = ?`;
+        WHERE sp.user_id = ?
+        GROUP BY sp.user_id;`;
 
     const courseQuery = `
-        SELECT COUNT(participant_id) AS course_count 
-        FROM course_participants 
-        WHERE participant_id = ? AND req_for_join_status = 1`;
+        SELECT 
+          COUNT(c_p.course_id) AS enrolled_courses,
+          SUM(
+              CASE 
+                  WHEN 
+                      (SELECT COUNT(c_c_m.material_id) 
+                      FROM completed_course_materials AS c_c_m 
+                      JOIN course_materials AS c_m ON c_c_m.material_id = c_m.material_id 
+                      WHERE c_c_m.participant_id = ? AND c_m.course_id = c.course_id
+                      ) = 
+                      (SELECT COUNT(DISTINCT c_m.material_id) 
+                      FROM course_materials AS c_m 
+                      WHERE c_m.course_id = c.course_id
+                      )
+                  THEN 1
+                  ELSE 0
+              END
+          ) AS completed_courses
+      FROM courses AS c
+      JOIN course_participants AS c_p
+      ON c.course_id = c_p.course_id
+      WHERE c_p.participant_id = ? 
+      AND c_p.req_for_join_status = 1;`;
 
     const webinarQuery = `
         SELECT COUNT(participant_id) AS webinar_count 
@@ -287,7 +308,7 @@ module.exports = (router, multer, bcrypt) => {
         await Promise.all([
           queryAsync(contestQuery, [id]),
           queryAsync(showcasePostQuery, [id]),
-          queryAsync(courseQuery, [id]),
+          queryAsync(courseQuery, [id, id]),
           queryAsync(webinarQuery, [id]),
         ]);
 
