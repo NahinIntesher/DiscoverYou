@@ -15,7 +15,9 @@ export default function OrganizerProfile({ user }) {
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/organizer/common-profile")
+      .get("http://localhost:3000/organizer/common-profile", {
+        params: { userId: user.id },
+      })
       .then((res) => {
         console.log(res.data);
         setContestResults(res.data.contestResults);
@@ -46,7 +48,7 @@ export default function OrganizerProfile({ user }) {
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
-            <img src={user.picture ? user.picture : dp} alt="Profile" />
+            <img src={user.user_picture ? user.user_picture : dp} alt="Profile" />
           </div>
           <div className="details">
             <div className="name">{user.name}</div>
@@ -111,41 +113,6 @@ function ProfileField({ icon, label, value }) {
         <div className="label">{label}</div>
         <div className="value">{value}</div>
       </div>
-    </div>
-  );
-}
-
-function Interest({ category }) {
-  return (
-    <div className="userInterest">
-      {category === "Competitive Programming" && (
-        <MaterialSymbol className="icon" size={24} icon="code" />
-      )}
-      {category === "Singing" && (
-        <MaterialSymbol className="icon" size={24} icon="queue_music" />
-      )}
-      {category === "Graphics Designing" && (
-        <MaterialSymbol className="icon" size={24} icon="polyline" />
-      )}
-      {category === "Photography" && (
-        <MaterialSymbol className="icon" size={24} icon="photo_camera" />
-      )}
-      {category === "Web/App Designing" && (
-        <MaterialSymbol className="icon" size={24} icon="web" />
-      )}
-      {category === "Writing" && (
-        <MaterialSymbol className="icon" size={24} icon="edit_note" />
-      )}
-      {category === "Art & Craft" && (
-        <MaterialSymbol className="icon" size={24} icon="draw" />
-      )}
-      {category === "Debating" && (
-        <MaterialSymbol className="icon" size={24} icon="communication" />
-      )}
-      {category === "Gaming" && (
-        <MaterialSymbol className="icon" size={24} icon="sports_esports" />
-      )}
-      <div className="text">{category}</div>
     </div>
   );
 }

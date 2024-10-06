@@ -120,6 +120,9 @@ export default function Student({
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
+          
+          
+
         </Routes>
       </div>
     </BrowserRouter>

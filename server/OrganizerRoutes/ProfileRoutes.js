@@ -251,7 +251,7 @@ module.exports = (router, multer, bcrypt) => {
     }
   });
 
-  router.get("/common-profile", verifyToken, async (req, res) => {
+  router.get("/common-profile/", verifyToken, async (req, res) => {
     const userId = req.query.userId;
     console.log("User ID:", userId);
 
@@ -290,9 +290,9 @@ module.exports = (router, multer, bcrypt) => {
       // Execute the queries concurrently
       const [contestResults, webinarResults, hiringResults] = await Promise.all(
         [
-          queryAsync(contestQuery, [id]),
-          queryAsync(webinarQuery, [id]),
-          queryAsync(hiringQuery, [id]),
+          queryAsync(contestQuery, [userId]),
+          queryAsync(webinarQuery, [userId]),
+          queryAsync(hiringQuery, [userId]),
         ]
       );
 

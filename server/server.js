@@ -462,7 +462,7 @@ app.get("/profiles/:userId", verifyToken, (req, res) => {
         o.organizer_email AS email,
         o.organizer_address AS address,
         o.organizer_mobile_no AS mobile_no,
-        o.organizer_gender AS gender
+        o.organizer_gender AS gender,
         o.organizer_date_of_birth AS date_of_birth,
         IF(o.organizer_picture IS NOT NULL,
           CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id),
@@ -490,6 +490,7 @@ app.get("/profiles/:userId", verifyToken, (req, res) => {
 
   connection.query(query, [userId], (err, results) => {
     if (err) {
+      throw err;                                  
       console.error("Error fetching user data:", err);
       return res.status(500).json({ Error: "Error fetching user data" });
     }
