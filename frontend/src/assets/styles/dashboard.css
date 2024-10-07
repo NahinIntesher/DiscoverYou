@@ -532,9 +532,10 @@
   border-radius: 20px;
   font-weight: 500;
   padding: 6px 20px;
-  margin: 2px 10px;
+  margin: 2px 8px;
 }
 .participant .acceptButton,
+.participant .defaultButton,
 .participant .rejectButton {
   color: #02590fcc;
   background-color: #b2deb9;
@@ -546,13 +547,23 @@
   cursor: pointer;
   display: block;
   font-weight: 500;
-  width: max-content;
+  width: calc(100%-16%);
 }
 
 .participant .acceptButton:hover {
   color: #02590f;
   background-color: #73bd7e;
 }
+.participant .defaultButton {
+  color: rgba(var(--dark));
+  background-color: rgba(var(--extralight));
+}
+
+.participant .defaultButton:hover {
+  color: rgba(var(--dark));
+  background-color: rgba(var(--light));
+}
+
 .participant .rejectButton {
   color: #c62d42cc;
   background-color: #f4ced3;
@@ -564,6 +575,7 @@
 }
 
 .participant .acceptButton .icon,
+.participant .defaultButton .icon,
 .participant .rejectButton .icon {
   display: inline-block;
   vertical-align: middle;

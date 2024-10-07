@@ -38,7 +38,7 @@ export default function CreateNewCommunity({ user, interests, admins }) {
                 .post("http://localhost:3000/admin/notifications", {
                   recipientId: admin.admin_id,
                   notificationPicture: user.student_picture,
-                  notificationTitle: "Community Creation",
+                  notificationTitle: "Community Creation Request",
                   notificationMessage: `${user.student_name} have created a new community are in pending!`,
                   notificationLink: `/community`,
                 })

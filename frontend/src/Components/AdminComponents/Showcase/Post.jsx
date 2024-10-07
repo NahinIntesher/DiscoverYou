@@ -41,7 +41,6 @@ export default function Post({user}) {
           if (res.data.status === "Success") {
             console.log("Comment Success!");
             setCommentContent("");
-            setUpdatePost((prevData) => prevData+1);
           } else {
             alert(res.data.Error);
           }
@@ -83,6 +82,8 @@ export default function Post({user}) {
                         postReactionCount={post.reaction_count}
                         postCommentCount={post.comment_count}
                         postTime={post.post_date_time}
+                        setUpdatePost={setUpdatePost}
+                        deleteButtonAvailable={true}
                     />
                 }
                 <div className="giveCommentBox">

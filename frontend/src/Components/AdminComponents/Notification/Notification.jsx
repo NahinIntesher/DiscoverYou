@@ -5,7 +5,7 @@ import "react-material-symbols/rounded";
 import NotFound from "../../CommonComponents/NotFound";
 import NotificationBox from "../../CommonComponents/NotificationBox";
 
-export default function Notifications({ user }) {
+export default function Notifications({ user, notificationUpdate, setNotificationUpdate }) {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Notifications({ user }) {
       .catch((error) => {
         console.error("Error fetching hirings:", error);
       });
-  }, []);
+  }, [notificationUpdate]);
 
   return (
     <div className="mainContent">
@@ -42,6 +42,7 @@ export default function Notifications({ user }) {
                   notificationTime={notification.sent_time}
                   notificationTimeAgo={notification.notification_time_ago}
                   notificationRead={notification.is_seen}
+                  setUpdate={setNotificationUpdate}
                 />
               );
             })}

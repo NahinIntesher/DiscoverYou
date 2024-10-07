@@ -66,6 +66,22 @@ export default function PendingWebinarBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: adminId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Hiring Approval",
+              notificationMessage: `Admin have accepted your pending created hiring!`,
+              notificationLink: `/hiring/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Hiring "' + jobName + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -83,6 +99,22 @@ export default function PendingWebinarBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: user.admin,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Hiring Rejection",
+              notificationMessage: `Admin have rejected your pending created hiring!`,
+              notificationLink: `/hiring/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Hiring "' + jobName + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {

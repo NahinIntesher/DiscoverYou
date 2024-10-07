@@ -12,7 +12,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import CartProductBox from "./CartProductBox";
 
 export default function Marketplace() {
-  const [activeTab, setActiveTab] = useState(["browseProducts"]);
+  const [activeTab, setActiveTab] = useState(["pendingProducts"]);
 
   return (
     <div className="mainContent">

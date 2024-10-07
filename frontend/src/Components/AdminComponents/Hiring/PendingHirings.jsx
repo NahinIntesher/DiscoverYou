@@ -21,10 +21,10 @@ export default function PendingWebinar({ interests }) {
 
   return (
     <div className="pendingMembersList">
-      {pendingHirings.length ? 
+      {pendingHirings.length ? (
         pendingHirings.map(function (hiring) {
           return (
-              <PendingHiringBox
+            <PendingHiringBox
               key={hiring.hiring_id}
               hiringId={hiring.hiring_id}
               organizerId={hiring.organizer_id}
@@ -41,11 +41,9 @@ export default function PendingWebinar({ interests }) {
               setUpdate={setUpdate}
             />
           );
-        }
+        })
       ) : (
-        <NotFound
-          message={"You have no pending Hirings!"}
-        />
+        <NotFound message={"You have no pending Hirings!"} />
       )}
     </div>
   );

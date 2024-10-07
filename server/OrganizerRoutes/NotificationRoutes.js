@@ -83,4 +83,21 @@ module.exports = (router) => {
       return res.json({ new_notifications: results[0].new_notifications });
     });
   });
+
+  router.post("/notifications/read", verifyToken, (req, res) => {
+    const { notificationId } = req.body;
+    connection.query(
+      `UPDATE notifications SET is_seen = 1 WHERE notification_id = ?;`,
+      [notificationId],
+      (err, results) => {
+        if (err) {
+          console.error("Error fetching notifications:", err);
+          return res.status(500).json({ Error: "Error sending notifications" });
+        }
+        return res.json({
+          status: "Success",
+        });
+      }
+    );
+  });
 };

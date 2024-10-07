@@ -32,6 +32,7 @@ import ChangeProfilePicture from "../Components/AdminComponents/Profile/ChangePr
 import SingleHiring from "../Components/AdminComponents/Hiring/SingleHiring";
 
 import UserManagement from "../Components/AdminComponents/UserManagement/UserManagement";
+import GiveRewards from "../Components/AdminComponents/UserManagement/GiveRewards";
 import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
 
 export default function Student({
@@ -81,7 +82,15 @@ export default function Student({
           <Route path="/hiring" element={<Hiring />} />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
 
-          <Route path="/notification" element={<Notification />} />
+          <Route
+            path="/notification"
+            element={
+              <Notification
+                notificationUpdate={notificationUpdate}
+                setNotificationUpdate={setNotificationUpdate}
+              />
+            }
+          />
 
           <Route path="/profile" element={<Profile user={user} />} />
           <Route
@@ -106,6 +115,10 @@ export default function Student({
           <Route
             path="/user-management"
             element={<UserManagement user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/user-management/give-reward/:userId"
+            element={<GiveRewards user={user} setUser={setUser} />}
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />

@@ -19,12 +19,14 @@ export default function PostBox({
   isPostReacted,
   postReactionCount,
   postCommentCount,
+  setUpdatePost,
   user,
   admins,
 }) {
   const [isReacted, setIsReacted] = useState(isPostReacted);
   const [reactionCount, setReactionCount] = useState(postReactionCount);
   const [reportBoxActive, setReportBoxActive] = useState(false);
+  const [deleteBoxActive, setDeleteBoxActive] = useState(false);
 
   const navigate = useNavigate();
 
@@ -130,30 +132,47 @@ export default function PostBox({
       .catch((err) => console.log(err));
   }
 
+  function deletePost() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/showcase/delete", {
+        postId: postId,
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          navigate("/showcase");
+          setDeleteBoxActive(false);
+          setUpdatePost((prevData) => prevData + 1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="postBox">
-      {
-        posterId == user.student_id ?
-          <div
-            className="reportButton"
-            onClick={() => {
-              setReportBoxActive(true);
-            }}
-          >
-            <MaterialSymbol className="icon" size={20} icon="delete" />
-            <div className="text">Delete</div>
-          </div>
-          :
-          <div
-            className="reportButton"
-            onClick={() => {
-              setReportBoxActive(true);
-            }}
-          >
-            <MaterialSymbol className="icon" size={20} icon="report" />
-            <div className="text">Report</div>
-          </div>
-      }
+      {posterId == user.student_id ? (
+        <div
+          className="reportButton"
+          onClick={() => {
+            setDeleteBoxActive(true);
+          }}
+        >
+          <MaterialSymbol className="icon" size={20} icon="delete" />
+          <div className="text">Delete</div>
+        </div>
+      ) : (
+        <div
+          className="reportButton"
+          onClick={() => {
+            setReportBoxActive(true);
+          }}
+        >
+          <MaterialSymbol className="icon" size={20} icon="report" />
+          <div className="text">Report</div>
+        </div>
+      )}
       <div className="profile">
         <Link to={"/profile/" + posterId} className="profilePicture">
           <img src={posterPicture ? posterPicture : dp} />
@@ -178,6 +197,25 @@ export default function PostBox({
               className="buttonAlt"
               onClick={() => {
                 setReportBoxActive(false);
+              }}
+            >
+              Cancel
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={deleteBoxActive ? "dialogBoxBackground" : "none"}>
+        <div className="dialogBox">
+          <div className="title">Delete Post</div>
+          <div className="details">Do you want to delete this post?</div>
+          <div className="buttonContainer">
+            <div className="button" onClick={deletePost}>
+              Yes
+            </div>
+            <div
+              className="buttonAlt"
+              onClick={() => {
+                setDeleteBoxActive(false);
               }}
             >
               Cancel

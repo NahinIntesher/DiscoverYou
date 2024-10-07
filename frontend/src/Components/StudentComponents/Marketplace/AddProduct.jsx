@@ -5,7 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
-export default function AddProduct({ interests }) {
+export default function AddProduct({ interests, user, admins }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -84,6 +84,26 @@ export default function AddProduct({ interests }) {
       )
       .then((res) => {
         if (res.data.status === "Success") {
+          {
+            admins.map((admin) => {
+              axios
+                .post("http://localhost:3000/admin/notifications", {
+                  recipientId: admin.admin_id,
+                  notificationPicture: user.student_picture,
+                  notificationTitle: "Product Approval Request",
+                  notificationMessage: `${user.student_name} have created a new product are in pending!`,
+                  notificationLink: `/marketplace`,
+                })
+                .then((res) => {
+                  if (res.data.status === "Success") {
+                    console.log("Successfully notification send");
+                  } else {
+                    alert(res.data.Error);
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+          }
           alert("The product was successfully submitted for admin approval!");
           navigate(-1);
         } else {

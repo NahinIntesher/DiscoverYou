@@ -9,7 +9,7 @@ import BrowseHirings from "./BrowseHirings";
 import PendingHirings from "./PendingHirings";
 
 export default function Hiring() {
-  const [activeTab, setActiveTab] = useState(["browseHirings"]);
+  const [activeTab, setActiveTab] = useState(["pendingHirings"]);
 
   return (
     <div className="mainContent">

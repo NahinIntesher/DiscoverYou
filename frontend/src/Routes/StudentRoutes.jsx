@@ -73,8 +73,8 @@ export default function Student({
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
-          <Route path="/showcase" element={<Showcase user={user} />} />
-          <Route path="/showcase/post/:postId" element={<Post user={user} />} />
+          <Route path="/showcase" element={<Showcase user={user} admins={admins} />} />
+          <Route path="/showcase/post/:postId" element={<Post user={user} admins={admins}/>} />
           <Route
             path="/showcase/reactors/:postId"
             element={<ShowcaseReactors user={user} />}
@@ -132,7 +132,7 @@ export default function Student({
           <Route path="/marketplace" element={<Marketplace />} />
           <Route
             path="/marketplace/add-product"
-            element={<AddProduct interests={user.interests} />}
+            element={<AddProduct interests={user.interests} user={user} admins={admins} />}
           />
           <Route
             path="/marketplace/pending-products"
@@ -199,7 +199,7 @@ export default function Student({
           />
           <Route
             path="/profile/showcaseResults"
-            element={<ShowcasePosts user={user} />}
+            element={<ShowcasePosts user={user} admins={admins}/>}
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />

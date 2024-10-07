@@ -99,4 +99,22 @@ module.exports = (router) => {
     });
   });
 
+  router.post("/user-management/reward/:userId", verifyToken, (req, res) => {
+    const { userId } = req.params;
+    const { rewardName } = req.body;
+    console.log("Giving reward to user:", userId);
+    console.log("Reward Name:", rewardName);
+
+    const query = `INSERT INTO rewards (reward_name, winner_id) VALUES (?, ?)`;
+    connection.query(query, [rewardName, userId], (err, result) => {
+      if (err) {
+        console.error("Reward error:", err);
+        return res.status(500).json({ message: "Failed to give reward" });
+      }
+      return res.json({
+        status: "Success",
+        message: "Reward given successfully",
+      });
+    });
+  });
 };

@@ -5,7 +5,7 @@ import "react-material-symbols/rounded";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function PendingCommunityBox({
+export default function PendingHiringBox({
   hiringId,
   companyName,
   jobName,
@@ -16,7 +16,8 @@ export default function PendingCommunityBox({
   organizerId,
   jobSalery,
   setUpdate,
-  lastDate
+  lastDate,
+  
 }) {
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -40,6 +41,22 @@ export default function PendingCommunityBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: organizerId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Hiring Approval",
+              notificationMessage: `Admin have accepted your pending created hiring!`,
+              notificationLink: `/hiring/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Hiring for "' + jobName + '" job successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -57,6 +74,22 @@ export default function PendingCommunityBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: organizerId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Hiring Rejection",
+              notificationMessage: `Admin have rejected your pending created hiring!`,
+              notificationLink: `/hiring/pending`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Hiring for "' + jobName + '" job has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {

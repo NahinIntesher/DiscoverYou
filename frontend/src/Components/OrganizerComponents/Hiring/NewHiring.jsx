@@ -5,7 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 
-export default function NewHiring({ interests }) {
+export default function NewHiring({ interests, user, admins }) {
   const navigate = useNavigate();
 
   const allInterests = [
@@ -23,7 +23,7 @@ export default function NewHiring({ interests }) {
   const [formData, setFormData] = useState({
     companyName: "",
     jobName: "",
-    jobCategory: "",
+    jobCategory: "Competitive Programming",
     jobDescription: "",
     jobSalary: "",
     endTime: "",
@@ -48,10 +48,31 @@ export default function NewHiring({ interests }) {
       .post("http://localhost:3000/organizer/hiring/new", formData)
       .then((res) => {
         if (res.data.status === "Success") {
+          {
+            admins.map((admin) => {
+              axios
+                .post("http://localhost:3000/admin/notifications", {
+                  recipientId: admin.admin_id,
+                  notificationPicture: user.organizer_picture,
+                  notificationTitle: "Hiring Creation Request",
+                  notificationMessage: `${user.organizer_name} have created a new Hiring are in pending!`,
+                  notificationLink: `/hiring`,
+                })
+                .then((res) => {
+                  if (res.data.status === "Success") {
+                    console.log("Successfully notification send");
+                  } else {
+                    alert(res.data.Error);
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+          }
+
           console.log("Hiring Creation Success!");
-          navigate('/hiring');
+          navigate("/hiring");
           alert("Hiring successfully submitted for approval!");
-          setUpdatePost((prevData) => prevData+1);
+          setUpdatePost((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
         }
@@ -115,11 +136,11 @@ export default function NewHiring({ interests }) {
                 name="jobSalary"
                 onChange={handleChange}
                 type="number"
-                placeholder="Enter job salray $"
+                placeholder="Enter job salray (৳)"
                 required
               />
             </div>
-            
+
             <button>Submit For Approval</button>
           </form>
         </div>

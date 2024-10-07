@@ -59,13 +59,22 @@ export default function Student({
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
-          <Route path="/showcase" element={<Showcase user={user} />} />
-          <Route path="/showcase/post/:postId" element={<Post user={user} />} />
+          <Route
+            path="/showcase"
+            element={<Showcase user={user} admins={admins} />}
+          />
+          <Route
+            path="/showcase/post/:postId"
+            element={<Post user={user} admins={admins} />}
+          />
 
           <Route path="/contest" element={<Contest />} />
           <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
-          <Route path="/contest/submission/:contestId/:participantId" element={<SubmissionPreview />} />
+          <Route
+            path="/contest/submission/:contestId/:participantId"
+            element={<SubmissionPreview />}
+          />
 
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/new" element={<CreateNewWebinar />} />
@@ -81,7 +90,7 @@ export default function Student({
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
           <Route path="/hiring" element={<Hiring />} />
-          <Route path="/hiring/new" element={<NewHiring />} />
+          <Route path="/hiring/new" element={<NewHiring user={user} admins={admins} />} />
           <Route path="/hiring/pending" element={<PendingHirings />} />
           <Route
             path="/hiring/:hiringId"
@@ -89,7 +98,15 @@ export default function Student({
           />
           <Route path="/hiring/edit/:hiringId" element={<EditHiring />} />
 
-          <Route path="/notification" element={<Notification />} />
+          <Route
+            path="/notification"
+            element={
+              <Notification
+                notificationUpdate={notificationUpdate}
+                setNotificationUpdate={setNotificationUpdate}
+              />
+            }
+          />
 
           <Route path="/profile" element={<Profile user={user} />} />
           <Route
@@ -124,9 +141,6 @@ export default function Student({
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
-          
-          
-
         </Routes>
       </div>
     </BrowserRouter>
