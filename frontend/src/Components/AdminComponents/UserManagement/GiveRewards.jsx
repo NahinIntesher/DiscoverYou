@@ -18,8 +18,9 @@ export default function GiveRewards({ user }) {
     // Update the URL to use the correct userId
     axios
       .post(
-        `http://localhost:3000/admin/user-management/reward/new/${userId}`,
+        `http://localhost:3000/admin/user-management/reward/new`,
         {
+          userId: userId,
           rewardName,
         }
       )

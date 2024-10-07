@@ -6,12 +6,14 @@ import dp from "../../../assets/images/default.jpg";
 import "../../../assets/styles/Profile.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import NotFound from "../../CommonComponents/NotFound";
 
 export default function Profile({ user }) {
   const [contestResults, setContestResults] = useState({});
   const [showcaseResults, setShowcaseResults] = useState({});
   const [courseResults, setCourseResults] = useState({});
   const [webinarResults, setWebinarResults] = useState({});
+  const [rewardResults, setRewardResults] = useState({});
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
@@ -23,6 +25,7 @@ export default function Profile({ user }) {
         setShowcaseResults(res.data.showcaseResults);
         setCourseResults(res.data.courseResults);
         setWebinarResults(res.data.webinarResults);
+        setRewardResults(res.data.rewardResults);
       })
       .catch((err) => {
         console.log(err);
@@ -137,6 +140,20 @@ export default function Profile({ user }) {
                 value={user.student_email}
               />
             </ProfileSection>
+          </div>
+          <div>
+            {/* <div>Rewards</div>
+            {rewardResults.length > 0 ? (
+    rewardResults.map((reward, index) => (
+      <div key={index}>
+        <div>{reward.reward_name}</div>
+      </div>
+    ))
+  ) : (
+    <div>No rewards available</div>
+  )} */}
+
+  
           </div>
         </div>
       </div>

@@ -103,7 +103,7 @@ export default function Student({
             path="/community/pending"
             element={<PendingCommunities user={user} />}
           />
-          <Route path="/community/:communityId" element={<SingleCommunity />} />
+          <Route path="/community/:communityId" element={<SingleCommunity user={user}/>} />
 
           <Route path="/course" element={<Course user={user} />} />
           <Route path="/course/material/:materialId" element={<Material />} />

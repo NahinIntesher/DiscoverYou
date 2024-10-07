@@ -99,9 +99,8 @@ module.exports = (router) => {
     });
   });
 
-  router.post("/user-management/reward/:userId", verifyToken, (req, res) => {
-    const { userId } = req.params;
-    const { rewardName } = req.body;
+  router.post("/user-management/reward/new", verifyToken, (req, res) => {
+    const { rewardName, userId } = req.body;
     console.log("Giving reward to user:", userId);
     console.log("Reward Name:", rewardName);
 

@@ -7,7 +7,7 @@ import dp from "../../../assets/images/default.jpg";
 import Header from "../../CommonComponents/Header";
 import MessageBox from "../../CommonComponents/MessageBox";
 
-export default function SingleCommunity({ interests }) {
+export default function SingleCommunity({ user, interests }) {
   const { communityId } = useParams();
   const [community, setCommunity] = useState({});
   const [messages, setMessages] = useState([]);
@@ -91,7 +91,7 @@ export default function SingleCommunity({ interests }) {
       <div className="giveMessageBox">
         <form onSubmit={handleSubmit}>
           <div className="profilePicture">
-            <img src={dp} alt="Default Profile" />
+            <img src={user.student_picture ? user.student_picture : dp} alt="Default Profile" />
           </div>
           <input
             type="text"

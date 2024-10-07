@@ -140,7 +140,16 @@ const SingleContest = () => {
 
     finalData.append("contestId", formData.contestId);
     finalData.append("contestCategory", formData.contestCategory);
-    finalData.append("submissionText", formData.submissionText);
+    if((data.contest.contest_category == "Competitive Programming" || data.contest.contest_category == "Web/App Designing")) {
+      const problemSolutionsString = formData.problemSolutions
+        .map((problem, index) => `Problem ${index + 1} Solution:\n${problem}\n`)
+        .join("\n");
+      finalData.append("submissionText", problemSolutionsString);
+    }
+    else {
+      finalData.append("submissionText", formData.submissionText);
+    }
+
     formData.submissionMedia.forEach((file, index) => {
       finalData.append(`submissionMedia`, file);
     });

@@ -260,6 +260,11 @@ module.exports = (router, multer, bcrypt) => {
         JOIN student s ON s.student_id = cp.participant_id
         WHERE s.student_id = ?`;
 
+    const rewardQuery = `
+        SELECT reward_name
+        FROM rewards
+        WHERE winner_id = ?`;
+
     const showcasePostQuery = `
         SELECT 
             COUNT(DISTINCT sp.post_id) AS total_posts, 
@@ -304,12 +309,13 @@ module.exports = (router, multer, bcrypt) => {
       const queryAsync = promisify(connection.query).bind(connection);
 
       // Execute the queries concurrently
-      const [contestResults, showcaseResults, courseResults, webinarResults] =
+      const [contestResults, showcaseResults, courseResults, webinarResults, rewardResults] =
         await Promise.all([
           queryAsync(contestQuery, [id]),
           queryAsync(showcasePostQuery, [id]),
           queryAsync(courseQuery, [id, id]),
           queryAsync(webinarQuery, [id]),
+          queryAsync(rewardQuery, [id])
         ]);
 
       // Respond with all the results
@@ -319,6 +325,7 @@ module.exports = (router, multer, bcrypt) => {
         showcaseResults: showcaseResults[0],
         courseResults: courseResults[0],
         webinarResults: webinarResults[0],
+        rewardResults: rewardResults[0]
       });
     } catch (err) {
       res

@@ -107,7 +107,7 @@ export default function PendingCommunityBox({
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
         </div>
-        <div className="rejectButton" onClick={DeleteCommunity}>
+        <div className="rejectButton">
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>

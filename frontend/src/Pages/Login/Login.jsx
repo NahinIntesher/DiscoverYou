@@ -180,32 +180,7 @@ export default function LoginPage({ setAuthorized, setUser }) {
               ))}
             </div>
 
-            {/* Remember Me */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    name="remember"
-                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="remember" className="text-black">
-                    Remember me
-                  </label>
-                </div>
-              </div>
 
-              {/* Forgot Password */}
-              <a
-                href="#"
-                className="text-sm font-medium text-blue-800 hover:underline"
-              >
-                Forgot password?
-              </a>
-            </div>
 
             {/* Submit Button */}
             <div className="mb-4 mt-5">
