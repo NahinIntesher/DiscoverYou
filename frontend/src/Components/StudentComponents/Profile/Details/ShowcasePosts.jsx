@@ -6,7 +6,7 @@ import NotFound from "../../../CommonComponents/NotFound";
 import { MaterialSymbol } from 'react-material-symbols';
 import 'react-material-symbols/rounded';
 import Header from "../../../CommonComponents/Header";
-import PostBox from "../../../StudentComponents/Showcase/PostBox"
+import PostBox from "./PostBox"
 
 export default function Showcase({user, admins}) {    
     const [posts, setPosts] = useState([]);

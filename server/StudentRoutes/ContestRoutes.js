@@ -147,6 +147,44 @@ module.exports = (router, multer) => {
     });
   };
 
+
+  router.get("/contests/my", verifyToken, (req, res) => {
+    let userId = req.userId;
+
+    const query = `
+      SELECT 
+        c.contest_name, 
+        c.contest_details, 
+        c.contest_category, 
+        COUNT(c_p.contest_id) AS participant_count, 
+        organizer.organizer_name AS organizer_name,
+        c_p.result_position AS rank
+    FROM 
+        contests c
+    JOIN 
+        contest_participants c_p
+    ON 
+        c.contest_id = c_p.contest_id
+    LEFT JOIN 
+        organizer
+    ON 
+        c.organizer_id = organizer.organizer_id
+    WHERE
+        c_p.participant_id = '${userId}'
+    GROUP BY 
+        c_p.contest_id;
+    `;
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ myContests: result });
+    });
+  });
+  
+
   router.get("/contests/:contestId", verifyToken, async (req, res) => {
     const { contestId } = req.params;
     const userId = req.userId;
@@ -291,41 +329,6 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.get("/contests/my", verifyToken, (req, res) => {
-    let userId = req.userId;
-
-    const query = `
-      SELECT 
-        c.contest_name, 
-        c.contest_details, 
-        c.contest_category, 
-        COUNT(c_p.contest_id) AS participant_count, 
-        organizer.organizer_name AS organizer_name,
-        c_p.result_position AS rank
-    FROM 
-        contests c
-    JOIN 
-        contest_participants c_p
-    ON 
-        c.contest_id = c_p.contest_id
-    LEFT JOIN 
-        organizer
-    ON 
-        c.organizer_id = organizer.organizer_id
-    WHERE
-        c_p.participant_id = '${userId}'
-    GROUP BY 
-        c_p.contest_id;
-    `;
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.json({ message: "Failed" });
-      }
-
-      return res.json({ myContests: result });
-    });
-  });
   
   router.get("/courses/material/:id", (req, res) => {
     const materialId = req.params.id;

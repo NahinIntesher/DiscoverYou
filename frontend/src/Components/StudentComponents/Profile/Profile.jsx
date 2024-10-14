@@ -141,19 +141,26 @@ export default function Profile({ user }) {
               />
             </ProfileSection>
           </div>
-          <div>
-            {/* <div>Rewards</div>
+          <div className="miniBreak"/>
+          <div style={{ textAlign: "left"}}>
+            <div className="contentSemiTitle">Rewards</div>
             {rewardResults.length > 0 ? (
-    rewardResults.map((reward, index) => (
-      <div key={index}>
-        <div>{reward.reward_name}</div>
-      </div>
-    ))
-  ) : (
-    <div>No rewards available</div>
-  )} */}
+              <div className="scrollContainer">
+                {
+                  rewardResults.map((reward, index) => (
+                    <div className="rewardBox" key={index}>
+                      
+                      <MaterialSymbol className="icon" size={90} icon="emoji_events" />
+                      <div className="title">{reward.reward_name}</div>
+                    </div>
+                  ))
+                }
+              </div>
+            ) : (
+              <NotFound message="You have no rewards!" />
+            )}
 
-  
+
           </div>
         </div>
       </div>
@@ -226,9 +233,9 @@ function ContributionBox({
   tertiaryTitle,
   icon,
   linkToRoute,
-}) {  
+}) {
   const navigate = useNavigate();
-  const handleClick  = () => {
+  const handleClick = () => {
     alert('clicked');
     // navigate(`/${linkToRoute}`)
   }

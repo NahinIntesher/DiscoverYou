@@ -325,7 +325,7 @@ module.exports = (router, multer, bcrypt) => {
         showcaseResults: showcaseResults[0],
         courseResults: courseResults[0],
         webinarResults: webinarResults[0],
-        rewardResults: rewardResults[0]
+        rewardResults: rewardResults
       });
     } catch (err) {
       res

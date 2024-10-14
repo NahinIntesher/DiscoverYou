@@ -13,7 +13,9 @@ export default function ContestBox({ id, name, category, details, organizerName,
                 <div className="information">
                     <div className="titleContainer">
                         <div className="title">{name}</div>
+                        { rank &&
                         <div className="title">Rank: {rank}</div>
+                    }
                     </div>
                     <div className="category">
                         {category === "Competitive Programming" && (
