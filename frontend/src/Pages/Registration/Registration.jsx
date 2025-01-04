@@ -218,13 +218,13 @@ export default function AdminRegistrationPage() {
             required
           >
             <option value="student" selected>Student</option>
-            <option value="admin">Admin</option>
+            {/* <option value="admin">Admin</option> */}
             <option value="organizer">Organizer</option>
           </select>
         </div>
 
         {/* Admin Key */}
-        {formData.category === "admin" && (
+        {/* {formData.category === "admin" && (
           <div className="mb-5 relative">
             <label
               htmlFor="adminKey"
@@ -257,7 +257,7 @@ export default function AdminRegistrationPage() {
               {showAdminKey ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Interests */}
         {formData.category === "student" && (

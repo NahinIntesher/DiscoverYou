@@ -102,7 +102,7 @@ export default function HiringBox({
         <div className="hostContainer">
           <Link to={"/profile/"+organizerId} className="host">
             <div className="hostPicture">
-              <img src={organizerPicture?organizerPicture:dp} />
+              <img src={organizerPicture ? organizerPicture : dp} />
             </div>
             <div className="hostDetails">
               <div className="detailTitle">Organized By</div>
