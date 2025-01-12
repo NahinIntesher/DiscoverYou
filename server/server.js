@@ -490,7 +490,7 @@ app.get("/profiles/:userId", verifyToken, (req, res) => {
 
   connection.query(query, [userId], (err, results) => {
     if (err) {
-      throw err;                                  
+      // throw err;
       console.error("Error fetching user data:", err);
       return res.status(500).json({ Error: "Error fetching user data" });
     }
@@ -513,130 +513,210 @@ app.get("/profiles/:userId", verifyToken, (req, res) => {
   });
 });
 
-// app.get("/dynamic-profile/:userId", verifyToken, async (req, res) => {
-//   const userId = req.params.userId;
-//   let userType;
+app.get("/dynamic-profile/:userId", verifyToken, async (req, res) => {
+  const userId = req.params.userId;
+  let userType;
 
-//   if (userId.startsWith("St")) {
-//     userType = "student";
-//   } else if (userId.startsWith("Or")) {
-//     userType = "organizer";
-//   } else if (userId.startsWith("Ad")) {
-//     userType = "admin";
-//   }
+  if (userId.startsWith("St")) {
+    userType = "student";
+  } else if (userId.startsWith("Or")) {
+    userType = "organizer";
+  }
 
-//   if (userType === "student") {
-//     // SQL queries
-//     const contestQuery = `
-//       SELECT
-//           COUNT(cp.contest_id) AS total_contests,
-//           SUM(CASE WHEN cp.result_position = 1 THEN 1 ELSE 0 END) AS rank_1_count,
-//           SUM(CASE WHEN cp.result_position = 2 THEN 1 ELSE 0 END) AS rank_2_count
-//       FROM contest_participants cp
-//       JOIN student s ON s.student_id = cp.participant_id
-//       WHERE s.student_id = ?`;
+  if (userType === "student") {
+    // Student SQL Queries
+    const contestQuery = `
+      SELECT 
+          c.contest_name, 
+          c.contest_details, 
+          c.contest_category, 
+          COUNT(c_p.contest_id) AS participant_count, 
+          organizer.organizer_name AS organizer_name,
+          c_p.result_position AS rank
+      FROM 
+          contests c
+      JOIN 
+          contest_participants c_p
+      ON 
+          c.contest_id = c_p.contest_id
+      LEFT JOIN 
+          organizer
+      ON 
+          c.organizer_id = organizer.organizer_id
+      WHERE
+          c_p.participant_id = ?
+      GROUP BY 
+          c_p.contest_id;`;
 
-//     const showcasePostQuery = `
-//       SELECT
-//           COUNT(sp.post_id) AS total_posts,
-//           COUNT(spr.reaction_id) AS total_reactions
-//       FROM showcase_posts sp
-//       LEFT JOIN showcase_post_reactions spr ON sp.post_id = spr.post_id
-//       WHERE sp.user_id = ?`;
+    const showcasePostQuery = `
+      SELECT 
+          s_p.*, 
+          s.student_name AS user_name,
+          TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
+          IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
+          s_p_m.media_type,
+          (
+            SELECT 
+              GROUP_CONCAT(
+                CONCAT(
+                  '{"media_url": "http://localhost:3000/student/showcase/media/cdn/', s_p_m.media_id, 
+                  '", "media_type": "', s_p_m.media_type, '"}'
+                ) SEPARATOR ', '
+              )
+            FROM 
+              showcase_post_media AS s_p_m
+            WHERE 
+              s_p_m.post_id = s_p.post_id
+          ) AS media_array
+      FROM 
+          showcase_posts AS s_p
+      JOIN 
+          student AS s 
+      ON s_p.user_id = s.student_id
+      LEFT JOIN 
+          showcase_post_media AS s_p_m
+      ON s_p_m.post_id = s_p.post_id
+      LEFT JOIN 
+          showcase_post_reactions AS s_p_r 
+      ON s_p_r.post_id = s_p.post_id
+      LEFT JOIN 
+          showcase_post_comments AS s_p_c 
+      ON s_p_c.post_id = s_p.post_id
+      WHERE
+          s_p.user_id = ?
+      GROUP BY
+          s_p.post_id
+      ORDER BY
+          s_p.post_date_time DESC;`;
 
-//     const courseQuery = `
-//       SELECT COUNT(participant_id) AS course_count
-//       FROM course_participants
-//       WHERE participant_id = ? AND req_for_join_status = 1`;
+    const courseQuery = `
+      SELECT 
+          c.*, 
+          s.student_name AS course_mentor_name,
+          IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS mentor_picture, 
+          c.approval_status
+      FROM 
+          courses AS c
+      JOIN 
+          student AS s ON c.mentor_id = s.student_id
+      LEFT JOIN 
+          course_materials AS c_m ON c.course_id = c_m.course_id
+      LEFT JOIN 
+          course_participants AS c_p ON c.course_id = c_p.course_id AND c_p.req_for_join_status = 1
+      WHERE
+          c_p.participant_id = ?
+      GROUP BY
+          c.course_id;`;
 
-//     const webinarQuery = `
-//       SELECT COUNT(participant_id) AS webinar_count
-//       FROM webinar_participants
-//       WHERE participant_id = ?`;
+    const webinarQuery = `
+      SELECT 
+          w.webinar_name, 
+          w.webinar_description, 
+          w.webinar_category, 
+          COUNT(w_p.webinar_id) AS participant_count, 
+          organizer.organizer_name AS host_name,
+          IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
+      FROM 
+          webinars w
+      JOIN 
+          webinar_participants w_p
+      ON 
+          w.webinar_id = w_p.webinar_id
+      LEFT JOIN 
+          organizer
+      ON 
+          w.host_id = organizer.organizer_id
+      WHERE
+          w_p.participant_id = ?
+      GROUP BY 
+          w_p.webinar_id;`;
 
-//     try {
-//       // Use promisified version of connection.query for cleaner async/await handling
-//       const queryAsync = promisify(connection.query).bind(connection);
+    try {
+      const queryAsync = promisify(connection.query).bind(connection);
 
-//       // Execute the queries concurrently
-//       const [contestResults, showcaseResults, courseResults, webinarResults] =
-//         await Promise.all([
-//           queryAsync(contestQuery, [userId]),
-//           queryAsync(showcasePostQuery, [userId]),
-//           queryAsync(courseQuery, [userId]),
-//           queryAsync(webinarQuery, [userId]),
-//         ]);
+      const [contestResults, showcaseResults, courseResults, webinarResults] =
+        await Promise.all([
+          queryAsync(contestQuery, [userId]),
+          queryAsync(showcasePostQuery, [userId]),
+          queryAsync(courseQuery, [userId]),
+          queryAsync(webinarQuery, [userId]),
+        ]);
 
-//       // Respond with all the results
-//       res.json({
-//         status: "Success",
-//         contestResults: contestResults[0],
-//         showcaseResults: showcaseResults[0],
-//         courseResults: courseResults[0],
-//         webinarResults: webinarResults[0],
-//       });
-//     } catch (err) {
-//       res
-//         .status(500)
-//         .json({ status: "Error fetching data", error: err.message });
-//     }
-//   } else if (userType === "organizer") {
-//       const contestQuery = `
-//           SELECT
-//           c.contest_name, c.contest_category, c.contest_details, COUNT(c.contest_id) AS total_contests,
-//           o.organizer_name AS organizer_name,
-//           IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
-//           FROM contests c
-//           JOIN organizer o ON o.organizer_id = c.organizer_id
-//           WHERE c.organizer_id = ?`;
+      res.json({
+        status: "Success",
+        contestResults: contestResults,
+        showcaseResults: showcaseResults,
+        courseResults: courseResults,
+        webinarResults: webinarResults,
+      });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ status: "Error fetching data", error: err.message });
+    }
+  } else if (userType === "organizer") {
+    // Organizer SQL Queries
+    const contestQuery = `
+      SELECT
+        c.contest_name, 
+        c.contest_category, 
+        c.contest_details, 
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+    FROM contests c
+    LEFT JOIN organizer o ON o.organizer_id = c.organizer_id
+    WHERE c.organizer_id = ?
+    GROUP BY c.contest_name, c.contest_category, c.contest_details, o.organizer_name, o.organizer_picture;`;
 
-//       const webinarQuery = `
-//           SELECT
-//           w.webinar_name, w.webinar_category, w.webinar_description, COUNT(w.webinar_id) AS total_webinars,
-//           o.organizer_name AS host_name,
-//           IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS host_picture
-//           FROM webinars w
-//           JOIN organizer o ON o.organizer_id = w.host_id
-//           WHERE w.host_id = ?`;
+    const webinarQuery = `
+      SELECT
+        w.webinar_name, 
+        w.webinar_category, 
+        w.webinar_description, 
+        o.organizer_name AS host_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS host_picture
+    FROM webinars w
+    JOIN organizer o ON o.organizer_id = w.host_id
+    WHERE w.host_id = ?`;
 
-//       const hiringQuery = `
-//           SELECT
-//           h.company_name, h.job_name, h.job_category, h.job_description, COUNT(h.hiring_id) AS total_hirings,
-//           o.organizer_name AS organizer_name,
-//           IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
-//           FROM hirings h
-//           JOIN organizer o ON o.organizer_id = h.organizer_id
-//           WHERE h.organizer_id = ?`;
+    const hiringQuery = `
+      SELECT
+        h.company_name, 
+        h.job_name, 
+        h.job_category, 
+        h.job_description, 
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+    FROM hirings h
+    JOIN organizer o ON o.organizer_id = h.organizer_id
+    WHERE h.organizer_id = ?`;
 
-//     try {
-//       // Use promisified version of connection.query for cleaner async/await handling
-//       const queryAsync = promisify(connection.query).bind(connection);
+    try {
+      const queryAsync = promisify(connection.query).bind(connection);
 
-//       // Execute the queries concurrently
-//       const [contestResults, webinarResults, hiringResults] = await Promise.all(
-//         [
-//           queryAsync(contestQuery, [userId]),
-//           queryAsync(webinarQuery, [userId]),
-//           queryAsync(hiringQuery, [userId]),
-//         ]
-//       );
+      const [contestResults, webinarResults, hiringResults] = await Promise.all(
+        [
+          queryAsync(contestQuery, [userId]),
+          queryAsync(webinarQuery, [userId]),
+          queryAsync(hiringQuery, [userId]),
+        ]
+      );
 
-//       // Respond with all the results
-//       res.json({
-//         status: "Success",
-//         contestResults: contestResults,
-//         webinarResults: webinarResults,
-//         hiringResults: hiringResults,
-//       });
-//     } catch (err) {
-//       res
-//         .status(500)
-//         .json({ status: "Error fetching data", error: err.message });
-//     }
-//   } else if (userType === "admin") {
-//     res.json({ status: "Admin profile data" });
-//   }
-// });
+      res.json({
+        status: "Success",
+        contestResults: contestResults,
+        webinarResults: webinarResults,
+        hiringResults: hiringResults,
+      });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ status: "Error fetching data", error: err.message });
+    }
+  } else {
+    res.status(400).json({ status: "Invalid user type" });
+  }
+});
 
 // Start the server
 const port = 3000;

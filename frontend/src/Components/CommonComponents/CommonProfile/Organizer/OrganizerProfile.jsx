@@ -73,7 +73,7 @@ export default function OrganizerProfile({ user }) {
               count={webinarResults.total_webinars}
               title="Webinars Organized"
               icon="patient_list"
-              linkToRoute={`webinarResults${user.id}`}
+              linkToRoute={`webinarResults/${user.id}`}
             />
           </div>
           <div className="profileDetailsSectionContainer">

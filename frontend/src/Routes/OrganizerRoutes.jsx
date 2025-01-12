@@ -40,6 +40,10 @@ import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview"
 import CreateNewContest from "../Components/OrganizerComponents/Contest/CreateNewContest";
 import PendingContest from "../Components/OrganizerComponents/Contest/PendingContest";
 
+import CommonWebinarHosted from "../Components/CommonComponents/CommonProfile/Organizer/Details/WebinarHosted";
+import CommonContestOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/ContestOrganized";
+import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
+
 export default function Student({
   handleLogout,
   user,
@@ -92,7 +96,10 @@ export default function Student({
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
           <Route path="/hiring" element={<Hiring />} />
-          <Route path="/hiring/new" element={<NewHiring user={user} admins={admins} />} />
+          <Route
+            path="/hiring/new"
+            element={<NewHiring user={user} admins={admins} />}
+          />
           <Route path="/hiring/pending" element={<PendingHirings />} />
           <Route
             path="/hiring/:hiringId"
@@ -140,6 +147,19 @@ export default function Student({
           <Route
             path="/profile/hiringResults"
             element={<HigingOrganized user={user} />}
+          />
+
+          <Route
+            path="/profile/webinarResults/:paramId"
+            element={<CommonWebinarHosted />}
+          />
+          <Route
+            path="/profile/contestResults/:paramId"
+            element={<CommonContestOrganized />}
+          />
+          <Route
+            path="/profile/hiringResults/:paramId"
+            element={<CommonHiringOrganized />}
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />

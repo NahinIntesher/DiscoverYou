@@ -87,7 +87,7 @@ export default function StudentProfile({ user, interests }) {
               icon="auto_stories"
               secondaryCount={courseResults.course_count}
               secondaryTitle="Completed"
-              linkToRoute="courseResults"
+              linkToRoute={`courseResults/${user.id}`}
             />
             <ContributionBox
               count={showcaseResults.total_posts}

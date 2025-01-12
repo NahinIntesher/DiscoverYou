@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -52,6 +51,10 @@ import Checkout from "../Components/StudentComponents/Marketplace/Checkout";
 import OrderHistory from "../Components/StudentComponents/Marketplace/OrderHistory";
 import SubmissionPreview from "../Components/CommonComponents/SubmissionPreview";
 import CommonProfile from "../Components/CommonComponents/CommonProfile/CommonProfile";
+import CommonCourseParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/CourseParticipated";
+import CommonWebinarParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/WebinarParticipated";
+import CommonContestParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/ContestParticipated";
+import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
 
 export default function Student({
   handleLogout,
@@ -73,15 +76,24 @@ export default function Student({
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
 
-          <Route path="/showcase" element={<Showcase user={user} admins={admins} />} />
-          <Route path="/showcase/post/:postId" element={<Post user={user} admins={admins}/>} />
+          <Route
+            path="/showcase"
+            element={<Showcase user={user} admins={admins} />}
+          />
+          <Route
+            path="/showcase/post/:postId"
+            element={<Post user={user} admins={admins} />}
+          />
           <Route
             path="/showcase/reactors/:postId"
             element={<ShowcaseReactors user={user} />}
           />
 
           <Route path="/contest" element={<Contest />} />
-          <Route path="/contest/submission/:contestId/:participantId" element={<SubmissionPreview />} />
+          <Route
+            path="/contest/submission/:contestId/:participantId"
+            element={<SubmissionPreview />}
+          />
           <Route path="/contest/:contestId" element={<SingleContest />} />
 
           <Route path="/community" element={<Community user={user} />} />
@@ -103,7 +115,10 @@ export default function Student({
             path="/community/pending"
             element={<PendingCommunities user={user} />}
           />
-          <Route path="/community/:communityId" element={<SingleCommunity user={user}/>} />
+          <Route
+            path="/community/:communityId"
+            element={<SingleCommunity user={user} />}
+          />
 
           <Route path="/course" element={<Course user={user} />} />
           <Route path="/course/material/:materialId" element={<Material />} />
@@ -132,7 +147,13 @@ export default function Student({
           <Route path="/marketplace" element={<Marketplace />} />
           <Route
             path="/marketplace/add-product"
-            element={<AddProduct interests={user.interests} user={user} admins={admins} />}
+            element={
+              <AddProduct
+                interests={user.interests}
+                user={user}
+                admins={admins}
+              />
+            }
           />
           <Route
             path="/marketplace/pending-products"
@@ -199,14 +220,29 @@ export default function Student({
           />
           <Route
             path="/profile/showcaseResults"
-            element={<ShowcasePosts user={user} admins={admins}/>}
+            element={<ShowcasePosts user={user} admins={admins} />}
+          />
+
+
+          <Route
+            path="/profile/courseResults/:paramId"
+            element={<CommonCourseParticipated  />}
+          />
+          <Route
+            path="/profile/webinarResults/:paramId"
+            element={<CommonWebinarParticipated />}
+          />
+          <Route
+            path="/profile/contestResults/:paramId"
+            element={<CommonContestParticipated />}
+          />
+          <Route
+            path="/profile/showcaseResults/:paramId"
+            element={<CommonShowcasePosts />}
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
-
-          {/* <Route path="/profile/coursResults/:paramId" element={<CommonCourseParticipated />} />
-          <Route path="/profile/webinarResults/:paramId" element={<CommonWebinarParticipated />} />
-          <Route path="/profile/contestResults/:paramId" element={<CommonContestParticipated />} /> */}
+        
         </Routes>
       </div>
     </BrowserRouter>
