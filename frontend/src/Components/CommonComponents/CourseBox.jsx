@@ -150,10 +150,12 @@ export default function CourseBox({
           <div className="organizerPicture">
             <img src={mentorPicture ? mentorPicture : dp} />
           </div>
-          <div className="organizerDetails">
-            <div className="detailTitle">Mentored By</div>
-            <div className="detailInfo">{mentorName}</div>
-          </div>
+          <Link to={"/profile/" + mentorId}>
+            <div className="organizerDetails">
+              <div className="detailTitle">Mentored By</div>
+              <div className="detailInfo">{mentorName}</div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

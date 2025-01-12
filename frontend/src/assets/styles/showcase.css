@@ -218,6 +218,10 @@
 
 
 
+.postContentContainer{
+    cursor: pointer;
+}
+
 .postBoxContainer {
     margin: 10px;
     text-align: center;

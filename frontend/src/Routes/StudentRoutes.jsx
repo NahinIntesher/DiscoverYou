@@ -203,6 +203,10 @@ export default function Student({
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
+
+          {/* <Route path="/profile/coursResults/:paramId" element={<CommonCourseParticipated />} />
+          <Route path="/profile/webinarResults/:paramId" element={<CommonWebinarParticipated />} />
+          <Route path="/profile/contestResults/:paramId" element={<CommonContestParticipated />} /> */}
         </Routes>
       </div>
     </BrowserRouter>

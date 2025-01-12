@@ -4,6 +4,7 @@ import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function UserBox({
   id,
@@ -17,6 +18,7 @@ export default function UserBox({
   refreshUsers,
 }) {
   const navigate = useNavigate();
+  const [deleteBoxActive, setDeleteBoxActive] = useState(false);
 
   function handleDeleteProfile() {
     axios
@@ -55,19 +57,47 @@ export default function UserBox({
           <div>Address: {address}</div>
         </div>
       </div>
+
+      {/* Dialogbox for delete confirmation */}
+      <div className={deleteBoxActive ? "dialogBoxBackground" : "none"}>
+        <div className="dialogBox">
+          <div className="title">Delete Account</div>
+          <div className="details">
+            Do you want to delete this user permanently?
+          </div>
+          <div className="buttonContainer">
+            <div className="button" onClick={handleDeleteProfile}>
+              Yes
+            </div>
+            <div
+              className="buttonAlt"
+              onClick={() => {
+                setDeleteBoxActive(false);
+              }}
+            >
+              Cancel
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div className="buttonContainer">
         {id[0] === "S" && (
-          <Link to={`/user-management/give-reward/${id}`} className="defaultButton">
+          <Link
+            to={`/user-management/give-reward/${id}`}
+            className="defaultButton"
+          >
             <MaterialSymbol className="icon" size={22} icon="person" />
             Give Rewards
           </Link>
         )}
         <Link to={`/profile/${id}`} className="acceptButton ">
           <MaterialSymbol className="icon" size={22} icon="person" />
-          View  Profile
+          View Profile
         </Link>
         {id[0] !== "A" && (
-          <div onClick={handleDeleteProfile} className="rejectButton">
+          <div onClick={()=> {setDeleteBoxActive(true)}} className="rejectButton">
             <MaterialSymbol className="icon" size={22} icon="close" />
             Delete User
           </div>

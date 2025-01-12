@@ -32,6 +32,7 @@ export default function PreviousWebinar() {
             details={webinar.webinar_details}
             category={webinar.webinar_category}
             host={webinar.host_name}
+            hostId={webinar.host_id}
             date={webinar.start_time}
             startTime={webinar.start_time}
             endTime={webinar.end_time}

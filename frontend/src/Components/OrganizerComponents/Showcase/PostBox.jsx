@@ -4,6 +4,7 @@ import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function PostBox({
   postId,
@@ -23,6 +24,7 @@ export default function PostBox({
   const [isReacted, setIsReacted] = useState(isPostReacted);
   const [reactionCount, setReactionCount] = useState(postReactionCount);
   const [reportBoxActive, setReportBoxActive] = useState(false);
+  const navigate = useNavigate();
 
   function calculatePostAgoTime(timeDifference) {
     if (timeDifference < 60) {
@@ -166,43 +168,50 @@ export default function PostBox({
           </div>
         </div>
       </div>
-      <div className="postContent">{postContent}</div>
-      {postMediaArray[0] != null && (
-        <div className="mediaContainer">
-          {postMediaArray.map(function (postMedia, index) {
-            if (postMedia.media_type.split("/")[0] == "image") {
-              return <img key={index} src={postMedia.media_url} />;
-            } else if (postMedia.media_type.split("/")[0] == "audio") {
-              return (
-                <div key={index} className="audioContainer">
-                  <MaterialSymbol
-                    className="icon"
-                    size={120}
-                    icon="music_cast"
-                  />
-                  <audio controls>
+
+      <div
+        onClick={() => navigate("/showcase/post/" + postId)}
+        className="postContentContainer"
+      >
+        <div className="postContent">{postContent}</div>
+        {postMediaArray[0] != null && (
+          <div className="mediaContainer">
+            {postMediaArray.map(function (postMedia, index) {
+              if (postMedia.media_type.split("/")[0] == "image") {
+                return <img key={index} src={postMedia.media_url} />;
+              } else if (postMedia.media_type.split("/")[0] == "audio") {
+                return (
+                  <div key={index} className="audioContainer">
+                    <MaterialSymbol
+                      className="icon"
+                      size={120}
+                      icon="music_cast"
+                    />
+                    <audio controls>
+                      <source
+                        src={postMedia.media_url}
+                        type={postMedia.media_type}
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                );
+              } else if (postMedia.media_type.split("/")[0] == "video") {
+                return (
+                  <video controls key={index}>
                     <source
                       src={postMedia.media_url}
                       type={postMedia.media_type}
                     />
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-              );
-            } else if (postMedia.media_type.split("/")[0] == "video") {
-              return (
-                <video controls key={index}>
-                  <source
-                    src={postMedia.media_url}
-                    type={postMedia.media_type}
-                  />
-                  Your browser does not support the video element.
-                </video>
-              );
-            }
-          })}
-        </div>
-      )}
+                    Your browser does not support the video element.
+                  </video>
+                );
+              }
+            })}
+          </div>
+        )}
+      </div>
+      
       <div className="postDetails">
         <div className="detail">{reactionCount} Likes</div>
         <div className="divider"></div>

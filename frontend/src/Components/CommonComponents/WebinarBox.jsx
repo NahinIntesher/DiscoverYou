@@ -5,6 +5,7 @@ import "react-material-symbols/rounded";
 import dp from "../../assets/images/default.jpg";
 import ContestTimeRemaining from "./contestTimeRemaining";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function WebinarBox({
   id,
@@ -15,6 +16,7 @@ export default function WebinarBox({
   meetingLink,
   hostPicture,
   host,
+  hostId,
   startTime,
   endTime,
   participants,
@@ -138,10 +140,12 @@ export default function WebinarBox({
             <div className="hostPicture">
               <img src={hostPicture ? hostPicture : dp} />
             </div>
-            <div className="hostDetails">
-              <div className="detailTitle">Organized By</div>
-              <div className="detailInfo">{host}</div>
-            </div>
+            <Link to={"/profile/" + hostId} >
+              <div className="hostDetails">
+                <div className="detailTitle">Organized By</div>
+                <div className="detailInfo">{host}</div>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="joinButtonContainer">
