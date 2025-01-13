@@ -22,7 +22,7 @@ export default function HiringOrganized({user}) {
 
     return (
         <div className="mainContent">
-            <Header title={`Hirings organized by ${user.organizer_name}`}/>
+            <Header title={`Hirings organized`} semiTitle={`by ${user.organizer_name}`}/>
             <div className="tabContent">
                 {
                 myHiring.length > 0 ?

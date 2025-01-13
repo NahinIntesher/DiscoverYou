@@ -41,7 +41,7 @@ export default function CommonContestOrganized({}) {
 
   return (
     <div className="mainContent">
-      <Header title={`Contest organized by ${user.name}`} />
+      <Header title={paramId.startsWith("St") ? `Contest Participated` : "Contest Organized"} semiTitle={ `By ${user.name}`} />
       <div className="tabContent">
         {contestResults.length > 0 ? (
           contestResults.map(function (contest) {

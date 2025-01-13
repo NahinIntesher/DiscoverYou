@@ -44,6 +44,10 @@ import CommonWebinarHosted from "../Components/CommonComponents/CommonProfile/Or
 import CommonContestOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/ContestOrganized";
 import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
 
+import CommonCourseParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/CourseParticipated";
+import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
+
+
 export default function Student({
   handleLogout,
   user,
@@ -160,6 +164,15 @@ export default function Student({
           <Route
             path="/profile/hiringResults/:paramId"
             element={<CommonHiringOrganized />}
+          />
+
+          <Route
+            path="/profile/courseResults/:paramId"
+            element={<CommonCourseParticipated />}
+          />
+          <Route
+            path="/profile/showcaseResults/:paramId"
+            element={<CommonShowcasePosts />}
           />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />

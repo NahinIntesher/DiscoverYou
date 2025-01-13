@@ -21,7 +21,7 @@ export default function ContestOrganized({user}) {
 
     return (
         <div className="mainContent">
-            <Header title={`Contest organized by ${user.organizer_name}`}/>
+            <Header title={`Contest organized`} semiTitle={`by ${user.organizer_name}`}/>
             <div className="tabContent">
                 {
                 myContests.length > 0 ?

@@ -22,7 +22,7 @@ export default function WebinarOrganized({user}) {
 
     return (
         <div className="mainContent">
-            <Header title={`Webinar hosted by ${user.organizer_name}`}/>
+            <Header title={`Webinar hosted`} semiTitle={`by ${user.organizer_name}`}/>
             <div className="tabContent">
                 {
                 myWebinars.length > 0 ?

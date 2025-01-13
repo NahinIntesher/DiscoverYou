@@ -25,7 +25,7 @@ export default function ContestParticipated({user}) {
 
     return (
         <div className="mainContent">
-            <Header title={`Contest participated by ${user.student_name}`}/>
+            <Header title={`Contest participated`} semiTitle={`by ${user.student_name}`}/>
             <div className="tabContent">
                 <div className="cousreSemiTitle">Participated Contests</div>
                 {
