@@ -25,7 +25,7 @@ export default function WebinarParticipated({user}) {
 
     return (
         <div className="mainContent">
-            <Header title={`Webinar participated by ${user.student_name}`}/>
+            <Header title={`Webinar participated`} semiTitle={`by ${user.student_name}`}/>
             <div className="tabContent">
                 <div className="cousreSemiTitle">Participated Webinars</div>
                 {

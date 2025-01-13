@@ -99,12 +99,12 @@ export default function EnrolledCourseBox({ id, name, category, description, men
                     </div>
                 </div>
             </div>
-            <div className="progressBarContainer">
+            {/* <div className="progressBarContainer">
                 <div className="progressBar" style={{backgroundImage: "conic-gradient(rgb(var(--medium)), rgb(var(--dark)), rgb(var(--medium)) "+completedPercentage+"%, rgba(0,0,0,0.15) 0)"}}>
                     <div className="progress">{parseInt(completedPercentage)}%</div>
                 </div>
                 <div className="name">Completed</div>
-            </div>
+            </div> */}
         </div>
     )
 }

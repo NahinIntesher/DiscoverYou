@@ -55,6 +55,7 @@ import CommonCourseParticipated from "../Components/CommonComponents/CommonProfi
 import CommonWebinarParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/WebinarParticipated";
 import CommonContestParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/ContestParticipated";
 import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
+import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
 
 export default function Student({
   handleLogout,
@@ -144,7 +145,7 @@ export default function Student({
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
-          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace" element={<Marketplace user={user}/>} />
           <Route
             path="/marketplace/add-product"
             element={
@@ -166,7 +167,7 @@ export default function Student({
           />
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
-          <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring" element={<Hiring user={user}/>} />
           <Route
             path="/hiring/applications"
             element={<PendingApplications />}
@@ -226,7 +227,7 @@ export default function Student({
 
           <Route
             path="/profile/courseResults/:paramId"
-            element={<CommonCourseParticipated  />}
+            element={<CommonCourseParticipated />}
           />
           <Route
             path="/profile/webinarResults/:paramId"
@@ -240,9 +241,13 @@ export default function Student({
             path="/profile/showcaseResults/:paramId"
             element={<CommonShowcasePosts />}
           />
+          <Route
+            path="/profile/hiringResults/:paramId"
+            element={<CommonHiringOrganized />}
+          />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
-        
+
         </Routes>
       </div>
     </BrowserRouter>

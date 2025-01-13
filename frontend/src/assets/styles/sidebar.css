@@ -308,6 +308,26 @@ body {
     text-align: center;
 }
 
+.filterBoxCommunity {
+    max-width: 980px;
+}
+.searchBox {
+    background-color: rgba(255,255,255,0.5);
+    padding: 8px 14px;
+    border-radius: 10px;
+    width: 280px;
+    text-align: left;
+}
+.searchBox .icon, input {
+    display: inline-block;
+    vertical-align: middle;
+}
+.searchBox input {
+    font-size: 15px;
+    padding: 2px 8px;
+    background-color: transparent;
+    outline: 0;
+}
 
 @media screen and (min-width: 1600px) {
     .sideMenu {

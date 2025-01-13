@@ -42,7 +42,7 @@ export default function CommonHiringOrganized({}) {
 
   return (
     <div className="mainContent">
-      <Header title={`Hirings organized by ${user.name}`} />
+      <Header title={`Hirings organized`} semiTitle={`By ${user.name}`} />
       <div className="tabContent">
         {hiringResults.length > 0 ? (
           hiringResults.map(function (hiring) {

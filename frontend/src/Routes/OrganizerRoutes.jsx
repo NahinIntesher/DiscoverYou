@@ -87,7 +87,7 @@ export default function Student({
           <Route path="/webinar/pending" element={<PendingWebinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
-          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace" element={<Marketplace user={user}/>} />
           <Route path="/marketplace/product/:productId" element={<Product />} />
           <Route
             path="/marketplace/checkout/:productId"
@@ -95,7 +95,7 @@ export default function Student({
           />
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
-          <Route path="/hiring" element={<Hiring />} />
+          <Route path="/hiring" element={<Hiring user={user}/>} />
           <Route
             path="/hiring/new"
             element={<NewHiring user={user} admins={admins} />}

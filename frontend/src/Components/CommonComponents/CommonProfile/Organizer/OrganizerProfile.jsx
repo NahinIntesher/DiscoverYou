@@ -122,8 +122,8 @@ function ContributionBox({ count, title, icon, linkToRoute }) {
     <Link to={`/profile/${linkToRoute}`} className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
-      <div className="texts">
-        <div className="count text-center">{count}</div>
+      <div className="texts text-center">
+        <div className="count">{count}</div>
         <div className="title">{title}</div>
       </div>
     </Link>

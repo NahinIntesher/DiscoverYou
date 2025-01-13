@@ -42,7 +42,7 @@ export default function CourseParticipated({}) {
 
   return (
     <div className="mainContent">
-      <Header title={`Courses participated by ${user.name}`} />
+      <Header title={`Courses Participated`} semiTitle={`By ${user.name}`} />
       <div className="tabContent">
         <div className="cousreSemiTitle">Enrolled Courses</div>
         {courseResults.length > 0 ? (

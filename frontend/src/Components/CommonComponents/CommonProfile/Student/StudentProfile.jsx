@@ -193,14 +193,14 @@ function ContributionBox({
   linkToRoute,
 }) {
   return (
-    <div className="contributionBox">
+    <Link to={`/profile/${linkToRoute}`} className="contributionBox">
       <MaterialSymbol className="icon" size={50} icon={icon} />
       <MaterialSymbol className="floatedIcon" size={180} icon={icon} />
       <div className="texts">
         <div className="count">{count}</div>
         <div className="title">{title}</div>
       </div>
-      <Link to={`/profile/${linkToRoute}`} className="secondDetail">
+      <div className="secondDetail">
         <div className="spanContainer">
           <span className="count">{secondaryCount}</span>
           <span className="title">{secondaryTitle}</span>
@@ -210,7 +210,7 @@ function ContributionBox({
           <span className="count">{tertiaryCount}</span>
           <span className="title">{tertiaryTitle}</span>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

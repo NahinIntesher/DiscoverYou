@@ -681,6 +681,7 @@ app.get("/dynamic-profile/:userId", verifyToken, async (req, res) => {
 
     const hiringQuery = `
       SELECT
+        h.hiring_id,
         h.company_name, 
         h.job_name, 
         h.job_category, 

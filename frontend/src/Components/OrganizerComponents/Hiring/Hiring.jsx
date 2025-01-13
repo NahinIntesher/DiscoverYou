@@ -84,7 +84,7 @@ export default function Hiring({ user }) {
           All Hirings
         </div>
       </div>
-      {activeTab == "allHirings" && <AllHiring />}
+      {activeTab == "allHirings" && <AllHiring user={user} />}
       {activeTab == "myHirings" && <MyHirings />}
     </div>
   );

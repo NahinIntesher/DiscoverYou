@@ -12,7 +12,7 @@ import MyProducts from "./MyProducts";
 import CartProductBox from "./CartProductBox";
 import NotFound from "../../CommonComponents/NotFound";
 
-export default function Marketplace() {
+export default function Marketplace({user}) {
     const [pendingProductNo, setPendingProductNo] = useState(0);
     const [activeTab, setActiveTab] = useState(["browseProducts"]);
     const [isCartActive, setCartActive] = useState(false);
@@ -136,7 +136,7 @@ export default function Marketplace() {
                 <div className={activeTab == "browseProducts" ? "activeTab" : "tab"} onClick={function(){setActiveTab("browseProducts")}}>Browse Products</div>
             </div>
             {activeTab == "myProducts" && <MyProducts/>}
-            {activeTab == "browseProducts" && <BrowseProducts/>}
+            {activeTab == "browseProducts" && <BrowseProducts user={user}/>}
         </div>
     );
 }

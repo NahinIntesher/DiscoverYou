@@ -55,7 +55,7 @@ export default function Showcase({user, admins}) {
     
     return (
         <div className="mainContent">
-            <Header title={`Webinar participated by ${user.student_name}`}/>
+            <Header title={"Showcase Posts"} semiTitle={`By ${user.name}`} />
             <div className="postBoxContainer">
             {
                 posts.length > 0 ?

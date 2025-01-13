@@ -45,7 +45,7 @@ export default function CommonShowcasePosts({}) {
 
   return (
     <div className="mainContent">
-      <Header title={`Webinar participated by ${user.name}`} />
+      <Header title={"Showcase Posts"} semiTitle={`By ${user.name}`} />
       <div className="postBoxContainer">
         {showcaseResults.length > 0 ? (
           showcaseResults.map(function (post) {
