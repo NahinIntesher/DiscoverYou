@@ -13,10 +13,10 @@ module.exports = (router) => {
     });
   };
 
-
   router.get("/contests/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
-    connection.query(`SELECT 
+    connection.query(
+      `SELECT 
       c.contest_id, c.contest_name
       FROM 
         contests AS c
@@ -24,7 +24,8 @@ module.exports = (router) => {
         c.organizer_id = '${userId}' AND c.result_given = 0 AND c.approval_status = 1`,
       (err, resultPendingResults) => {
         if (err) throw err;
-        connection.query(`SELECT 
+        connection.query(
+          `SELECT 
       c.contest_id
       FROM 
         contests AS c
@@ -34,10 +35,12 @@ module.exports = (router) => {
             if (err) throw err;
             return res.json({
               contestPendingNo: contestPendingResults.length,
-              resultPending: resultPendingResults
+              resultPending: resultPendingResults,
             });
-          });
-      });
+          }
+        );
+      }
+    );
   });
 
   router.get("/contests/ongoing", verifyToken, (req, res) => {
@@ -185,7 +188,6 @@ module.exports = (router) => {
     });
   });
 
-
   router.get("/contests/profile", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -319,7 +321,7 @@ module.exports = (router) => {
       // Fetch contest details
       const contestResults = await queryPromise(contestQuery, [
         userId,
-        contestId
+        contestId,
       ]);
       // if (contestResults.length === 0) {
       //   return res.json({ Error: "Contest not found" });
@@ -331,14 +333,15 @@ module.exports = (router) => {
 
       // Fetch contest participants
       const participantsResults = await queryPromise(participantsQuery, [
-        contestId, contestId
+        contestId,
+        contestId,
       ]);
 
       // Combine and return the results
       return res.json({
         contest,
         problems: problemsResults,
-        participants: participantsResults
+        participants: participantsResults,
       });
     } catch (error) {
       console.error("Error fetching contest data:", error);
@@ -346,76 +349,100 @@ module.exports = (router) => {
     }
   });
 
+  router.post("/contests/give-result", verifyToken, (req, res) => {
+    const { participants, contestId } = req.body;
 
-  router.post(
-    "/contests/give-result",
-    verifyToken,
-    (req, res) => {
-      const { participants, contestId } = req.body;
+    // console.log(participants);
 
-      console.log(participants);
+    // console.log(contestId);
 
-      console.log(contestId);
-
-      participants.forEach(participant => {
-        connection.query(
-          `UPDATE contest_participants SET result_position = ? 
-        WHERE participant_id = ? AND contest_id = ?;`,
-          [participant.result_position, participant.participant_id, contestId],
-          (err, results) => {
-            if (err) throw err;
-          }
-        );
-      });
-
+    participants.forEach((participant) => {
       connection.query(
-        `UPDATE contests SET result_given = 1 
-        WHERE contest_id = ?;`,
-        [contestId],
+        `UPDATE contest_participants SET result_position = ? 
+        WHERE participant_id = ? AND contest_id = ?;`,
+        [participant.result_position, participant.participant_id, contestId],
         (err, results) => {
           if (err) throw err;
-          return res.json({ status: "Success" });
         }
       );
-    }
-  );
-
-
-  router.post(
-    "/contest/new",
-    verifyToken,
-    (req, res) => {
-        const userId = req.userId;
-
-        const { contestName, contestCategory, contestDescription, startTime, endTime, problems } = req.body;
-  
+      const pointsGot = Number(participant.points_got) || 0;
+      console.log("Points got: " + pointsGot);
+      if (participant.points_got != 0) {
         connection.query(
-          `INSERT INTO contests (contest_name, contest_category, contest_details, start_time, end_time, organizer_id)
-          VALUES (?, ?, ?, ?, ?, ?)`,
-          [contestName, contestCategory, contestDescription, startTime, endTime, userId],
+          `UPDATE student SET student_points = student_points + ?
+            WHERE student_id = ?;`,
+          [pointsGot, participant.participant_id],
           (err, results) => {
             if (err) throw err;
-            if(contestCategory == "Competitive Programming" || contestCategory == "Web/App Designing") {
-              let contestId = results.insertId;
-
-              problems.forEach(problem => {
-                connection.query(
-                  `INSERT INTO contest_problems (contest_id, problem_name, problem_description, sample_input, sample_output)
-                  VALUES(?,?,?,?,?);`,
-                  [contestId, problem.problemName, problem.problemDescription, problem.sampleInput, problem.sampleOutput],
-                  (err, results) => {
-                    if (err) throw err;
-                  }
-                );
-              });
-
-              return res.json({ status: "Success" });
-            }
-            else {
-              return res.json({ status: "Success" });
-            }
           }
         );
-    }
-  );
+      }
+    });
+
+    connection.query(
+      `UPDATE contests SET result_given = 1 
+        WHERE contest_id = ?;`,
+      [contestId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });
+
+  router.post("/contest/new", verifyToken, (req, res) => {
+    const userId = req.userId;
+
+    const {
+      contestName,
+      contestCategory,
+      contestDescription,
+      startTime,
+      endTime,
+      problems,
+    } = req.body;
+
+    connection.query(
+      `INSERT INTO contests (contest_name, contest_category, contest_details, start_time, end_time, organizer_id)
+          VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        contestName,
+        contestCategory,
+        contestDescription,
+        startTime,
+        endTime,
+        userId,
+      ],
+      (err, results) => {
+        if (err) throw err;
+        if (
+          contestCategory == "Competitive Programming" ||
+          contestCategory == "Web/App Designing"
+        ) {
+          let contestId = results.insertId;
+
+          problems.forEach((problem) => {
+            connection.query(
+              `INSERT INTO contest_problems (contest_id, problem_name, problem_description, sample_input, sample_output)
+                  VALUES(?,?,?,?,?);`,
+              [
+                contestId,
+                problem.problemName,
+                problem.problemDescription,
+                problem.sampleInput,
+                problem.sampleOutput,
+              ],
+              (err, results) => {
+                if (err) throw err;
+              }
+            );
+          });
+
+          return res.json({ status: "Success" });
+        } else {
+          return res.json({ status: "Success" });
+        }
+      }
+    );
+  });
 };

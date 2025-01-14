@@ -48,6 +48,8 @@ import CommonCourseParticipated from "../Components/CommonComponents/CommonProfi
 import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
 
 
+import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
+
 export default function Student({
   handleLogout,
   user,
@@ -174,6 +176,9 @@ export default function Student({
             path="/profile/showcaseResults/:paramId"
             element={<CommonShowcasePosts />}
           />
+
+          <Route path="/message" element={<MessaengerHome user={user}/>} />
+            
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
         </Routes>

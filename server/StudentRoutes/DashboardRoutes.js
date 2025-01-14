@@ -116,7 +116,7 @@ module.exports = (router, multer, bcrypt) => {
             s.student_id
         ORDER BY 
             points DESC
-        LIMIT 10;`;
+        LIMIT 15;`;
 
     try {
       const queryAsync = promisify(connection.query).bind(connection);

@@ -157,7 +157,7 @@ module.exports = (router) => {
 
       ORDER BY 
           Date DESC
-      LIMIT 10;
+      LIMIT 15;
     `;
 
     connection.query(

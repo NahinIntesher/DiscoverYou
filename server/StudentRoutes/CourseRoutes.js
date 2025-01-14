@@ -4,7 +4,6 @@ const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
 module.exports = (router, multer) => {
-  
   router.get("/course", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -101,7 +100,7 @@ module.exports = (router, multer) => {
       c.course_id;    
       `;
 
-      const query2 = `SELECT 
+    const query2 = `SELECT 
       c.*, 
       s.student_name AS course_mentor_name,
       IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS mentor_picture,
@@ -158,7 +157,7 @@ module.exports = (router, multer) => {
         if (err) throw err;
         return res.json({
           myCourses: myCourseResults,
-          enrolledCourses: enrolledCourseResult
+          enrolledCourses: enrolledCourseResult,
         });
       });
     });
@@ -192,7 +191,8 @@ module.exports = (router, multer) => {
 
     // Fetch course participants query
     const participantsQuery = `
-    SELECT course_participants.*, student.student_name AS participant_name
+    SELECT course_participants.*, student.student_name, 
+    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS participant_picture
     FROM course_participants
     JOIN student ON course_participants.participant_id = student.student_id
     WHERE course_participants.course_id = ?`;
@@ -211,7 +211,6 @@ module.exports = (router, multer) => {
     END AS is_completed
     FROM course_materials AS c_m
     WHERE course_id = ?`;
-
 
     // Query for course details
     connection.query(courseQuery, [userId, courseId], (err, courseResults) => {
@@ -241,9 +240,11 @@ module.exports = (router, multer) => {
             (err, materialsResults) => {
               if (err) {
                 console.error("Error fetching course participants:", err);
-                return res.json({ error: "Error fetching course participants" });
+                return res.json({
+                  error: "Error fetching course participants",
+                });
               }
-    
+
               // Return both course details and participants
               return res.json({
                 course: courseResults[0],
@@ -274,43 +275,53 @@ module.exports = (router, multer) => {
     },
   });
 
-  router.post("/courses/new", upload.array("courseMaterials"), verifyToken, (req, res) => {
-    const userId = req.userId;
-    const { courseName, courseCategory, courseDescription, courseMaterialNames } = req.body;
-    const files = req.files;
-    let courseMaterialNamesArray = courseMaterialNames.split(",");
-    
-    console.log(courseMaterialNames);
+  router.post(
+    "/courses/new",
+    upload.array("courseMaterials"),
+    verifyToken,
+    (req, res) => {
+      const userId = req.userId;
+      const {
+        courseName,
+        courseCategory,
+        courseDescription,
+        courseMaterialNames,
+      } = req.body;
+      const files = req.files;
+      let courseMaterialNamesArray = courseMaterialNames.split(",");
 
-    connection.query(
-      `INSERT INTO courses (course_name, course_category, course_description, mentor_id, approval_status)
+      console.log(courseMaterialNames);
+
+      connection.query(
+        `INSERT INTO courses (course_name, course_category, course_description, mentor_id, approval_status)
           VALUES (?, ?, ?, ?, ?)`,
-      [courseName, courseCategory, courseDescription, userId, 0],
-      (err, results) => {
-        if (err) throw err;
+        [courseName, courseCategory, courseDescription, userId, 0],
+        (err, results) => {
+          if (err) throw err;
 
-        let courseId = results.insertId;
+          let courseId = results.insertId;
 
-        if (files.length != 0) {
-          files.map(function(file, index){
-            const { mimetype, buffer } = file;
-            connection.query(
-              `INSERT INTO  course_materials (course_id, material_name, material_blob, material_type)
+          if (files.length != 0) {
+            files.map(function (file, index) {
+              const { mimetype, buffer } = file;
+              connection.query(
+                `INSERT INTO  course_materials (course_id, material_name, material_blob, material_type)
           VALUES (?, ?, ?, ?)`,
-              [courseId, courseMaterialNamesArray[index], buffer, mimetype],
-              (err, result) => {
-                if (err) {
-                  console.error("Database insertion error:", err);
-                  throw err;
+                [courseId, courseMaterialNamesArray[index], buffer, mimetype],
+                (err, result) => {
+                  if (err) {
+                    console.error("Database insertion error:", err);
+                    throw err;
+                  }
                 }
-              }
-            );
-          }); 
+              );
+            });
+          }
+          return res.json({ status: "Success" });
         }
-        return res.json({ status: "Success" });
-      }
-    );
-  });
+      );
+    }
+  );
 
   router.post("/course/join", verifyToken, (req, res) => {
     const userId = req.userId;
@@ -377,7 +388,7 @@ module.exports = (router, multer) => {
   router.get("/courses/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
     console.log(userId);
-  
+
     // First query to get pending participants
     const query1 = `
       SELECT 
@@ -392,7 +403,7 @@ module.exports = (router, multer) => {
       WHERE
         c.mentor_id = ? AND c_p.req_for_join_status = 0
     `;
-  
+
     // Second query to get approved courses
     const query2 = `
       SELECT 
@@ -402,21 +413,25 @@ module.exports = (router, multer) => {
       WHERE
         c.mentor_id = ? AND c.approval_status = 0
     `;
-  
+
     // Execute the first query
     connection.query(query1, [userId], (err, results) => {
       if (err) {
         console.error("Error fetching pending participants:", err);
-        return res.status(500).send("Server error while fetching pending participants.");
+        return res
+          .status(500)
+          .send("Server error while fetching pending participants.");
       }
-  
+
       // Execute the second query
       connection.query(query2, [userId], (err, nestedResults) => {
         if (err) {
           console.error("Error fetching approved courses:", err);
-          return res.status(500).send("Server error while fetching approved courses.");
+          return res
+            .status(500)
+            .send("Server error while fetching approved courses.");
         }
-  
+
         // Respond with the result
         return res.json({
           pendingParticipantsNo: results.length,
@@ -425,8 +440,6 @@ module.exports = (router, multer) => {
       });
     });
   });
-  
-
 
   router.post("/course/member/approve", verifyToken, (req, res) => {
     const { participantId, courseId } = req.body;
@@ -498,7 +511,7 @@ module.exports = (router, multer) => {
         if (err) throw err;
 
         return res.json({
-          material: results[0]
+          material: results[0],
         });
       }
     );
@@ -532,33 +545,56 @@ module.exports = (router, multer) => {
     );
   });
 
-
   router.post("/courses/material/complete", verifyToken, (req, res) => {
     let userId = req.userId;
-    const { materialId } = req.body;
+    const { materialId, courseId } = req.body;
 
-    const query1 = `SELECT *
+    const query1 = `SELECT * 
     FROM completed_course_materials
     WHERE 
       material_id = ${materialId} AND participant_id = '${userId}'
     `;
 
     const query2 = `INSERT INTO 
-    completed_course_materials (material_id, participant_id) 
+    completed_course_materials (material_id, participant_id)
     VALUES (${materialId}, '${userId}');`;
+
+    const query3 = `
+    UPDATE student
+      SET student_points = student_points + 5
+      WHERE student.student_id =  '${userId}' AND EXISTS (
+          SELECT 
+            IF(COUNT(DISTINCT c_m.material_id) > 0, 
+              ((
+              SELECT COUNT(c_c_m.material_id) AS completed_material
+              FROM completed_course_materials AS c_c_m
+              JOIN course_materials AS c_m ON c_c_m.material_id = c_m.material_id
+              WHERE c_c_m.participant_id = '${userId}' AND c_m.course_id = ${courseId}
+            ) / COUNT(DISTINCT c_m.material_id)) * 100, 0) AS completed_percentage
+          FROM course_materials as c_m  
+          WHERE c_m.course_id = ${courseId}
+          HAVING completed_percentage = 100.0
+      );
+    `;
 
     connection.query(query1, (err, results) => {
       if (err) throw err;
-      if(results.length <= 0) {
+      if (results.length <= 0) {
         connection.query(query2, (err, results) => {
-          if (err) throw err;
-          return res.json({ status: "Success" });
+          if (err) {
+            return res.json({ status: "Error" });
+          }
+          console.log("Material Not completed");
+          connection.query(query3, (err, results) => {
+            if (err) {
+              return res.json({ status: "Error" });
+            }
+            return res.json({ status: "Success" });
+          });
         });
-      }
-      else {
+      } else {
         return res.json({ status: "Success" });
       }
     });
   });
-
 };

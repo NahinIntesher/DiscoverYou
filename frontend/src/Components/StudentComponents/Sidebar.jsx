@@ -63,6 +63,8 @@ export default function Sidebar({ logoutAction, user, notificationUpdate }) {
             />
           )}
 
+          <SidebarOption name="Messaging" href="/message" icon="forum" />
+          
           <SidebarOption name="Profile" href="/profile" icon="person" />
         </div>
         <div className="dynamicGap"></div>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import NotFound from "../../CommonComponents/NotFound";
+import { useParams } from "react-router-dom";
 
 const Singlecourse = () => {
   const { courseId } = useParams();
@@ -19,7 +20,6 @@ const Singlecourse = () => {
   });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("materials");
-
   function getPMTime(datetime) {
     let time = new Date(datetime);
     return time.toLocaleString("en-US", {
@@ -69,8 +69,15 @@ const Singlecourse = () => {
         <div className="rightSection">
           <div className="hostContainer">
             <div className="host">
-              <Link to={'/profile/' + data.course.mentor_id} className="hostPicture">
-                <img src={data.course.mentor_picture ? data.course.mentor_picture : dp} />
+              <Link
+                to={"/profile/" + data.course.mentor_id}
+                className="hostPicture"
+              >
+                <img
+                  src={
+                    data.course.mentor_picture ? data.course.mentor_picture : dp
+                  }
+                />
               </Link>
               <div className="hostDetails">
                 <div className="detailTitle">Created By</div>
@@ -142,7 +149,9 @@ const Singlecourse = () => {
               {data.participants.map((participant) => (
                 <Participant
                   key={participant.participant_id}
-                  name={participant.participant_name}
+                  name={participant.student_name}
+                  id={participant.participant_id}
+                  picture={participant.participant_picture}
                 />
               ))}
             </div>
@@ -155,15 +164,18 @@ const Singlecourse = () => {
   );
 };
 
-function Participant({ name }) {
+function Participant({ name, id, picture }) {
   return (
     <div className="participant">
       <div className="profilePicture">
-        <img src={dp} />
+        {/* {picture} */}
+        <img src={picture ? picture : dp} />
       </div>
       <div className="participantDetails">
         <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+        <Link to={"/profile/" + id} className="viewProfile">
+          View Profile
+        </Link>
       </div>
     </div>
   );
@@ -171,19 +183,22 @@ function Participant({ name }) {
 
 function Material({ material }) {
   const navigate = useNavigate();
+  const { courseId } = useParams();
 
   function goToMaterial() {
+    console.log("CourseId:", courseId);
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/student/courses/material/complete/", {
         materialId: material.material_id,
+        courseId: courseId,
       })
       .then((res) => {
-        if (res.data.status === "Success") {
-          navigate("/course/material/" + material.material_id);
-        } else {
-          alert(res.data.Error);
-        }
+        navigate("/course/material/" + material.material_id);
+        // if (res.data.status === "Success") {
+        // } else {
+        //   alert(res.data.Error);
+        // }
       })
       .catch((err) => console.log(err));
   }

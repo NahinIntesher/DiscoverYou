@@ -24,6 +24,7 @@ const SingleContest = () => {
     problems: [],
     participants: [],
     submissions: [],
+    points: []
   });
   const [participantResults, setParticipantResults] = useState([]);
   const [isResultGiven, setResultGiven] = useState(false);
@@ -50,8 +51,9 @@ const SingleContest = () => {
   const handleChange = (e, participantId) => {
     const { value } = e.target;
 
+
     setParticipantResults((prevState) => {
-      console.log("Gullo");
+      // console.log("Gullo");
       const updatedParticipants = prevState.map((participant) => {
         if (participant.participant_id == participantId) {
           return {
@@ -118,11 +120,13 @@ const SingleContest = () => {
     const updatedParticipants = sortedParticipants.map((participant, index) => {
       return {
         ...participant,
-        result_position: index + 1  // Assign position (1-based index)
+        result_position: index + 1,
+        points_got: index == 0 ? 50 : index == 1 ? 30 : index == 2 ? 20 : 0
       };
     });
 
-    console.log(updatedParticipants);
+    // console.log(updatedParticipants);
+
 
 
 

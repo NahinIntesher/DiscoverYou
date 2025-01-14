@@ -57,6 +57,9 @@ import CommonContestParticipated from "../Components/CommonComponents/CommonProf
 import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
 import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
 
+import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
+
+
 export default function Student({
   handleLogout,
   user,
@@ -245,6 +248,8 @@ export default function Student({
             path="/profile/hiringResults/:paramId"
             element={<CommonHiringOrganized />}
           />
+
+          <Route path="/message" element={<MessaengerHome user={user}/>} />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
 

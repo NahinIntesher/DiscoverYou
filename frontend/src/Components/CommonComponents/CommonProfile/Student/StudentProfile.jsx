@@ -5,19 +5,20 @@ import "react-material-symbols/rounded";
 import dp from "../../../../assets/images/default.jpg";
 import "../../../../assets/styles/Profile.css";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
 export default function StudentProfile({ user, interests }) {
+  const { paramId } = useParams();
   const [contestResults, setContestResults] = useState({});
   const [showcaseResults, setShowcaseResults] = useState({});
   const [courseResults, setCourseResults] = useState({});
   const [webinarResults, setWebinarResults] = useState({});
 
+
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/student/common-profile", {
-        params: { userId: user.id },
-      })
+      .get(`http://localhost:3000/student/common-profile/${paramId}`)
       .then((res) => {
         console.log(res.data);
         setContestResults(res.data.contestResults);
