@@ -420,6 +420,8 @@ app.get("/admins", verifyToken, (req, res) => {
   });
 });
 
+
+
 app.get("/profiles/:userId", verifyToken, (req, res) => {
   const userId = req.params.userId;
   let userType;
@@ -717,6 +719,116 @@ app.get("/dynamic-profile/:userId", verifyToken, async (req, res) => {
   } else {
     res.status(400).json({ status: "Invalid user type" });
   }
+});
+
+app.get("/messages/contacts", verifyToken, (req, res) => {
+  let userId = req.userId;
+
+  const query = `
+          SELECT DISTINCT
+          CASE 
+            WHEN m.student_reciver_id IS NOT NULL THEN s.student_name
+            WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_name
+            ELSE NULL
+          END AS other_user_name,
+          CASE 
+            WHEN m.student_reciver_id IS NOT NULL THEN s.student_id
+            WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_id
+            ELSE NULL
+          END AS other_user_id,
+          CASE 
+            WHEN m.student_reciver_id IS NOT NULL THEN IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL)
+            WHEN m.organizer_reciver_id IS NOT NULL THEN IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL)
+            ELSE NULL
+          END AS other_user_picture,
+          (SELECT mm.message_content FROM messages AS mm 
+           WHERE 
+           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
+           AND
+           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
+           ORDER BY mm.message_time DESC LIMIT 1) AS last_message
+        FROM messages AS m
+        LEFT JOIN
+          student AS s
+        ON
+          m.student_reciver_id = s.student_id
+        LEFT JOIN
+          organizer AS o
+        ON
+          m.organizer_reciver_id = o.organizer_id
+        WHERE 
+          m.student_sender_id = '${userId}' OR m.organizer_sender_id = '${userId}'
+        ORDER BY m.message_time DESC;`
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    res.json({ status: "Success", contacts: results });
+  });
+});
+
+app.get("/messages/single/:otherUserId", verifyToken, (req, res) => {
+  let userId = req.userId;
+  let otherUserId = req.params.otherUserId;
+
+  const query = `SELECT 
+    m.*,
+    TIMESTAMPDIFF(SECOND, m.message_time, NOW()) AS message_time_ago,
+    CASE
+      WHEN m.student_sender_id = '${userId}' OR  m.organizer_sender_id = '${userId}'
+      THEN true
+      ELSE false
+    END AS own_message
+  FROM 
+    messages AS m
+  WHERE 
+    m.student_sender_id = '${userId}' AND m.student_reciver_id = '${otherUserId}'
+    OR
+    m.student_sender_id = '${userId}' AND m.organizer_reciver_id = '${otherUserId}'
+    OR
+    m.student_reciver_id = '${userId}' AND m.student_sender_id = '${otherUserId}'
+    OR
+    m.student_reciver_id = '${userId}' AND m.organizer_sender_id = '${otherUserId}'
+    OR
+    m.organizer_sender_id = '${userId}' AND m.student_reciver_id = '${otherUserId}'
+    OR
+    m.organizer_sender_id = '${userId}' AND m.organizer_reciver_id = '${otherUserId}'
+    OR
+    m.organizer_reciver_id = '${userId}' AND m.student_sender_id = '${otherUserId}'
+    OR
+    m.organizer_reciver_id = '${userId}' AND m.organizer_sender_id = '${otherUserId}'
+  ORDER BY m.message_time DESC;`;
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    res.json({ status: "Success", messages: results });
+  });
+});
+
+app.post("/messages/send", verifyToken, (req, res) => {
+  let userId = req.userId;
+  let { message, otherUserId } = req.body;
+
+  let query;
+  
+  if(userId.startsWith("St") ){
+    if(otherUserId.startsWith("St")){
+      query= `INSERT INTO messages (message_content, student_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
+    }else if(otherUserId.startsWith("Or")){
+      query= `INSERT INTO messages (message_content, student_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
+    }
+  }
+  else if(userId.startsWith("Or")) {
+    if(otherUserId.startsWith("St")){
+      query= `INSERT INTO messages (message_content, organizer_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
+    }else if(otherUserId.startsWith("Or")){
+      query= `INSERT INTO messages (message_content, organizer_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
+    }
+  }
+
+  connection.query(query, [message, userId, otherUserId], (err, results) => {
+    if (err) throw err;
+    res.json({ status: "Success" });
+  });
 });
 
 // Start the server

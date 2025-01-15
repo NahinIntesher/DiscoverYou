@@ -87,7 +87,7 @@ body {
 }
 .sideMenu .optionContainer {
     width: 80%;
-    margin: 20px auto;
+    margin: auto;
 }
 .sideMenu .dynamicGap {
     display: none;
@@ -167,7 +167,7 @@ body {
 }
 .sideMenu .profile {
     background-color: rgba(var(--extradark), 0.2);
-    margin: 30px 30px;
+    margin: 20px 30px;
     border-radius: 40px;
     padding: 6px;
     width: calc(100% - 60px);
@@ -232,7 +232,7 @@ body {
 
 .sideMenu .logo {
     width: calc(100% - 100px);
-    margin: 30px 50px;
+    margin: 20px 50px;
 }
 
 .mobileHeader {

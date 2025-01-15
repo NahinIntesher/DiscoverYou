@@ -1,34 +1,38 @@
-.HomeContainer {
-  display: flex;
-  flex-grow: 1;
-  height: calc(100vh - 65px);
-  gap: 10px;
-}
-
 /* Sidebar styles */
 .MessengerSidebar {
-  flex: 1;
-  background: rgba(255, 255, 255, 1);
+  flex: 1.5;
+  background-color: #ffffff;
   /* overflow-y: auto; */
 }
 
-
-
-.messagesBoxContainer{
+.MessagesHomeContainer{
   display: flex;
-  flex-direction: column;
-  /* gap: 10px; */
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 100px);
+}
+
+.messagesBoxContainerAlt {
+  height: calc(100% - 70px);
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  padding: 0;
+  margin: auto;
 }
 
 /* Main content styles */
 .MessengerMain {
-  flex: 3;
+  flex: 3.5;
   padding: 25px;
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   color: #333;
+  position: relative;
+}
+.MessengerMain .giveMessageBox {
+  border-left: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .chatArea {
@@ -67,4 +71,45 @@
   .chatArea {
     font-size: 1rem;
   }
+}
+
+
+.contactContainer {
+  display: flex;
+  flex-direction: column;
+}
+.contactBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.contactBox .contactPicture {
+  flex: 50px 0 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.contactBox .contactPicture img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+.contactBox .contactDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 15px;
+}
+.contactBox .contactName {
+  font-size: 16px;
+  font-weight: bold;
 }
