@@ -746,7 +746,26 @@ app.get("/messages/contacts", verifyToken, (req, res) => {
            (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
            AND
            (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
-           ORDER BY mm.message_time DESC LIMIT 1) AS last_message
+           ORDER BY mm.message_time DESC LIMIT 1) AS last_message,
+          (SELECT mm.message_time FROM messages AS mm 
+           WHERE 
+           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
+           AND
+           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
+           ORDER BY mm.message_time DESC LIMIT 1) AS last_message_time,
+          (SELECT
+          CASE 
+            WHEN mm.student_sender_id = '${userId}' THEN 1
+            WHEN mm.organizer_sender_id = '${userId}' THEN 1
+            WHEN mm.message_is_read = 1 THEN 1
+            ELSE 0
+          END AS last_message_status
+          FROM messages AS mm 
+           WHERE 
+           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
+           AND
+           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
+           ORDER BY mm.message_time DESC LIMIT 1) AS last_message_status
         FROM messages AS m
         LEFT JOIN
           student AS s
@@ -758,7 +777,7 @@ app.get("/messages/contacts", verifyToken, (req, res) => {
           m.organizer_reciver_id = o.organizer_id
         WHERE 
           m.student_sender_id = '${userId}' OR m.organizer_sender_id = '${userId}'
-        ORDER BY m.message_time DESC;`
+        ORDER BY last_message_time DESC;`
 
   connection.query(query, (err, results) => {
     if (err) throw err;
@@ -798,9 +817,23 @@ app.get("/messages/single/:otherUserId", verifyToken, (req, res) => {
     m.organizer_reciver_id = '${userId}' AND m.organizer_sender_id = '${otherUserId}'
   ORDER BY m.message_time DESC;`;
 
+  const innerQuery = `UPDATE messages
+  SET message_is_read = 1
+WHERE 
+  student_reciver_id = '${userId}' AND student_sender_id = '${otherUserId}'
+  OR
+  student_reciver_id = '${userId}' AND organizer_sender_id = '${otherUserId}'
+  OR
+  organizer_reciver_id = '${userId}' AND student_sender_id = '${otherUserId}'
+  OR
+  organizer_reciver_id = '${userId}' AND organizer_sender_id = '${otherUserId}'`;
+
   connection.query(query, (err, results) => {
     if (err) throw err;
-    res.json({ status: "Success", messages: results });
+    connection.query(innerQuery, (err, innerResults) => {
+      if (err) throw err;
+      res.json({ status: "Success", messages: results });
+    });
   });
 });
 
@@ -809,19 +842,19 @@ app.post("/messages/send", verifyToken, (req, res) => {
   let { message, otherUserId } = req.body;
 
   let query;
-  
-  if(userId.startsWith("St") ){
-    if(otherUserId.startsWith("St")){
-      query= `INSERT INTO messages (message_content, student_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
-    }else if(otherUserId.startsWith("Or")){
-      query= `INSERT INTO messages (message_content, student_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
+
+  if (userId.startsWith("St")) {
+    if (otherUserId.startsWith("St")) {
+      query = `INSERT INTO messages (message_content, student_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
+    } else if (otherUserId.startsWith("Or")) {
+      query = `INSERT INTO messages (message_content, student_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
     }
   }
-  else if(userId.startsWith("Or")) {
-    if(otherUserId.startsWith("St")){
-      query= `INSERT INTO messages (message_content, organizer_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
-    }else if(otherUserId.startsWith("Or")){
-      query= `INSERT INTO messages (message_content, organizer_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
+  else if (userId.startsWith("Or")) {
+    if (otherUserId.startsWith("St")) {
+      query = `INSERT INTO messages (message_content, organizer_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
+    } else if (otherUserId.startsWith("Or")) {
+      query = `INSERT INTO messages (message_content, organizer_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
     }
   }
 

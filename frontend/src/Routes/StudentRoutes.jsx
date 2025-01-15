@@ -249,7 +249,7 @@ export default function Student({
             element={<CommonHiringOrganized />}
           />
 
-          <Route path="/message" element={<MessaengerHome user={user}/>} />
+          <Route path="/message/:otherUserId" element={<MessaengerHome user={user}/>} />
 
           <Route path="/profile/:paramId" element={<CommonProfile />} />
 

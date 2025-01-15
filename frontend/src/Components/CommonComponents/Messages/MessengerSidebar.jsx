@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function MessengerSidebar({ user, setActiveContact }) {
+export default function MessengerSidebar({ user, setActiveContact, activeContact }) {
   const [contacts, setContacts] = useState([]);
+
+  console.log("ador", activeContact);
 
   useEffect(() => {
     function fetchCommunityData() {
@@ -21,7 +23,8 @@ export default function MessengerSidebar({ user, setActiveContact }) {
       });
 
     }
-    
+
+    fetchCommunityData();
     const interval = setInterval(fetchCommunityData, 2000); // Fetch every 2 seconds
 
     return () => clearInterval(interval);
@@ -33,7 +36,7 @@ export default function MessengerSidebar({ user, setActiveContact }) {
         {
           contacts.map((contact) => {
             return (
-              <div className="contactBox" onClick={function () { setActiveContact(contact) }}>
+              <div className={contact.last_message_status == 1 ? (contact.other_user_id == activeContact.other_user_id ? "contactBox contactBoxActive" : "contactBox") : "contactBox contactBoxUnread"} onClick={function () { setActiveContact(contact) }}>
                 <div className="contactPicture">
                   <img src={contact.other_user_picture} alt="Contact" />
                 </div>
