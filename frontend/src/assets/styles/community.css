@@ -168,7 +168,7 @@
 .giveMessageBox .profilePicture {
     display: inline-block;
     vertical-align: middle;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 8px;
@@ -195,12 +195,12 @@
 }
 
 .giveMessageBox input:focus {
-    outline: 2px solid #ffa952;
+    outline: 2px solid rgb(var(--medium));
 }
 .giveMessageBox .sendButton {
     display: inline-block;
     vertical-align: middle;
-    color: #ffa952;
+    color: rgb(var(--medium));
     margin: 4px;
 }
 .giveMessageBox .sendButton .icon{
@@ -222,7 +222,7 @@
 .messageBox .profilePicture {
     display: inline-block;
     vertical-align: top;
-    background-image: linear-gradient(#ef5a5a, #ffa952);
+    background-image: linear-gradient(rgb(var(--dark)), rgb(var(--medium)));
     padding: 3px;
     border-radius: 80px;
     margin: 8px;
@@ -254,6 +254,11 @@
 }
 .ownMessage {
     text-align: right;
+}
+.ownMessage .messageContent .message {
+    background-image: linear-gradient(80deg, rgb(var(--dark)), rgb(var(--medium)));
+    color: #ffffff;
+    box-shadow: -4px -4px 12px rgba(0,0,0,0.05);
 }
 
 .pendingBox {

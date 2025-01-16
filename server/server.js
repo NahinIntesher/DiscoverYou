@@ -849,13 +849,37 @@ app.get("/messages/contacts", verifyToken, (req, res) => {
 FROM
   messages AS m
   LEFT JOIN student AS s ON (
-    m.student_reciver_id = s.student_id
-    OR m.student_sender_id = s.student_id
+    (
+      (
+        m.student_sender_id = '${userId}'
+        OR m.organizer_sender_id = '${userId}'
+      )
+      AND m.student_reciver_id = s.student_id
+    )
+    OR (
+      (
+        m.student_sender_id = '${userId}'
+        OR m.organizer_reciver_id = '${userId}'
+      )
+      AND m.student_sender_id = s.student_id
+    )
   )
   AND s.student_id != '${userId}'
   LEFT JOIN organizer AS o ON (
-    m.organizer_reciver_id = o.organizer_id
-    OR m.organizer_sender_id = o.organizer_id
+    (
+      (
+        m.student_sender_id = '${userId}'
+        OR m.organizer_sender_id = '${userId}'
+      )
+      AND m.organizer_reciver_id = o.organizer_id
+    )
+    OR (
+      (
+        m.student_sender_id = '${userId}'
+        OR m.organizer_reciver_id = '${userId}'
+      )
+      AND m.organizer_sender_id = o.organizer_id
+    )
   )
   AND o.organizer_id != '${userId}'
 GROUP BY

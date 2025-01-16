@@ -148,7 +148,7 @@ export default function Contest() {
         </div>
       </div>
 
-      {contestPendingNo != 0 && (
+      {contestPendingNo != 0 ? (
         <div className="pendingBox">
           <MaterialSymbol className="icon" size={32} icon="error" />
           <div className="text">
@@ -158,9 +158,10 @@ export default function Contest() {
             Pending Contests
           </Link>
         </div>
-      )}
+      ) : <></>
+      }
 
-      {resultPending.length &&
+      {resultPending.length != 0 ?
         resultPending.map(function (contest) {
           return (
             <div className="pendingBox">
@@ -173,7 +174,8 @@ export default function Contest() {
               </Link>
             </div>
           );
-        })}
+        }):<></>
+      }
 
       <div className="content">
         <div className="filterBox filterBoxCommunity">

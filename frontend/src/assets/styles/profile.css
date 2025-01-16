@@ -286,3 +286,29 @@
 .dialogBoxBackground .dialogBox .buttonContainer .buttonAlt:hover {
   background-color: rgba(0,0,0,0.3);
 }
+
+.sendMessage {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin: 10px;
+  background-image: 
+  radial-gradient(100px 20px at left top, rgba(var(--light), 0.8), rgba(var(--light), 0.6), transparent),
+  linear-gradient(rgb(var(--dark)), rgb(var(--medium))); 
+}
+
+.sendMessage:hover {
+  box-shadow: 4px 4px 12px rgba(var(--dark),0.4);
+  text-shadow: 2px 2px 8px rgba(var(--dark),0.8);
+}
+.sendMessage .icon, .sendMessage .text{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 4px;
+  color: #ffffff;
+}
+
+.sendMessage .text{
+  font-weight: 500;
+  font-size: 15px;
+}

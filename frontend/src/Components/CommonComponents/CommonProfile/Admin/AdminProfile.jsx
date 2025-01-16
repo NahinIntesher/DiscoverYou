@@ -4,6 +4,7 @@ import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import dp from "../../../../assets/images/default.jpg";
 import "../../../../assets/styles/Profile.css";
+import Header from "../../Header";
 
 export default function AdminProfile({ user }) {
   const extractDate = (dateString) => {
@@ -17,11 +18,7 @@ export default function AdminProfile({ user }) {
 
   return (
     <div className="mainContent">
-      <div className="contentTitle">
-        <div className="content">
-          <div className="title">Profile</div>
-        </div>
-      </div>
+      <Header title={user.name + "'s Profile"} />
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">

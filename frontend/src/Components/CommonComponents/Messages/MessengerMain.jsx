@@ -4,6 +4,7 @@ import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import MessageBox from "../../CommonComponents/MessageBox";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function MessengerMain({ user, activeContactId }) {
   const [messageText, setMessageText] = useState(null);
@@ -81,7 +82,7 @@ export default function MessengerMain({ user, activeContactId }) {
   return (
     <div className="MessengerMain">
       {
-        (activeContactId != null && otherUser != null) ? (
+        (activeContactId != "all" && activeContactId != null && otherUser != null) ? (
           <>
             <div className="messagesBoxContainerAlt">
               {messages.map((message) => (
@@ -94,6 +95,17 @@ export default function MessengerMain({ user, activeContactId }) {
                   updateMessages={updateMessages} // Ensure re-render when new message is sent
                 />
               ))}
+
+              <div className="contactIntroBox">
+                <div className="profilePicture">
+                  <img
+                    src={otherUser.user_picture || dp}
+                    alt="Profile"
+                  />
+                </div>
+                <div className="contactName">{otherUser.name}</div>
+                <Link to={"/profile/"+otherUser.id} className="visitProfile">Visit Profile</Link>
+              </div>
             </div>
             <div className="giveMessageBox">
               <form onSubmit={handleSubmit}>

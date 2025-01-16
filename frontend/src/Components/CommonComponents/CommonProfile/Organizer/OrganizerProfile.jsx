@@ -6,6 +6,7 @@ import dp from "../../../../assets/images/default.jpg";
 import "../../../../assets/styles/Profile.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Header from "../../Header";
 
 export default function OrganizerProfile({ user }) {
   const [contestResults, setContestResults] = useState({});
@@ -40,11 +41,7 @@ export default function OrganizerProfile({ user }) {
 
   return (
     <div className="mainContent">
-      <div className="contentTitle">
-        <div className="content">
-          <div className="title">Profile</div>
-        </div>
-      </div>
+      <Header title={user.name + "'s Profile"} />
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
@@ -52,6 +49,10 @@ export default function OrganizerProfile({ user }) {
           </div>
           <div className="details">
             <div className="name">{user.name}</div>
+            <Link to={"/message/" + user.id} className="sendMessage">
+              <MaterialSymbol className="icon" size={24} icon="message" />
+              <div className="text">Send Message</div>
+            </Link>
           </div>
         </div>
 
