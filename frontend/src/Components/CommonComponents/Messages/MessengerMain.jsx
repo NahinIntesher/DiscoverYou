@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import NotFoundAlt from "../NotFoundAlt";
 
-export default function MessengerMain({ user, activeContactId }) {
+export default function MessengerMain({ user, activeContactId, setMessageUpdate}) {
   const [messageText, setMessageText] = useState(null);
   const [messages, setMessages] = useState([]);
   const [otherUser, setOtherUser] = useState(null);
@@ -56,7 +56,6 @@ export default function MessengerMain({ user, activeContactId }) {
         });
     };
     if (activeContactId != null) {
-
       fetchCommunityData(); // Fetch immediately
     }
 

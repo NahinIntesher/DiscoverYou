@@ -8,7 +8,7 @@ import "react-material-symbols/rounded";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ logoutAction, user, notificationUpdate }) {
+export default function Sidebar({ logoutAction, user, notificationUpdate, messageUpdate }) {
   const [newNotifications, setNewNotifications] = useState(0);
 
   const [newMessages, setNewMessages] = useState(0);
@@ -29,13 +29,14 @@ export default function Sidebar({ logoutAction, user, notificationUpdate }) {
     axios
       .get("http://localhost:3000/messages/contacts")
       .then((res) => {
-        const contactsData = res.data?.new_notifications || 0;
+        let contactsData = res.data?.contacts || 0;
+        contactsData = contactsData.filter((contact) => contact.last_message_status == 0);
         setNewMessages(contactsData.length);
       })
       .catch((error) => {
         console.error("Error fetching messages:", error);
       });
-  }, [newMessages]);
+  }, [messageUpdate]);
 
   return (
     <div className="sideMenu">

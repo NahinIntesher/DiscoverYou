@@ -4,7 +4,7 @@ import axios from "axios";
 import dp from "../../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
-export default function MessengerSidebar({ user, setActiveContactId, activeContactId }) {
+export default function MessengerSidebar({ user, setActiveContactId, activeContactId, setMessageUpdate}) {
   const [contacts, setContacts] = useState([]);
 
   console.log("ador", activeContactId);
@@ -39,7 +39,12 @@ export default function MessengerSidebar({ user, setActiveContactId, activeConta
         {
           contacts.map((contact) => {
             return (
-              <Link to={"/message/"+contact.other_user_id} className={contact.last_message_status == 1 ? (contact.other_user_id == activeContactId ? "contactBox contactBoxActive" : "contactBox") : "contactBox contactBoxUnread"}>
+              <Link 
+                to={"/message/"+contact.other_user_id} 
+                className={contact.last_message_status == 1 ? (contact.other_user_id == activeContactId ? "contactBox contactBoxActive" : "contactBox") : "contactBox contactBoxUnread"} 
+                key={contact.other_user_id}
+                onClick={() => setMessageUpdate(old => old + 1)}
+              >
                 <div className="contactPicture">
                   <img src={contact.other_user_picture ? contact.other_user_picture : dp} alt="Contact" />
                 </div>

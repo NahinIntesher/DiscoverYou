@@ -6,7 +6,7 @@ import MessengerMain from "./MessengerMain";
 import "./messages.css";
 import { useParams } from "react-router-dom";
 
-export default function MessengerHome({ user }) {
+export default function MessengerHome({ user, messageUpdate, setMessageUpdate }) {
   const { otherUserId } = useParams();
   const [activeContactId, setActiveContactId] = useState(null);
 
@@ -17,8 +17,8 @@ export default function MessengerHome({ user }) {
   return (
     <div className="mainContent">
       <div className="MessagesHomeContainer">
-        <MessengerSidebar user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
-        <MessengerMain user={user} activeContactId={activeContactId}/>
+        <MessengerSidebar setMessageUpdate={setMessageUpdate} user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
+        <MessengerMain setMessageUpdate={setMessageUpdate} user={user} activeContactId={activeContactId}/>
       </div>
     </div>
   );
