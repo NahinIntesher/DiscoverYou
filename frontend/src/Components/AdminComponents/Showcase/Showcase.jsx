@@ -96,31 +96,7 @@ export default function Showcase({ user }) {
           Approved Courses
         </div>
       </div>
-      <div className="filterBox filterBoxShowcase">
-        <div className="title">Filter</div>
-        <div className="filters">
-          <div className="filterName">Sort By</div>
-          <div className="filter">
-            <MaterialSymbol className="icon" size={22} icon="tune" />
-            <select name="sort" onChange={handleInputChange}>
-              <option value="s_p.post_date_time">Newest First</option>
-              <option value="reaction_count">Most Liked</option>
-            </select>
-          </div>
-          <div className="filterName">Category</div>
-          <div className="filter">
-            <InterestIcon category={formData.category} />
-            <select name="category" onChange={handleInputChange}>
-              <option value={allInterests.map((interest) => `'${interest}'`)}>
-                All
-              </option>
-              {allInterests.map((interest) => (
-                <option value={`'${interest}'`}>{interest}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+
       {activeTab == "reportedPost" && (
         <div className="postBoxContainer">
           <div className="smallBreak"></div>
@@ -152,6 +128,33 @@ export default function Showcase({ user }) {
       )}
       {activeTab == "allPost" && (
         <div className="postBoxContainer">
+          <div className="filterBox filterBoxShowcase">
+            <div className="title">Filter</div>
+            <div className="filters">
+              <div className="filterName">Sort By</div>
+              <div className="filter">
+                <MaterialSymbol className="icon" size={22} icon="tune" />
+                <select name="sort" onChange={handleInputChange}>
+                  <option value="s_p.post_date_time">Newest First</option>
+                  <option value="reaction_count">Most Liked</option>
+                </select>
+              </div>
+              <div className="filterName">Category</div>
+              <div className="filter">
+                <InterestIcon category={formData.category} />
+                <select name="category" onChange={handleInputChange}>
+                  <option
+                    value={allInterests.map((interest) => `'${interest}'`)}
+                  >
+                    All
+                  </option>
+                  {allInterests.map((interest) => (
+                    <option value={`'${interest}'`}>{interest}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
           <div className="smallBreak"></div>
           {posts.length > 0 ? (
             posts.map(function (post) {
