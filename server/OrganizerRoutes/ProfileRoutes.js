@@ -253,8 +253,7 @@ module.exports = (router, multer, bcrypt) => {
 
   router.get("/common-profile/", verifyToken, async (req, res) => {
     const userId = req.query.userId;
-    console.log("User ID:", userId);
-
+    console.log(userId);
     // SQL queries
     const contestQuery = `
         SELECT 

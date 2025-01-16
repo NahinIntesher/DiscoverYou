@@ -43,7 +43,7 @@ module.exports = (router) => {
     );
   });
 
-  router.get("/contests/ongoing", verifyToken, (req, res) => {
+  router.get("/contests", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
       SELECT 
@@ -64,7 +64,7 @@ module.exports = (router) => {
       LEFT JOIN 
         contest_participants ON contests.contest_id = contest_participants.contest_id 
       WHERE 
-        (NOW() >= contests.start_time) AND (NOW() <= contests.end_time) AND contests.approval_status = 1
+        contests.approval_status = 1
       GROUP BY 
         contests.contest_id
       `;

@@ -5,20 +5,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import WebinarBox from "../../CommonComponents/WebinarBox";
 import 'react-material-symbols/rounded';
 
-export default function UpcomingWebinar() {
-  const [webinars, setWebinars] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/organizer/webinars/upcoming")
-      .then((response) => {
-        const webinarsData = response.data.webinars;
-        setWebinars(webinarsData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, []);
+export default function UpcomingWebinar({webinars}) {
 
   if (webinars.length) {
     return (

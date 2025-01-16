@@ -20,7 +20,7 @@ module.exports = (router) => {
     });
   });
 
-  router.get("/webinars/ongoing", verifyToken, (req, res) => {
+  router.get("/webinars", verifyToken, (req, res) => {
     let userId = req.userId;
 
     const query = `
@@ -39,7 +39,7 @@ module.exports = (router) => {
       ON 
           w.host_id = organizer.organizer_id
       WHERE
-        (NOW() >= w.start_time) AND (NOW() <= w.end_time) AND w.approval_status = 1
+        w.approval_status = 1
       GROUP BY 
           w.webinar_id;
     `;

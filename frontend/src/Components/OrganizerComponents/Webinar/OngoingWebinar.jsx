@@ -3,23 +3,9 @@ import "../../../assets/styles/contest.css";
 import axios from "axios";
 import NotFound from "../../CommonComponents/NotFound";
 import WebinarBox from "../../CommonComponents/WebinarBox";
-import 'react-material-symbols/rounded';
+import "react-material-symbols/rounded";
 
-export default function OngoingWebinar() {
-  const [webinars, setWebinars] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/organizer/webinars/ongoing")
-      .then((response) => {
-        const webinarsData = response.data.webinars;
-        setWebinars(webinarsData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, []);
-
+export default function OngoingWebinar({ webinars }) {
   if (webinars.length) {
     return (
       <div className="scrollContainer">
@@ -42,9 +28,8 @@ export default function OngoingWebinar() {
           />
         ))}
       </div>
-    )
-  }
-  else {
-      return <NotFound message="There are currently no Ongoing Webinar!" />
+    );
+  } else {
+    return <NotFound message="There are currently no Ongoing Webinar!" />;
   }
 }

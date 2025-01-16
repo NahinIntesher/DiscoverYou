@@ -79,7 +79,7 @@ export default function Student({
             element={<Post user={user} admins={admins} />}
           />
 
-          <Route path="/contest" element={<Contest />} />
+          <Route path="/contest" element={<Contest user={user}/>} />
           <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
           <Route path="/contest/pending" element={<PendingContest />} />
@@ -88,7 +88,7 @@ export default function Student({
             element={<SubmissionPreview />}
           />
 
-          <Route path="/webinar" element={<Webinar />} />
+          <Route path="/webinar" element={<Webinar user={user} />} />
           <Route path="/webinar/new" element={<CreateNewWebinar />} />
           <Route path="/webinar/pending" element={<PendingWebinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />

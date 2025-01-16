@@ -5,20 +5,7 @@ import NotFound from "../../CommonComponents/NotFound";
 import 'react-material-symbols/rounded';
 import ContestBox from "./ContestBox";
 
-export default function PreviousContest() {
-  const [contests, setContests] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/organizer/contests/previous")
-      .then((response) => {
-        const contestsData = response.data?.contests;
-        setContests(contestsData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, []);
+export default function PreviousContest({contests}) {
 
   if (contests.length) {
     return (
