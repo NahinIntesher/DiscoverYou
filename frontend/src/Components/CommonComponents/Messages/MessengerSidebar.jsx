@@ -1,11 +1,12 @@
 // MessengerSidebar Component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import dp from "../../../assets/images/default.jpg";
 
-export default function MessengerSidebar({ user, setActiveContact, activeContact }) {
+export default function MessengerSidebar({ user, setActiveContactId, activeContactId }) {
   const [contacts, setContacts] = useState([]);
 
-  console.log("ador", activeContact);
+  console.log("ador", activeContactId);
 
   useEffect(() => {
     function fetchCommunityData() {
@@ -36,9 +37,9 @@ export default function MessengerSidebar({ user, setActiveContact, activeContact
         {
           contacts.map((contact) => {
             return (
-              <div className={contact.last_message_status == 1 ? (contact.other_user_id == activeContact.other_user_id ? "contactBox contactBoxActive" : "contactBox") : "contactBox contactBoxUnread"} onClick={function () { setActiveContact(contact) }}>
+              <div className={contact.last_message_status == 1 ? (contact.other_user_id == activeContactId ? "contactBox contactBoxActive" : "contactBox") : "contactBox contactBoxUnread"} onClick={function () { setActiveContactId(contact.other_user_id) }}>
                 <div className="contactPicture">
-                  <img src={contact.other_user_picture} alt="Contact" />
+                  <img src={contact.other_user_picture ? contact.other_user_picture : dp} alt="Contact" />
                 </div>
                 <div className="contactDetails">
                   <div className="contactName">{contact.other_user_name}</div>

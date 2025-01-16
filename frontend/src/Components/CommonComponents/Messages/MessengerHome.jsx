@@ -1,14 +1,18 @@
 
 // MessengerHome Component
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MessengerSidebar from "./MessengerSidebar";
 import MessengerMain from "./MessengerMain";
 import "./messages.css";
+import { useParams } from "react-router-dom";
 
 export default function MessengerHome({ user }) {
-  const [activeContact, setActiveContact] = useState({
-    other_user_id: null,
-  });
+  const { otherUserId } = useParams();
+  const [activeContactId, setActiveContactId] = useState(null);
+
+  useEffect(() => {
+    setActiveContactId(otherUserId);
+  }, [otherUserId]);
 
   return (
     <div className="mainContent">
@@ -18,8 +22,8 @@ export default function MessengerHome({ user }) {
         </div>
       </div>
       <div className="MessagesHomeContainer">
-        <MessengerSidebar user={user} setActiveContact={setActiveContact} activeContact={activeContact}/>
-        <MessengerMain user={user} activeContact={activeContact}/>
+        <MessengerSidebar user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
+        <MessengerMain user={user} activeContactId={activeContactId}/>
       </div>
     </div>
   );

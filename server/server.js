@@ -725,59 +725,146 @@ app.get("/messages/contacts", verifyToken, (req, res) => {
   let userId = req.userId;
 
   const query = `
-          SELECT DISTINCT
-          CASE 
-            WHEN m.student_reciver_id IS NOT NULL THEN s.student_name
-            WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_name
-            ELSE NULL
-          END AS other_user_name,
-          CASE 
-            WHEN m.student_reciver_id IS NOT NULL THEN s.student_id
-            WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_id
-            ELSE NULL
-          END AS other_user_id,
-          CASE 
-            WHEN m.student_reciver_id IS NOT NULL THEN IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL)
-            WHEN m.organizer_reciver_id IS NOT NULL THEN IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL)
-            ELSE NULL
-          END AS other_user_picture,
-          (SELECT mm.message_content FROM messages AS mm 
-           WHERE 
-           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
-           AND
-           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
-           ORDER BY mm.message_time DESC LIMIT 1) AS last_message,
-          (SELECT mm.message_time FROM messages AS mm 
-           WHERE 
-           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
-           AND
-           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
-           ORDER BY mm.message_time DESC LIMIT 1) AS last_message_time,
-          (SELECT
-          CASE 
-            WHEN mm.student_sender_id = '${userId}' THEN 1
-            WHEN mm.organizer_sender_id = '${userId}' THEN 1
-            WHEN mm.message_is_read = 1 THEN 1
-            ELSE 0
-          END AS last_message_status
-          FROM messages AS mm 
-           WHERE 
-           (mm.student_sender_id = '${userId}' OR mm.student_reciver_id = '${userId}' OR mm.organizer_sender_id = '${userId}' OR mm.organizer_reciver_id = '${userId}')
-           AND
-           (mm.student_sender_id = m.student_reciver_id OR mm.student_reciver_id = m.student_reciver_id OR mm.organizer_sender_id = m.organizer_reciver_id OR mm.organizer_reciver_id =  m.organizer_reciver_id)
-           ORDER BY mm.message_time DESC LIMIT 1) AS last_message_status
-        FROM messages AS m
-        LEFT JOIN
-          student AS s
-        ON
-          m.student_reciver_id = s.student_id
-        LEFT JOIN
-          organizer AS o
-        ON
-          m.organizer_reciver_id = o.organizer_id
-        WHERE 
-          m.student_sender_id = '${userId}' OR m.organizer_sender_id = '${userId}'
-        ORDER BY last_message_time DESC;`
+  SELECT DISTINCT
+  CASE
+    WHEN m.student_reciver_id IS NOT NULL THEN s.student_name
+    WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_name
+    WHEN m.student_sender_id IS NOT NULL THEN s.student_name
+    WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_name
+  END AS other_user_name,
+  CASE
+    WHEN m.student_reciver_id IS NOT NULL THEN s.student_id
+    WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_id
+    WHEN m.student_sender_id IS NOT NULL THEN s.student_id
+    WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_id
+  END AS other_user_id,
+  CASE
+    WHEN m.student_reciver_id IS NOT NULL THEN IF (
+      s.student_picture IS NOT NULL,
+      CONCAT (
+        "http://localhost:3000/student/profile/picture/",
+        s.student_id
+      ),
+      NULL
+    )
+    WHEN m.organizer_reciver_id IS NOT NULL THEN IF (
+      o.organizer_picture IS NOT NULL,
+      CONCAT (
+        "http://localhost:3000/organizer/profile/picture/",
+        o.organizer_id
+      ),
+      NULL
+    )
+    WHEN m.student_sender_id IS NOT NULL THEN IF (
+      s.student_picture IS NOT NULL,
+      CONCAT (
+        "http://localhost:3000/student/profile/picture/",
+        s.student_id
+      ),
+      NULL
+    )
+    WHEN m.organizer_sender_id IS NOT NULL THEN IF (
+      o.organizer_picture IS NOT NULL,
+      CONCAT (
+        "http://localhost:3000/organizer/profile/picture/",
+        o.organizer_id
+      ),
+      NULL
+    )
+  END AS other_user_picture,
+  (
+    SELECT
+      mm.message_content
+    FROM
+      messages AS mm
+    WHERE
+      (
+        mm.student_sender_id = '${userId}'
+        OR mm.student_reciver_id = '${userId}'
+        OR mm.organizer_sender_id = '${userId}'
+        OR mm.organizer_reciver_id = '${userId}'
+      )
+      AND (
+        mm.student_sender_id = other_user_id
+        OR mm.student_reciver_id = other_user_id
+        OR mm.organizer_sender_id = other_user_id
+        OR mm.organizer_reciver_id = other_user_id
+      )
+    ORDER BY
+      mm.message_time DESC
+    LIMIT
+      1
+  ) AS last_message,
+  (
+    SELECT
+      mm.message_time
+    FROM
+      messages AS mm
+    WHERE
+      (
+        mm.student_sender_id = '${userId}'
+        OR mm.student_reciver_id = '${userId}'
+        OR mm.organizer_sender_id = '${userId}'
+        OR mm.organizer_reciver_id = '${userId}'
+      )
+      AND (
+        mm.student_sender_id = other_user_id
+        OR mm.student_reciver_id = other_user_id
+        OR mm.organizer_sender_id = other_user_id
+        OR mm.organizer_reciver_id = other_user_id
+      )
+    ORDER BY
+      mm.message_time DESC
+    LIMIT
+      1
+  ) AS last_message_time,
+  (
+    SELECT
+      CASE
+        WHEN mm.student_sender_id = '${userId}' THEN 1
+        WHEN mm.organizer_sender_id = '${userId}' THEN 1
+        WHEN mm.message_is_read = 1 THEN 1
+        ELSE 0
+      END AS last_message_status
+    FROM
+      messages AS mm
+    WHERE
+      (
+        mm.student_sender_id = '${userId}'
+        OR mm.student_reciver_id = '${userId}'
+        OR mm.organizer_sender_id = '${userId}'
+        OR mm.organizer_reciver_id = '${userId}'
+      )
+      AND (
+        mm.student_sender_id = other_user_id
+        OR mm.student_reciver_id = other_user_id
+        OR mm.organizer_sender_id = other_user_id
+        OR mm.organizer_reciver_id = other_user_id
+      )
+    ORDER BY
+      mm.message_time DESC
+    LIMIT
+      1
+  ) AS last_message_status
+FROM
+  messages AS m
+  LEFT JOIN student AS s ON (
+    m.student_reciver_id = s.student_id
+    OR m.student_sender_id = s.student_id
+  )
+  AND s.student_id != '${userId}'
+  LEFT JOIN organizer AS o ON (
+    m.organizer_reciver_id = o.organizer_id
+    OR m.organizer_sender_id = o.organizer_id
+  )
+  AND o.organizer_id != '${userId}'
+GROUP BY
+  other_user_name
+HAVING
+  other_user_name IS NOT NULL
+ORDER BY
+  last_message_time DESC;
+  `
 
   connection.query(query, (err, results) => {
     if (err) throw err;
