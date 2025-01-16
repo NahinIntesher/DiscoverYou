@@ -47,8 +47,8 @@ import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/
 import CommonCourseParticipated from "../Components/CommonComponents/CommonProfile/Student/Details/CourseParticipated";
 import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
 
-
 import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
+import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseReactors";
 
 export default function Student({
   handleLogout,
@@ -75,6 +75,10 @@ export default function Student({
           <Route
             path="/showcase"
             element={<Showcase user={user} admins={admins} />}
+          />
+          <Route
+            path="/showcase/reactors/:postId"
+            element={<ShowcaseReactors user={user} />}
           />
           <Route
             path="/showcase/post/:postId"
@@ -179,17 +183,32 @@ export default function Student({
             element={<CommonShowcasePosts />}
           />
 
-          <Route path="/message/:otherUserId" element={<MessaengerHome user={user}
-            messageUpdate={messageUpdate}
-            setMessageUpdate={setMessageUpdate}
-          />} />
+          <Route
+            path="/message/:otherUserId"
+            element={
+              <MessaengerHome
+                user={user}
+                messageUpdate={messageUpdate}
+                setMessageUpdate={setMessageUpdate}
+              />
+            }
+          />
 
-          <Route path="/message" element={<MessaengerHome user={user}
-            messageUpdate={messageUpdate}
-            setMessageUpdate={setMessageUpdate}
-          />} />
+          <Route
+            path="/message"
+            element={
+              <MessaengerHome
+                user={user}
+                messageUpdate={messageUpdate}
+                setMessageUpdate={setMessageUpdate}
+              />
+            }
+          />
 
-          <Route path="/profile/:paramId" element={<CommonProfile mainUser={user}/>} />
+          <Route
+            path="/profile/:paramId"
+            element={<CommonProfile mainUser={user} />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -39,7 +39,7 @@ const SingleWebinar = () => {
         console.log("Full API Response:", response.data.webinar);
         setData(response.data);
         setLoading(false);
-        const webinar = response.data.webinar;
+        const webinar = response.data?.webinar;
 
         setWebinarType(webinar.webinar_type);
         setParticipantNo(webinar.participant_count);
@@ -74,10 +74,10 @@ const SingleWebinar = () => {
                   }
                 />
               </div>
-              <div className="hostDetails">
+              <Link to={"/profile/" + data.webinar.host_id} className="hostDetails">
                 <div className="detailTitle">Organized By</div>
                 <div className="detailInfo">{data.webinar.host_name}</div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

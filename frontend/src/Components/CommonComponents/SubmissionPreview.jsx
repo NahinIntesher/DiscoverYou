@@ -27,7 +27,7 @@ export default function SubmissionPreview() {
             <Header title={"Submission of "+material.participant_name} semiTitle={"For "+material.contest_name+" Contest"}/>
             { material.submission_type == "text" &&
                 <div className="courseMaterialContainer">
-                    <div className="textBox">
+                    <div className="textBoxCode">
                         {material.submission_text}
                     </div>
                 </div>

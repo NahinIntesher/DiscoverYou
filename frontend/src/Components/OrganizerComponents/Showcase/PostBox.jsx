@@ -211,9 +211,11 @@ export default function PostBox({
           </div>
         )}
       </div>
-      
+
       <div className="postDetails">
-        <div className="detail">{reactionCount} Likes</div>
+        <Link className="detail" to={"/showcase/reactors/" + postId}>
+          {reactionCount} Likes
+        </Link>
         <div className="divider"></div>
         <div className="detail">{postCommentCount} Comments</div>
         <div className="divider"></div>

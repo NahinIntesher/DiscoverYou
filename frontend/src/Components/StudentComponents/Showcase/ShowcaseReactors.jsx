@@ -2,7 +2,7 @@ import { React, useEffect } from "react";
 import Header from "../../CommonComponents/Header";
 import axios from "axios";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import dp from "../../../assets/images/default.jpg";
 
 export default function ShowcaseReactors() {
@@ -12,15 +12,10 @@ export default function ShowcaseReactors() {
   useEffect(() => {
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3000/student/showcase/reactor", {
-        params: {
-          postId: postId, // passing postId properly
-        },
-      })
+      .get(`http://localhost:3000/student/showcase/reactor/${postId}`)
       .then((res) => {
         if (res.data.status === "Success") {
           const reactors = res.data.reactors;
-          console.log(reactors);
           setReactors(reactors);
         } else {
           alert(res.data.Error);
@@ -37,6 +32,7 @@ export default function ShowcaseReactors() {
           {reactors.map((reactor) => (
             <Reactors
               key={reactor.reactor_id}
+              reactorId={reactor.reactor_id}
               name={reactor.reactor_name}
               reactorPicture={reactor.reactor_picture}
             />
@@ -46,16 +42,16 @@ export default function ShowcaseReactors() {
     </div>
   );
 }
-function Reactors({ name, reactorPicture }) {
+function Reactors({ name, reactorPicture, reactorId }) {
   return (
     <div className="participant">
       <div className="profilePicture">
         <img src={reactorPicture ? reactorPicture : dp} />
       </div>
-      <div className="participantDetails">
+      <Link to={"/profile/" + reactorId} className="participantDetails">
         <div className="name">{name}</div>
         <div className="viewProfile">View Profile</div>
-      </div>
+      </Link>
     </div>
   );
 }

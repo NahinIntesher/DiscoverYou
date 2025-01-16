@@ -382,14 +382,14 @@ module.exports = (router, multer) => {
     });
   });
 
-  router.get("/showcase/reactor", verifyToken, function (req, res) {
+  router.get("/showcase/reactor/:postId", verifyToken, function (req, res) {
     const userId = req.userId;
-    const { postId } = req.query;
-    console.log(postId);
+    const postId = req.params.postId;
     const query = `
         SELECT 
           COALESCE(
               s.student_name, 
+              s.student_id,
               o.organizer_name, 
               a.admin_name
           ) AS reactor_name,
