@@ -145,7 +145,7 @@ export default function Student({
           <Route path="/course/:courseId" element={<SingleCourse />} />
           {/* <Route path="/course/:courseId/add-material" element={<AddMaterial />} /> */}
 
-          <Route path="/webinar" element={<Webinar />} />
+          <Route path="/webinar" element={<Webinar user={user}/>} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
           <Route path="/marketplace" element={<Marketplace user={user}/>} />
