@@ -91,7 +91,6 @@ export default function MessengerMain({ user, activeContactId }) {
                   key={message.message_id}
                   message={message.message_content}
                   ownMessage={message.own_message}
-                  messengerName={message.own_message ? (user.hasOwnProperty("student_name") ? user.student_name : user.organizer_name) : otherUser.name}
                   messengerPicture={message.own_message ? (user.hasOwnProperty("student_picture") ? user.student_picture : user.other_user_picture) : otherUser.user_picture} // Default picture
                   updateMessages={updateMessages} // Ensure re-render when new message is sent
                 />

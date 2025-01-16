@@ -16,11 +16,6 @@ export default function MessengerHome({ user }) {
 
   return (
     <div className="mainContent">
-      <div className="contentTitle">
-        <div className="content">
-          <div className="title">Messaging</div>
-        </div>
-      </div>
       <div className="MessagesHomeContainer">
         <MessengerSidebar user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
         <MessengerMain user={user} activeContactId={activeContactId}/>

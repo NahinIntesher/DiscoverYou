@@ -34,6 +34,7 @@ export default function MessengerSidebar({ user, setActiveContactId, activeConta
 
   return (
     <div className="MessengerSidebar">
+      <div className="title">Inbox</div>
       <div className="contactContainer">
         {
           contacts.map((contact) => {

@@ -6,11 +6,17 @@
   border-right: 2px solid rgba(0, 0, 0, 0.2);
 }
 
+.MessengerSidebar .title {
+  font-size: 26px;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
 .MessagesHomeContainer{
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: 100vh;
 }
 
 .messagesBoxContainerAlt {
@@ -35,6 +41,9 @@
   overflow-y: auto;
   color: #333;
   position: relative;
+}
+.MessengerMain .messageBox .profilePicture {
+  margin-top: 4px;
 }
 .contactIntroBox {
   text-align: center;
