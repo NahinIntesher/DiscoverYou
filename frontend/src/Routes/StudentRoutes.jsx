@@ -261,7 +261,7 @@ export default function Student({
             setMessageUpdate={setMessageUpdate}
           />} />
 
-          <Route path="/profile/:paramId" element={<CommonProfile />} />
+          <Route path="/profile/:paramId" element={<CommonProfile mainUser={user}/>} />
 
         </Routes>
       </div>

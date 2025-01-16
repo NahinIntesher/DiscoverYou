@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import NotFoundAlt from "../NotFoundAlt";
 
-export default function MessengerMain({ user, activeContactId, setMessageUpdate}) {
+export default function MessengerMain({ user, activeContactId, setMessageUpdate }) {
   const [messageText, setMessageText] = useState(null);
   const [messages, setMessages] = useState([]);
   const [otherUser, setOtherUser] = useState(null);
@@ -41,21 +41,22 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate}
 
   useEffect(() => {
     const fetchCommunityData = () => {
-      axios
-        .get("http://localhost:3000/messages/single/" + activeContactId)
-        .then((res) => {
-          const messagesData = res.data?.messages || [];
+      if (activeContactId != null && !activeContactId.startsWith("Ad")) {
+        axios
+          .get("http://localhost:3000/messages/single/" + activeContactId)
+          .then((res) => {
+            const messagesData = res.data?.messages || [];
 
-          setMessageUpdate((prevData) => prevData + 1);
-          setMessages(messagesData);
-        })
-        .catch((error) => {
-          console.error("Error fetching community:", error);
-        });
+            setMessageUpdate((prevData) => prevData + 1);
+            setMessages(messagesData);
+          })
+          .catch((error) => {
+            console.error("Error fetching community:", error);
+          });
+      }
     };
-    if (activeContactId != null) {
-      fetchCommunityData(); // Fetch immediately
-    }
+
+    fetchCommunityData(); // Fetch immediately
 
     const interval = setInterval(fetchCommunityData, 2000); // Fetch every 2 seconds
 
@@ -63,7 +64,7 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate}
   }, [updateMessages, activeContactId]);
 
   useEffect(() => {
-    if (activeContactId) {
+    if (activeContactId != null && !activeContactId.startsWith("Ad")) {
       axios.defaults.withCredentials = true;
       axios
         .get(`http://localhost:3000/profiles/${activeContactId}`)

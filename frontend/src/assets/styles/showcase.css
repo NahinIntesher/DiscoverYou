@@ -654,3 +654,7 @@
         padding: 20px;
     }
 }
+
+.miniBreak {
+    min-height: 10px;
+}

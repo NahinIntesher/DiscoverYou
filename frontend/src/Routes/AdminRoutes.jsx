@@ -154,7 +154,7 @@ export default function Student({
             path="/profile/showcaseResults/:paramId"
             element={<CommonShowcasePosts />}
           />
-          <Route path="/profile/:paramId" element={<CommonProfile />} />
+          <Route path="/profile/:paramId" element={<CommonProfile mainUser={user}/>} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -187,7 +187,8 @@ export default function PostBox({
         <div className="divider"></div>
         <div className="detail">{getPMTime(postTime)}</div>
       </div>
-      <div className="postActionBoxContainer">
+      <div className="miniBreak"></div>
+      {/* <div className="postActionBoxContainer">
         {isReacted ? (
           <div className="postActionBox active" onClick={reactPost}>
             <MaterialSymbol className="icon" fill size={22} icon="favorite" />
@@ -203,7 +204,7 @@ export default function PostBox({
           <MaterialSymbol className="icon" size={22} icon="chat_bubble" />
           <div className="text">Comment</div>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

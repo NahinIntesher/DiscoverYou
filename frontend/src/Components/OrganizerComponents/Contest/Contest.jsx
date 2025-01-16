@@ -36,7 +36,7 @@ export default function Contest() {
   const [ongoingContests, setOngoingContests] = useState([]);
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [previousContests, setPreviousContests] = useState([]);
-  const [category, setCategory] = useState("myInterested");
+  const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("name");
   const [searchText, setSearchText] = useState("");
 

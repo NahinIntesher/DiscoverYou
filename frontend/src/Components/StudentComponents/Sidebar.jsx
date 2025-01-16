@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 
 export default function Sidebar({ logoutAction, user, notificationUpdate, messageUpdate }) {
   const [newNotifications, setNewNotifications] = useState(0);
-
   const [newMessages, setNewMessages] = useState(0);
 
   useEffect(() => {

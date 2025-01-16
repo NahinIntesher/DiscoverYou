@@ -5,7 +5,7 @@ import StudentProfile from "./Student/StudentProfile";
 import OrganizerProfile from "./Organizer/OrganizerProfile";
 import AdminProfile from "./Admin/AdminProfile";
 
-export default function CommonProfile() {
+export default function CommonProfile({mainUser}) {
   const { paramId } = useParams();
   console.log("ParamId:", paramId);
 
@@ -37,11 +37,11 @@ export default function CommonProfile() {
   return (
     <>
       {paramId[0] === "S" ? (
-        <StudentProfile user={user} interests={interests} />
+        <StudentProfile user={user} interests={interests} mainUser={mainUser}/>
       ) : paramId[0] === "O" ? (
-        <OrganizerProfile user={user} />
+        <OrganizerProfile user={user} mainUser={mainUser}/>
       ) : (
-        <AdminProfile user={user} />
+        <AdminProfile user={user} mainUser={mainUser}/>
       )}
     </>
   );

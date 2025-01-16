@@ -86,21 +86,7 @@ export default function Post({user}) {
                         deleteButtonAvailable={true}
                     />
                 }
-                <div className="giveCommentBox">
-                    <form onSubmit={handleSubmit}>
-                        <div className="profilePicture">
-                            <img src={user.admin_picture ? user.admin_picture : dp}/>
-                        </div>
-                        <textarea
-                            id="content"
-                            name="content"
-                            placeholder="Write something..."
-                            onChange={handleChange}
-                            value={commentContent}
-                        />        
-                        <button className="postButton" type="submit">Comment</button>
-                    </form>
-                </div>
+
                 <div className="commentBoxContainer">
                     <div className="title">Comments</div>
                     {   comments.length > 0 ?

@@ -5,10 +5,11 @@ import "react-material-symbols/rounded";
 import dp from "../../../../assets/images/default.jpg";
 import "../../../../assets/styles/Profile.css";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../Header";
+import { use } from "react";
 
-export default function StudentProfile({ user, interests }) {
+export default function StudentProfile({ user, interests, mainUser }) {
   const { paramId } = useParams();
   const [contestResults, setContestResults] = useState({});
   const [showcaseResults, setShowcaseResults] = useState({});
@@ -45,7 +46,7 @@ export default function StudentProfile({ user, interests }) {
 
   return (
     <div className="mainContent">
-      <Header title={user.name+"'s Profile"}/>
+      <Header title={user.name + "'s Profile"} />
       <div className="profileContainer">
         <div className="profileTopBox">
           <div className="profilePicture">
@@ -66,10 +67,15 @@ export default function StudentProfile({ user, interests }) {
                 return <Interest key={interest} category={interest} />;
               })}
             </div>
-            <Link to={"/message/"+user.id} className="sendMessage">
-              <MaterialSymbol className="icon" size={24} icon="message" />
-              <div className="text">Send Message</div>
-            </Link>
+            {user.admin_id}
+            {
+              (!mainUser.hasOwnProperty("admin_id")) ?
+                <Link to={"/message/" + user.id} className="sendMessage">
+                  <MaterialSymbol className="icon" size={24} icon="message" />
+                  <div className="text">Send Message</div>
+                </Link>
+                : <></>
+            }
           </div>
         </div>
 

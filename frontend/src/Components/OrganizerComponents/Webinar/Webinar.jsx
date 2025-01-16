@@ -33,7 +33,7 @@ export default function Webinar({ user }) {
   const [ongoingWebinars, setOngoingWebinars] = useState([]);
   const [upcomingWebinars, setUpcomingWebinars] = useState([]);
   const [previousWebinars, setPreviousWebinars] = useState([]);
-  const [category, setCategory] = useState("myInterested");
+  const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("name");
   const [searchText, setSearchText] = useState("");
 

@@ -58,6 +58,7 @@ export default function Student({
   setAuthorized,
 }) {
   const [notificationUpdate, setNotificationUpdate] = useState(0);
+  const [messageUpdate, setMessageUpdate] = useState(0);
 
   return (
     <BrowserRouter>
@@ -66,6 +67,7 @@ export default function Student({
           logoutAction={handleLogout}
           user={user}
           notificationUpdate={notificationUpdate}
+          messageUpdate={messageUpdate}
         />
         <Routes>
           <Route path="/" element={<Dashboard user={user} />} />
@@ -79,7 +81,7 @@ export default function Student({
             element={<Post user={user} admins={admins} />}
           />
 
-          <Route path="/contest" element={<Contest user={user}/>} />
+          <Route path="/contest" element={<Contest user={user} />} />
           <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
           <Route path="/contest/pending" element={<PendingContest />} />
@@ -93,7 +95,7 @@ export default function Student({
           <Route path="/webinar/pending" element={<PendingWebinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
-          <Route path="/marketplace" element={<Marketplace user={user}/>} />
+          <Route path="/marketplace" element={<Marketplace user={user} />} />
           <Route path="/marketplace/product/:productId" element={<Product />} />
           <Route
             path="/marketplace/checkout/:productId"
@@ -101,7 +103,7 @@ export default function Student({
           />
           <Route path="/marketplace/order-history" element={<OrderHistory />} />
 
-          <Route path="/hiring" element={<Hiring user={user}/>} />
+          <Route path="/hiring" element={<Hiring user={user} />} />
           <Route
             path="/hiring/new"
             element={<NewHiring user={user} admins={admins} />}
@@ -177,10 +179,17 @@ export default function Student({
             element={<CommonShowcasePosts />}
           />
 
-          <Route path="/message/:otherUserId" element={<MessaengerHome user={user}/>} />
-          <Route path="/message" element={<MessaengerHome user={user}/>} />
+          <Route path="/message/:otherUserId" element={<MessaengerHome user={user}
+            messageUpdate={messageUpdate}
+            setMessageUpdate={setMessageUpdate}
+          />} />
 
-          <Route path="/profile/:paramId" element={<CommonProfile />} />
+          <Route path="/message" element={<MessaengerHome user={user}
+            messageUpdate={messageUpdate}
+            setMessageUpdate={setMessageUpdate}
+          />} />
+
+          <Route path="/profile/:paramId" element={<CommonProfile mainUser={user}/>} />
         </Routes>
       </div>
     </BrowserRouter>

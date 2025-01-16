@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../../Header";
 
-export default function OrganizerProfile({ user }) {
+export default function OrganizerProfile({ user, mainUser }) {
   const [contestResults, setContestResults] = useState({});
   const [webinarResults, setWebinarResults] = useState({});
   const [hiringResults, setHiringResults] = useState({});
@@ -49,10 +49,14 @@ export default function OrganizerProfile({ user }) {
           </div>
           <div className="details">
             <div className="name">{user.name}</div>
-            <Link to={"/message/" + user.id} className="sendMessage">
-              <MaterialSymbol className="icon" size={24} icon="message" />
-              <div className="text">Send Message</div>
-            </Link>
+            {
+              !(mainUser.hasOwnProperty("admin_id")) ?
+                <Link to={"/message/" + user.id} className="sendMessage">
+                  <MaterialSymbol className="icon" size={24} icon="message" />
+                  <div className="text">Send Message</div>
+                </Link>
+                : <></>
+            }
           </div>
         </div>
 
