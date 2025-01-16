@@ -17,7 +17,7 @@ export default function MessengerHome({ user, messageUpdate, setMessageUpdate })
   return (
     <div className="mainContent">
       <div className="MessagesHomeContainer">
-        <MessengerSidebar setMessageUpdate={setMessageUpdate} user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
+        <MessengerSidebar user={user} setActiveContactId={setActiveContactId} activeContactId={activeContactId}/>
         <MessengerMain setMessageUpdate={setMessageUpdate} user={user} activeContactId={activeContactId}/>
       </div>
     </div>

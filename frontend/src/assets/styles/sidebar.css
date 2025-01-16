@@ -317,6 +317,8 @@ body {
     border-radius: 10px;
     width: 280px;
     text-align: left;
+    display: flex;
+    align-items: center;
 }
 .searchBox .icon, input {
     display: inline-block;

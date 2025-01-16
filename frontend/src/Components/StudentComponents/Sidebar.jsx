@@ -29,6 +29,7 @@ export default function Sidebar({ logoutAction, user, notificationUpdate, messag
     axios
       .get("http://localhost:3000/messages/contacts")
       .then((res) => {
+        console.log("update message omo");
         let contactsData = res.data?.contacts || 0;
         contactsData = contactsData.filter((contact) => contact.last_message_status == 0);
         setNewMessages(contactsData.length);

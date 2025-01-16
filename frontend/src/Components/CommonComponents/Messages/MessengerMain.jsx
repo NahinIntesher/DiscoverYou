@@ -15,7 +15,6 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate}
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(messageText);
 
     axios.defaults.withCredentials = true;
     axios
@@ -41,14 +40,13 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate}
   };
 
   useEffect(() => {
-    console.log(activeContactId);
     const fetchCommunityData = () => {
       axios
         .get("http://localhost:3000/messages/single/" + activeContactId)
         .then((res) => {
-          console.log("Success o m");
           const messagesData = res.data?.messages || [];
 
+          setMessageUpdate((prevData) => prevData + 1);
           setMessages(messagesData);
         })
         .catch((error) => {
@@ -71,7 +69,6 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate}
         .get(`http://localhost:3000/profiles/${activeContactId}`)
         .then((res) => {
           setOtherUser(res.data.user);
-          setLoaded(true);
         })
         .catch((err) => {
           console.log(err);
