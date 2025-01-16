@@ -22,10 +22,15 @@
   margin: auto;
 }
 
+.miniBr {
+  display:flex;
+  width: 20px;
+  min-height: 20px;
+}
 /* Main content styles */
 .MessengerMain {
   flex: 3.5;
-  padding: 25px;
+  padding: 0 25px;
   background: rgba(255, 255, 255, 0.3);
   overflow-y: auto;
   color: #333;

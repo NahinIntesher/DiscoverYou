@@ -85,6 +85,7 @@ export default function MessengerMain({ user, activeContactId }) {
         (activeContactId != "all" && activeContactId != null && otherUser != null) ? (
           <>
             <div className="messagesBoxContainerAlt">
+              <div className="miniBr"></div>
               {messages.map((message) => (
                 <MessageBox
                   key={message.message_id}
@@ -106,6 +107,7 @@ export default function MessengerMain({ user, activeContactId }) {
                 <div className="contactName">{otherUser.name}</div>
                 <Link to={"/profile/"+otherUser.id} className="visitProfile">Visit Profile</Link>
               </div>
+              <div className="miniBr"/>
             </div>
             <div className="giveMessageBox">
               <form onSubmit={handleSubmit}>
