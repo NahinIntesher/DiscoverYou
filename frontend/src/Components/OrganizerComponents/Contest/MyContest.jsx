@@ -5,21 +5,8 @@ import NotFound from "../../CommonComponents/NotFound";
 import 'react-material-symbols/rounded';
 import ContestBox from "./ContestBox";
 
-export default function MyContest() {
-  const [contests, setContests] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/organizer/contests/my")
-      .then((response) => {
-        const contestsData = response.data?.contests;
-        setContests(contestsData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, []);
-
+export default function MyContest({contests}) {
+  
   if (contests.length) {
     return (
       <div className="scrollContainer">

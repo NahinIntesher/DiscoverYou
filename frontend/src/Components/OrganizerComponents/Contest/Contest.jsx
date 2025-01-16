@@ -31,6 +31,8 @@ export default function Contest() {
 
   const [contestsData, setContestsData] = useState([]);
   const [contests, setContests] = useState([]);
+  const [mycontestsData, setMyContestsData] = useState([]);
+  const [mycontests, setMyContests] = useState([]);
   const [ongoingContests, setOngoingContests] = useState([]);
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [previousContests, setPreviousContests] = useState([]);
@@ -52,7 +54,26 @@ export default function Contest() {
     "Graphics Designing",
   ];
 
-  
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/organizer/contests/myCreated")
+      .then((response) => {
+        const contestsData = response.data?.contests;
+
+        let filteredcontestsData = contestsData.filter((contest) =>
+          allInterests.includes(contest.contest_category)
+        );
+        filteredcontestsData.sort((a, b) =>
+          a.contest_name.localeCompare(b.contest_name)
+        );
+        setMyContestsData(contestsData);
+        setMyContests(filteredcontestsData);
+      })
+      .catch((error) => {
+        console.error("Error fetching contests:", error);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/organizer/contests")
@@ -98,6 +119,7 @@ export default function Contest() {
     const { name, value } = e.target;
 
     let filteredcontestsData;
+    let filteredmycontestsData;
     let sortValue = name == "sort" ? value : sort;
     let categoryValue = name == "category" ? value : category;
     let searchTextValue = name == "search" ? value : searchText;
@@ -107,8 +129,14 @@ export default function Contest() {
       filteredcontestsData = contestsData.filter((contest) =>
         allInterests.includes(contest.contest_category)
       );
+      filteredmycontestsData = mycontestsData.filter((contest) =>
+        allInterests.includes(contest.contest_category)
+      );
     } else {
       filteredcontestsData = contestsData.filter(
+        (contest) => contest.contest_category == categoryValue
+      );
+      filteredmycontestsData = mycontestsData.filter(
         (contest) => contest.contest_category == categoryValue
       );
       setCategory(categoryValue);
@@ -117,10 +145,16 @@ export default function Contest() {
     filteredcontestsData = filteredcontestsData.filter((contest) =>
       contest.contest_name.toLowerCase().includes(searchTextValue.toLowerCase())
     );
+    filteredmycontestsData = filteredmycontestsData.filter((contest) =>
+      contest.contest_name.toLowerCase().includes(searchTextValue.toLowerCase())
+    );
 
     if (sortValue == "name") {
       setSort("name");
       filteredcontestsData.sort((a, b) =>
+        a.contest_name.localeCompare(b.contest_name)
+      );
+      filteredmycontestsData.sort((a, b) =>
         a.contest_name.localeCompare(b.contest_name)
       );
     } else {
@@ -128,9 +162,13 @@ export default function Contest() {
       filteredcontestsData.sort(
         (a, b) => b.participant_count - a.participant_count
       );
+      filteredmycontestsData.sort(
+        (a, b) => b.participant_count - a.participant_count
+      );
     }
 
     setContests(filteredcontestsData);
+    setMyContests(filteredmycontestsData);
     setEachContest(filteredcontestsData);
   };
 
@@ -158,10 +196,11 @@ export default function Contest() {
             Pending Contests
           </Link>
         </div>
-      ) : <></>
-      }
+      ) : (
+        <></>
+      )}
 
-      {resultPending.length != 0 ?
+      {resultPending.length != 0 ? (
         resultPending.map(function (contest) {
           return (
             <div className="pendingBox">
@@ -174,8 +213,10 @@ export default function Contest() {
               </Link>
             </div>
           );
-        }):<></>
-      }
+        })
+      ) : (
+        <></>
+      )}
 
       <div className="content">
         <div className="filterBox filterBoxCommunity">
@@ -208,6 +249,11 @@ export default function Contest() {
             </div>
           </div>
         </div>
+
+        <h3 className="contentSemiTitle">My contests</h3>
+        <MyContest contests={mycontests} />
+        <div className="miniBreak"></div>
+
         <h3 className="contentSemiTitle">Ongoing Contests</h3>
         <OngoingContest contests={ongoingContests} />
         <div className="miniBreak"></div>

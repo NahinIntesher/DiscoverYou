@@ -147,7 +147,7 @@ module.exports = (router) => {
     });
   });
 
-  router.get("/contests/my", verifyToken, (req, res) => {
+  router.get("/contests/myCreated", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
       SELECT 

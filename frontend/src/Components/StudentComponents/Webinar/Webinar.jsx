@@ -10,7 +10,6 @@ import "react-material-symbols/rounded";
 export default function Webinar({ user }) {
   const [webinarsData, setWebinarsData] = useState([]);
   const [webinars, setWebinars] = useState([]);
-  const [myWebinars, setMyWebinars] = useState([]);
   const [ongoingWebinars, setOngoingWebinars] = useState([]);
   const [upcomingWebinars, setUpcomingWebinars] = useState([]);
   const [previousWebinars, setPreviousWebinars] = useState([]);
@@ -36,7 +35,6 @@ export default function Webinar({ user }) {
     axios
       .get("http://localhost:3000/organizer/webinars")
       .then((res) => {
-        console.log("Success");
         const webinarsData = res.data?.webinars || [];
 
         let filteredwebinarsData = webinarsData.filter((webinar) =>
@@ -74,10 +72,10 @@ export default function Webinar({ user }) {
   };
 
   const handleInputChange = (e) => {
+    console.log("ahjsldkgfj;skglkaslgj;lkjas");
     const { name, value } = e.target;
 
     let filteredwebinarsData;
-    let filteredmywebinarsData;
     let sortValue = name == "sort" ? value : sort;
     let categoryValue = name == "category" ? value : category;
     let searchTextValue = name == "search" ? value : searchText;
@@ -88,7 +86,7 @@ export default function Webinar({ user }) {
         allInterests.includes(webinar.webinar_category)
       );
     } else if (categoryValue == "myInterested") {
-      filteredcontestsData = webinarsData.filter((webinar) =>
+      filteredwebinarsData = webinarsData.filter((webinar) =>
         user.interests.includes(webinar.webinar_category)
       );
       setCategory("myInterested");
@@ -108,21 +106,19 @@ export default function Webinar({ user }) {
       filteredwebinarsData.sort((a, b) =>
         a.webinar_name.localeCompare(b.webinar_name)
       );
-      filteredmywebinarsData.sort((a, b) =>
-        a.webinar_name.localeCompare(b.webinar_name)
-      );
     } else {
       setSort("register");
       filteredwebinarsData.sort(
-        (a, b) => b.participant_count - a.participant_count
-      );
-      filteredmywebinarsData.sort(
         (a, b) => b.participant_count - a.participant_count
       );
     }
 
     setWebinars(filteredwebinarsData);
     setEachwebinar(filteredwebinarsData);
+
+    console.log(ongoingWebinars);
+    console.log(previousWebinars);
+    console.log(upcomingWebinars);
   };
 
   return (

@@ -9,7 +9,7 @@ import UpcomingWebinar from "./UpcomingWebinar";
 import PreviousWebinar from "./PreviousWebinar";
 import MyWebinar from "./MyWebinar";
 
-export default function Webinar() {
+export default function Webinar({ user }) {
   const [pendingWebinarsNo, setPendingWebinarsNo] = useState(0);
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export default function Webinar() {
 
   const [webinarsData, setWebinarsData] = useState([]);
   const [webinars, setWebinars] = useState([]);
+  const [myWebinarsData, setMyWebinarsData] = useState([]);
   const [myWebinars, setMyWebinars] = useState([]);
   const [ongoingWebinars, setOngoingWebinars] = useState([]);
   const [upcomingWebinars, setUpcomingWebinars] = useState([]);
@@ -62,6 +63,7 @@ export default function Webinar() {
         filteredwebinarsData.sort((a, b) =>
           a.webinar_name.localeCompare(b.webinar_name)
         );
+        setMyWebinarsData(webinarsData);
         setMyWebinars(filteredwebinarsData);
       })
       .catch((error) => {
@@ -119,19 +121,21 @@ export default function Webinar() {
     let categoryValue = name == "category" ? value : category;
     let searchTextValue = name == "search" ? value : searchText;
 
+    console.log(webinarsData);
+    console.log(myWebinars);
     if (categoryValue == "all") {
       setCategory("all");
       filteredwebinarsData = webinarsData.filter((webinar) =>
         allInterests.includes(webinar.webinar_category)
       );
-      filteredmywebinarsData = myWebinars.filter((webinar) =>
+      filteredmywebinarsData = myWebinarsData.filter((webinar) =>
         allInterests.includes(webinar.webinar_category)
       );
     } else {
       filteredwebinarsData = webinarsData.filter(
         (webinar) => webinar.webinar_category == categoryValue
       );
-      filteredmywebinarsData = myWebinars.filter(
+      filteredmywebinarsData = myWebinarsData.filter(
         (webinar) => webinar.webinar_category == categoryValue
       );
       setCategory(categoryValue);
@@ -163,8 +167,8 @@ export default function Webinar() {
     }
 
     setWebinars(filteredwebinarsData);
-    setEachwebinar(filteredwebinarsData);
     setMyWebinars(filteredmywebinarsData);
+    setEachwebinar(filteredwebinarsData);
   };
 
   return (
@@ -228,15 +232,15 @@ export default function Webinar() {
         <div className="miniBreak"></div>
 
         <h3 className="contentSemiTitle">Ongoing Webinars</h3>
-        <OngoingWebinar webinars={ongoingWebinars}/>
+        <OngoingWebinar webinars={ongoingWebinars} />
         <div className="miniBreak"></div>
 
         <h3 className="contentSemiTitle">Upcoming Webinars</h3>
-        <UpcomingWebinar webinars={upcomingWebinars}/>
+        <UpcomingWebinar webinars={upcomingWebinars} />
         <div className="miniBreak"></div>
 
         <h3 className="contentSemiTitle">Previous Webinars</h3>
-        <PreviousWebinar webinars={previousWebinars}/>
+        <PreviousWebinar webinars={previousWebinars} />
       </div>
     </div>
   );
