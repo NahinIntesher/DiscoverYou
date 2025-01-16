@@ -727,49 +727,76 @@ app.get("/messages/contacts", verifyToken, (req, res) => {
   const query = `
   SELECT DISTINCT
   CASE
-    WHEN m.student_reciver_id IS NOT NULL THEN s.student_name
-    WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_name
-    WHEN m.student_sender_id IS NOT NULL THEN s.student_name
-    WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_name
+    WHEN (m.student_sender_id != '${userId}' OR m.organizer_sender_id != '${userId}') 
+    THEN (
+      CASE
+        WHEN m.student_sender_id IS NOT NULL THEN s.student_name
+        WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_name
+      END
+    )
+    ELSE (
+      CASE
+        WHEN m.student_reciver_id IS NOT NULL THEN s.student_name
+        WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_name
+      END
+    )
   END AS other_user_name,
   CASE
-    WHEN m.student_reciver_id IS NOT NULL THEN s.student_id
-    WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_id
-    WHEN m.student_sender_id IS NOT NULL THEN s.student_id
-    WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_id
+    WHEN (m.student_sender_id != '${userId}' OR m.organizer_sender_id != '${userId}') 
+    THEN (
+      CASE
+        WHEN m.student_sender_id IS NOT NULL THEN s.student_id
+        WHEN m.organizer_sender_id IS NOT NULL THEN o.organizer_id
+      END
+    )
+    ELSE (
+      CASE
+        WHEN m.student_reciver_id IS NOT NULL THEN s.student_id
+        WHEN m.organizer_reciver_id IS NOT NULL THEN o.organizer_id
+      END
+    )
   END AS other_user_id,
   CASE
-    WHEN m.student_reciver_id IS NOT NULL THEN IF (
-      s.student_picture IS NOT NULL,
-      CONCAT (
-        "http://localhost:3000/student/profile/picture/",
-        s.student_id
-      ),
-      NULL
+    WHEN (m.student_sender_id != '${userId}' OR m.organizer_sender_id != '${userId}') 
+    THEN (
+      CASE
+        WHEN m.student_sender_id IS NOT NULL THEN IF (
+          s.student_picture IS NOT NULL,
+          CONCAT (
+            "http://localhost:3000/student/profile/picture/",
+            s.student_id
+          ),
+          NULL
+        )
+        WHEN m.organizer_sender_id IS NOT NULL THEN IF (
+          o.organizer_picture IS NOT NULL,
+          CONCAT (
+            "http://localhost:3000/organizer/profile/picture/",
+            o.organizer_id
+          ),
+          NULL
+        )
+      END
     )
-    WHEN m.organizer_reciver_id IS NOT NULL THEN IF (
-      o.organizer_picture IS NOT NULL,
-      CONCAT (
-        "http://localhost:3000/organizer/profile/picture/",
-        o.organizer_id
-      ),
-      NULL
-    )
-    WHEN m.student_sender_id IS NOT NULL THEN IF (
-      s.student_picture IS NOT NULL,
-      CONCAT (
-        "http://localhost:3000/student/profile/picture/",
-        s.student_id
-      ),
-      NULL
-    )
-    WHEN m.organizer_sender_id IS NOT NULL THEN IF (
-      o.organizer_picture IS NOT NULL,
-      CONCAT (
-        "http://localhost:3000/organizer/profile/picture/",
-        o.organizer_id
-      ),
-      NULL
+    ELSE (
+      CASE
+        WHEN m.student_reciver_id IS NOT NULL THEN IF (
+          s.student_picture IS NOT NULL,
+          CONCAT (
+            "http://localhost:3000/student/profile/picture/",
+            s.student_id
+          ),
+          NULL
+        )
+        WHEN m.organizer_reciver_id IS NOT NULL THEN IF (
+          o.organizer_picture IS NOT NULL,
+          CONCAT (
+            "http://localhost:3000/organizer/profile/picture/",
+            o.organizer_id
+          ),
+          NULL
+        )
+      END
     )
   END AS other_user_picture,
   (
@@ -858,7 +885,7 @@ FROM
     )
     OR (
       (
-        m.student_sender_id = '${userId}'
+        m.student_reciver_id = '${userId}'
         OR m.organizer_reciver_id = '${userId}'
       )
       AND m.student_sender_id = s.student_id
@@ -875,7 +902,7 @@ FROM
     )
     OR (
       (
-        m.student_sender_id = '${userId}'
+        m.student_reciver_id = '${userId}'
         OR m.organizer_reciver_id = '${userId}'
       )
       AND m.organizer_sender_id = o.organizer_id

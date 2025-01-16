@@ -5,6 +5,7 @@ import { MaterialSymbol } from "react-material-symbols";
 import MessageBox from "../../CommonComponents/MessageBox";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import NotFoundAlt from "../NotFoundAlt";
 
 export default function MessengerMain({ user, activeContactId }) {
   const [messageText, setMessageText] = useState(null);
@@ -84,6 +85,19 @@ export default function MessengerMain({ user, activeContactId }) {
       {
         (activeContactId != "all" && activeContactId != null && otherUser != null) ? (
           <>
+            <div className="header">
+              <div className="profilePicture">
+                <img
+                  src={otherUser.user_picture || dp}
+                  alt="Profile"
+                />
+              </div>
+              <div className="text">
+                <div className="title">{otherUser.name}</div>
+                <div className="semiTitle">{otherUser.type == "student" ? "Student" : "Organizer"}</div>
+              </div>
+
+            </div>
             <div className="messagesBoxContainerAlt">
               <div className="miniBr"></div>
               {messages.map((message) => (
@@ -104,9 +118,9 @@ export default function MessengerMain({ user, activeContactId }) {
                   />
                 </div>
                 <div className="contactName">{otherUser.name}</div>
-                <Link to={"/profile/"+otherUser.id} className="visitProfile">Visit Profile</Link>
+                <Link to={"/profile/" + otherUser.id} className="visitProfile">Visit Profile</Link>
               </div>
-              <div className="miniBr"/>
+              <div className="miniBr" />
             </div>
             <div className="giveMessageBox">
               <form onSubmit={handleSubmit}>
@@ -131,7 +145,10 @@ export default function MessengerMain({ user, activeContactId }) {
             </div>
           </>
         ) : (
-          <></>
+          <NotFoundAlt
+            icon="forum"
+            message="No Chat Selected"
+          />
         )
       }
     </div>

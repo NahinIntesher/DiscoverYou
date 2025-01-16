@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 export default function Sidebar({ logoutAction, user, notificationUpdate }) {
   const [newNotifications, setNewNotifications] = useState(0);
 
+  const [newMessages, setNewMessages] = useState(0);
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/student/notifications/new")
@@ -22,6 +24,18 @@ export default function Sidebar({ logoutAction, user, notificationUpdate }) {
         console.error("Error fetching notifications:", error);
       });
   }, [notificationUpdate]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/messages/contacts")
+      .then((res) => {
+        const contactsData = res.data?.new_notifications || 0;
+        setNewMessages(contactsData.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching messages:", error);
+      });
+  }, [newMessages]);
 
   return (
     <div className="sideMenu">
@@ -63,7 +77,22 @@ export default function Sidebar({ logoutAction, user, notificationUpdate }) {
             />
           )}
 
-          <SidebarOption name="Messaging" href="/message/" icon="forum" />
+
+          {newMessages ? (
+            <SidebarOption
+              name="Messaging"
+              href="/message"
+              icon="forum"
+              badge={newMessages}
+            />
+          ) : (
+            <SidebarOption
+              name="Messaging"
+              href="/message"
+              icon="forum"
+            />
+          )}
+
           <SidebarOption name="Profile" href="/profile" icon="person" />
         </div>
         <div className="dynamicGap"></div>

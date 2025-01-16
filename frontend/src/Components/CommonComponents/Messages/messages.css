@@ -7,9 +7,11 @@
 }
 
 .MessengerSidebar .title {
-  font-size: 26px;
+  background-image: linear-gradient(80deg, rgba(var(--medium), 0.4), rgba(var(--light), 0.4));
+  color: rgba(var(--dark), 0.8);  font-size: 28px;
   font-weight: 600;
-  padding: 12px 24px;
+  padding: 17px 24px;
+  margin-bottom: 5px;
 }
 
 .MessagesHomeContainer{
@@ -20,12 +22,26 @@
 }
 
 .messagesBoxContainerAlt {
-  height: calc(100% - 70px);
+  height: calc(100% - 130px);
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
-  padding: 0;
+  padding: 0 25px;
   margin: auto;
+}
+.header .profilePicture {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 200px;
+  margin: 4px;
+}
+.header .profilePicture img {
+  width: 50px;
+  height: 50px;
+  border-radius: 200px;
+  border: 3px #ffffff solid;
+  object-fit: cover;
+  margin-right: 6px;
 }
 
 .miniBr {
@@ -36,11 +52,12 @@
 /* Main content styles */
 .MessengerMain {
   flex: 3.5;
-  padding: 0 25px;
   background: rgba(255, 255, 255, 0.3);
   overflow-y: auto;
   color: #333;
   position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
 .MessengerMain .messageBox .profilePicture {
   margin-top: 4px;
@@ -124,21 +141,23 @@
 
 
 .contactContainer {
-  display: flex;
-  flex-direction: column;
+  padding: 8px;
+  height: calc(100vh - 80px);
+  overflow: scroll;
 }
 .contactBox {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 14px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
   cursor: pointer;
+  margin: 4px;
+  border-radius: 15px;
 }
 .contactBoxUnread {
   font-weight: bold;
-  background-color: rgba(var(--light), 0.3);
+  background-color: rgba(var(--medium), 0.3);
   color: #000000;
 }
 .contactBoxActive {
