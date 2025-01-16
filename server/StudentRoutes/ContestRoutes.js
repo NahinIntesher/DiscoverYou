@@ -22,6 +22,44 @@ module.exports = (router, multer) => {
   });
 
 
+  router.get("/contests", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const query = `
+      SELECT 
+        contests.*,
+        TIMESTAMPDIFF(SECOND, NOW(), contests.end_time) AS calculated_time,
+        organizer.organizer_name,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
+        COUNT(contest_participants.contest_id) AS participant_count,
+        CASE
+          WHEN EXISTS (
+            SELECT * FROM contest_participants
+            WHERE contest_participants.contest_id = contests.contest_id
+            AND contest_participants.participant_id = ?
+          )
+          THEN true
+          ELSE false
+        END AS is_joined
+      FROM 
+        contests 
+      JOIN 
+        organizer ON contests.organizer_id = organizer.organizer_id 
+      LEFT JOIN 
+        contest_participants ON contests.contest_id = contest_participants.contest_id 
+      WHERE 
+        contests.approval_status = 1
+      GROUP BY 
+        contests.contest_id
+      `;
+
+    connection.query(query, [userId, userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching contests:", err);
+        return res.json({ Error: "Error fetching contests" });
+      }
+      return res.json({ contests: results });
+    });
+  });
   router.get("/contests/ongoing", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `

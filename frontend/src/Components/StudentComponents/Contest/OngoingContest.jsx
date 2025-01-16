@@ -5,20 +5,22 @@ import NotFound from "../../CommonComponents/NotFound";
 import 'react-material-symbols/rounded';
 import ContestBox from "./ContestBox";
 
-export default function OngoingContest() {
-  const [contests, setContests] = useState([]);
+export default function OngoingContest({contests}) {
+  console.log("contests: ");
+  console.log(contests);
+  // const [contests, setContests] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/student/contests/ongoing")
-      .then((response) => {
-        const contestsData = response.data?.contests;
-        setContests(contestsData);
-      })
-      .catch((error) => {
-        console.error("Error fetching webinars:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3000/student/contests/ongoing")
+  //     .then((response) => {
+  //       const contestsData = response.data?.contests;
+  //       setContests(contestsData);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching webinars:", error);
+  //     });
+  // }, []);
 
   if (contests.length) {
     return (
