@@ -24,38 +24,38 @@ module.exports = (router, multer) => {
     upload.array("media"),
     verifyToken,
     (req, res) => {
-        const id = req.userId;
-        const { content, category } = req.body;
-        const files = req.files;
+      const id = req.userId;
+      const { content, category } = req.body;
+      const files = req.files;
 
-        connection.query(
-          `INSERT INTO showcase_posts (post_content, user_id, post_category)
+      connection.query(
+        `INSERT INTO showcase_posts (post_content, user_id, post_category)
       VALUES (?, ?, ?)`,
-          [content, id, category],
-          (err, results) => {
-            if (err) throw err;
-            let postId = results.insertId;
+        [content, id, category],
+        (err, results) => {
+          if (err) throw err;
+          let postId = results.insertId;
 
-            if (files.length != 0) {
-              for (const file of files) {
-                const { mimetype, buffer } = file;
-                connection.query(
-                  `INSERT INTO showcase_post_media (post_id, media_blob, media_type)
+          if (files.length != 0) {
+            for (const file of files) {
+              const { mimetype, buffer } = file;
+              connection.query(
+                `INSERT INTO showcase_post_media (post_id, media_blob, media_type)
               VALUES (?, ?, ?)`,
-                  [postId, buffer, mimetype],
-                  (err, result) => {
-                    if (err) {
-                      console.error("Database insertion error:", err);
-                      throw err;
-                    }
+                [postId, buffer, mimetype],
+                (err, result) => {
+                  if (err) {
+                    console.error("Database insertion error:", err);
+                    throw err;
                   }
-                );
-              }
+                }
+              );
             }
-
-            return res.json({ status: "Success" });
           }
-        );
+
+          return res.json({ status: "Success" });
+        }
+      );
     }
   );
 
@@ -63,7 +63,7 @@ module.exports = (router, multer) => {
 
   router.get("/showcase/post", verifyToken, (req, res) => {
     const userId = req.userId;
-    const {sort, category} = req.query;
+    const { sort, category } = req.query;
 
     const query = `SELECT 
     s_p.*, 
@@ -116,6 +116,68 @@ module.exports = (router, multer) => {
     ORDER BY
       ${sort} DESC;
     `;
+
+    connection.query(query, (err, results) => {
+      if (err) throw err;
+      return res.json({ posts: results });
+    });
+  });
+
+  router.get("/showcase/post/reported", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { sort, category } = req.query;
+
+    const query = `
+        SELECT s_p.*, 
+          s.student_name AS user_name,
+          IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
+          TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
+          s_p_m.media_type,
+          CASE
+            WHEN EXISTS (
+              SELECT *
+              FROM showcase_post_reactions
+              WHERE showcase_post_reactions.post_id = s_p.post_id 
+              AND showcase_post_reactions.reactor_admin_id = '${userId}'
+            ) THEN 1
+            ELSE 0
+          END AS is_reacted,
+          COUNT(DISTINCT s_p_r.reaction_id) AS reaction_count,
+          COUNT(DISTINCT s_p_c.comment_id) AS comment_count,
+          (
+            SELECT 
+              GROUP_CONCAT(
+                CONCAT(
+                  '{"media_url": "http://localhost:3000/student/showcase/media/cdn/', s_p_m.media_id, 
+                  '", "media_type": "', s_p_m.media_type, '"}'
+                ) SEPARATOR ', '
+              )
+            FROM 
+              showcase_post_media AS s_p_m
+            WHERE 
+              s_p_m.post_id = s_p.post_id
+          ) AS media_array
+        FROM 
+          showcase_posts AS s_p
+        JOIN 
+          student AS s 
+        ON s_p.user_id = s.student_id
+        LEFT JOIN 
+          showcase_post_media AS s_p_m
+        ON s_p_m.post_id = s_p.post_id
+        LEFT JOIN 
+          showcase_post_reactions AS s_p_r 
+        ON s_p_r.post_id = s_p.post_id
+        LEFT JOIN 
+          showcase_post_comments AS s_p_c 
+        ON s_p_c.post_id = s_p.post_id
+        JOIN 
+          showcase_reports AS s_r
+        ON s_r.reported_post_id = s_p.post_id
+        WHERE s_r.reported_post_id = s_p.post_id 
+        GROUP BY
+          s_p.post_id
+      `;
 
     connection.query(query, (err, results) => {
       if (err) throw err;
@@ -182,7 +244,8 @@ module.exports = (router, multer) => {
     connection.query(query, (err, results) => {
       if (err) throw err;
 
-      connection.query(`
+      connection.query(
+        `
         SELECT 
           s_p_c.*,
           TIMESTAMPDIFF(SECOND, s_p_c.comment_date_time, NOW()) AS comment_time_ago,
@@ -226,7 +289,7 @@ module.exports = (router, multer) => {
         [postId],
         (err, nestedResult) => {
           if (err) throw err;
-  
+
           return res.json({ post: results[0], comments: nestedResult });
         }
       );
@@ -304,25 +367,19 @@ module.exports = (router, multer) => {
     }
   });
 
-  router.post(
-    "/showcase/comment",
-    verifyToken,
-    (req, res) => {
-        const userId = req.userId;
-        const { postId, commentContent } = req.body;
-  
-        connection.query(
-          `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_admin_id)
+  router.post("/showcase/comment", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { postId, commentContent } = req.body;
+
+    connection.query(
+      `INSERT INTO showcase_post_comments (comment_content, post_id, commentator_admin_id)
           VALUES (?, ?, ?)`,
-          [commentContent, postId, userId],
-          (err, results) => {
-            if (err) throw err;
-        
-            return res.json({ status: "Success" });
-          }
-        );
-    }
-  );
+      [commentContent, postId, userId],
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({ status: "Success" });
+      }
+    );
+  });
 };
-
-
