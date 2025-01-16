@@ -5,7 +5,7 @@ import "react-material-symbols/rounded";
 import dp from "../../../assets/images/default.jpg";
 import { Link } from "react-router-dom";
 
-export default function CourseBox({ id, name, category, description, mentorName,mentorPicture, isJoined, totalMember }) {
+export default function CourseBox({ id, name, category, description, mentorName, mentorId, mentorPicture, isJoined, totalMember }) {
     const [joinStatus, setJoinStatus] = useState(isJoined);
 
     function joinCourse () {
@@ -80,7 +80,7 @@ export default function CourseBox({ id, name, category, description, mentorName,
                     <div className="titles">Course Description</div>
                     <div className="text">{description}</div>
                 </div>
-                <div className="organizer">
+                <Link to={"/profile/" + mentorId} className="organizer">
                     <div className="organizerPicture">
                         <img src={mentorPicture?mentorPicture:dp} />
                     </div>
@@ -88,7 +88,7 @@ export default function CourseBox({ id, name, category, description, mentorName,
                         <div className="detailTitle">Maintained By</div>
                         <div className="detailInfo">{mentorName}</div>
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
     )

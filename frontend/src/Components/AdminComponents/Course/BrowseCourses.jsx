@@ -31,6 +31,7 @@ export default function BrowseCourses() {
                         mentorPicture={course.mentor_picture}
                         category={course.course_category}
                         description={course.course_description}
+                        mentorId={course.mentor_id}
                         mentorName={course.course_mentor_name}
                         isJoined={course.is_joined}
                         totalMember={course.total_member}

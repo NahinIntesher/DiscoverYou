@@ -67,7 +67,7 @@ const Singlecourse = () => {
           <Category category={data.course.course_category} />
         </div>
         <div className="rightSection">
-          <div className="hostContainer">
+          <Link to={'/profile/' + data.course.mentor_id} className="hostContainer">
             <div className="host">
               <div className="hostPicture">
                 <img
@@ -81,7 +81,7 @@ const Singlecourse = () => {
                 <div className="detailInfo">{data.course.mentor_name}</div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
       <div className="tabContainer">

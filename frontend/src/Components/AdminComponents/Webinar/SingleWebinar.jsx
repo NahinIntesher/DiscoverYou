@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
@@ -66,7 +66,7 @@ const SingleWebinar = () => {
           <div className="name">{data.webinar.webinar_name}</div>
           <Category category={data.webinar.webinar_category} />
           <div className="hostContainer">
-            <div className="host">
+            <Link to={"/profile/" + data.webinar.host_id} className="host">
               <div className="hostPicture">
                 <img
                   src={
@@ -78,7 +78,7 @@ const SingleWebinar = () => {
                 <div className="detailTitle">Organized By</div>
                 <div className="detailInfo">{data.webinar.host_name}</div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
         <div className="rightSection">

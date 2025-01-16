@@ -29,6 +29,7 @@ export default function OngoingWebinar() {
             id={webinar.webinar_id}
             name={webinar.webinar_name}
             hostPicture={webinar.host_picture}
+            hostId={webinar.host_id}
             details={webinar.webinar_details}
             category={webinar.webinar_category}
             host={webinar.host_name}

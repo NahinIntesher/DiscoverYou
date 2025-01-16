@@ -137,7 +137,7 @@ export default function PendingCourseBox({
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
+          <Link to={"/profile/" + mentorId} className="organizer">
             <div className="organizerPicture">
               <img src={mentorPicture ? mentorPicture : dp} />
             </div>
@@ -145,7 +145,7 @@ export default function PendingCourseBox({
               <div className="detailTitle">Requested By</div>
               <div className="detailInfo">{mentorName}</div>
             </div>
-          </div>
+          </Link>
           <div className="detail">{description}</div>
         </div>
       </div>

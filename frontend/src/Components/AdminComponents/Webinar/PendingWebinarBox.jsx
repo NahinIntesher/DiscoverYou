@@ -3,6 +3,7 @@ import dp from "../../../assets/images/desert.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingWebinarBox({
   id,
@@ -107,7 +108,7 @@ export default function PendingWebinarBox({
           </div>
         </div>
         <div className="description">
-          <div className="organizer">
+          <Link to={'/profile/' + hostId} className="organizer">
             <div className="organizerPicture">
               <img src={hostPicture ? hostPicture : dp} />
             </div>
@@ -115,7 +116,7 @@ export default function PendingWebinarBox({
               <div className="detailTitle">Requested By</div>
               <div className="detailInfo">{hostName}</div>
             </div>
-          </div>
+          </Link>
           <div className="detail">
             <table>
               <tr><th>Description</th><td>{description}</td></tr>
