@@ -133,6 +133,8 @@
     object-fit: cover;
 }
 .communityBox .organizer .organizerPicture img {
+    width: 48px;
+    height: 48px;
     object-fit: cover;
 }
 .communityBox .organizer .organizerDetails {
