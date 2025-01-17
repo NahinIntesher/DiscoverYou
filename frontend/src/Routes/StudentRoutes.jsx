@@ -57,6 +57,7 @@ import CommonContestParticipated from "../Components/CommonComponents/CommonProf
 import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/Student/Details/ShowcasePosts";
 import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
 
+import ApplyHiring from "../Components/StudentComponents/Hiring/ApplyHiring";
 import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
 import EditCommunity from "../Components/StudentComponents/Community/EditCommunity";
 import EditCourse from "../Components/StudentComponents/Course/EditCourse";
@@ -187,6 +188,7 @@ export default function Student({
             element={<PendingApplications />}
           />
           <Route path="/hiring/:hiringId" element={<SingleHiring />} />
+          <Route path="/hiring/apply/:hiringId" element={<ApplyHiring />} />
 
           <Route
             path="/notification"

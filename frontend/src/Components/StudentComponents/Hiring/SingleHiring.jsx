@@ -56,24 +56,6 @@ const SingleHiring = () => {
     alert("Sorry, hiring is not finished!");
   }
 
-  function applyJob() {
-    axios
-      .post(`http://localhost:3000/student/hirings/apply`, {
-        hiringId: data.hiring.hiring_id,
-      })
-      .then((response) => {
-        console.log("Full API Response:", response.data);
-        if (response.data.status === "Registered") {
-          setApplicantNo((prev) => prev + 1);
-          setIsApplied(1);
-        } else if (response.data.status === "Unregistered") {
-          setApplicantNo((prev) => prev - 1);
-          setIsApplied(0);
-        }
-      });
-    setJoinBoxActive(false);
-  }
-
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -107,9 +89,9 @@ const SingleHiring = () => {
             <div className="title">Apply Job</div>
             <div className="details">Do you want to apply for this job?</div>
             <div className="buttonContainer">
-              <div className="button" onClick={applyJob}>
+              <Link to={"/hiring/apply/" + hiringId} className="button">
                 Yes
-              </div>
+              </Link>
               <div
                 className="buttonAlt"
                 onClick={() => {
@@ -127,7 +109,7 @@ const SingleHiring = () => {
               className="joinButton"
               onClick={() => {
                 {
-                  isApplied ? applyJob() : setJoinBoxActive(true);
+                  isApplied ? setJoinBoxActive(false) : setJoinBoxActive(true);
                 }
               }}
             >

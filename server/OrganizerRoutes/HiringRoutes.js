@@ -129,6 +129,7 @@ module.exports = (router, multer) => {
   router.post("/hirings/apply", verifyToken, (req, res) => {
     const userId = req.userId;
     const { hiringId } = req.body;
+    const { finalData } = req.body;
 
     connection.query(
       "SELECT * FROM hiring_applicants WHERE hiring_id = ? AND applicant_id = ?",
@@ -147,8 +148,8 @@ module.exports = (router, multer) => {
           );
         } else {
           connection.query(
-            "INSERT INTO hiring_participants(hiring_id, applicant_id) VALUES (?, ?);",
-            [hiringId, userId],
+            "INSERT INTO hiring_participants(hiring_id, applicant_id, applicant_cv) VALUES (?, ?, ?);",
+            [hiringId, userId, finalData.applicant_cv],
             function (err, results) {
               if (err) throw err;
               return res.json({ status: "Registered" });
