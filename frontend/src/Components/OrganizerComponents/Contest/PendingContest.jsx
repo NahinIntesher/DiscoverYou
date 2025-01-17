@@ -35,7 +35,7 @@ export default function PendingContest({interests}) {
                             id={contest.contest_id}
                             name={contest.contest_name}
                             category={contest.contest_category}
-                            description={contest.contest_description}
+                            details={contest.contest_details}
                             hostName={contest.host_name}
                             hostPicture={contest.host_picture}
                             hostId={contest.host_id}

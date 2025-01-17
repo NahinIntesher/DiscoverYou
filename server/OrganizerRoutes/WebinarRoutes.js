@@ -6,18 +6,63 @@ const verifyToken = require("../Middlewares/middleware");
 module.exports = (router) => {
   router.get("/webinars/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
-    
-    connection.query(`SELECT 
+
+    connection.query(
+      `SELECT 
       w.host_id
       FROM 
         webinars AS w
       WHERE
-        w.host_id = '${userId}' AND w.approval_status = 0`, 
-    (err, results) => {
-      if (err) throw err;
-      
-      return res.json({ pendingWebinarNo: results.length});
+        w.host_id = '${userId}' AND w.approval_status = 0`,
+      (err, results) => {
+        if (err) throw err;
+
+        return res.json({ pendingWebinarNo: results.length });
+      }
+    );
+  });
+  router.get("/webinarss/:webinarId", verifyToken, (req, res) => {
+    let userId = req.userId;
+    const { webinarId } = req.params;
+
+    const query = `
+      SELECT 
+        w.webinar_id, w.webinar_name, w.webinar_category, w.webinar_description, w.meeting_link, 
+        o.organizer_name AS host_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS host_picture
+        FROM webinars w
+        JOIN organizer o ON o.organizer_id = w.host_id
+        WHERE w.webinar_id = ?`;
+    connection.query(query, [webinarId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+
+      return res.json({ webinars: result[0], status: "Success" });
     });
+  });
+  router.post("/webinars/update/:webinarId", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { webinarId } = req.params;
+    const { webinarName, webinarCategory, webinarDescription, meetingLink } =
+      req.body;
+
+    console.log(req.body);
+    connection.query(
+      `UPDATE webinars SET webinar_name = ?, webinar_category = ?, webinar_description = ?, meeting_link = ? WHERE webinar_id = ?`,
+      [
+        webinarName,
+        webinarCategory,
+        webinarDescription,
+        meetingLink,
+        webinarId,
+      ],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
   });
 
   router.get("/webinars", verifyToken, (req, res) => {
@@ -167,7 +212,6 @@ module.exports = (router) => {
     });
   });
 
-
   router.get("/webinars/my", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -199,22 +243,22 @@ module.exports = (router) => {
       (err, results) => {
         if (err) throw err;
 
-        if (results.length > 0) { 
+        if (results.length > 0) {
           connection.query(
             "DELETE FROM webinar_participants WHERE webinar_id = ? AND participant_id = ?;",
             [webinarId, userId],
-            function(err, results) {
+            function (err, results) {
               if (err) throw err;
-              return res.json({status: "Unregistered"});
+              return res.json({ status: "Unregistered" });
             }
           );
         } else {
           connection.query(
             "INSERT INTO webinar_participants(webinar_id, participant_id) VALUES (?, ?);",
             [webinarId, userId],
-            function(err, results) {
+            function (err, results) {
               if (err) throw err;
-              return res.json({status: "Registered"});
+              return res.json({ status: "Registered" });
             }
           );
         }
@@ -222,27 +266,36 @@ module.exports = (router) => {
     );
   });
 
+  router.post("/webinar/new", verifyToken, (req, res) => {
+    const userId = req.userId;
 
-  router.post(
-    "/webinar/new",
-    verifyToken,
-    (req, res) => {
-        const userId = req.userId;
+    const {
+      webinarName,
+      webinarCategory,
+      webinarDescription,
+      startTime,
+      endTime,
+      meetingLink,
+    } = req.body;
 
-        const { webinarName, webinarCategory, webinarDescription, startTime, endTime, meetingLink} = req.body;
-  
-        connection.query(
-          `INSERT INTO webinars (webinar_name, webinar_category, webinar_description, start_time, end_time, meeting_link, host_id)
+    connection.query(
+      `INSERT INTO webinars (webinar_name, webinar_category, webinar_description, start_time, end_time, meeting_link, host_id)
           VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [webinarName, webinarCategory, webinarDescription, startTime, endTime, meetingLink, userId],
-          (err, results) => {
-            if (err) throw err;
-            return res.json({ status: "Success" });
-          }
-        );
-    }
-  );
-
+      [
+        webinarName,
+        webinarCategory,
+        webinarDescription,
+        startTime,
+        endTime,
+        meetingLink,
+        userId,
+      ],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
+  });
 
   router.get("/webinars/pending", verifyToken, (req, res) => {
     let userId = req.userId;
@@ -286,7 +339,6 @@ module.exports = (router) => {
     });
   });
 
-
   router.get("/webinar/:webinarId", verifyToken, (req, res) => {
     const userId = req.userId;
     const { webinarId } = req.params;
@@ -321,7 +373,8 @@ module.exports = (router) => {
 
     // Fetch webinar participants
     const participantsQuery = `
-    SELECT webinar_participants.*, student.student_name AS participant_name
+    SELECT webinar_participants.*, student.student_name AS participant_name,
+    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS participant_picture
     FROM webinar_participants
     JOIN student ON webinar_participants.participant_id = student.student_id
     WHERE webinar_participants.webinar_id = ?`;
@@ -350,5 +403,18 @@ module.exports = (router) => {
         }
       );
     });
+  });
+
+  router.post("/webinar/delete", verifyToken, (req, res) => {
+    const { webinarId } = req.body;
+
+    connection.query(
+      `DELETE FROM webinars WHERE webinar_id = ?`,
+      [webinarId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
   });
 };

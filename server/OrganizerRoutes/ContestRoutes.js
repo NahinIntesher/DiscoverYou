@@ -43,6 +43,44 @@ module.exports = (router) => {
     );
   });
 
+  router.get("/contestss/:contestId", verifyToken, (req, res) => {
+    let userId = req.userId;
+    const { contestId } = req.params;
+
+    const query = `
+      SELECT 
+        c.contest_id, c.contest_name, c.contest_category, c.contest_details,
+        o.organizer_name AS organizer_name,
+        IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
+        FROM contests c
+        JOIN organizer o ON o.organizer_id = c.organizer_id
+        WHERE c.contest_id = ?`;
+    connection.query(query, [contestId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+      console.log(result[0]);
+
+      return res.json({ contests: result[0], status: "Success" });
+    });
+  });
+
+  router.post("/contests/update/:contestId", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { contestId } = req.params;
+    const { contestName, contestCategory, contestDetails } = req.body;
+    console.log(req.body);
+    connection.query(
+      `UPDATE contests SET contest_name = ?, contest_category = ?, contest_details = ? WHERE contest_id = ?`,
+      [contestName, contestCategory, contestDetails, contestId],
+      (err, results) => {
+        if (err) console.error(err);
+        else return res.json({ status: "Success" });
+      }
+    );
+  });
+
   router.get("/contests", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
@@ -442,6 +480,19 @@ module.exports = (router) => {
         } else {
           return res.json({ status: "Success" });
         }
+      }
+    );
+  });
+
+  router.post("/contest/delete", verifyToken, (req, res) => {
+    const { contestId } = req.body;
+
+    connection.query(
+      `DELETE FROM contests WHERE contest_id = ?`,
+      [contestId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
       }
     );
   });

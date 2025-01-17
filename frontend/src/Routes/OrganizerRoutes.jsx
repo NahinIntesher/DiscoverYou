@@ -6,9 +6,11 @@ import Dashboard from "../Components/OrganizerComponents/Dashboard/Dashborad";
 
 import Contest from "../Components/OrganizerComponents/Contest/Contest";
 import SingleContest from "../Components/OrganizerComponents/Contest/SingleContest";
+import EditContest from "../Components/OrganizerComponents/Contest/EditContest";
 
 import Showcase from "../Components/OrganizerComponents/Showcase/Showcase";
 import Webinar from "../Components/OrganizerComponents/Webinar/Webinar";
+import EditWebinar from "../Components/OrganizerComponents/Webinar/EditWebinar";
 import Marketplace from "../Components/OrganizerComponents/Marketplace/Marketplace";
 
 import Hiring from "../../src/Components/OrganizerComponents/Hiring/Hiring";
@@ -89,6 +91,11 @@ export default function Student({
           <Route path="/contest/new" element={<CreateNewContest />} />
           <Route path="/contest/:contestId" element={<SingleContest />} />
           <Route path="/contest/pending" element={<PendingContest />} />
+
+          <Route
+            path="contest/pending/edit/:contestId"
+            element={<EditContest />}
+          />
           <Route
             path="/contest/submission/:contestId/:participantId"
             element={<SubmissionPreview />}
@@ -98,6 +105,10 @@ export default function Student({
           <Route path="/webinar/new" element={<CreateNewWebinar />} />
           <Route path="/webinar/pending" element={<PendingWebinar />} />
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
+          <Route
+            path="webinar/pending/edit/:webinarId"
+            element={<EditWebinar />}
+          />
 
           <Route path="/marketplace" element={<Marketplace user={user} />} />
           <Route path="/marketplace/product/:productId" element={<Product />} />

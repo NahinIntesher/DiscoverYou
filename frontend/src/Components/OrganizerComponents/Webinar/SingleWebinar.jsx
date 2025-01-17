@@ -154,6 +154,8 @@ const SingleWebinar = () => {
               {data.participants.map((participant) => (
                 <Participant
                   key={participant.participant_id}
+                  id={participant.participant_id}
+                  picture={participant.participant_picture}
                   name={participant.participant_name}
                 />
               ))}
@@ -167,15 +169,15 @@ const SingleWebinar = () => {
   );
 };
 
-function Participant({ name }) {
+function Participant({ name, picture, id }) {
   return (
     <div className="participant">
       <div className="profilePicture">
-        <img src={dp} />
+        <img src={picture ? picture : dp} />
       </div>
       <div className="participantDetails">
         <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+        <Link to={'/profile/' + id} className="viewProfile">View Profile</Link>
       </div>
     </div>
   );
