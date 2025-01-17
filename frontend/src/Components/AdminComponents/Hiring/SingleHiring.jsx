@@ -35,7 +35,7 @@ const SingleHiring = () => {
     axios
       .get(`http://localhost:3000/organizer/hirings/${hiringId}`)
       .then((response) => {
-        console.log("Full API Response:", response.data.hiring);
+        // console.log("Full API Response:", response.data.hiring);
         setData(response.data);
         setLoading(false);
         const hiring = response.data.hiring;
@@ -64,7 +64,7 @@ const SingleHiring = () => {
           <div className="joinButtonContainer">
             <div className="hostContainer">
               <Link
-                to={"/profile/" + data.hiring.organizer_picture}
+                to={"/profile/" + data.hiring.organizer_id}
                 className="host"
               >
                 <div className="hostPicture">

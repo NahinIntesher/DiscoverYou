@@ -5,7 +5,7 @@ import Header from "../../CommonComponents/Header";
 import "../../../assets/styles/contest.css";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
-import dp from "../../../assets/images/desert4.jpg";
+import dp from "../../../assets/images/default.jpg";
 import NotFound from "../../CommonComponents/NotFound";
 
 const Singlecourse = () => {
@@ -67,7 +67,10 @@ const Singlecourse = () => {
           <Category category={data.course.course_category} />
         </div>
         <div className="rightSection">
-          <Link to={'/profile/' + data.course.mentor_id} className="hostContainer">
+          <Link
+            to={"/profile/" + data.course.mentor_id}
+            className="hostContainer"
+          >
             <div className="host">
               <div className="hostPicture">
                 <img
@@ -146,7 +149,9 @@ const Singlecourse = () => {
               {data.participants.map((participant) => (
                 <Participant
                   key={participant.participant_id}
-                  name={participant.participant_name}
+                  name={participant.student_name}
+                  participantId={participant.participant_id}
+                  participantPicture={participant.participant_picture}
                 />
               ))}
             </div>
@@ -159,15 +164,17 @@ const Singlecourse = () => {
   );
 };
 
-function Participant({ name }) {
+function Participant({ name, participantId, participantPicture }) {
   return (
     <div className="participant">
       <div className="profilePicture">
-        <img src={dp} />
+        <img src={participantPicture ? participantPicture : dp} />
       </div>
       <div className="participantDetails">
         <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+        <Link to={"/profile/" + participantId} className="viewProfile">
+          View Profile
+        </Link>
       </div>
     </div>
   );

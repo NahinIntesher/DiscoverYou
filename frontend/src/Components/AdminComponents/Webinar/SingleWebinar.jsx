@@ -34,9 +34,9 @@ const SingleWebinar = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/admin/webinar/${webinarId}`)
+      .get(`http://localhost:3000/student/webinar/${webinarId}`)
       .then((response) => {
-        console.log("Full API Response:", response.data.webinar);
+        // console.log("Full API Response:", response.data.webinar);
         setData(response.data);
         setLoading(false);
         const webinar = response.data.webinar;
@@ -155,6 +155,8 @@ const SingleWebinar = () => {
                 <Participant
                   key={participant.participant_id}
                   name={participant.participant_name}
+                  participantId={participant.participant_id}
+                  participantPicture={participant.participant_picture}
                 />
               ))}
             </div>
@@ -167,15 +169,17 @@ const SingleWebinar = () => {
   );
 };
 
-function Participant({ name }) {
+function Participant({ name, participantId, participantPicture }) {
   return (
     <div className="participant">
       <div className="profilePicture">
-        <img src={dp} />
+        <img src={participantPicture ? participantPicture : dp} />
       </div>
       <div className="participantDetails">
         <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+        <Link to={"/profile/" + participantId} className="viewProfile">
+          View Profile
+        </Link>
       </div>
     </div>
   );

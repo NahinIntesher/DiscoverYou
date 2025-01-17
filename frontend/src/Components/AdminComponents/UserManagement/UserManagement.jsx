@@ -11,6 +11,7 @@ import BrowseAdmin from "./BrowseAdmin";
 
 export default function UserManagement() {
   const [activeTab, setActiveTab] = useState(["browseStudents"]);
+  
 
   return (
     <div className="mainContent">
@@ -20,6 +21,8 @@ export default function UserManagement() {
         </div>
       </div>
       <div className="tabContainer">
+        
+
         <div
           className={activeTab == "browseStudents" ? "activeTab" : "tab"}
           style={{ cursor: "pointer" }}
@@ -53,4 +56,31 @@ export default function UserManagement() {
       {activeTab == "browseAdmins" && <BrowseAdmin />}
     </div>
   );
+}
+
+
+function InterestIcon(data) {
+  //   console.log();
+  data = data.category;
+  if (data == "Competitive Programming") {
+    return <MaterialSymbol className="icon" size={22} icon="code" />;
+  } else if (data == "Singing") {
+    return <MaterialSymbol className="icon" size={22} icon="queue_music" />;
+  } else if (data == "Graphics Designing") {
+    return <MaterialSymbol className="icon" size={22} icon="polyline" />;
+  } else if (data == "Photography") {
+    return <MaterialSymbol className="icon" size={22} icon="photo_camera" />;
+  } else if (data == "Web/App Designing") {
+    return <MaterialSymbol className="icon" size={22} icon="web" />;
+  } else if (data == "Writing") {
+    return <MaterialSymbol className="icon" size={22} icon="edit_note" />;
+  } else if (data == "Art & Craft") {
+    return <MaterialSymbol className="icon" size={22} icon="draw" />;
+  } else if (data == "Debating") {
+    return <MaterialSymbol className="icon" size={22} icon="communication" />;
+  } else if (data == "Gaming") {
+    return <MaterialSymbol className="icon" size={22} icon="sports_esports" />;
+  } else {
+    return <MaterialSymbol className="icon" size={22} icon="interests" />;
+  }
 }

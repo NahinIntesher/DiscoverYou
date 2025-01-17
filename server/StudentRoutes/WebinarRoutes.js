@@ -206,7 +206,8 @@ module.exports = (router) => {
 
     // Fetch webinar participants
     const participantsQuery = `
-    SELECT webinar_participants.*, student.student_name AS participant_name
+    SELECT webinar_participants.*, student.student_name AS participant_name,
+    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS participant_picture
     FROM webinar_participants
     JOIN student ON webinar_participants.participant_id = student.student_id
     WHERE webinar_participants.webinar_id = ?`;
