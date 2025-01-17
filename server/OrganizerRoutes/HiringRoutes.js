@@ -3,7 +3,24 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router) => {
+module.exports = (router, multer) => {
+  const storage = multer.memoryStorage();
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+      const filetypes = /application\//; // PDF files only
+      const mimetype = filetypes.test(file.mimetype);
+
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb("Error: Images or PDF files only!");
+      }
+    },
+  });
+
   router.get("/hirings/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
 
@@ -164,7 +181,7 @@ module.exports = (router) => {
         jobDescription,
         jobSalary,
         endTime,
-        userId
+        userId,
       ],
       (err, results) => {
         if (err) throw err;
@@ -253,11 +270,12 @@ module.exports = (router) => {
 
     // Fetch hiring applicants
     const applicantsQuery = `
-    SELECT hiring_applicants.*, student.student_name AS applicant_name,
-    IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS applicant_picture
-    FROM hiring_applicants
-    JOIN student ON hiring_applicants.applicant_id = student.student_id
-    WHERE hiring_applicants.hiring_id = ?`;
+      SELECT hiring_applicants.*, student.student_name AS applicant_name, 
+      IF(hiring_applicants.applicant_cv IS NOT NULL, CONCAT("http://localhost:3000/organizer/hirings/cv/cdn/", hiring_applicants.hiring_id, '/', student.student_id), NULL) AS applicant_cv,
+      IF(student.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", student.student_id), NULL) AS applicant_picture
+      FROM hiring_applicants
+      JOIN student ON hiring_applicants.applicant_id = student.student_id
+      WHERE hiring_applicants.hiring_id = ?`;
 
     connection.query(hiringQuery, [hiringId], (err, hiringResults) => {
       if (err) {
@@ -286,6 +304,34 @@ module.exports = (router) => {
     });
   });
 
+  router.get("/hirings/cv/cdn/:id/:applicantId", (req, res) => {
+    const hiringId = req.params.id;
+    const applicantId = req.params.applicantId;
+
+    console.log("hiringId", hiringId);
+    console.log("applicantId", applicantId);
+    connection.query(
+      `
+    SELECT * FROM hiring_applicants
+    WHERE hiring_id = ? AND applicant_id = ?;
+  `,
+      [hiringId, applicantId],
+      (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+          return res.status(404).send("CV not found.");
+        }
+
+        const media = results[0];
+        const mediaData = media.applicant_cv;
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.send(mediaData);
+      }
+    );
+  });
+
   router.post("/hirings/delete", verifyToken, (req, res) => {
     const userId = req.userId;
     const { hiringId } = req.body;
@@ -303,20 +349,29 @@ module.exports = (router) => {
 
   router.post("/hirings/edit/:hiringId", verifyToken, (req, res) => {
     const userId = req.userId;
-    const { 
-      companyName, 
-      jobName, 
-      jobCategory, 
-      jobDescription, 
-      jobSalary, 
-      endTime 
+    const {
+      companyName,
+      jobName,
+      jobCategory,
+      jobDescription,
+      jobSalary,
+      endTime,
     } = req.body; // Change from req.query to req.body
     const { hiringId } = req.params; // Extract hiringId from params
-    
+
     connection.query(
       `UPDATE hirings SET company_name = ?, job_name = ?, job_category = ?, job_description = ?, job_salary = ?, end_time = ?
        WHERE hiring_id = ? AND organizer_id = ?`,
-      [companyName, jobName, jobCategory, jobDescription, jobSalary, endTime, hiringId, userId],
+      [
+        companyName,
+        jobName,
+        jobCategory,
+        jobDescription,
+        jobSalary,
+        endTime,
+        hiringId,
+        userId,
+      ],
       (err, results) => {
         if (err) {
           console.error("Error updating hiring details:", err);
@@ -327,7 +382,6 @@ module.exports = (router) => {
     );
   });
 
-
   router.post("/hirings/accept-applicant", verifyToken, (req, res) => {
     const { applicantId, hiringId } = req.body;
 
@@ -337,7 +391,7 @@ module.exports = (router) => {
       function (err, results) {
         if (err) throw err;
         return res.json({ status: "Success" });
-        // `INSERT INTO 
+        // `INSERT INTO
         // notification (name, description, toLink, receiver_id)
         // VALUE(
         //   "Your Hiring Application Has been Approved!",
@@ -346,8 +400,7 @@ module.exports = (router) => {
         //   ${applicantId}
         // )
         // `
-      } 
+      }
     );
   });
-
 };

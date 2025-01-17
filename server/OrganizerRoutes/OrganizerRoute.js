@@ -9,7 +9,7 @@ require("./DashboardRoutes")(router);
 require("./ShowcaseRoutes")(router, multer);
 require("./WebinarRoutes")(router);
 require("./ContestRoutes")(router);
-require("./HiringRoutes")(router);
+require("./HiringRoutes")(router, multer);
 require("./MarketplaceRoutes")(router, multer);
 require("./NotificationRoutes")(router);
 require("./ProfileRoutes")(router, multer, bcrypt);

@@ -56,22 +56,6 @@ const SingleHiring = ({ ownId }) => {
     alert("Sorry, hiring is not finished!");
   }
 
-  function applyJob() {
-    axios.post(`http://localhost:3000/student/hirings/apply`, {
-      hiringId: data.hiring.hiring_id
-    }).then((response) => {
-      console.log("Full API Response:", response.data);
-      if (response.data.status === "Registered") {
-        setApplicantNo((prev) => prev + 1);
-        setIsApplied(1);
-      }
-      else if (response.data.status === "Unregistered") {
-        setApplicantNo((prev) => prev - 1);
-        setIsApplied(0);
-      }
-    });
-  }
-
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -89,9 +73,16 @@ const SingleHiring = ({ ownId }) => {
         <div className="rightSection">
           <div className="joinButtonContainer">
             <div className="hostContainer">
-              <Link to={"/profile/" + data.hiring.organizer_id} className="host">
+              <Link
+                to={"/profile/" + data.hiring.organizer_id}
+                className="host"
+              >
                 <div className="hostPicture">
-                  <img src={data.hiring.host_picture ? data.hiring.host_picture : dp} />
+                  <img
+                    src={
+                      data.hiring.host_picture ? data.hiring.host_picture : dp
+                    }
+                  />
                 </div>
                 <div className="hostDetails">
                   <div className="detailTitle">Organized By</div>
@@ -135,7 +126,12 @@ const SingleHiring = ({ ownId }) => {
             <ProfileField
               icon="calendar_month"
               label="Last Date For Appy"
-              value={getDate(data.hiring.end_time) + " (" + getPMTime(data.hiring.end_time) + ")"}
+              value={
+                getDate(data.hiring.end_time) +
+                " (" +
+                getPMTime(data.hiring.end_time) +
+                ")"
+              }
             />
           </div>
         </div>
@@ -149,7 +145,16 @@ const SingleHiring = ({ ownId }) => {
                   key={applicant.applicant_id}
                   applicantId={applicant.applicant_id}
                   name={applicant.applicant_name}
-                  picture={applicant.applicant_picture ? applicant.applicant_picture : dp}
+                  picture={
+                    applicant.applicant_picture
+                      ? applicant.applicant_picture
+                      : dp
+                  }
+                  cv={
+                    applicant.applicant_cv
+                      ? applicant.applicant_cv
+                      : "No CV provided!"
+                  }
                   permission={data.hiring.organizer_id == ownId}
                   hiringId={data.hiring.hiring_id}
                   applicantStatus={applicant.req_for_join_status}
@@ -166,15 +171,24 @@ const SingleHiring = ({ ownId }) => {
   );
 };
 
-function Applicant({ applicantId, hiringId, name, picture, permission, applicantStatus, setUpdate }) {
+function Applicant({
+  applicantId,
+  hiringId,
+  name,
+  picture,
+  cv,
+  permission,
+  applicantStatus,
+  setUpdate,
+}) {
   const [confirmApplyBox, setConfirmApplyBox] = useState(false);
-  
+
   function approveApplicant() {
     axios.defaults.withCredentials = true;
     axios
       .post("http://localhost:3000/organizer/hirings/accept-applicant", {
         applicantId: applicantId,
-        hiringId: hiringId
+        hiringId: hiringId,
       })
       .then((res) => {
         if (res.data.status === "Success") {
@@ -193,10 +207,21 @@ function Applicant({ applicantId, hiringId, name, picture, permission, applicant
       <div className={confirmApplyBox ? "dialogBoxBackground" : "none"}>
         <div className="dialogBox">
           <div className="title">Accept Applicant</div>
-          <div className="details">Sure you want to accept this applicant for your job?</div>
+          <div className="details">
+            Sure you want to accept this applicant for your job?
+          </div>
           <div className="buttonContainer">
-            <div className="button" onClick={approveApplicant}>Yes</div>
-            <div className="buttonAlt" onClick={() => { setConfirmApplyBox(false) }}>Cancel</div>
+            <div className="button" onClick={approveApplicant}>
+              Yes
+            </div>
+            <div
+              className="buttonAlt"
+              onClick={() => {
+                setConfirmApplyBox(false);
+              }}
+            >
+              Cancel
+            </div>
           </div>
         </div>
       </div>
@@ -207,23 +232,31 @@ function Applicant({ applicantId, hiringId, name, picture, permission, applicant
           </div>
           <div className="participantDetails">
             <div className="name">{name}</div>
-            <Link to={"/profile/" + applicantId} className="viewProfile">View Profile</Link>
+            <Link to={"/profile/" + applicantId} className="viewProfile">
+              View Profile
+            </Link>
           </div>
         </div>
         {applicantStatus == 1 ? (
           <div className="buttonContainer">
             <div className="hired">Selected Applicant</div>
           </div>
-        ) :
+        ) : (
           permission && (
             <div className="buttonContainer">
-              <div className="acceptButton" onClick={()=>setConfirmApplyBox(true)}>
+              <Link to={applicantId} className="acceptButton">
+                <div className="text">View CV</div>
+              </Link>
+              <div
+                className="acceptButton"
+                onClick={() => setConfirmApplyBox(true)}
+              >
                 <MaterialSymbol className="icon" size={22} icon="check" />
                 <div className="text">Accept Applicant</div>
               </div>
             </div>
           )
-        }
+        )}
       </div>
     </>
   );

@@ -264,7 +264,7 @@ module.exports = (router, multer) => {
     storage: storage,
     limits: { fileSize: 50000000 }, // 10 MB
     fileFilter: (req, file, cb) => {
-      const filetypes = /image\/|audio\/|video\/|\application\//; // Accept all image, audio, and video types
+      const filetypes = /image\/|audio\/|video\/|application\//; // Accept all image, audio, and video types
       const mimetype = filetypes.test(file.mimetype);
 
       if (mimetype) {

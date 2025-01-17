@@ -55,31 +55,3 @@ export default function Material() {
         </div>
     )
 }
-
-// function MaterialView({mediaLink, mediaType}) {
-//     if(mediaType.split('/')[0] == "image") {
-//         return <img key={index} src={mediaLink}/>
-//     } 
-//     else if(mediaType.split('/')[0] == "audio") {
-//         return (
-//             <div key={index} className="audioContainer">
-//                 <MaterialSymbol className="icon" size={120} icon="music_cast"/>
-//                 <audio controls>
-//                     <source src={mediaLink} type={mediaType} />
-//                     Your browser does not support the audio element.
-//                 </audio>
-//             </div>
-//         )
-//     } 
-//     else if(mediaType.split('/')[0] == "video") {
-//         return (
-//             <video controls key={index}>
-//                 <source src={mediaLink} type={mediaType} />
-//                 Your browser does not support the video element.
-//             </video>
-//         )
-//     }
-//     else {
-//         return <div>Hulo</div>
-//     }
-// }

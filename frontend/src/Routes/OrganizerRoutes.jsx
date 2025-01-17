@@ -51,6 +51,7 @@ import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/St
 
 import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
 import ShowcaseReactors from "../Components/StudentComponents/Showcase/ShowcaseReactors";
+import ApplicantCV from "../Components/OrganizerComponents/Hiring/ApplicantCV";
 
 export default function Student({
   handleLogout,
@@ -129,6 +130,7 @@ export default function Student({
             element={<SingleHiring ownId={user.organizer_id} />}
           />
           <Route path="/hiring/edit/:hiringId" element={<EditHiring />} />
+          <Route path="/hiring/:hiringId/:applicantId" element={<ApplicantCV />} />
 
           <Route
             path="/notification"
