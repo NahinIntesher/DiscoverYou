@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { MaterialSymbol } from 'react-material-symbols';
-import 'react-material-symbols/rounded';
+import { MaterialSymbol } from "react-material-symbols";
+import "react-material-symbols/rounded";
 
 export default function AdminRegistrationPage() {
   const navigate = useNavigate();
@@ -90,19 +90,19 @@ export default function AdminRegistrationPage() {
     // If no errors, proceed to submit the form
 
     if (Object.keys(newErrors).length === 0) {
-    console.log(formData);
-    axios
-      .post("http://localhost:3000/registrationPage", formData)
-      .then((res) => {
-        if (res.data.status === "Success") {
-          navigate("/login"); // Redirect to Home page
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .then((err) => {
-        if (err) console.log(err);
-      });
+      console.log(formData);
+      axios
+        .post("http://localhost:3000/registrationPage", formData)
+        .then((res) => {
+          if (res.data.status === "Success") {
+            navigate("/login"); // Redirect to Home page
+          } else {
+            alert(res.data.Error);
+          }
+        })
+        .then((err) => {
+          if (err) console.log(err);
+        });
     }
   };
 
@@ -205,7 +205,7 @@ export default function AdminRegistrationPage() {
         </div>
 
         {/* Category */}
-        <div className="mb-5">
+        {/* <div className="mb-5">
           <label className="block text-gray-700 text-lg font-semibold">
             Your Category <span className="text-red-500">*</span>
           </label>
@@ -218,10 +218,10 @@ export default function AdminRegistrationPage() {
             required
           >
             <option value="student" selected>Student</option>
-            {/* <option value="admin">Admin</option> */}
+            <option value="admin">Admin</option>
             <option value="organizer">Organizer</option>
           </select>
-        </div>
+        </div> */}
 
         {/* Admin Key */}
         {/* {formData.category === "admin" && (
@@ -387,7 +387,11 @@ export default function AdminRegistrationPage() {
             className="absolute right-3 top-11 cursor-pointer"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
+            {showPassword ? (
+              <MaterialSymbol icon="visibility" size={18} />
+            ) : (
+              <MaterialSymbol icon="visibility_off" size={18} />
+            )}
           </div>
         </div>
 
@@ -412,7 +416,11 @@ export default function AdminRegistrationPage() {
             className="absolute right-3 top-11 cursor-pointer"
             onClick={toggleConfirmPasswordVisibility}
           >
-            {showConfirmPassword ? <MaterialSymbol icon="visibility" size={18}/>:<MaterialSymbol icon="visibility_off" size={18}/>}
+            {showConfirmPassword ? (
+              <MaterialSymbol icon="visibility" size={18} />
+            ) : (
+              <MaterialSymbol icon="visibility_off" size={18} />
+            )}
           </div>
         </div>
 
