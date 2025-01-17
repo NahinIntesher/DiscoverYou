@@ -7,7 +7,6 @@ import Header from "../../CommonComponents/Header";
 
 export default function ApplicantCV() {
     const { hiringId, applicantId } = useParams();
-
     return (
     <div className="mainContent">
       <Header title={"Applicant CV"} />
