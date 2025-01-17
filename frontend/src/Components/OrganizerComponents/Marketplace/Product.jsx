@@ -64,7 +64,6 @@ export default function Product() {
     }
     
     useEffect(() => {
-        console.log("useEffect Cholled")
         axios
             .get("http://localhost:3000/student/marketplace/product/" + productId)
             .then((res) => {

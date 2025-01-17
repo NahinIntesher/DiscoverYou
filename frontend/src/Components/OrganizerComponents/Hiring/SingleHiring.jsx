@@ -145,6 +145,7 @@ const SingleHiring = ({ ownId }) => {
                   key={applicant.applicant_id}
                   applicantId={applicant.applicant_id}
                   name={applicant.applicant_name}
+                  jobName={data.hiring.job_name}
                   picture={
                     applicant.applicant_picture
                       ? applicant.applicant_picture
@@ -173,6 +174,7 @@ function Applicant({
   name,
   picture,
   cv,
+  jobName,
   permission,
   applicantStatus,
   setUpdate,
@@ -188,6 +190,22 @@ function Applicant({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/student/notifications", {
+              recipientId: applicantId,
+              notificationPicture: picture,
+              notificationTitle: "Hiring Rejection",
+              notificationMessage: `Your Application for ${jobName} have been accepted!`,
+              notificationLink: `/hiring/${hiringId}`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           setConfirmApplyBox(false);
           alert("Job applicant accepted successfully!");
           setUpdate((prevData) => prevData + 1);
@@ -241,7 +259,6 @@ function Applicant({
           permission && (
             <div className="buttonContainerAlt">
               <Link to={applicantId} className="acceptButton normalButton">
-              
                 <MaterialSymbol className="icon" size={22} icon="description" />
                 <div className="text">View CV</div>
               </Link>

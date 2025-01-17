@@ -71,6 +71,7 @@ const SingleContest = () => {
       .get(`http://localhost:3000/organizer/contests/${contestId}`)
       .then((response) => {
         setData(response.data);
+        console.log(response.data);
         setParticipantResults(response.data.participants);
         setResultGiven(response.data.contest.result_given);
         setOwn(response.data.contest.is_own);
@@ -138,32 +139,32 @@ const SingleContest = () => {
       );
 
       if (resultGivingResponse.data.status === "Success") {
+        {
+          participantResults.length > 0 &&
+            participantResults.map((participant) => {
+              axios
+                .post("http://localhost:3000/student/notifications", {
+                  recipientId: participant.participant_id,
+                  notificationPicture: data.contest.organizer_picture,
+                  notificationTitle: "Contest Result Published",
+                  notificationMessage: `Result for ${data.contest.contest_name} have been published!`,
+                  notificationLink: `/contest/${data.contest.contest_id}`,
+                })
+                .then((res) => {
+                  if (res.data.status === "Success") {
+                    console.log("Successfully notification send");
+                  } else {
+                    alert("jkdfsjlkasdfgjlsdfajklhasdfjkol");
+                  }
+                })
+                .catch((err) => console.log(err));
+            });
+        }
+
         alert("Result has been successfully uploaded!");
         setResultGiven(true);
         setActiveTab("participants");
       }
-      // if (resultGivingResponse.data.status === "Success") {
-      //   const notificationPromises = updatedParticipants.map((participant) =>
-      //     axios.post("http://localhost:3000/student/notifications", {
-      //       recipientId: participant.participant_id,
-      //       notificationPicture: user.organizer_picture,
-      //       notificationTitle: "Contest Result Given",
-      //       notificationMessage: `Result of ${data.contest.contest_name} has been published!`,
-      //       notificationLink: `/contest/${data.contest.contest_id}`
-      //     })
-      //       .catch((error) => {
-      //         console.error("Error fetching contests:", error);
-      //       })
-      //   );
-
-      //   await Promise.all(notificationPromises);
-      // alert("Result has been successfully uploaded!");
-      // setResultGiven(true);
-      // setActiveTab("participants");
-      // } else {
-      //   console.error("Checkout failed:", resultGivingResponse.data.Error);
-      //   alert("Result publishing failed. Please try again.");
-      // }
     } catch (error) {
       console.error("An error occurred during result publising:", error);
       alert("An error occurred during result publishing. Please try again.");
