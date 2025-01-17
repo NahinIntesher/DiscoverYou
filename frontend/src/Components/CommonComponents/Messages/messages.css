@@ -164,9 +164,9 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 .contactBox .contactPicture {
-  flex: 50px 0 0;
-  width: 50px;
-  height: 50px;
+  flex: 60px 0 0;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   margin-right: 10px;
 }
@@ -184,9 +184,23 @@
   flex-direction: column;
   justify-content: center;
   font-size: 14px;
+  font-weight: 500;
 }
 .contactBox .contactName {
   font-size: 15px;
   font-weight: 600;
   color: rgba(0,0,0,0.5);
+}
+
+.contactBox .timeAgo {
+  
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.5);
+}
+
+.messageTime {
+  text-align: center;
+  font-size: 14px;
+  padding: 8px;
 }

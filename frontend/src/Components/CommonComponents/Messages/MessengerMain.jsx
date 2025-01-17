@@ -13,6 +13,27 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate 
   const [otherUser, setOtherUser] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(0);
 
+  function getPMTime(datetime) {
+    let time = new Date(datetime);
+    return time.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  }
+  function getDate(datetime) {
+    let d1 = new Date();
+    let d2 = new Date(datetime);
+    if(!(d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate())) {
+      return d2.toLocaleString("en-US", { dateStyle: "long" })+", ";
+    }
+    else {
+      return "";
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -110,15 +131,38 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate 
             </div>
             <div className="messagesBoxContainerAlt">
               <div className="miniBr"></div>
-              {messages.map((message) => (
-                <MessageBox
-                  key={message.message_id}
-                  message={message.message_content}
-                  ownMessage={message.own_message}
-                  messengerPicture={message.own_message ? (user.hasOwnProperty("student_picture") ? user.student_picture : user.other_user_picture) : otherUser.user_picture} // Default picture
-                  updateMessages={updateMessages} // Ensure re-render when new message is sent
-                />
-              ))}
+              {messages.map((message, index) => {
+                const currentMessageTime = new Date(message.message_time);
+
+                const previousMessageTime = index < messages.length-1 ? new Date(messages[index + 1].message_time) : null;
+              
+                const timeDifference = previousMessageTime
+                  ? (currentMessageTime - previousMessageTime) / (1000 * 60) // in minutes
+                  : 0;
+
+                return (
+                  <>
+                    <MessageBox
+                      message={message.message_content}
+                      ownMessage={message.own_message}
+                      messengerPicture={
+                        message.own_message
+                          ? user.hasOwnProperty("student_picture")
+                            ? user.student_picture
+                            : user.other_user_picture
+                          : otherUser.user_picture
+                      }
+                      updateMessages={updateMessages}
+                    />
+                    {(index === messages.length-1 || timeDifference > 30) && (
+                      <div className="messageTime">
+                        {getDate(message.message_time)+getPMTime(message.message_time)}
+                      </div>
+                    )}
+                  </>
+                );
+              })}
+
 
               <div className="contactIntroBox">
                 <div className="profilePicture">
