@@ -16,7 +16,7 @@ export default function PendingContestBox({
   setUpdate,
   meetingLink,
   startTime,
-  endTime
+  endTime,
 }) {
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -39,6 +39,22 @@ export default function PendingContestBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: hostId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Contest Acceptancce",
+              notificationMessage: `Admin have approved your pending contest!`,
+              notificationLink: `/contest/`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Contest "' + name + '" successfully approved!');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -56,6 +72,22 @@ export default function PendingContestBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
+          axios
+            .post("http://localhost:3000/organizer/notifications", {
+              recipientId: hostId,
+              notificationPicture: "http://localhost:5173/images/admin.jpg",
+              notificationTitle: "Contest Rejection",
+              notificationMessage: `Admin have rejected your pending contest!`,
+              notificationLink: `/contest/`,
+            })
+            .then((res) => {
+              if (res.data.status === "Success") {
+                console.log("Successfully notification send");
+              } else {
+                alert(res.data.Error);
+              }
+            })
+            .catch((err) => console.log(err));
           alert('Contest "' + name + '" has been rejected.');
           setUpdate((prevData) => prevData + 1);
         } else {
@@ -82,7 +114,11 @@ export default function PendingContestBox({
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
               {category === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
               {category === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
@@ -94,7 +130,11 @@ export default function PendingContestBox({
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
               {category === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
               {category === "Gaming" && (
                 <MaterialSymbol
@@ -108,7 +148,7 @@ export default function PendingContestBox({
           </div>
         </div>
         <div className="description">
-          <Link to={"/profile/"+hostId} className="organizer">
+          <Link to={"/profile/" + hostId} className="organizer">
             <div className="organizerPicture">
               <img src={hostPicture ? hostPicture : dp} />
             </div>
@@ -119,9 +159,20 @@ export default function PendingContestBox({
           </Link>
           <div className="detail">
             <table>
-              <tr><th>Description</th><td>{description}</td></tr>
-              <tr><th>Date</th><td>{getDate(startTime)}</td></tr>
-              <tr><th>Time</th><td>{getPMTime(startTime)} - {getPMTime(endTime)}</td></tr>
+              <tr>
+                <th>Description</th>
+                <td>{description}</td>
+              </tr>
+              <tr>
+                <th>Date</th>
+                <td>{getDate(startTime)}</td>
+              </tr>
+              <tr>
+                <th>Time</th>
+                <td>
+                  {getPMTime(startTime)} - {getPMTime(endTime)}
+                </td>
+              </tr>
             </table>
           </div>
         </div>
