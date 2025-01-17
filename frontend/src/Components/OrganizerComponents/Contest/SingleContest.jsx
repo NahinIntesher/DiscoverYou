@@ -154,7 +154,7 @@ const SingleContest = () => {
                   if (res.data.status === "Success") {
                     console.log("Successfully notification send");
                   } else {
-                    alert("jkdfsjlkasdfgjlsdfajklhasdfjkol");
+                    alert("Error while sending notification");
                   }
                 })
                 .catch((err) => console.log(err));
