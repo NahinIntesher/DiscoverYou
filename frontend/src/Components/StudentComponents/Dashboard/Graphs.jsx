@@ -82,7 +82,7 @@ export default function Graphs() {
   const prepareChartData = (fetchedData) => {
     const newChartData = {
       contests: createChartData(
-        ["User Participation", "Total Contests"],
+        ["My Participation", "Total Contests"],
         [
           fetchedData.contestResults.participation_by_user,
           fetchedData.contestResults.total_contests,
@@ -91,9 +91,9 @@ export default function Graphs() {
         chartColors.contests
       ),
       showcases: createChartData(
-        ["User Posts", "Total Showcase Posts"],
+        ["My Posts", "Total Showcase Posts"],
         [
-          fetchedData.showcaseResults.user_posts,
+          fetchedData.showcaseResults.total_posts,
           fetchedData.showcaseResults.total_showcase_posts,
         ],
         "Showcases",
@@ -120,7 +120,7 @@ export default function Graphs() {
         chartColors.pie
       ),
       webinars: createChartData(
-        ["User Participation", "Total Webinars"],
+        ["My Participation", "Total Webinars"],
         [
           fetchedData.webinarResults.participation_by_user,
           fetchedData.webinarResults.total_webinars,
@@ -129,7 +129,7 @@ export default function Graphs() {
         chartColors.webinars
       ),
       products: createChartData(
-        ["Posted by User", "Total Products"],
+        ["Stock by Me", "Total Stocks"],
         [
           fetchedData.productResults.seller_products_in_stock,
           fetchedData.productResults.total_products,
