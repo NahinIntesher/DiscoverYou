@@ -193,6 +193,8 @@ const SingleWebinar = () => {
                 <Participant
                   key={participant.participant_id}
                   name={participant.participant_name}
+                  id={participant.participant_id}
+                  picture={participant.participant_picture}
                 />
               ))}
             </div>
@@ -205,15 +207,15 @@ const SingleWebinar = () => {
   );
 };
 
-function Participant({ name }) {
+function Participant({ name, id, picture }) {
   return (
     <div className="participant">
       <div className="profilePicture">
-        <img src={dp} />
+        <img src={picture?picture:dp} />
       </div>
       <div className="participantDetails">
         <div className="name">{name}</div>
-        <div className="viewProfile">View Profile</div>
+        <Link to={'/profile/' + id} className="viewProfile">View Profile</Link>
       </div>
     </div>
   );
