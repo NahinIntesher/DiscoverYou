@@ -275,6 +275,9 @@
   align-items: center;
   justify-content: center;
 } 
+.courseMaterialContainer pre code span{
+  font-family: "Cascadia Code";
+}
 .courseMaterialContainer img {
   border-radius: 12px;
   max-height: 90%;

@@ -39,7 +39,7 @@ export default function PendingWebinarBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Course "' + name + '" has been deleted.');
+          alert('Webinar "' + name + '" has been deleted.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);

@@ -85,13 +85,13 @@ export default function EditContest() {
 
   return (
     <div className="mainContent">
-      <Header title={"Edit contest"} />
+      <Header title={"Edit Contest"} />
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
-            <div className="title">Create New contest</div>
+            <div className="title">Edit Your Contest</div>
             <div className="input">
-              <label name="contestName">contest Name</label>
+              <label name="contestName">Contest Name</label>
               <input
                 name="contestName"
                 onChange={handleChange}
@@ -101,7 +101,7 @@ export default function EditContest() {
               />
             </div>
             <div className="input">
-              <label htmlFor="contestCategory">contest Category</label>
+              <label htmlFor="contestCategory">Contest Category</label>
               <select
                 name="contestCategory"
                 value={formData.contestCategory}

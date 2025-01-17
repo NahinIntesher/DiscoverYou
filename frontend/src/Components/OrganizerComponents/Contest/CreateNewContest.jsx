@@ -51,7 +51,6 @@ export default function CreateNewContest({ interests }) {
                 return {
                     ...oldFormData,
                     problemNameTemp: "",
-                    problemNameTemp: "",
                     sampleInputTemp: "",
                     sampleOutputTemp: "",
                     problems: [

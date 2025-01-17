@@ -453,12 +453,15 @@ function Participant({
       <div className="participantResult">
         <div className="submission">
           {isSubmitted ? (
+            contestType == "previous" ? (
             <Link
               to={`/contest/submission/${contestId}/${id}`}
               className="viewSubmission"
             >
               View Submission
             </Link>
+            ) :
+            <div className="viewSubmission" style={{cursor: "default"}}>Submitted</div>
           ) : (
             <div className="noSubmission">No Submission</div>
           )}

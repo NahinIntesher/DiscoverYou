@@ -89,11 +89,11 @@ export default function EditWebinar() {
 
   return (
     <div className="mainContent">
-      <Header title={"New Webinar"} />
+      <Header title={"Edit Webinar"} />
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
-            <div className="title">Create New Webinar</div>
+            <div className="title">Edit Your Webinar</div>
             <div className="input">
               <label name="webinarName">Webinar Name</label>
               <input
