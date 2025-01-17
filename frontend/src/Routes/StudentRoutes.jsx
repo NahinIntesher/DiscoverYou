@@ -62,6 +62,8 @@ import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHom
 import EditCommunity from "../Components/StudentComponents/Community/EditCommunity";
 import EditCourse from "../Components/StudentComponents/Course/EditCourse";
 
+import EditProduct from "../Components/StudentComponents/Marketplace/EditProduct";
+
 export default function Student({
   handleLogout,
   user,
@@ -78,7 +80,7 @@ export default function Student({
 
     socket.onmessage = (event) => {
       console.log(event.data);
-      if(event.data.startsWith("message")) {
+      if (event.data.startsWith("message")) {
         setMessageUpdate((prevData) => prevData + 1);
       }
     };
@@ -184,6 +186,11 @@ export default function Student({
           <Route path="/webinar/:webinarId" element={<SingleWebinar />} />
 
           <Route path="/marketplace" element={<Marketplace user={user} />} />
+          <Route
+            path="/marketplace/pending-products/edit/:productId"
+            
+            element={<EditProduct user={user} interests={user.interests}/>}
+          />
           <Route
             path="/marketplace/add-product"
             element={

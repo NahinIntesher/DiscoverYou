@@ -34,7 +34,8 @@ export default function CommonContestParticipated({}) {
       .get(`http://localhost:3000/dynamic-profile/${paramId}`)
       .then((res) => {
         console.log(res.data);
-        setContestResults(res.data.contestResults);
+        let contestResults = res.data?.contestResults;
+        setContestResults(contestResults);
       })
       .catch((err) => {
         console.log(err);
@@ -43,9 +44,16 @@ export default function CommonContestParticipated({}) {
 
   return (
     <div className="mainContent">
-      <Header title={`Contest participated`} semiTitle={`by ${user.name}`} />
+      <Header
+        title={
+          paramId.startsWith("St")
+            ? `Contest Participated`
+            : "Contest Organized"
+        }
+        semiTitle={`by ${user.name}`}
+      />
       <div className="tabContent">
-        <div className="cousreSemiTitle">Participated Contests</div>
+
         {contestResults.length > 0 ? (
           contestResults.map(function (contest) {
             return (
@@ -56,6 +64,8 @@ export default function CommonContestParticipated({}) {
                 category={contest.contest_category}
                 details={contest.contest_details}
                 organizerName={contest.organizer_name}
+                organizerPicture={contest.organizer_picture}
+                organizerId={contest.organizer_id}
                 totalMember={contest.participant_count}
                 rank={contest.rank}
               />

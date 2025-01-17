@@ -420,8 +420,6 @@ app.get("/admins", verifyToken, (req, res) => {
   });
 });
 
-
-
 app.get("/profiles/:userId", verifyToken, (req, res) => {
   const userId = req.params.userId;
   let userType;
@@ -534,6 +532,8 @@ app.get("/dynamic-profile/:userId", verifyToken, async (req, res) => {
           c.contest_category, 
           COUNT(c_p.contest_id) AS participant_count, 
           organizer.organizer_name AS organizer_name,
+          organizer.organizer_id AS organizer_id,
+          IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
           c_p.result_position AS rank
       FROM 
           contests c
@@ -915,7 +915,7 @@ HAVING
   other_user_name IS NOT NULL
 ORDER BY
   last_message_time DESC;
-  `
+  `;
 
   connection.query(query, (err, results) => {
     if (err) throw err;
@@ -987,8 +987,7 @@ app.post("/messages/send", verifyToken, (req, res) => {
     } else if (otherUserId.startsWith("Or")) {
       query = `INSERT INTO messages (message_content, student_sender_id, organizer_reciver_id) VALUES (?, ?, ?);`;
     }
-  }
-  else if (userId.startsWith("Or")) {
+  } else if (userId.startsWith("Or")) {
     if (otherUserId.startsWith("St")) {
       query = `INSERT INTO messages (message_content, organizer_sender_id, student_reciver_id) VALUES (?, ?, ?);`;
     } else if (otherUserId.startsWith("Or")) {

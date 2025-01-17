@@ -1,8 +1,9 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingProductBox({
   productId,
@@ -13,7 +14,7 @@ export default function PendingProductBox({
   productDetails,
   productSeller,
   productType,
-  setUpdate
+  setUpdate,
 }) {
   function getPMTime(datetime) {
     let time = new Date(datetime);
@@ -53,7 +54,7 @@ export default function PendingProductBox({
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Product "' + productName + '" has been rejected.');
+          alert('Product "' + productName + '" has been deleted.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -64,7 +65,7 @@ export default function PendingProductBox({
 
   return (
     <div className="pendingCommunityBox">
-      <img className="productImage" src={productImage}/>
+      <img className="productImage" src={productImage} />
       <div className="communityDetails">
         <div className="informationContainer">
           <div className="information">
@@ -80,7 +81,11 @@ export default function PendingProductBox({
                 <MaterialSymbol className="icon" size={24} icon="polyline" />
               )}
               {productCategory === "Photography" && (
-                <MaterialSymbol className="icon" size={24} icon="photo_camera" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="photo_camera"
+                />
               )}
               {productCategory === "Web/App Designing" && (
                 <MaterialSymbol className="icon" size={24} icon="web" />
@@ -92,7 +97,11 @@ export default function PendingProductBox({
                 <MaterialSymbol className="icon" size={24} icon="draw" />
               )}
               {productCategory === "Debating" && (
-                <MaterialSymbol className="icon" size={24} icon="communication" />
+                <MaterialSymbol
+                  className="icon"
+                  size={24}
+                  icon="communication"
+                />
               )}
               {productCategory === "Gaming" && (
                 <MaterialSymbol
@@ -108,18 +117,31 @@ export default function PendingProductBox({
         <div className="description">
           <div className="detail">
             <table>
-              <tr><th>Price</th><td>{productPrice}৳</td></tr>
-              <tr><th>Details</th><td>{productDetails}</td></tr>
-              <tr><th>Type</th><td>{productType == "digital" ? "Digital Product" : "Physical Product"}</td></tr> 
+              <tr>
+                <th>Price</th>
+                <td>{productPrice}৳</td>
+              </tr>
+              <tr>
+                <th>Details</th>
+                <td>{productDetails}</td>
+              </tr>
+              <tr>
+                <th>Type</th>
+                <td>
+                  {productType == "digital"
+                    ? "Digital Product"
+                    : "Physical Product"}
+                </td>
+              </tr>
             </table>
           </div>
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" onClick={approveMember}>
+        <Link to={"edit/" + productId} className="defaultButton">
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
-        </div>
+        </Link>
         <div className="rejectButton" onClick={deleteProduct}>
           <MaterialSymbol className="icon" size={22} icon="close" />
           <div className="text">Delete</div>

@@ -49,21 +49,27 @@ module.exports = (router, multer) => {
         console.log(err);
         return res.json({ message: "Failed" });
       }
-      connection.query(`
+      connection.query(
+        `
         SELECT * FROM hiring_applicants
         WHERE applicant_id = ? AND req_for_join_status = 0;  
-      `, [userId], (err, applyPendingResult) => {
-        if (err) {
-          console.log(err);
-          return res.json({ message: "Failed" });
+      `,
+        [userId],
+        (err, applyPendingResult) => {
+          if (err) {
+            console.log(err);
+            return res.json({ message: "Failed" });
+          }
+          return res.json({
+            hirings: hiringResult,
+            applyPending: applyPendingResult.length,
+          });
         }
-        return res.json({ hirings: hiringResult, applyPending: applyPendingResult.length });
-      });
+      );
     });
   });
 
-  router.post("/hirings/apply", 
-    upload.array("cv"), verifyToken, (req, res) => {
+  router.post("/hirings/apply", upload.array("cv"), verifyToken, (req, res) => {
     const userId = req.userId;
     const { hiringId } = req.body;
     const files = req.files;
@@ -117,9 +123,7 @@ module.exports = (router, multer) => {
     //     }
     //   }
     // );
-
   });
-
 
   router.post("/hirings/cancel-apply", verifyToken, (req, res) => {
     const userId = req.userId;
@@ -139,7 +143,8 @@ module.exports = (router, multer) => {
     const userId = req.userId;
 
     connection.query(
-      `SELECT h_a.*, h.*, o.organizer_name,
+      `SELECT h_a.hiring_id, h_a.applicant_id,       
+      h.*, o.organizer_name,
       IF(o.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", o.organizer_id), NULL) AS organizer_picture
       FROM hiring_applicants AS h_a
       JOIN hirings AS h
@@ -235,6 +240,4 @@ module.exports = (router, multer) => {
       );
     });
   });
-
-
 };

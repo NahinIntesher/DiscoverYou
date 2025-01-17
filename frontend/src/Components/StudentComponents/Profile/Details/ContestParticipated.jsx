@@ -39,6 +39,8 @@ export default function ContestParticipated({user}) {
                             category={contest.contest_category}
                             details={contest.contest_details}
                             organizerName={contest.organizer_name}
+                            organizerPicture={contest.organizer_picture}
+                            organizerId={contest.organizer_id}
                             totalMember={contest.participant_count}
                             rank={contest.rank}
                         />

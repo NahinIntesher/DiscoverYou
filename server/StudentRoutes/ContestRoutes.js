@@ -21,7 +21,6 @@ module.exports = (router, multer) => {
     },
   });
 
-
   router.get("/contests", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `
@@ -185,7 +184,6 @@ module.exports = (router, multer) => {
     });
   };
 
-
   router.get("/contests/my", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -196,6 +194,8 @@ module.exports = (router, multer) => {
         c.contest_category, 
         COUNT(c_p.contest_id) AS participant_count, 
         organizer.organizer_name AS organizer_name,
+        organizer.organizer_id AS organizer_id,
+        IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS organizer_picture,
         c_p.result_position AS rank
     FROM 
         contests c
@@ -221,7 +221,6 @@ module.exports = (router, multer) => {
       return res.json({ myContests: result });
     });
   });
-  
 
   router.get("/contests/:contestId", verifyToken, async (req, res) => {
     const { contestId } = req.params;
@@ -307,7 +306,7 @@ module.exports = (router, multer) => {
       const contestResults = await queryPromise(contestQuery, [
         userId,
         userId,
-        contestId
+        contestId,
       ]);
       // if (contestResults.length === 0) {
       //   return res.json({ Error: "Contest not found" });
@@ -319,14 +318,15 @@ module.exports = (router, multer) => {
 
       // Fetch contest participants
       const participantsResults = await queryPromise(participantsQuery, [
-        contestId, contestId
+        contestId,
+        contestId,
       ]);
 
       // Combine and return the results
       return res.json({
         contest,
         problems: problemsResults,
-        participants: participantsResults
+        participants: participantsResults,
       });
     } catch (error) {
       console.error("Error fetching contest data:", error);
@@ -367,7 +367,6 @@ module.exports = (router, multer) => {
     );
   });
 
-  
   router.get("/courses/material/:id", (req, res) => {
     const materialId = req.params.id;
 
@@ -385,92 +384,103 @@ module.exports = (router, multer) => {
         if (err) throw err;
 
         return res.json({
-          material: results[0]
+          material: results[0],
         });
       }
     );
   });
 
-  router.post("/contests/submission", upload.array("submissionMedia"), verifyToken, (req, res) => {
-    const userId = req.userId;
+  router.post(
+    "/contests/submission",
+    upload.array("submissionMedia"),
+    verifyToken,
+    (req, res) => {
+      const userId = req.userId;
 
-    const { contestId, contestCategory, submissionText } = req.body;
+      const { contestId, contestCategory, submissionText } = req.body;
 
-    const files = req.files;
+      const files = req.files;
 
-    if(contestCategory == "Art & Craft" || contestCategory == "Graphics Designing" || contestCategory == "Singing" || contestCategory == "Photography") {
-      if (files.length != 0) {
-        const { buffer, mimetype} = files[0];
-        connection.query(
-          `INSERT INTO contest_submissions(contest_id, participant_id, submission_blob, submission_type)
+      if (
+        contestCategory == "Art & Craft" ||
+        contestCategory == "Graphics Designing" ||
+        contestCategory == "Singing" ||
+        contestCategory == "Photography"
+      ) {
+        if (files.length != 0) {
+          const { buffer, mimetype } = files[0];
+          connection.query(
+            `INSERT INTO contest_submissions(contest_id, participant_id, submission_blob, submission_type)
           VALUES(?, ?, ?, ?)`,
-          [contestId, userId, buffer, mimetype],
+            [contestId, userId, buffer, mimetype],
+            (err, result) => {
+              if (err) {
+                console.error("Database insertion error:", err);
+                throw err;
+              }
+              res.json({
+                status: "Success",
+              });
+            }
+          );
+        } else {
+          res.json({
+            status: "Unsuccessful",
+            message: "No file selected",
+          });
+        }
+      } else {
+        connection.query(
+          `INSERT INTO contest_submissions(contest_id, participant_id, submission_text, submission_type)
+        VALUES(?, ?, ?, 'text')`,
+          [contestId, userId, submissionText],
           (err, result) => {
             if (err) {
               console.error("Database insertion error:", err);
               throw err;
             }
             res.json({
-              status: "Success"
+              status: "Success",
             });
           }
         );
       }
-      else {
-        res.json({
-          status: "Unsuccessful",
-          message: "No file selected",
-        });
-      } 
     }
-    else {
+  );
+
+  router.get(
+    "/contests/submission/cdn/:contestId/:participantId",
+    (req, res) => {
+      const { contestId, participantId } = req.params;
+
       connection.query(
-        `INSERT INTO contest_submissions(contest_id, participant_id, submission_text, submission_type)
-        VALUES(?, ?, ?, 'text')`,
-        [contestId, userId, submissionText],
-        (err, result) => {
-          if (err) {
-            console.error("Database insertion error:", err);
-            throw err;
-          }
-          res.json({
-            status: "Success"
-          });
-        }
-      );
-    }
-  });
-
-  router.get("/contests/submission/cdn/:contestId/:participantId", (req, res) => {
-    const {contestId, participantId} = req.params;
-
-    connection.query(
-      `
+        `
     SELECT *
     FROM contest_submissions 
     WHERE contest_id = ? AND participant_id = ?
   `,
-      [contestId, participantId],
-      (err, results) => {
-        if (err) throw err;
+        [contestId, participantId],
+        (err, results) => {
+          if (err) throw err;
 
-        if (results.length === 0) {
-          return res.status(404).send("Material not found.");
+          if (results.length === 0) {
+            return res.status(404).send("Material not found.");
+          }
+
+          const media = results[0];
+          const mediaType = media.submission_type;
+          const mediaData = media.submission_blob;
+
+          res.setHeader("Content-Type", mediaType);
+
+          res.send(mediaData);
         }
-
-        const media = results[0];
-        const mediaType = media.submission_type;
-        const mediaData = media.submission_blob;
-
-        res.setHeader("Content-Type", mediaType);
-
-        res.send(mediaData);
-      }
-    );
-  });
+      );
+    }
+  );
 
   router.get("/contests/submission/:contestId/:participantId", (req, res) => {
-    const {contestId, participantId} = req.params;
+    const { contestId, participantId } = req.params;
 
     connection.query(
       `
@@ -488,10 +498,9 @@ module.exports = (router, multer) => {
         if (err) throw err;
 
         return res.json({
-          material: results[0]
+          material: results[0],
         });
       }
     );
   });
-
 };

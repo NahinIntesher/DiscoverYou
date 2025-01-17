@@ -327,6 +327,7 @@ module.exports = (router, multer) => {
     const query = `SELECT 
     s_p.*, 
     s.student_name AS user_name,
+    s.student_id AS user_id,
     TIMESTAMPDIFF(SECOND, s_p.post_date_time, NOW()) AS post_time_ago,
     IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS user_picture,
     s_p_m.media_type,

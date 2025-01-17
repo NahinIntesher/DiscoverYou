@@ -212,30 +212,34 @@ module.exports = (router) => {
     JOIN student ON webinar_participants.participant_id = student.student_id
     WHERE webinar_participants.webinar_id = ?`;
 
-    connection.query(webinarQuery, [userId, webinarId], (err, webinarResults) => {
-      if (err) {
-        console.error("Error fetching webinar:", err);
-        return res.json({ error: "Error fetching webinar details" });
-      }
-      if (webinarResults.length === 0) {
-        return res.json({ error: "Webinar not found" });
-      }
-
-      connection.query(
-        participantsQuery,
-        [webinarId],
-        (err, participantsResults) => {
-          if (err) {
-            console.error("Error fetching webinar participants:", err);
-            return res.json({ error: "Error fetching webinar participants" });
-          }
-          return res.json({
-            webinar: webinarResults[0],
-            participants: participantsResults,
-          });
+    connection.query(
+      webinarQuery,
+      [userId, webinarId],
+      (err, webinarResults) => {
+        if (err) {
+          console.error("Error fetching webinar:", err);
+          return res.json({ error: "Error fetching webinar details" });
         }
-      );
-    });
+        if (webinarResults.length === 0) {
+          return res.json({ error: "Webinar not found" });
+        }
+
+        connection.query(
+          participantsQuery,
+          [webinarId],
+          (err, participantsResults) => {
+            if (err) {
+              console.error("Error fetching webinar participants:", err);
+              return res.json({ error: "Error fetching webinar participants" });
+            }
+            return res.json({
+              webinar: webinarResults[0],
+              participants: participantsResults,
+            });
+          }
+        );
+      }
+    );
   });
 
   router.post("/webinar/add-webinar", verifyToken, (req, res) => {
@@ -283,6 +287,7 @@ module.exports = (router) => {
         w.webinar_category, 
         COUNT(w_p.webinar_id) AS participant_count, 
         organizer.organizer_name AS host_name,
+        organizer.organizer_id AS host_id,
         IF(organizer.organizer_picture IS NOT NULL, CONCAT("http://localhost:3000/organizer/profile/picture/", organizer.organizer_id), NULL) AS host_picture
     FROM 
         webinars w

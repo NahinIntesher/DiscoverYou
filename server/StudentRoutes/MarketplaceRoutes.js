@@ -61,7 +61,6 @@ module.exports = (router, multer) => {
     });
   });
 
-  
   router.get("/marketplace/products/my", verifyToken, (req, res) => {
     const userId = req.userId;
     const query = `SELECT
@@ -76,7 +75,7 @@ module.exports = (router, multer) => {
       WHERE
         p.approval_status = 1 AND p.seller_id = ?
       GROUP BY p.product_id`;
-      
+
     connection.query(query, [userId], (err, results) => {
       if (err) throw err;
       res.json({ products: results });
@@ -106,15 +105,34 @@ module.exports = (router, multer) => {
     );
   });
 
-  router.post("/marketplace/add-product", upload.array("images"), verifyToken, (req, res) => {
+  router.post(
+    "/marketplace/add-product",
+    upload.array("images"),
+    verifyToken,
+    (req, res) => {
       const id = req.userId;
-      const { productName, productPrice, productCategory, productDetails, productType, productOnStock } = req.body;
+      const {
+        productName,
+        productPrice,
+        productCategory,
+        productDetails,
+        productType,
+        productOnStock,
+      } = req.body;
       const files = req.files;
 
       connection.query(
         `INSERT INTO products (product_name, product_price, product_category, product_details, seller_id, product_type, product_in_stock)
           VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [productName, productPrice, productCategory, productDetails, id, productType, productOnStock],
+        [
+          productName,
+          productPrice,
+          productCategory,
+          productDetails,
+          id,
+          productType,
+          productOnStock,
+        ],
         (err, results) => {
           if (err) throw err;
           let productId = results.insertId;
@@ -143,7 +161,7 @@ module.exports = (router, multer) => {
 
   router.get("/marketplace/pending-details", verifyToken, (req, res) => {
     const userId = req.userId;
-    
+
     const query = `SELECT
      p.product_id 
      FROM 
@@ -173,18 +191,17 @@ module.exports = (router, multer) => {
             [userId],
             (err, pendingProductOrderResult) => {
               if (err) throw err;
-              return res.json({ 
-                pendingProductsNo: pendingProductsResult.length, 
-                pendingDeliveryNo: pendingDeliveryResult.length, 
-                pendingProductOrderNo: pendingProductOrderResult.length 
-              }); 
+              return res.json({
+                pendingProductsNo: pendingProductsResult.length,
+                pendingDeliveryNo: pendingDeliveryResult.length,
+                pendingProductOrderNo: pendingProductOrderResult.length,
+              });
             }
           );
         }
       );
     });
   });
-
 
   router.get("/marketplace/pending", verifyToken, (req, res) => {
     const userID = req.userId;
@@ -214,7 +231,6 @@ module.exports = (router, multer) => {
     });
   });
 
-  
   router.post("/marketplace/pending/delete", verifyToken, (req, res) => {
     const userId = req.userId;
     const { productId } = req.body;
@@ -229,11 +245,10 @@ module.exports = (router, multer) => {
     );
   });
 
-
   router.get("/marketplace/product/:productId", verifyToken, (req, res) => {
     const productId = req.params.productId;
     const userId = req.userId;
-    
+
     const query = `SELECT
     p.*, s.student_name AS seller_name,
     IF(s.student_picture IS NOT NULL, CONCAT("http://localhost:3000/student/profile/picture/", s.student_id), NULL) AS seller_picture
@@ -249,20 +264,22 @@ module.exports = (router, multer) => {
 
     connection.query(query, (err, results) => {
       if (err) throw err;
-      connection.query(`
+      connection.query(
+        `
         SELECT 
             CONCAT("http://localhost:3000/student/marketplace/products/image/", media_id) AS image_url
         FROM 
           product_images
         WHERE 
           product_id = ${productId} 
-        `, (err, nestedResults) => {
+        `,
+        (err, nestedResults) => {
           if (err) throw err;
           return res.json({ product: results[0], images: nestedResults });
-      });
+        }
+      );
     });
   });
-
 
   router.get("/marketplace/cart", verifyToken, (req, res) => {
     const userId = req.userId;
@@ -276,7 +293,7 @@ module.exports = (router, multer) => {
       [userId],
       (err, results) => {
         if (err) throw err;
-        
+
         return res.json({ products: results });
       }
     );
@@ -284,7 +301,7 @@ module.exports = (router, multer) => {
 
   router.post("/marketplace/add-to-cart", verifyToken, (req, res) => {
     const userId = req.userId;
-    
+
     const { productId } = req.body;
 
     console.log(productId);
@@ -312,53 +329,66 @@ module.exports = (router, multer) => {
 
   router.post("/marketplace/remove-from-cart", verifyToken, (req, res) => {
     const userId = req.userId;
-    
+
     const { productId } = req.body;
 
     connection.query(
       "DELETE FROM marketplace_cart WHERE product_id = ? AND buyer_student_id = ?",
       [productId, userId],
       (err, results) => {
-        if (err) throw err; 
+        if (err) throw err;
         return res.json({ status: "Success" });
       }
     );
   });
 
-
   router.post("/marketplace/checkout", verifyToken, (req, res) => {
     const userId = req.userId;
-    const { fromCart, deliveryAddress, customerMobileNo, customerEmail, paymentMethod, products} = req.body;
+    const {
+      fromCart,
+      deliveryAddress,
+      customerMobileNo,
+      customerEmail,
+      paymentMethod,
+      products,
+    } = req.body;
 
     console.log(req.body);
 
-    products.forEach(product => {
+    products.forEach((product) => {
       connection.query(
         "INSERT INTO marketplace_orders(product_id, product_quantity, buyer_student_id, delivery_address, delivery_mobile_no, delivery_email, payment_method) VALUES(?, ?, ?, ?, ?, ?, ?);",
-        [product.productId, product.productQuantity, userId, deliveryAddress, customerMobileNo, customerEmail, paymentMethod],
+        [
+          product.productId,
+          product.productQuantity,
+          userId,
+          deliveryAddress,
+          customerMobileNo,
+          customerEmail,
+          paymentMethod,
+        ],
         (err, results) => {
-          if(err) {
+          if (err) {
             console.log(err);
           }
         }
       );
     });
 
-    if(fromCart) {
+    if (fromCart) {
       connection.query(
         "DELETE FROM marketplace_cart WHERE buyer_student_id = ?",
         [userId],
         (err, results) => {
-          if (err) throw err; 
+          if (err) throw err;
           return res.json({ status: "Success" });
         }
       );
-    }
-    else {
+    } else {
       return res.json({ status: "Success" });
     }
   });
-  
+
   router.get("/marketplace/my-order", verifyToken, (req, res) => {
     const userId = req.userId;
 
@@ -374,7 +404,7 @@ module.exports = (router, multer) => {
       [userId],
       (err, results) => {
         if (err) throw err;
-        
+
         return res.json({ orders: results });
       }
     );
@@ -415,13 +445,13 @@ module.exports = (router, multer) => {
       [userId],
       (err, results) => {
         if (err) throw err;
-        
+
         return res.json({ orders: results });
       }
     );
   });
 
-  router.post("/marketplace/complete-delivery", verifyToken, (req, res) => {    
+  router.post("/marketplace/complete-delivery", verifyToken, (req, res) => {
     const { orderId } = req.body;
 
     connection.query(
@@ -434,6 +464,52 @@ module.exports = (router, multer) => {
         return res.json({ status: "Success" });
       }
     );
-  });  
+  });
 
+  router.get("/productss/:productId", verifyToken, (req, res) => {
+    let userId = req.userId;
+    const { productId } = req.params;
+
+    const query = `
+      SELECT 
+        p.product_id, p.product_name, p.product_category, p.product_details, p.product_price, p.product_type, p.product_in_stock
+        FROM products p
+        WHERE p.product_id = ?`;
+    connection.query(query, [productId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+      console.log(result[0]);
+
+      return res.json({ products: result[0], status: "Success" });
+    });
+  });
+
+  router.post("/products/update/:productId", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { productId } = req.params;
+    const {
+      productName,
+      productCategory,
+      productDetails,
+      productOnStock,
+      productPrice,
+    } = req.body;
+    connection.query(
+      `UPDATE products SET product_name = ?, product_category = ?, product_details = ?, product_in_stock = ?, product_price = ? WHERE product_id = ?`,
+      [
+        productName,
+        productCategory,
+        productDetails,
+        productOnStock,
+        productPrice,
+        productId,
+      ],
+      (err, results) => {
+        if (err) console.error(err);
+        else return res.json({ status: "Success" });
+      }
+    );
+  });
 };

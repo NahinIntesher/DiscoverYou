@@ -39,9 +39,11 @@ export default function CommonWebinarParticipated({}) {
 
   return (
     <div className="mainContent">
-      <Header title={paramId.startsWith("St") ? `Webinar Participated` : "Webinar Hosted"} semiTitle={`By ${user.name}`} />
+      <Header
+        title={paramId.startsWith("St") ? `Webinar Attended` : "Webinar Hosted"}
+        semiTitle={`By ${user.name}`}
+      />
       <div className="tabContent">
-        <div className="cousreSemiTitle">Participated Webinars</div>
         {webinarResults.length > 0 ? (
           webinarResults.map(function (webinar) {
             return (

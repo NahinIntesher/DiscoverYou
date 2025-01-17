@@ -146,7 +146,7 @@ export default function CourseBox({
           <div className="titles">Course Description</div>
           <div className="text">{description}</div>
         </div>
-        <div className="organizer">
+        <Link to={"profile/" + mentorId} className="organizer">
           <div className="organizerPicture">
             <img src={mentorPicture ? mentorPicture : dp} />
           </div>
@@ -156,7 +156,7 @@ export default function CourseBox({
               <div className="detailInfo">{mentorName}</div>
             </div>
           </Link>
-        </div>
+        </Link>
       </div>
     </div>
   );

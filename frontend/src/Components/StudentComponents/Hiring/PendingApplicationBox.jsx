@@ -1,5 +1,5 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
