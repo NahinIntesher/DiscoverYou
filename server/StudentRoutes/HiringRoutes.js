@@ -3,7 +3,24 @@ const router = express.Router();
 const connection = require("../Database/connection");
 const verifyToken = require("../Middlewares/middleware");
 
-module.exports = (router) => {
+module.exports = (router, multer) => {
+  const storage = multer.memoryStorage();
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 50000000 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+      const filetypes = /application\//; // Accept all image
+      const mimetype = filetypes.test(file.mimetype);
+
+      if (mimetype) {
+        return cb(null, true);
+      } else {
+        cb("Error: Images or PDF files only!");
+      }
+    },
+  });
+
   router.get("/hirings", verifyToken, (req, res) => {
     let userId = req.userId;
 
@@ -45,37 +62,62 @@ module.exports = (router) => {
     });
   });
 
-  router.post("/hirings/apply", verifyToken, (req, res) => {
+  router.post("/hirings/apply", 
+    upload.array("cv"), verifyToken, (req, res) => {
     const userId = req.userId;
     const { hiringId } = req.body;
+    const files = req.files;
 
-    connection.query(
-      "SELECT * FROM hiring_applicants WHERE hiring_id = ? AND applicant_id = ?",
-      [hiringId, userId],
-      (err, results) => {
-        if (err) throw err;
-
-        if (results.length > 0) {
-          connection.query(
-            "DELETE FROM hiring_applicants WHERE hiring_id = ? AND applicant_id = ?;",
-            [hiringId, userId],
-            function (err, results) {
-              if (err) throw err;
-              return res.json({ status: "Unregistered" });
-            }
-          );
-        } else {
-          connection.query(
-            "INSERT INTO hiring_applicants(hiring_id, applicant_id) VALUES (?, ?);",
-            [hiringId, userId],
-            function (err, results) {
-              if (err) throw err;
-              return res.json({ status: "Registered" });
-            }
-          );
+    if (files.length != 0) {
+      const { buffer } = files[0];
+      connection.query(
+        "INSERT INTO hiring_applicants(hiring_id, applicant_id, applicant_cv) VALUES (?, ?, ?);",
+        [hiringId, userId, buffer],
+        (err, result) => {
+          if (err) {
+            console.error("Database insertion error:", err);
+            throw err;
+          }
+          res.json({
+            status: "Success",
+          });
         }
-      }
-    );
+      );
+    } else {
+      res.json({
+        status: "Unsuccessful",
+        message: "No file selected",
+      });
+    }
+
+    // connection.query(
+    //   "SELECT * FROM hiring_applicants WHERE hiring_id = ? AND applicant_id = ?",
+    //   [hiringId, userId],
+    //   (err, results) => {
+    //     if (err) throw err;
+
+    //     if (results.length > 0) {
+    //       connection.query(
+    //         "DELETE FROM hiring_applicants WHERE hiring_id = ? AND applicant_id = ?;",
+    //         [hiringId, userId],
+    //         function (err, results) {
+    //           if (err) throw err;
+    //           return res.json({ status: "Unregistered" });
+    //         }
+    //       );
+    //     } else {
+    //       connection.query(
+    //         "INSERT INTO hiring_applicants(hiring_id, applicant_id) VALUES (?, ?);",
+    //         [hiringId, userId],
+    //         function (err, results) {
+    //           if (err) throw err;
+    //           return res.json({ status: "Registered" });
+    //         }
+    //       );
+    //     }
+    //   }
+    // );
+
   });
 
 
@@ -194,5 +236,5 @@ module.exports = (router) => {
     });
   });
 
-  
+
 };

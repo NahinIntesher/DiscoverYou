@@ -525,6 +525,14 @@
   margin: 8px;
   margin-left: 40px;
 }
+
+.participant .buttonContainerAlt {
+  flex-shrink: 1;
+  margin: 8px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: row;
+}
 .participant .buttonContainer .hired {
   width: max-content;
   color: rgba(var(--dark), 0.8);
@@ -554,12 +562,12 @@
   color: #02590f;
   background-color: #73bd7e;
 }
-.participant .defaultButton {
+.participant .defaultButton, .participant .normalButton {
   color: rgba(var(--dark));
   background-color: rgba(var(--extralight));
 }
 
-.participant .defaultButton:hover {
+.participant .defaultButton:hover, .participant .normalButton:hover {
   color: rgba(var(--dark));
   background-color: rgba(var(--light));
 }

@@ -26,7 +26,20 @@ export default function MessengerMain({ user, activeContactId, setMessageUpdate 
         if (res.data.status === "Success") {
           console.log("Message Sent Successfully!");
           setMessageText("");
-          setUpdateMessages((prevData) => prevData + 1); // Force a re-render
+          setUpdateMessages((prevData) => prevData + 1);
+
+          const socket = new WebSocket("ws://localhost:8420"); // Replace with your WebSocket server URL
+
+          socket.onopen = () => {
+            socket.send("message");
+            socket.close();
+          };
+
+          // Log if there is an error
+          socket.onerror = (error) => {
+            console.error("WebSocket Error:", error);
+          };
+
         } else {
           alert(res.data.Error);
         }

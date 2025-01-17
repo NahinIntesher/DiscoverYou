@@ -8,10 +8,8 @@ import NotFound from "../../CommonComponents/NotFound";
 export default function CreateNewCourse({ user, interests, admins }) {
   const { hiringId } = useParams();
   const navigate = useNavigate();
-  const [durations, setDurations] = useState({});
   const [formData, setFormData] = useState({
-    applicantsCV: [],
-    tempMaterial: [],
+    applicantsCV: []
   });
 
   const handleFileChange = (event) => {
@@ -19,22 +17,10 @@ export default function CreateNewCourse({ user, interests, admins }) {
     if (files.every((file) => file.type === "application/pdf")) {
       setFormData((oldFormData) => ({
         ...oldFormData,
-        tempMaterial: files,
+        applicantsCV: files,
       }));
     } else {
       alert("All files should be PDFs!");
-    }
-  };
-
-  const addMaterial = () => {
-    if (formData.tempMaterial.length > 0) {
-      setFormData((oldFormData) => ({
-        ...oldFormData,
-        applicantsCV: [...oldFormData.applicantsCV, ...formData.tempMaterial],
-        tempMaterial: [],
-      }));
-    } else {
-      alert("No CV files added!");
     }
   };
 
@@ -49,23 +35,27 @@ export default function CreateNewCourse({ user, interests, admins }) {
     e.preventDefault();
 
     if (formData.applicantsCV.length < 1) {
-      alert("Add at least 1 course material!");
+      alert("Please upload your CV for apply!");
       return;
     }
 
     const finalData = new FormData();
     formData.applicantsCV.forEach((file, index) => {
-      finalData.append(`applicantsCV[${index}]`, file);
+      finalData.append(`cv`, file);
     });
+    finalData.append(`hiringId`, hiringId);
 
     axios
-      .post("http://localhost:3000/student/hirings/apply", {
-        finalData,
-        hiringId: hiringId,
-      })
+      .post("http://localhost:3000/student/hirings/apply", finalData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
       .then((response) => {
         console.log("Full API Response:", response.data);
-        navigate("/hiring/" + hiringId);
+        alert("You have successfully applied for the job!");
+        navigate(-1);
       })
       .catch((error) => {
         console.error("Error submitting materials:", error);
@@ -78,7 +68,7 @@ export default function CreateNewCourse({ user, interests, admins }) {
       <div className="formBoxContainer">
         <div className="formBox">
           <form onSubmit={handleSubmit}>
-            <div className="title">Drop Your CV to Apply for this job</div>
+            <div className="title">Upload Your CV</div>
             <div className="addMaterialSpecial">
               <div className="input">
                 <input
@@ -88,13 +78,6 @@ export default function CreateNewCourse({ user, interests, admins }) {
                   onChange={handleFileChange}
                   required
                 />
-              </div>
-              <div
-                className="addButton"
-                onClick={addMaterial}
-                style={{ cursor: "default" }}
-              >
-                Add
               </div>
             </div>
             {formData.applicantsCV.length ? (
@@ -128,10 +111,10 @@ export default function CreateNewCourse({ user, interests, admins }) {
               </div>
             ) : (
               <div className="materialContainer">
-                <NotFound message="You did not add any material!" />
+                <NotFound message="You did upload your CV!" />
               </div>
             )}
-            <button>Submit For Approval</button>
+            <button>Apply For Job</button>
           </form>
         </div>
       </div>

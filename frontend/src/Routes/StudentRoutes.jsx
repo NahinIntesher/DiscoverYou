@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sidebar from "../../src/Components/StudentComponents/Sidebar";
@@ -71,6 +71,29 @@ export default function Student({
 }) {
   const [notificationUpdate, setNotificationUpdate] = useState(0);
   const [messageUpdate, setMessageUpdate] = useState(0);
+  let socket;
+
+  useEffect(() => {
+    socket = new WebSocket("ws://localhost:8420");
+
+    socket.onmessage = (event) => {
+      console.log(event.data);
+      if(event.data.startsWith("message")) {
+        setMessageUpdate((prevData) => prevData + 1);
+      }
+    };
+
+    socket.onclose = () => {
+      console.log("Web Socket connection closed.");
+    };
+
+    // Clean up on component unmount
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, []);
 
   return (
     <BrowserRouter>

@@ -150,11 +150,7 @@ const SingleHiring = ({ ownId }) => {
                       ? applicant.applicant_picture
                       : dp
                   }
-                  cv={
-                    applicant.applicant_cv
-                      ? applicant.applicant_cv
-                      : "No CV provided!"
-                  }
+                  cv={applicant.applicant_cv}
                   permission={data.hiring.organizer_id == ownId}
                   hiringId={data.hiring.hiring_id}
                   applicantStatus={applicant.req_for_join_status}
@@ -243,10 +239,13 @@ function Applicant({
           </div>
         ) : (
           permission && (
-            <div className="buttonContainer">
-              <Link to={applicantId} className="acceptButton">
+            <div className="buttonContainerAlt">
+              <Link to={applicantId} className="acceptButton normalButton">
+              
+                <MaterialSymbol className="icon" size={22} icon="description" />
                 <div className="text">View CV</div>
               </Link>
+
               <div
                 className="acceptButton"
                 onClick={() => setConfirmApplyBox(true)}

@@ -56,6 +56,24 @@ const SingleHiring = () => {
     alert("Sorry, hiring is not finished!");
   }
 
+
+  function deleteHiringApplication() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/hirings/cancel-apply", {
+        hiringId: hiringId
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          alert('You successfully unapplied for "' + data.hiring.job_name + '" job!');
+          setApplicantNo(oldNo => oldNo - 1);
+          setJoinBoxActive(false);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -86,12 +104,12 @@ const SingleHiring = () => {
 
         <div className={joinBoxActive ? "dialogBoxBackground" : "none"}>
           <div className="dialogBox">
-            <div className="title">Apply Job</div>
-            <div className="details">Do you want to apply for this job?</div>
+            <div className="title">Remove Job Application</div>
+            <div className="details">Do you want to remove appliaction for this job?</div>
             <div className="buttonContainer">
-              <Link to={"/hiring/apply/" + hiringId} className="button">
+              <div onClick={deleteHiringApplication} className="button">
                 Yes
-              </Link>
+              </div>
               <div
                 className="buttonAlt"
                 onClick={() => {
@@ -105,16 +123,15 @@ const SingleHiring = () => {
         </div>
         <div className="rightSection">
           <div className="joinButtonContainer">
-            <button
-              className="joinButton"
-              onClick={() => {
-                {
-                  isApplied ? setJoinBoxActive(false) : setJoinBoxActive(true);
-                }
-              }}
-            >
-              {isApplied ? "Applied" : "Apply Now"}
-            </button>
+            {isApplied ? (
+              <div onClick={function(){setJoinBoxActive(true)}} className="joinButton">
+                Applied
+              </div>
+            ) : (
+              <Link to={"/hiring/apply/" + hiringId} className="joinButton">
+                Apply Now
+              </Link>
+            )}
             <div className="joinDetails">
               <b>Applicants: </b> {applicantNo}
             </div>
