@@ -58,7 +58,8 @@ import CommonShowcasePosts from "../Components/CommonComponents/CommonProfile/St
 import CommonHiringOrganized from "../Components/CommonComponents/CommonProfile/Organizer/Details/HiringOrganized";
 
 import MessaengerHome from "../Components/CommonComponents/Messages/MessengerHome";
-
+import EditCommunity from "../Components/StudentComponents/Community/EditCommunity";
+import EditCourse from "../Components/StudentComponents/Course/EditCourse";
 
 export default function Student({
   handleLogout,
@@ -104,6 +105,10 @@ export default function Student({
 
           <Route path="/community" element={<Community user={user} />} />
           <Route
+            path="/community/pending/edit/:communityId"
+            element={<EditCommunity />}
+          />
+          <Route
             path="/community/new"
             element={
               <CreateNewCommunity
@@ -128,6 +133,10 @@ export default function Student({
 
           <Route path="/course" element={<Course user={user} />} />
           <Route path="/course/material/:materialId" element={<Material />} />
+          <Route
+            path="/course/pending/edit/:courseId"
+            element={<EditCourse />}
+          />
 
           <Route
             path="/course/new"
@@ -229,7 +238,6 @@ export default function Student({
             element={<ShowcasePosts user={user} admins={admins} />}
           />
 
-
           <Route
             path="/profile/courseResults/:paramId"
             element={<CommonCourseParticipated />}
@@ -251,18 +259,32 @@ export default function Student({
             element={<CommonHiringOrganized />}
           />
 
-          <Route path="/message/:otherUserId" element={<MessaengerHome user={user}
-            messageUpdate={messageUpdate}
-            setMessageUpdate={setMessageUpdate}
-          />} />
+          <Route
+            path="/message/:otherUserId"
+            element={
+              <MessaengerHome
+                user={user}
+                messageUpdate={messageUpdate}
+                setMessageUpdate={setMessageUpdate}
+              />
+            }
+          />
 
-          <Route path="/message" element={<MessaengerHome user={user}
-            messageUpdate={messageUpdate}
-            setMessageUpdate={setMessageUpdate}
-          />} />
+          <Route
+            path="/message"
+            element={
+              <MessaengerHome
+                user={user}
+                messageUpdate={messageUpdate}
+                setMessageUpdate={setMessageUpdate}
+              />
+            }
+          />
 
-          <Route path="/profile/:paramId" element={<CommonProfile mainUser={user}/>} />
-
+          <Route
+            path="/profile/:paramId"
+            element={<CommonProfile mainUser={user} />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,8 +1,9 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingCommunityBox({
   id,
@@ -13,39 +14,21 @@ export default function PendingCommunityBox({
   adminId,
   setUpdate,
 }) {
-  function EditCommunity() {
-    // axios.defaults.withCredentials = true;
-    // axios
-    //   .post("http://localhost:3000/admin/community/approve", {
-    //     adminId: adminId,
-    //     communityId: id
-    //   })
-    //   .then((res) => {
-    //     if (res.data.status === "Success") {
-    //       alert("Community \""+name+"\" successfully approved!");
-    //       setUpdate((prevData) => prevData + 1);
-    //     } else {
-    //       alert(res.data.Error);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
-  }
-
-  function rejectMember() {
-    // axios.defaults.withCredentials = true;
-    // axios
-    //   .post("http://localhost:3000/admin/community/reject", {
-    //     communityId: id
-    //   })
-    //   .then((res) => {
-    //     if (res.data.status === "Success") {
-    //       alert("Community \""+name+"\" has been rejected.");
-    //       setUpdate((prevData) => prevData + 1);
-    //     } else {
-    //       alert(res.data.Error);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
+  function handleDelete() {
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3000/student/community/delete", {
+        communityId: id,
+      })
+      .then((res) => {
+        if (res.data.status === "Success") {
+          alert('Community "' + name + '" has been deleted.');
+          setUpdate((prevData) => prevData + 1);
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -103,11 +86,11 @@ export default function PendingCommunityBox({
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" onClick={EditCommunity}>
+        <Link to={'edit/' + id} className="defaultButton">
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
-        </div>
-        <div className="rejectButton">
+        </Link>
+        <div className="rejectButton" onClick={handleDelete}>
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>

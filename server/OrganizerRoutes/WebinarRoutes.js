@@ -48,7 +48,6 @@ module.exports = (router) => {
     const { webinarName, webinarCategory, webinarDescription, meetingLink } =
       req.body;
 
-    console.log(req.body);
     connection.query(
       `UPDATE webinars SET webinar_name = ?, webinar_category = ?, webinar_description = ?, meeting_link = ? WHERE webinar_id = ?`,
       [

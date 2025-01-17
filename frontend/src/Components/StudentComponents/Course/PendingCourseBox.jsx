@@ -1,8 +1,9 @@
 import React from "react";
-import dp from "../../../assets/images/desert.jpg";
+import dp from "../../../assets/images/default.jpg";
 import { MaterialSymbol } from "react-material-symbols";
 import "react-material-symbols/rounded";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function PendingCourseBox({
   id,
@@ -14,16 +15,15 @@ export default function PendingCourseBox({
   mentorId,
   setUpdate,
 }) {
-  function approveMember() {
+  function handleDelete() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3000/student/course/approve", {
-        mentorId: mentorId,
+      .post("http://localhost:3000/student/course/delete", {
         courseId: id,
       })
       .then((res) => {
         if (res.data.status === "Success") {
-          alert('Course "' + name + '" successfully approved!');
+          alert('Course "' + name + '" has been deleted.');
           setUpdate((prevData) => prevData + 1);
         } else {
           alert(res.data.Error);
@@ -31,24 +31,6 @@ export default function PendingCourseBox({
       })
       .catch((err) => console.log(err));
   }
-
-  function rejectMember() {
-    axios.defaults.withCredentials = true;
-    axios
-      .post("http://localhost:3000/student/course/reject", {
-        courseId: id,
-      })
-      .then((res) => {
-        if (res.data.status === "Success") {
-          alert('Course "' + name + '" has been rejected.');
-          setUpdate((prevData) => prevData + 1);
-        } else {
-          alert(res.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-
   return (
     <div className="pendingCommunityBox">
       <div className="communityDetails">
@@ -104,11 +86,11 @@ export default function PendingCourseBox({
         </div>
       </div>
       <div className="buttonContainer">
-        <div className="defaultButton" onClick={approveMember}>
+        <Link to={'edit/' + id} className="defaultButton">
           <MaterialSymbol className="icon" size={22} icon="edit" />
           <div className="text">Edit Details</div>
-        </div>
-        <div className="rejectButton" onClick={rejectMember}>
+        </Link>
+        <div className="rejectButton" onClick={handleDelete}>
           <MaterialSymbol className="icon" size={22} icon="delete" />
           <div className="text">Delete</div>
         </div>

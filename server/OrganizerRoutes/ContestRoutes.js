@@ -70,7 +70,6 @@ module.exports = (router) => {
     const userId = req.userId;
     const { contestId } = req.params;
     const { contestName, contestCategory, contestDetails } = req.body;
-    console.log(req.body);
     connection.query(
       `UPDATE contests SET contest_name = ?, contest_category = ?, contest_details = ? WHERE contest_id = ?`,
       [contestName, contestCategory, contestDetails, contestId],

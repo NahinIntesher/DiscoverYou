@@ -275,6 +275,40 @@ module.exports = (router, multer) => {
     },
   });
 
+  router.get("/coursess/:courseId", verifyToken, (req, res) => {
+    let userId = req.userId;
+    const { courseId } = req.params;
+
+    const query = `
+      SELECT 
+        c.course_id, c.course_name, c.course_category, c.course_description
+        FROM courses c
+        WHERE c.course_id = ?`;
+    connection.query(query, [courseId], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.json({ message: "Failed" });
+      }
+      console.log(result[0]);
+
+      return res.json({ courses: result[0], status: "Success" });
+    });
+  });
+
+  router.post("/courses/update/:courseId", verifyToken, (req, res) => {
+    const userId = req.userId;
+    const { courseId } = req.params;
+    const { courseName, courseCategory, courseDescription } = req.body;
+    connection.query(
+      `UPDATE courses SET course_name = ?, course_category = ?, course_description = ? WHERE course_id = ?`,
+      [courseName, courseCategory, courseDescription, courseId],
+      (err, results) => {
+        if (err) console.error(err);
+        else return res.json({ status: "Success" });
+      }
+    );
+  });
+  
   router.post(
     "/courses/new",
     upload.array("courseMaterials"),
@@ -596,5 +630,17 @@ module.exports = (router, multer) => {
         return res.json({ status: "Success" });
       }
     });
+  });
+
+  router.post("/course/delete", verifyToken, (req, res) => {
+    const { courseId } = req.body;
+    connection.query(
+      `DELETE FROM courses WHERE course_id = ?`,
+      [courseId],
+      (err, results) => {
+        if (err) throw err;
+        return res.json({ status: "Success" });
+      }
+    );
   });
 };
