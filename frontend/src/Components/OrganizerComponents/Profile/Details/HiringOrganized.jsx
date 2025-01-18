@@ -8,7 +8,7 @@ export default function HiringOrganized({user}) {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/organizer/hirings/profile")
+            .get("http://localhost:3000/dynamic-profile/"+user.organizer_id)
             .then((res) => {
                 console.log("Success");
                 const myhiringData = res.data?.hiringResults || [];

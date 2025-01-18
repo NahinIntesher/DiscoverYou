@@ -8,7 +8,7 @@ export default function WebinarOrganized({user}) {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/organizer/webinars/my")
+            .get("http://localhost:3000/dynamic-profile/"+user.organizer_id)
             .then((res) => {
                 console.log("Success");
                 const mywebinarsData = res.data?.webinarResults || [];

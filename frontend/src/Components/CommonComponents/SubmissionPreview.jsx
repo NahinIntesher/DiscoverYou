@@ -30,7 +30,6 @@ export default function SubmissionPreview() {
             {material.submission_type == "text" &&
                 <div className="courseMaterialContainer">
                     {
-                        material.submission_text.startsWith("//") ?
                         <SyntaxHighlighter language="c" style={a11yDark} customStyle={{
                             width: "90%",
                             height: "80vh",
@@ -42,9 +41,6 @@ export default function SubmissionPreview() {
                           >
                             {material.submission_text}
                         </SyntaxHighlighter>
-                        : <div className="textBoxCode">
-                            {material.submission_text}
-                        </div>
                     }
                 </div>
             }

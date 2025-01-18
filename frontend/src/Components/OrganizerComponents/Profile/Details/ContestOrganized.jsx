@@ -8,7 +8,7 @@ export default function ContestOrganized({user}) {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/organizer/contests/profile")
+            .get("http://localhost:3000/dynamic-profile/"+user.organizer_id)
             .then((res) => {
                 console.log("Success");
                 const myContestsData = res.data?.contestResults || [];

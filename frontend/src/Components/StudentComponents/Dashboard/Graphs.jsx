@@ -164,6 +164,13 @@ export default function Graphs() {
           chart={<Bar data={chartData.contests} options={barChartOptions} />}
         />
       )}
+      {chartData.pieData && (
+        <ChartCard
+          title="Course Completion"
+          icon={<FaChartPie />}
+          chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
+        />
+      )}
       {chartData.showcases && (
         <ChartCard
           title="Showcase Posts"
@@ -183,13 +190,6 @@ export default function Graphs() {
           title="Courses Overview"
           icon={<FaGraduationCap />}
           chart={<Bar data={chartData.courses} options={barChartOptions} />}
-        />
-      )}
-      {chartData.pieData && (
-        <ChartCard
-          title="Course Completion"
-          icon={<FaChartPie />}
-          chart={<Pie data={chartData.pieData} options={pieChartOptions} />}
         />
       )}
       {chartData.products && (

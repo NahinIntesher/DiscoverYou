@@ -62,7 +62,7 @@ export default function MyCourses({ user }) {
                                     category={course.course_category}
                                     description={course.course_description}
                                     mentorName={course.course_mentor_name}
-                                    isJoined={course.is_joined}
+                                    isJoined={"yes"}
                                     totalMember={course.total_member}
                                     user={user}
                                 />
