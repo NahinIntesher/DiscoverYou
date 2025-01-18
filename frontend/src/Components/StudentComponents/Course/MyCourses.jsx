@@ -4,7 +4,7 @@ import CourseBox from "../../CommonComponents/CourseBox";
 import NotFound from "../../CommonComponents/NotFound";
 import EnrolledCourseBox from "../../CommonComponents/EnrolledCourseBox"
 
-export default function MyCourses({user}) {
+export default function MyCourses({ user }) {
     const [myCourses, setMyCourses] = useState([]);
     const [enrolledCourses, setEnrolledCourses] = useState([]);
 
@@ -26,52 +26,52 @@ export default function MyCourses({user}) {
 
     return (
         <>
-        <div className="tabContent">
-            <div className="cousreSemiTitle">My Created Courses</div>
-            {
-            myCourses.length > 0 ?
-            myCourses.map(function(course){
-                return (
-                    <CourseBox 
-                        key={course.course_id}
-                        id={course.course_id}
-                        name={course.course_name}
-                        mentorPicture={course.mentor_picture}
-                        mentorId={course.mentor_id}
-                        category={course.course_category}
-                        description={course.course_description}
-                        mentorName={course.course_mentor_name}
-                        isJoined={course.is_joined}
-                        totalMember={course.total_member}
-                        user={user}
-                    />
-                )
-            })
-            :
-            <NotFound message="No course Found"/>
-        }
-        <div className="cousreSemiTitle">Enrolled Courses</div>
-            {
-            enrolledCourses.length > 0 ?
-            enrolledCourses.map(function(course){
-                return (
-                    <EnrolledCourseBox
-                        key={course.course_id}
-                        id={course.course_id}
-                        name={course.course_name}
-                        category={course.course_category}
-                        description={course.course_description}
-                        mentorName={course.course_mentor_name}
-                        isJoined={course.is_joined}
-                        totalMember={course.total_member}
-                        completedPercentage={parseInt(course.completed_percentage)}
-                    />
-                )
-            })
-            :
-            <NotFound message="No course Found"/>
-        }
-        </div>
+            <div className="tabContent">
+                <div className="cousreSemiTitle">Enrolled Courses</div>
+                {
+                    enrolledCourses.length > 0 ?
+                        enrolledCourses.map(function (course) {
+                            return (
+                                <EnrolledCourseBox
+                                    key={course.course_id}
+                                    id={course.course_id}
+                                    name={course.course_name}
+                                    category={course.course_category}
+                                    description={course.course_description}
+                                    mentorName={course.course_mentor_name}
+                                    isJoined={course.is_joined}
+                                    totalMember={course.total_member}
+                                    completedPercentage={parseInt(course.completed_percentage)}
+                                />
+                            )
+                        })
+                        :
+                        <NotFound message="No course Found" />
+                }
+                <div className="cousreSemiTitle">My Created Courses</div>
+                {
+                    myCourses.length > 0 ?
+                        myCourses.map(function (course) {
+                            return (
+                                <CourseBox
+                                    key={course.course_id}
+                                    id={course.course_id}
+                                    name={course.course_name}
+                                    mentorPicture={course.mentor_picture}
+                                    mentorId={course.mentor_id}
+                                    category={course.course_category}
+                                    description={course.course_description}
+                                    mentorName={course.course_mentor_name}
+                                    isJoined={course.is_joined}
+                                    totalMember={course.total_member}
+                                    user={user}
+                                />
+                            )
+                        })
+                        :
+                        <NotFound message="No course Found" />
+                }
+            </div>
         </>
     );
 }

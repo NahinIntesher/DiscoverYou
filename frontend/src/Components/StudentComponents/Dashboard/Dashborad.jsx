@@ -10,7 +10,7 @@ export default function Dashborad({ user }) {
     <div className="mainContent">
       <div className="contentTitle">
         <div className="content">
-          <div className="title">Student Dashboard</div>
+          <div className="title">Dashboard</div>
         </div>
       </div>
       <div className="mt-2 mb-2">

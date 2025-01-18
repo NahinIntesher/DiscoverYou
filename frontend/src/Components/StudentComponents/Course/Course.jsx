@@ -10,7 +10,7 @@ import BrowseCourses from "./BrowseCourses";
 import "../../../assets/styles/course.css";
 
 export default function Course({user}) {
-    const [activeTab, setActiveTab] = useState(["browseCourses"]);
+    const [activeTab, setActiveTab] = useState(["myCourses"]);
     
     const [pendingParticipantsNo, setPendingParticipantsNo] = useState(0);
     const [pendingCoursesNo, setPendingCoursesNo] = useState(0);

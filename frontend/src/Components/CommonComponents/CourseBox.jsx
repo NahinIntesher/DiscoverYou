@@ -113,7 +113,7 @@ export default function CourseBox({
               }}
               className="joinButton"
             >
-              Join
+              Enroll
             </div>
           )}
           <div className="joinDetails">
